@@ -1,0 +1,46 @@
+# Self-ignore
+.prettierignore
+
+# Build and generated directories
+.next/**
+node_modules/**
+out/**
+dist/**
+build/**
+.turbo/**
+
+# Generated files
+*.d.ts
+**/*.generated.*
+
+# Binary files
+*.ico
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.woff
+*.woff2
+*.eot
+*.ttf
+
+# Database files
+db/migrations/**/*.sql
+*.sqlite
+*.db
+
+# Config files that don't need formatting
+.devcontainer/Dockerfile
+.gitignore
+.env*
+package-lock.json
+yarn.lock
+
+# Files with complex TypeScript that Prettier struggles with
+components/data-table.tsx
+components/nav-documents.tsx
+components/nav-secondary.tsx
+components/ui/chart.tsx
+components/ui/dropdown-menu.tsx
+components/ui/sidebar.tsx
