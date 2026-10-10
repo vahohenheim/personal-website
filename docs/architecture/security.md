@@ -39,7 +39,8 @@ service therefore starts with a change to the policy.
 - **Images.** No remote image is allowed: `images.remotePatterns` is not set. The portrait
   is a local file ([styling.md](../frontend/styling.md#portrait)). A remote image would go
   through `next/image` and need its domain added to `remotePatterns`.
-- **Fonts.** Geist is self-hosted by `next/font`, so it passes `font-src 'self'`.
+- **Fonts.** Geist and Geist Mono come from the `geist` package and are self-hosted by
+  `next/font`, so they pass `font-src 'self'`.
 - **Analytics.** Vercel Analytics is served from the site's own origin on Vercel.
 - **Third-party services.** A script, iframe, font or browser-side network call to another
   origin is blocked until the policy allows it. Open the policy explicitly, document it

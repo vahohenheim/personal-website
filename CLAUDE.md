@@ -37,37 +37,46 @@ The same goes for the two other entry points: keep [README.md](README.md) true (
 - Texts rendered with `dangerouslySetInnerHTML` must come from the `locales/` files only. Never pass external data through them.
 - Details: [docs/architecture/i18n.md](docs/architecture/i18n.md).
 
+## Design
+
+- The design charter ([docs/redesign/charte-graphique-valentinbourreau.md](docs/redesign/charte-graphique-valentinbourreau.md)) is authoritative for the look of the site. When in doubt, apply the most sober rule.
+- Colours are the eight Eucalyptus tokens only (`bg-bg`, `bg-surface`, `border-line`, `text-muted`, `text-text2`, `text-text`, `text-accent`, `bg-accent text-on-accent`). The Tailwind palette is not available. The accent marks what is live (current status, ongoing work, main action, hover, focus): never running text, never decoration.
+- Geist for what is read, Geist Mono (lowercase) for what is scanned. No other font.
+- Radius 2 px (`rounded`), 6 px for the portrait only. No shadow, no gradient, no blur, no emoji, no decorative icon: glyphs (`●`, `○`, `→`, `+`, `~/`) and words instead.
+- No entrance animation. Nothing starts at `opacity: 0`. Motion is limited to colour transitions of 150 ms.
+- Theme changes go in `app/globals.css` (there is no `tailwind.config.ts`).
+- Details: [docs/frontend/styling.md](docs/frontend/styling.md).
+
 ## Content
 
-- Never hardcode a visible text in a component: add it to both locale files.
-- Structure goes in `lib/constants/`, texts in `locales/`, linked by the enums of `lib/models/`. Reference data through the enum, not the string.
+- The texts of the home page and the resume are in `locales/content/fr.ts` and `en.ts`, typed by `lib/models/content.ts`. French is the reference and follows the brief word for word ([docs/redesign/brief.md](docs/redesign/brief.md)); English mirrors it entry for entry. Do not reword them without Valentin.
+- One title everywhere ("Ingénieur front-end senior"). "Freelance" is a status shown apart. No stated objective, no level labels, no framework versions in the hero.
+- French typography: `’`, a non-breaking space (written `\u00a0`) before `: ; ! ?` and between a number and its unit, `–` in ranges, `→` in changelog dates, real lists.
+- Never hardcode a visible text in a component.
+- `lib/constants/` holds the facts used by the structured data. Keep them in line with the page texts.
 - The domain, the site name and the portrait come from `lib/constants/site.ts` only.
-- One headline title for the whole site ("senior front-end engineer"): hero, resume title, meta tags, `person.jobTitle` and the role of the current position change together.
 - When the visible content of a page changes, bump its `updatedAt` in `lib/constants/pages.ts`.
-- Details and the step-by-step recipes (adding an experience, a project, a qualification): [docs/content/resume-data.md](docs/content/resume-data.md).
+- Details: [docs/content/resume-data.md](docs/content/resume-data.md).
 
 ## Pages, SEO and structured data
 
 - Structured data is part of adding a page, not a follow-up. A new page is declared in `PAGES`, gets its texts in `getPageTexts`, its graph in `PAGE_GRAPHS`, and renders `<JsonLdComponent page="…" />`. The type check fails until all of it exists.
-- Structured data describes only what is visible on the page, and is generated from the resume data and the dictionaries, never written by hand.
+- Structured data describes only what is visible on the page, and is generated from the data and the dictionaries, never written by hand.
 - One `Person` and one `WebSite` node for the whole site, referenced by `@id`. `WebSite` on the home page only. A `BreadcrumbList` on every page except the home page.
 - Meta descriptions stay under 155 characters.
 - The legal page (`/legal/`) describes how visitor data is handled. Adding, removing or changing anything that touches it (analytics, a resource from another origin, a form, a cookie) updates its texts in both languages and its `updatedAt`.
+- A generated file served at the root without an extension (`/icon`, `/apple-icon`) must be excluded in the `matcher` of `proxy.ts`.
 - Details and the checklist: [docs/features/pages.md](docs/features/pages.md), [docs/features/seo.md](docs/features/seo.md).
 
-## Components and styling
+## Components
 
-- Server Component by default. `"use client"` only for interactivity.
-- Simple interface elements come from shadcn/ui first (`components/ui/`, one folder per component). Keep only the ones in use.
-- A link that looks like a button is `<Button asChild><Link …/></Button>`. Never nest a `<button>` or an `<a>` inside a `<Link>`.
-- Theme changes go in `app/globals.css` (there is no `tailwind.config.ts`). Use the colour tokens only (`bg-muted`, `text-muted-foreground`, `hover:bg-accent`…), never a Tailwind palette colour such as `gray-*` or `slate-*`.
-- The font is Geist, by Valentin's choice. Do not change the typography without asking him.
-- Entrance animations go through `AppearComponent` (CSS only). Never hide content until JavaScript runs, keep delays under 0.2 s, and do not animate the header or the footer.
-- No emoji in the interface or the texts: use `lucide-react` icons. Texts use typographic apostrophes (`’`) and an en dash in date ranges.
-- The header menu stays visible on phones. Check the header at 320 px after changing it.
-- Every link and button has an accessible name. An icon-only one gets an `aria-label` from the dictionaries (`a11y.*`) or from the data. Texts read by screen readers are translated like visible ones.
+- Server Component by default. `"use client"` only for what needs the browser.
+- No component library: build with the blocks of the design (`ProfileCard`, `ChangelogEntry`, `ProjectCard`, `buttonClass`…). Do not add shadcn/ui, Radix or an icon package back.
+- Components hold no text: content comes in as typed props.
+- The header nav stays visible on phones (it wraps). Check the header at 375 px after changing it.
+- Every link and button has an accessible name; an `aria-label` contains the visible text.
 - Delete a component, a constant or a package when its last usage goes away.
-- Details: [docs/frontend/components.md](docs/frontend/components.md), [docs/frontend/styling.md](docs/frontend/styling.md).
+- Details: [docs/frontend/components.md](docs/frontend/components.md).
 
 ## Code style
 
@@ -90,6 +99,7 @@ Listed in [docs/operations/runbook.md](docs/operations/runbook.md#known-issues).
 
 **Rule:** every request handled through Claude Code is recorded here, in the same change, as **one line** (date, request, main files), most recent first. Then update the pages of `docs/` concerned: create a page if none covers the topic, and update the index `docs/README.md` and the `last_updated` field. The detail goes in `docs/`, not here, because this file is read at every session.
 
+- 2026-10-11 — Redesign of the home page and the resume on the "Changelog" direction, on branch `redesign/changelog`: Eucalyptus tokens, Geist and Geist Mono, new header and footers, new components, texts from the brief in both languages, Open Graph image and icons, structured data realigned (freelance, SOLO ended), shadcn/Radix/lucide removed, docs rewritten. Not merged: waiting for Valentin's validation (`app/`, `components/`, `locales/content/`, `app/globals.css`) → [docs/redesign/progress.md](docs/redesign/progress.md), [docs/frontend/styling.md](docs/frontend/styling.md), [docs/features/pages.md](docs/features/pages.md).
 - 2026-10-10 — Sitemap lists every page in every locale, each with all its language versions and `x-default`, with a priority per page; `robots.txt` declares the host (`app/sitemap.ts`, `app/robots.ts`, `lib/constants/pages.ts`) → [docs/features/seo.md](docs/features/seo.md).
 - 2026-10-10 — Audit fixes: legal notice and privacy page with footer link; accessible names on all links, translated labels, skip link; hero title and portrait no longer faded, scroll reveal without opacity; Radix `navigation-menu` replaced by plain lists; `unsafe-eval` in development only; proxy skipped for localized URLs; shorter meta descriptions, `summary` card; CI workflow, Node 24 pinned; `security.txt`; error page retry (`app/[locale]/legal/`, `components/`, `next.config.ts`, `proxy.ts`, `.github/workflows/ci.yml`, `locales/`) → [docs/audits/2026-10-10-full-audit.md](docs/audits/2026-10-10-full-audit.md#action-log), [docs/features/pages.md](docs/features/pages.md), [docs/architecture/security.md](docs/architecture/security.md).
 - 2026-10-10 — Full audit of the production site and the repository (security, performance, accessibility, SEO, technical, legal): measurements, prioritised findings, action log. No fix applied → [docs/audits/2026-10-10-full-audit.md](docs/audits/2026-10-10-full-audit.md).

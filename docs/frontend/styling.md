@@ -1,96 +1,98 @@
 ---
 title: Styling
-description: Tailwind v4 theme in globals.css, colour tokens, light and dark mode, fonts, animations, text typography and the portrait.
+description: The Eucalyptus tokens, the Tailwind theme built on them, light and dark mode, Geist and Geist Mono, the type scale, and the global rules (radius, rules, links, focus, motion).
 related_code:
   - ../../app/globals.css
   - ../../app/[locale]/layout.tsx
   - ../../components/theme-provider/theme-provider.tsx
-  - ../../components/ui/mode-toggle/mode-toggle.tsx
-  - ../../postcss.config.mjs
+  - ../../components/theme-toggle/theme-toggle.tsx
+  - ../../components/avatar/avatar.tsx
   - ../../public/avatar.jpg
-  - ../../components/appear/appear.tsx
-  - ../../components/wordmark/wordmark.tsx
-  - ../../lib/constants/site.ts
-last_updated: 2026-10-10
+  - ../redesign/charte-graphique-valentinbourreau.md
+last_updated: 2026-10-11
 ---
 
 # Styling
 
-**Summary.** The site is styled with Tailwind CSS v4, configured entirely in
-[app/globals.css](../../app/globals.css): there is no `tailwind.config.ts`. Colours are
-CSS variables with a light and a dark value, switched by a class on `<html>`.
+**Summary.** The look of the site follows the design charter
+([charte-graphique-valentinbourreau.md](../redesign/charte-graphique-valentinbourreau.md)),
+"Changelog" direction: one palette (Eucalyptus) in two modes, one type family (Geist, with
+Geist Mono for structure), one radius, no shadow, no gradient, no emoji. Everything is
+declared in [app/globals.css](../../app/globals.css); there is no `tailwind.config.ts`.
+The charter wins over this page if they ever disagree.
 
-## Theme
+## Tokens
 
-- `@theme inline` in `globals.css` exposes the shadcn tokens to Tailwind (`--color-background`,
-  `--color-primary`, `--radius-*`…). Their values are set in `:root` (light) and `.dark`.
-- Use the tokens in classes: `bg-background`, `text-foreground`, `text-muted-foreground`,
-  `border-border`.
-- Use tokens only. Tailwind palette colours (`gray-*`, `slate-*`…) are not used anywhere:
-  mixing them with the tokens gave two families of grey. `muted` is the soft background,
-  `muted-foreground` the secondary text, `accent` the hover background.
-- Headings `h1` to `h4` get their size from `globals.css`. `.container-mobile` adds the
-  side padding under 900 px.
+Eight variables, set on `:root` (day) and `.dark` (night), exposed to Tailwind under the
+same names. The default Tailwind palette, radii and shadows are removed from the theme, so
+no other colour can be used by accident.
+
+| Token         | Class examples             | Use                                                                   |
+| ------------- | -------------------------- | --------------------------------------------------------------------- |
+| `--bg`        | `bg-bg`                    | page background                                                       |
+| `--surface`   | `bg-surface`               | blocks, key / value sheets                                            |
+| `--line`      | `border-line`              | 1 px rules and borders                                                |
+| `--muted`     | `text-muted`               | dates, labels, section titles                                         |
+| `--text2`     | `text-text2`               | running text                                                          |
+| `--text`      | `text-text`                | titles, strong text, logotype                                         |
+| `--accent`    | `text-accent`, `bg-accent` | what is live: current status, ongoing work, main action, hover, focus |
+| `--on-accent` | `text-on-accent`           | text placed on the accent                                             |
+
+The accent is never used for running text or decoration. All text tokens reach a contrast
+of at least 4.5:1 on the backgrounds they are used on (measured on 2026-10-11).
+
+## Global rules
+
+- **Radius:** `rounded` is 2 px. `rounded-photo` (6 px) is for the portrait only,
+  `rounded-full` for the status dot only.
+- **Rules:** 1 px in `--line`.
+- **Links:** `--text`, underlined in `--line` with a 3 px offset, `--accent` on hover.
+  Add `no-underline` where the charter shows none (logotype, nav, buttons, breadcrumb).
+- **Focus:** a 2 px `--accent` outline, offset by 3 px, on every focusable element.
+- **Selection:** `--accent` background, `--on-accent` text.
+- **Motion:** colour transitions of 150 ms at most, removed under
+  `prefers-reduced-motion`. No entrance animation: nothing starts at `opacity: 0`.
+- **Layout:** `container-page` gives the 1040 px container with its fluid side padding.
 
 ## Light and dark mode
 
 `next-themes` sets the `dark` class on `<html>` (`attribute="class"`, system preference by
-default). [ModeToggle](../../components/ui/mode-toggle/mode-toggle.tsx) lets the visitor
-choose light, dark or system. The `dark` variant is declared in `globals.css` with
-`@custom-variant dark`.
+default) from a script that runs before paint, so there is no flash.
+[ThemeToggleComponent](../../components/theme-toggle/theme-toggle.tsx) is the square
+button of the header: one click forces the mode opposite to the one displayed.
 
-## Font
+## Fonts
 
-Geist, loaded with `next/font/google` in the
-[root layout](../../app/[locale]/layout.tsx) and exposed to Tailwind as `font-sans`. The
-font files are self-hosted, which the CSP requires
-([security.md](../architecture/security.md)).
+Geist and Geist Mono come from the `geist` package (`geist/font/sans`, `geist/font/mono`),
+loaded in the [root layout](../../app/[locale]/layout.tsx) and exposed as `font-sans` and
+`font-mono`. They are self-hosted, which the CSP requires.
 
-Geist is Valentin's choice. A design audit flagged it as the Next.js default and a
-serif-and-grotesque pairing was tried on 2026-10-10; he rejected it. Do not change the
-font without asking him.
+- **Geist:** everything that is read (titles, texts, buttons).
+- **Geist Mono:** everything that is scanned (breadcrumb, section titles, dates, labels,
+  key / value sheets, statuses, footer links), always in lowercase.
 
-The wordmark in the header is the name in Geist with a contrast of weights (first name
-bold, surname light) and a space between the two
-([WordmarkComponent](../../components/wordmark/wordmark.tsx)). Under 640 px it is shortened
-to the initials.
-
-## Animations
-
-Entrance animations are CSS only (`.appear` and `.appear-on-scroll` in `globals.css`,
-applied by [AppearComponent](../../components/appear/appear.tsx)).
-
-- The content is in the HTML and visible without JavaScript. An earlier version hid it
-  until a script ran, which left the top of the page blank for seconds.
-- The title and the portrait are never animated: they are the largest paint of the page,
-  and fading them in delays it.
-- Above the fold, secondary content (summary, buttons) fades in over 0.4 s, with a delay of
-  at most 0.1 s.
-- Below the fold, `onScroll` slides a block up as it enters the viewport, with CSS
-  scroll-driven animations. It only moves and never fades: a block resting at the edge of
-  the screen has to stay readable. Browsers without them show the block as is.
-- Nothing moves under `prefers-reduced-motion`.
-- The header and the footer are never animated.
+| Level      | Size                                          | Weight     | Line height | Tracking |
+| ---------- | --------------------------------------------- | ---------- | ----------- | -------- |
+| Page title | `clamp(40px, 6.4vw, 76px)` (resume: 38 to 64) | 600        | 1           | −0.04em  |
+| Pull quote | `clamp(22px, 2.3vw, 28px)`                    | 500        | 1.35        | −0.02em  |
+| Subtitle   | 19 to 21 px                                   | 600        | 1.3         | −0.01em  |
+| Lead       | 18 to 21 px                                   | 400        | 1.5         | 0        |
+| Text       | 15 to 16 px                                   | 400        | 1.6         | 0        |
+| Mono       | 12 to 13 px                                   | 400 to 500 | 1.6         | 0        |
 
 ## Typography of texts
 
-- Typographic apostrophes (`’`) in every visible text, in both languages.
-- An en dash between two dates: "June 2021 – September 2024".
-- No emoji in the interface or the texts. Icons come from `lucide-react`; language choices
-  are shown as codes (`EN`, `FR`), not flags.
+- Typographic apostrophes (`’`), never `'`.
+- In French, a non-breaking space before `: ; ! ?` and between a number and its unit. It
+  is written ` ` in the locale files so that it stays visible in the source.
+- An en dash in ranges (`2016–2018`), an arrow in changelog dates (`2024.10 → 2026.10`).
+- Real lists (`<ul>`, `<ol>`, `<dl>`), never bullets typed by hand.
+- No emoji. Glyphs replace icons: `●` live, `○` archived, `→` link or period, `+` item of
+  an achievement list, `~/` start of the breadcrumb.
 
 ## Portrait
 
-[public/avatar.jpg](../../public/avatar.jpg) is a 480 × 480 px JPEG (about 44 KB), cropped
-square on the face. It is displayed at 120 px by `next/image`, which serves an optimised
-version of a few kilobytes, and it loads eagerly with a high fetch priority because it is
-the largest element of the hero.
-
-To change it, replace the file with another square image. If the size changes, update
-`AVATAR_SIZE` in [site.ts](../../lib/constants/site.ts): it is used by the Open Graph tags
-and the structured data.
-
-## Class order
-
-Prettier sorts Tailwind classes with `prettier-plugin-tailwindcss`, including inside
-`cn()`, `clsx()` and `cva()` ([code-quality.md](../development/code-quality.md)).
+[public/avatar.jpg](../../public/avatar.jpg) is a 480 px square JPEG, displayed at 88 px
+with a 6 px radius by [AvatarComponent](../../components/avatar/avatar.tsx), preloaded
+because it is above the fold. It is a human marker, never a cover image: do not show it
+larger. To change it, replace the file with another square image.

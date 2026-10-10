@@ -45,15 +45,15 @@ Architecture is kept: routes `/[locale]/` and `/[locale]/resume/`, dictionaries 
 - [x] 8. Metadata: titles, descriptions, Open Graph image, favicon.
 - [x] 9. Data and structured data aligned with the new content (freelance since 2026-10,
       SOLO ended 2026-10, lead roles); dead code and unused packages removed.
-- [ ] 10. Documentation and `CLAUDE.md` rules rewritten for the new design.
+- [x] 10. Documentation and `CLAUDE.md` rules rewritten for the new design.
 - [x] 11. Verification: screenshots at 1280 and 375 px, light and dark, both pages;
       Lighthouse; acceptance criteria of the brief ticked below.
 
-## State after step 11
+## State: all steps done
 
-Everything is done except step 10: the pages of `docs/` and the rules of `CLAUDE.md` still
-describe the previous design and must be rewritten before merging. Then answer the open
-questions below with Valentin, and merge only after his validation.
+Nothing is left to build. Before merging into `main`: Valentin validates the result
+(`npm run dev` or the screenshots), answers the open questions below, and provides
+`public/cv.pdf`. The branch is local only: it has not been pushed.
 
 ## Decisions taken
 

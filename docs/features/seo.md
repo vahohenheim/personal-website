@@ -11,7 +11,11 @@ related_code:
   - ../../app/sitemap.ts
   - ../../app/robots.ts
   - ../../app/manifest.ts
-last_updated: 2026-10-10
+  - ../../app/[locale]/opengraph-image.tsx
+  - ../../app/icon.tsx
+  - ../../app/apple-icon.tsx
+  - ../../lib/helpers/og-fonts.ts
+last_updated: 2026-10-11
 ---
 
 # SEO and structured data
@@ -28,8 +32,8 @@ returns, for the current locale:
 - the translated title and description (`metadata.*`, `resume.metadata.*`,
   `legal.metadata.*`). Keep descriptions under 155 characters: search engines cut the rest;
 - the canonical URL and the `hreflang` alternates of every locale, plus `x-default`;
-- the Open Graph data (URL, site name, locale, portrait), and a Twitter card of type
-  `summary`, the one made for a square image.
+- the Open Graph data (URL, site name, locale) and a `summary_large_image` Twitter card.
+  The image itself comes from the file convention below.
 
 Every page exports it: `export const generateMetadata = () => getPageMetadata("home")`.
 
@@ -45,7 +49,19 @@ set once, in `SITE_URL` ([site.ts](../../lib/constants/site.ts)).
   `changeFrequency` also come from `PAGES`. A new page appears there by itself.
 - [app/robots.ts](../../app/robots.ts) allows everything, points to the sitemap and declares
   the canonical host. Nothing on the site is private, so there is no `Disallow` rule.
-- [app/manifest.ts](../../app/manifest.ts) declares the name and the icon.
+- [app/manifest.ts](../../app/manifest.ts) declares the name, the colours and the icons.
+
+## Sharing image and icons
+
+Both are generated at build time with `next/og`, in Geist, from the font files of the
+`geist` package ([og-fonts.ts](../../lib/helpers/og-fonts.ts)). Their look is set by the
+design charter.
+
+- [app/[locale]/opengraph-image.tsx](../../app/[locale]/opengraph-image.tsx): 1200 × 630,
+  day mode, one per locale: breadcrumb, title, status line.
+- [app/icon.tsx](../../app/icon.tsx) and [app/apple-icon.tsx](../../app/apple-icon.tsx): the
+  letter `v` in Geist Bold, night colours. `proxy.ts` lets `/icon` and `/apple-icon`
+  through; a new generated file at the root needs the same exception in its `matcher`.
 
 ## Structured data (JSON-LD)
 
@@ -73,8 +89,8 @@ flowchart LR
 The `Person` node carries:
 
 - **Summary (both pages):** name, portrait, job title, description, e-mail, city, `sameAs`
-  (GitHub, Dribbble, Behance, LinkedIn), `knowsAbout` (from `skills.ts`), `knowsLanguage`,
-  and `worksFor` with the current role.
+  (GitHub, Dribbble, Behance, LinkedIn), `knowsAbout` (from `skills.ts`) and
+  `knowsLanguage`. No `worksFor` while freelance: there is no current employer.
 - **Full (resume only):** `alumniOf` with every past role (name, start and end dates,
   organisation) and the schools, and `hasCredential` with the qualifications.
 

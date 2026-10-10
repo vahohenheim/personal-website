@@ -1,96 +1,93 @@
 ---
 title: Pages
-description: The pages of the site (home, resume, 404, error), what each one shows, and the checklist to add a page.
+description: The pages of the site (home, resume, legal notice, 404, error), what each one shows, and the checklist to add a page.
 related_code:
   - ../../app/[locale]/page.tsx
   - ../../app/[locale]/resume/page.tsx
-  - ../../app/[locale]/resume/_components/
   - ../../app/[locale]/legal/page.tsx
-  - ../../components/footer/footer.tsx
   - ../../app/[locale]/not-found.tsx
   - ../../app/[locale]/error.tsx
   - ../../app/[locale]/[...rest]/page.tsx
   - ../../lib/constants/pages.ts
-  - ../../components/header/header.constants.ts
-last_updated: 2026-10-10
+  - ../../locales/content/fr.ts
+  - ../../locales/content/en.ts
+last_updated: 2026-10-11
 ---
 
 # Pages
 
-**Summary.** The site has three public pages, each in English and French (home, resume,
-legal notice), plus a translated 404 page and a translated error page. Pages are declared in
+**Summary.** The site has three public pages, each in French and English (home, resume,
+legal notice), plus a translated 404 page and a translated error page. The home page and
+the resume follow the brief of the redesign ([brief.md](../redesign/brief.md)), whose
+French texts are reproduced word for word. Pages are declared in
 [lib/constants/pages.ts](../../lib/constants/pages.ts): metadata, the sitemap and the
-structured data are keyed by that list, so a page cannot be added without completing them.
+structured data are keyed by that list.
 
 ## Home: `/[locale]/`
 
 [app/[locale]/page.tsx](../../app/[locale]/page.tsx), top to bottom:
 
-1. **Cover**: portrait, name, title, summary with the main technologies, a contact button
-   (`mailto:`) and the social network links.
-2. **Companies**: logo strip of every company in `COMPANIES`, each linking to its site.
-3. **Expertises**: three columns, with a button to the resume. They are on the home page
-   only, so that the two pages do not repeat each other.
-4. **Personal projects**: cards with status badge; a card links to the project when it has
-   a `link`.
+1. **Hero:** portrait and breadcrumb, title, lead, the key / value sheet, two buttons
+   (contact by e-mail, resume).
+2. **What I bring:** a pull quote, then three cells separated by 1 px rules.
+3. **Changelog:** five entries, the current one dated in the accent colour, with a link
+   to the full changelog (the resume).
+4. **Projects** (`#projects`): three cards, then the archived ones as a line of links.
+5. **Contact** (`#contact`): the page footer, with the main contact link, the social
+   links as words, the copyright line and the link to the legal notice.
 
 ## Resume: `/[locale]/resume/`
 
 [app/[locale]/resume/page.tsx](../../app/[locale]/resume/page.tsx):
 
-1. **Cover**, left-aligned, with a button back to the home page.
-2. **Experiences**: one block per experience (logo, company, location, dates and duration),
-   then one entry per mission (roles, optional dates, description).
-3. **Qualifications** and **Languages**.
+1. **Header:** portrait and breadcrumb, title, a mono line (name, status, experience,
+   location), summary, two buttons (download `cv.pdf`, contact).
+2. **Stack:** a key / value sheet.
+3. **Changelog:** every position, with durations, successive roles, achievements, and the
+   earlier positions grouped in a last entry.
+4. **Education** and **languages**, side by side.
 
-The components used only here live in
-[resume/_components/](../../app/[locale]/resume/_components/).
+The download button points to `/cv.pdf`, which is expected in `public/`.
 
 ## Legal notice and privacy: `/[locale]/legal/`
 
 [app/[locale]/legal/page.tsx](../../app/[locale]/legal/page.tsx) renders the sections of
-`legal.sections` in the dictionaries: publisher, hosting, intellectual property, personal
-data, cookies and local storage, rights. The footer links to it on every page.
+`legal.sections` in the dictionaries. Both footers link to it.
 
 It exists because French law requires a site to name at least its hosting provider, and
-the GDPR requires visitors to be told how their data is handled. Keep it true: whenever a
-tool that touches visitor data is added, removed or changed (analytics, fonts or scripts
-from another origin, a form, a cookie), update the texts in both languages and bump
-`updatedAt` for `legal` in `PAGES`. The date shown on the page comes from there.
+the GDPR requires visitors to be told how their data is handled. Whenever a tool that
+touches visitor data is added, removed or changed, update the texts in both languages and
+bump `updatedAt` for `legal` in `PAGES`.
 
 ## 404 and error
 
 - **404.** An unknown URL under a locale reaches `[...rest]/page.tsx`, which calls
-  `notFound()`. Next.js renders [not-found.tsx](../../app/[locale]/not-found.tsx) inside
-  the layout, in the right language, with a 404 status and a `noindex` tag. A URL without
-  a locale is first redirected by `proxy.ts`.
-- **Error.** [error.tsx](../../app/[locale]/error.tsx) is a Client Component. It gets its
-  texts from a context set by the root layout ([i18n.md](../architecture/i18n.md)) and
-  falls back to English if the context is missing. It offers a "try again" button, wired to
-  the `retry` function Next.js passes to error boundaries, and a link to the home page.
+  `notFound()`: Next.js renders `not-found.tsx` inside the layout, in the right language,
+  with a 404 status.
+- **Error.** `error.tsx` is a Client Component. It gets its texts from a context set by
+  the root layout, and offers "try again" and a link home.
 
-## Header menu
+## Header and footers
 
-Entries are in [header.constants.ts](../../components/header/header.constants.ts), as paths
-without the locale and with a trailing slash. The menu is visible at every width: on a
-phone it is the only way to reach the other pages, so keep labels short (the French label
-of the resume is "cv") and check the header at 320 px when adding an entry. The `retrospectives` and `posts` entries are
-commented out there; their translations already exist.
+The header is rendered by the root layout. Its links are `cv` (the resume), `projets` and
+`contact` (the two anchors of the home page), the language link and the theme button.
+Each page renders its own footer: the home page ends with its contact section, the other
+pages with `SiteFooterComponent`.
 
 ## Adding a page
 
 Structured data is part of the job, not a follow-up.
 
-1. Create `app/[locale]/<name>/page.tsx` and add its texts to both locale files.
-2. Add the page to `PAGES` in `lib/constants/pages.ts` (path, `createdAt`, `updatedAt`,
-   sitemap `priority` and `changeFrequency`).
-   This feeds the canonical URL, the `hreflang` alternates and the sitemap.
-3. Add its title and description to `getPageTexts` in `lib/helpers/metadata.ts`, and export
-   `generateMetadata` from the page.
-4. Describe it in `PAGE_GRAPHS` in `lib/helpers/json-ld.ts`, then render
-   `<JsonLdComponent page="<name>" />` at the top of the page.
-5. Choose the schema.org type from what the page is ([seo.md](seo.md#rules)).
-6. Add it to the header menu if it belongs there.
+1. Create `app/[locale]/<name>/page.tsx`. Start `<main id="main" className="container-page">`
+   and end with `<SiteFooterComponent />`.
+2. Add its texts to both locale files, typed in `lib/models/content.ts` if they are
+   structured.
+3. Add the page to `PAGES` in `lib/constants/pages.ts` (path, dates, sitemap hints).
+4. Add its title and description to `getPageTexts` in `lib/helpers/metadata.ts`, and
+   export `generateMetadata` from the page.
+5. Describe it in `PAGE_GRAPHS` in `lib/helpers/json-ld.ts`, and render
+   `<JsonLdComponent page="<name>" />`.
+6. Add it to the header nav only if it belongs there, and check the header at 375 px.
 7. Document it on this page.
 
-Steps 3 and 4 are records keyed by `PageId`: the type check fails until both are filled in.
+Steps 4 and 5 are records keyed by `PageId`: the type check fails until both are filled in.

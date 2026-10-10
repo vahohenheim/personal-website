@@ -1,116 +1,84 @@
 ---
-title: Resume data and texts
-description: How the content of the site is split between structure and texts, linked by identifiers, and how to add an experience, a project, a qualification or a language.
+title: Content and resume data
+description: Where the texts of the pages live, how they are typed, and which data is kept apart for the structured data; how to update the changelog, the projects and the profile.
 related_code:
-  - ../../lib/models/
-  - ../../lib/constants/companies.ts
+  - ../../locales/content/fr.ts
+  - ../../locales/content/en.ts
+  - ../../locales/fr.ts
+  - ../../locales/en.ts
+  - ../../lib/models/content.ts
   - ../../lib/constants/experiences.ts
+  - ../../lib/constants/companies.ts
   - ../../lib/constants/qualifications.ts
   - ../../lib/constants/languages.ts
   - ../../lib/constants/personal-projects.ts
-  - ../../lib/constants/resume.ts
+  - ../../lib/constants/project-links.ts
   - ../../lib/constants/skills.ts
-  - ../../lib/constants/social-network.ts
   - ../../lib/constants/site.ts
-  - ../../locales/en.ts
-  - ../../locales/fr.ts
-  - ../../components/company-icon/company-icon.tsx
-  - ../../components/personal-project/personal-project.tsx
-  - ../../lib/utils/format-date-difference.ts
-last_updated: 2026-10-10
+last_updated: 2026-10-11
 ---
 
-# Resume data and texts
+# Content and resume data
 
-**Summary.** Content is split in two. Structure (dates, links, order) lives in
-[lib/constants/](../../lib/constants/); texts live in [locales/](../../locales/). The link
-between them is an identifier, defined by an enum in [lib/models/](../../lib/models/): the
-enum value is the dictionary key. Because constants and dictionaries are typed by these
-enums, a missing entry or text fails the type check.
+**Summary.** What the pages show is written, as finished text, in
+[locales/content/](../../locales/content/): one file per language, same structure, typed
+by [lib/models/content.ts](../../lib/models/content.ts). The facts needed by search engines
+(employers, dates, schools, skills) are kept as data in
+[lib/constants/](../../lib/constants/) and feed the structured data only. The two must
+tell the same story: a change to one usually means a change to the other.
 
-## The model
+## Page texts
 
-| Data              | Model                                   | Constant                                                                         | Dictionary keys                                                    |
-| ----------------- | --------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| Companies         | `CompanyId`                             | `COMPANIES` (`companies.ts`)                                                     | `companies.list.<id>.name`                                         |
-| Experiences       | `Experience`                            | `EXPERIENCES` (`experiences.ts`)                                                 | none, through the company and the missions                         |
-| Missions          | `MissionId`                             | `MISSIONS` (`experiences.ts`)                                                    | `experiences.roles.<id>.content`                                   |
-| Roles             | `RoleId`                                | inside each mission                                                              | `roles.<id>`                                                       |
-| Qualifications    | `QualificationId`, `QualificationLevel` | `QUALIFICATIONS` (`qualifications.ts`)                                           | `qualifications.list.<id>.label`, `qualifications.level.<id>.name` |
-| Schools           | `SchoolId`                              | `SCHOOLS` (`qualifications.ts`)                                                  | `schools.list.<id>.name`                                           |
-| Languages         | `LanguageId`, `LanguageLevel`           | `USER_LANGUAGES` (`languages.ts`)                                                | `languages.list.<id>.name`, `languages.level.<id>.name`            |
-| Expertises        | `ExpertiseId`                           | `EXPERTISES` (`resume.ts`)                                                       | `expertises.list.<id>.{label,title,text}`                          |
-| Personal projects | `PersonalProjectId`                     | `PERSONAL_PROJECTS` (`personal-projects.ts`)                                     | `personal-projects.list.<id>.{title,description}`                  |
-| Social networks   | `SocialNetworkType`                     | `SOCIAL_NETWORKS` (`social-network.ts`), with the `label` read by screen readers | `a11y.email` for the mail link                                     |
-| Skills            | none                                    | `SKILLS` (`skills.ts`)                                                           | none, used by the structured data only                             |
+`locales/content/fr.ts` and `en.ts` export `home` and `resume`. The French file is the
+reference: it reproduces the redesign brief word for word. The English file mirrors it,
+entry for entry.
 
-Texts are read by indexing the dictionary with the identifier:
+| Content                                              | Type               | Where it shows     |
+| ---------------------------------------------------- | ------------------ | ------------------ |
+| `home.card`, `resume.stack.rows`                     | `ProfileRow[]`     | key / value sheets |
+| `home.changelog.entries`, `resume.changelog.entries` | `ChangelogEntry[]` | changelogs         |
+| `home.projects.items`                                | `ProjectContent[]` | project cards      |
+| `resume.education.rows`, `resume.languages.rows`     | `ProfileRow[]`     | dated lists        |
 
-```tsx
-const { companies } = await getDictionary();
-companies.list[experience.company.id].name;
-```
+The other dictionary keys (`metadata`, `a11y`, `legal`, `not-found`, `error`…) are in
+`locales/fr.ts` and `locales/en.ts`. `en.ts` defines the `Dictionary` type and `fr.ts` is
+typed with it, so a missing key fails the type check.
 
-## Rules
+Writing rules are in [styling.md](../frontend/styling.md#typography-of-texts): typographic
+apostrophes, non-breaking spaces written ` `, en dashes, no emoji.
 
-- Never hardcode a visible text in a component: add it to both locale files.
-- Reference data through the enum (`MISSIONS[MissionId.EP_LEAD_FRONT_END]`), not the string.
-- `EXPERIENCES` and `PERSONAL_PROJECTS` are displayed in array order, most recent first.
-- Dates are `IsoDate` values (`YYYY-MM-DD`). `endDate: "today"` marks the current position.
-- A mission shows its own dates only when it has both `startDate` and `endDate`. Use them
-  when one experience holds several missions.
-- The domain, the site name and the portrait come from `lib/constants/site.ts`. Do not
-  write them anywhere else.
-- The headline title ("senior front-end engineer") is the same in the hero, the resume
-  title, the meta tags, `person.jobTitle` and the role of the current position. Change
-  them together.
-- Texts use typographic apostrophes (`’`), no emoji, and an en dash in date ranges
-  ([styling.md](../frontend/styling.md#typography-of-texts)).
-- The same data feeds the structured data of the pages ([seo.md](../features/seo.md)), so
-  a change here is also a change to what search engines read.
+## Positioning
 
-## Durations
+- One title everywhere: "Ingénieur front-end senior" / "Senior front-end engineer".
+- "Freelance" is a status, shown apart with the accent dot, never merged into the title.
+- No objective stated ("Engineering Manager"), no level labels ("expert", "confirmed"),
+  no framework version numbers in the hero.
 
-[format-date-difference.ts](../../lib/utils/format-date-difference.ts) turns two dates into
-"2 years", "8 months" or "a year and 6 months", rounded to the nearest month, in both
-languages. It does not use the `humanize()` helper of `dayjs`, which rounds 11 months to
-"a year".
+## Data for the structured data
 
-## Adding an experience
+| Data                       | Constant                                          | Dictionary keys used                     |
+| -------------------------- | ------------------------------------------------- | ---------------------------------------- |
+| Employers and roles        | `EXPERIENCES`, `MISSIONS`, `COMPANIES`            | `companies.list.<id>.name`, `roles.<id>` |
+| Schools and qualifications | `SCHOOLS`, `QUALIFICATIONS`                       | `schools.*`, `qualifications.*`          |
+| Languages                  | `USER_LANGUAGES`                                  | `languages.list.<id>.name`               |
+| Skills                     | `SKILLS`                                          | none                                     |
+| Profiles                   | `SOCIAL_NETWORKS`                                 | none                                     |
+| Project URLs               | `PERSONAL_PROJECTS`, read through `PROJECT_LINKS` | none                                     |
 
-1. `lib/models/company.ts`: a value in `CompanyId`. `lib/constants/companies.ts`: an entry
-   in `COMPANIES`.
-2. `components/icons/companies/<id>.tsx`: the logo as an SVG component (`IconProps` props,
-   colour through `className` and `fill`). Register it in `COMPANY_ICONS` in
-   `company-icon.tsx`.
-3. `lib/models/mission.ts`: a value in `MissionId`. `lib/constants/experiences.ts`: an
-   entry in `MISSIONS`, then in `EXPERIENCES`.
-4. Both locale files: `companies.list.<id>.name` and
-   `experiences.roles.<mission-id>.content`.
-5. If it brings new skills, add them to `lib/constants/skills.ts`.
+Every experience has an end date: there is no current employer while freelance, so the
+`Person` node carries no `worksFor`.
 
-The company also appears in the logo strip of the home page (`Object.values(COMPANIES)`,
-in declaration order), and as an employer in the structured data.
+## Updating
 
-## Adding a personal project
+- **A new assignment or position:** add an entry at the top of both changelogs (home and
+  resume) in both languages; mark it `current` and remove the flag from the previous one.
+  If it is an employment, add it to `EXPERIENCES` too.
+- **A project:** add it to `home.projects.items` (or `moreItems`) in both languages, and
+  its URL to `PERSONAL_PROJECTS` under the same `id`. A project without a URL shows its
+  name as plain text.
+- **The profile sheet or the stack:** edit the rows in both languages; keep `SKILLS` in
+  line.
+- **Any visible change:** bump `updatedAt` of the page in
+  [lib/constants/pages.ts](../../lib/constants/pages.ts).
 
-1. `lib/models/personal-project.ts`: a value in `PersonalProjectId`.
-2. `lib/constants/personal-projects.ts`: an entry with `status` and, if the project is
-   public, `link`. A project without a link is displayed but not clickable.
-3. `components/personal-project/personal-project.tsx`: its `lucide-react` icon in
-   `PROJECT_ICONS`.
-4. Both locale files: `personal-projects.list.<id>.title` and `.description`.
-
-## Adding a qualification or a language
-
-Same pattern: a value in the enum, an entry in the constant, the texts in both locale
-files. A new school also needs an entry in `SCHOOLS`.
-
-Language levels are `native`, `professional` and `notion` (`LanguageLevel`), each with its
-label under `languages.level` in the locale files.
-
-## Updating a page's content
-
-When the visible content of a page changes, bump its `updatedAt` in
-[lib/constants/pages.ts](../../lib/constants/pages.ts). It feeds the sitemap and the
-`dateModified` of the structured data.
+The domain, the site name and the portrait path come from `lib/constants/site.ts` only.

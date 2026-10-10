@@ -8,7 +8,7 @@ related_code:
   - ../../.nvmrc
   - ../../AGENTS.md
   - ../../.gitignore
-last_updated: 2026-10-10
+last_updated: 2026-10-11
 ---
 
 # Runbook
@@ -98,9 +98,9 @@ goes away.
   browser). No fixed release exists yet.
 - The machine used on 2026-10-10 still runs Node 20.15.1: `npm install` prints an engine
   warning there until Node is upgraded (`nvm install`).
-- Under `public/`, only `avatar.jpg` is referenced by the code (logos are React components in
-  `components/icons/`). The other files may still be linked from outside the site, so check
-  before deleting.
+- Under `public/`, only `avatar.jpg` and `.well-known/security.txt` are used. The old logo
+  and icon files may still be linked from outside the site, so check before deleting.
+- `public/cv.pdf` does not exist yet, although the resume links to it.
 - The `bloom` personal project has no link: `github.com/vahohenheim/bloom` returns a 404.
 
 ## Troubleshooting

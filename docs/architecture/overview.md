@@ -8,7 +8,7 @@ related_code:
   - ../../proxy.ts
   - ../../next.config.ts
   - ../../package.json
-last_updated: 2026-10-10
+last_updated: 2026-10-11
 ---
 
 # Architecture overview
@@ -32,16 +32,16 @@ flowchart LR
 
 ## Stack
 
-| Layer        | Choice                                                                                            |
-| ------------ | ------------------------------------------------------------------------------------------------- |
-| Framework    | Next.js 16 (App Router), React 19                                                                 |
-| Language     | TypeScript 6, strict                                                                              |
-| Styling      | Tailwind CSS v4, shadcn/ui on Radix primitives                                                    |
-| Translations | Plain dictionaries, no library ([i18n.md](i18n.md))                                               |
-| Dates        | `dayjs`                                                                                           |
-| Animation    | CSS only: entrance on load and reveal on scroll ([styling.md](../frontend/styling.md#animations)) |
-| Analytics    | Vercel Analytics                                                                                  |
-| Hosting      | Vercel, deployed on every push to `main` ([runbook](../operations/runbook.md))                    |
+| Layer        | Choice                                                                                                  |
+| ------------ | ------------------------------------------------------------------------------------------------------- |
+| Framework    | Next.js 16 (App Router), React 19                                                                       |
+| Language     | TypeScript 6, strict                                                                                    |
+| Styling      | Tailwind CSS v4 with the Eucalyptus tokens of the design charter ([styling.md](../frontend/styling.md)) |
+| Translations | Plain dictionaries, no library ([i18n.md](i18n.md))                                                     |
+| Dates        | `dayjs`                                                                                                 |
+| Fonts        | Geist and Geist Mono, from the `geist` package                                                          |
+| Analytics    | Vercel Analytics                                                                                        |
+| Hosting      | Vercel, deployed on every push to `main` ([runbook](../operations/runbook.md))                          |
 
 ## Folder structure
 
@@ -49,32 +49,31 @@ flowchart LR
 
 ```
 app/
-  globals.css               Tailwind v4 + theme
+  globals.css               Tailwind v4 + the Eucalyptus tokens and global rules
+  icon.tsx, apple-icon.tsx  Generated icons (the letter v)
   manifest.ts, robots.ts, sitemap.ts
   [locale]/                 Root segment: every route is under a locale
-    layout.tsx              Root layout: <html>, font, theme, header, footer, analytics
-    page.tsx                Home
+    layout.tsx              Root layout: <html>, fonts, theme, header, analytics
+    page.tsx                Home (ends with its contact footer)
+    opengraph-image.tsx     Sharing image, one per locale
     error.tsx               Error boundary (Client Component), translated
     not-found.tsx           Translated 404, rendered inside the layout
     [...rest]/page.tsx      Catch-all that sends unknown URLs to not-found.tsx
-    resume/
-      page.tsx              Resume
-      _components/          Resume-only components (private folder, never routed)
+    resume/page.tsx         Resume
     legal/page.tsx          Legal notice and privacy
-components/                 Components shared across pages
-  ui/                       shadcn/ui components
-  icons/                    SVGs as React components
-  json-ld/                  The structured data tag of a page
+components/                 One folder per component (header, avatar, breadcrumb,
+                            profile-card, changelog-entry, project-card…)
 lib/
   i18n/                     Locales, getLocale, getDictionary
-  models/                   Types and enums (enums are used as identifiers)
-  constants/                Site data, typed by models/
-  helpers/                  metadata.ts and json-ld.ts
-  utils/                    cn.ts, format-date-difference.ts
-locales/                    en.ts, fr.ts: every visible text
+  models/                   Types: page contents (content.ts) and resume data
+  constants/                Site data used by the structured data, page registry
+  helpers/                  metadata.ts, json-ld.ts, og-fonts.ts
+  utils/                    cn.ts
+locales/                    en.ts, fr.ts: dictionaries
+  content/                  en.ts, fr.ts: texts of the home page and the resume
 proxy.ts                    Locale redirect
-public/                     Images
-docs/                       This documentation
+public/                     Portrait, security.txt
+docs/                       This documentation; redesign/ holds the brief and the charter
 ```
 
 Import alias: `@/*` points to the repository root. A relative import may reach a sibling
@@ -87,7 +86,8 @@ folder (`../appear/appear`); anything further goes through the alias.
 - `generateStaticParams` in the root layout lists the locales, so `/en/`, `/fr/`,
   `/en/resume/` and `/fr/resume/` are prerendered.
 - Almost every component is a Server Component. Client Components exist only for
-  interactivity: the language and theme toggles, the theme provider and the error boundary.
+  what needs the browser: the header nav (current path), the theme button, the theme
+  provider and the error boundary.
 - The catch-all route `[...rest]` is the only dynamic route. It calls `notFound()`, which
   renders `not-found.tsx` inside the layout, in the right language, with a 404 status.
 - Durations on the resume ("2 years") are computed at build time. They refresh on the next

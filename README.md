@@ -3,7 +3,8 @@
 Personal website of Valentin Bourreau, senior front-end engineer: a home page, an online
 resume and a legal notice, in English and French. Live at [valentinbourreau.com](https://www.valentinbourreau.com).
 
-Built with Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4 and shadcn/ui.
+Built with Next.js 16 (App Router), React 19, TypeScript and Tailwind CSS v4, on a design
+charter of its own ([docs/redesign/](docs/redesign/charte-graphique-valentinbourreau.md)).
 Every page is generated at build time: no database, no form, no environment variable.
 
 ## Getting started
@@ -31,22 +32,23 @@ Open [http://localhost:3000](http://localhost:3000): the root URL redirects to `
 
 ## Where things are
 
-| Folder                          | Content                                                  | Documentation                                                                                          |
-| ------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `app/`                          | Routing only: pages, layout, 404, error, sitemap, robots | [features/pages.md](docs/features/pages.md), [architecture/overview.md](docs/architecture/overview.md) |
-| `components/`                   | Shared components, `ui/` (shadcn), `icons/`              | [frontend/components.md](docs/frontend/components.md), [frontend/styling.md](docs/frontend/styling.md) |
-| `lib/constants/`, `lib/models/` | Resume data: experiences, projects, qualifications       | [content/resume-data.md](docs/content/resume-data.md)                                                  |
-| `locales/`                      | Every visible text, in English and French                | [architecture/i18n.md](docs/architecture/i18n.md)                                                      |
-| `lib/i18n/`, `proxy.ts`         | Locales, dictionaries, language redirect                 | [architecture/i18n.md](docs/architecture/i18n.md)                                                      |
-| `lib/helpers/`                  | Meta tags and structured data (JSON-LD)                  | [features/seo.md](docs/features/seo.md)                                                                |
-| `next.config.ts`                | Security headers and CSP                                 | [architecture/security.md](docs/architecture/security.md)                                              |
-| `docs/`                         | Documentation                                            | [docs/README.md](docs/README.md)                                                                       |
+| Folder                          | Content                                                        | Documentation                                                                                          |
+| ------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `app/`                          | Routing only: pages, layout, 404, error, sitemap, robots       | [features/pages.md](docs/features/pages.md), [architecture/overview.md](docs/architecture/overview.md) |
+| `components/`                   | Header, portrait, profile card, changelog entry, project card… | [frontend/components.md](docs/frontend/components.md), [frontend/styling.md](docs/frontend/styling.md) |
+| `locales/content/`              | Texts of the home page and the resume, in French and English   | [content/resume-data.md](docs/content/resume-data.md)                                                  |
+| `lib/constants/`, `lib/models/` | Resume data used by the structured data, content types         | [content/resume-data.md](docs/content/resume-data.md)                                                  |
+| `locales/`                      | Dictionaries: metadata, labels, legal texts                    | [architecture/i18n.md](docs/architecture/i18n.md)                                                      |
+| `lib/i18n/`, `proxy.ts`         | Locales, dictionaries, language redirect                       | [architecture/i18n.md](docs/architecture/i18n.md)                                                      |
+| `lib/helpers/`                  | Meta tags and structured data (JSON-LD)                        | [features/seo.md](docs/features/seo.md)                                                                |
+| `next.config.ts`                | Security headers and CSP                                       | [architecture/security.md](docs/architecture/security.md)                                              |
+| `docs/`                         | Documentation                                                  | [docs/README.md](docs/README.md)                                                                       |
 
 ## Changing the site
 
-- **A text**: edit [locales/en.ts](locales/en.ts) and [locales/fr.ts](locales/fr.ts). Both
-  files must keep the same keys.
-- **An experience, a project, a qualification**: follow the recipes in
+- **A text of the home page or the resume**: edit [locales/content/fr.ts](locales/content/fr.ts)
+  and [locales/content/en.ts](locales/content/en.ts). Both files keep the same structure.
+- **A new position, a project, the profile sheet**: follow the recipes in
   [content/resume-data.md](docs/content/resume-data.md).
 - **A new page**: follow the checklist in [features/pages.md](docs/features/pages.md#adding-a-page).
   It includes the meta tags and the structured data.

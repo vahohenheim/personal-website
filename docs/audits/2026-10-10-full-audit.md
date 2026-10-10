@@ -6,12 +6,9 @@ related_code:
   - ../../proxy.ts
   - ../../app/globals.css
   - ../../app/[locale]/layout.tsx
-  - ../../components/companies/companies.tsx
-  - ../../components/social-network/social-network.tsx
-  - ../../components/appear/appear.tsx
   - ../../lib/helpers/metadata.ts
   - ../../package.json
-last_updated: 2026-10-10
+last_updated: 2026-10-11
 ---
 
 # Full audit — 2026-10-10
@@ -194,6 +191,7 @@ activity.
 | 2026-10-10 | **T1** fixed: GitHub Actions workflow running `check` and `build`. **T2** fixed: Node 24 in `.nvmrc`, `engines` at 22 or later.                                                                                                                                                                                   |
 | 2026-10-10 | **T4, T5, T6, T9** fixed: fixed width removed, heading typed as text with `appearance` spelled correctly, "try again" on the error page, licence statement in the README.                                                                                                                                         |
 | 2026-10-10 | **Still open.** In the DNS, by the owner: S3 (DMARC), S4 (CAA). To decide: S6 (employer tooling named in the resume). In the code: P4 (logos sent twice), S2 (`unsafe-inline`), T3 (tests), O3 (icons), T7 (unused files in `public/`). To run: O4 (Rich Results Test), O5 (Search Console), P6 (Speed Insights). |
+| 2026-10-11 | Redesign (branch `redesign/changelog`): **P4** closed, the logo strip is gone and the home HTML drops from 266 KB to about 55 KB; **O2** and **O3** closed, with a 1200 × 630 sharing image and generated icons; **P1, P2** no longer apply, there is no entrance animation at all.                               |
 
 ## Sources
 
