@@ -98,6 +98,9 @@ in declaration order), and as an employer in the structured data.
 Same pattern: a value in the enum, an entry in the constant, the texts in both locale
 files. A new school also needs an entry in `SCHOOLS`.
 
+Language levels are `native`, `professional` and `notion` (`LanguageLevel`), each with its
+label under `languages.level` in the locale files.
+
 ## Updating a page's content
 
 When the visible content of a page changes, bump its `updatedAt` in

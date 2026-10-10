@@ -225,8 +225,8 @@ const fr: Dictionary = {
       native: {
         name: "natif",
       },
-      progression: {
-        name: "en progression",
+      professional: {
+        name: "professionnel",
       },
       notion: {
         name: "notions",

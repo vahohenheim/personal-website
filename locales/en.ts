@@ -221,8 +221,8 @@ const en = {
       native: {
         name: "native",
       },
-      progression: {
-        name: "in progress",
+      professional: {
+        name: "professional",
       },
       notion: {
         name: "basics",

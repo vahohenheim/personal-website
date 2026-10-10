@@ -10,7 +10,7 @@ export type Language = {
 
 export enum LanguageLevel {
   NATIVE = "native",
-  PROGRESSION = "progression",
+  PROFESSIONAL = "professional",
   NOTION = "notion",
 }
 

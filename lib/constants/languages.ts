@@ -22,7 +22,7 @@ export const USER_LANGUAGES: LanguageUser[] = [
   },
   {
     id: LanguageId.EN,
-    level: LanguageLevel.PROGRESSION,
+    level: LanguageLevel.PROFESSIONAL,
   },
   {
     id: LanguageId.ES,
