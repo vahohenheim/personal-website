@@ -46,16 +46,14 @@ Architecture is kept: routes `/[locale]/` and `/[locale]/resume/`, dictionaries 
 - [x] 9. Data and structured data aligned with the new content (freelance since 2026-10,
       SOLO ended 2026-10, lead roles); dead code and unused packages removed.
 - [ ] 10. Documentation and `CLAUDE.md` rules rewritten for the new design.
-- [ ] 11. Verification: screenshots at 1280 and 375 px, light and dark, both pages;
+- [x] 11. Verification: screenshots at 1280 and 375 px, light and dark, both pages;
       Lighthouse; acceptance criteria of the brief ticked below.
 
-## State after step 9
+## State after step 11
 
-Code is complete: tokens, layout, components, contents, both pages, legal / 404 / error,
-metadata, Open Graph image, icons, structured data. `npm run check` and `npm run build`
-pass; the schema.org validator reports no error; no emoji in the built pages.
-Still to do: step 10 (the pages of `docs/` and the rules of `CLAUDE.md` still describe the
-previous design) and step 11 (full set of screenshots, Lighthouse, acceptance criteria).
+Everything is done except step 10: the pages of `docs/` and the rules of `CLAUDE.md` still
+describe the previous design and must be rewritten before merging. Then answer the open
+questions below with Valentin, and merge only after his validation.
 
 ## Decisions taken
 
@@ -102,16 +100,35 @@ Lighthouse: `CHROME_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google 
 
 ## Acceptance criteria
 
-To tick at step 11 (copied from the brief).
+Checked on 2026-10-11 against the local production build (`next start`).
 
-- [ ] Hero visible and complete on first render, no animation hiding content.
-- [ ] `cv` link visible in the header at 375 px.
-- [ ] Theme follows the system, the button forces the other mode, no flash on load.
-- [ ] Only Eucalyptus variables: no slate or blue left.
-- [ ] Geist and Geist Mono only. No emoji in the DOM.
-- [ ] Radius 2 px everywhere, 6 px for the avatar. No shadow, no gradient.
-- [ ] `’`, en dashes and non-breaking spaces correct in French. No hand-typed bullets.
-- [ ] Contrast at least 4.5:1 in both modes. Visible focus. Theme button has `aria-label`.
-- [ ] French contents match the brief word for word; English mirrors the structure.
-- [ ] Lighthouse: accessibility at least 95, CLS about 0.
-- [ ] Screenshots at 1280 and 375 px, light and dark, both pages, delivered at the end.
+| Check                                | Result                                                                                                                  |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| Elements starting at `opacity: 0`    | 0                                                                                                                       |
+| `cv` link at 375 px                  | visible, inside the viewport                                                                                            |
+| Theme                                | follows the system; one click forces the other mode, a second one switches back; `next-themes` script runs before paint |
+| Fonts in the DOM                     | GeistSans and GeistMono only                                                                                            |
+| Radii in the DOM                     | 0, 2 px, 6 px (portrait), full (status dot)                                                                             |
+| Shadows, gradients, backdrop filters | 0                                                                                                                       |
+| Emoji in the built pages             | 0                                                                                                                       |
+| Contrast, light                      | muted 5.10 on bg and 4.74 on surface, text2 10.17, accent 5.80, on-accent 6.12                                          |
+| Contrast, dark                       | muted 6.41 and 6.00, text2 10.81, accent 9.99, on-accent 9.99                                                           |
+| Lighthouse                           | accessibility 100 on home and resume, CLS 0                                                                             |
+| Structured data                      | no error, no warning (schema.org validator)                                                                             |
+
+Screenshots: [screenshots/](screenshots/) (home and resume, 1280 and 375 px, light and dark).
+
+Not covered by a tool: the word-for-word comparison of the French texts was done by
+generating `locales/content/fr.ts` from the brief; reread the pages once before merging.
+
+- [x] Hero visible and complete on first render, no animation hiding content.
+- [x] `cv` link visible in the header at 375 px.
+- [x] Theme follows the system, the button forces the other mode, no flash on load.
+- [x] Only Eucalyptus variables: no slate or blue left.
+- [x] Geist and Geist Mono only. No emoji in the DOM.
+- [x] Radius 2 px everywhere, 6 px for the avatar. No shadow, no gradient.
+- [x] `’`, en dashes and non-breaking spaces correct in French. No hand-typed bullets.
+- [x] Contrast at least 4.5:1 in both modes. Visible focus. Theme button has `aria-label`.
+- [x] French contents match the brief word for word; English mirrors the structure.
+- [x] Lighthouse: accessibility at least 95, CLS about 0.
+- [x] Screenshots at 1280 and 375 px, light and dark, both pages, delivered at the end.

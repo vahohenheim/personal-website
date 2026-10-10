@@ -268,14 +268,14 @@ Traduis tous les contenus ci-dessus dans les fichiers EN existants, avec la mêm
 
 ## Critères d'acceptation
 
-- [ ] Le hero est visible et complet au premier rendu, sans animation qui masque le contenu.
-- [ ] Le lien `cv` est visible dans le header à 375 px.
-- [ ] Le thème suit le système, le bouton force l'autre mode, et il n'y a pas de flash au chargement.
-- [ ] Seules les variables Eucalyptus sont utilisées : plus aucune couleur slate ni bleue.
-- [ ] Geist et Geist Mono uniquement. Aucun émoji dans le DOM.
-- [ ] Rayon 2 px partout, 6 px pour l'avatar. Aucune ombre ni dégradé.
-- [ ] Apostrophes `’`, demi-cadratins et espaces insécables corrects en FR. Aucune puce tapée à la main.
-- [ ] Contraste ≥ 4,5:1 dans les deux modes. Focus visibles. Bouton thème avec `aria-label`.
-- [ ] Les contenus FR correspondent mot pour mot à ce fichier, et EN est traduit avec la même structure.
-- [ ] Lighthouse : accessibilité ≥ 95, CLS ≈ 0.
-- [ ] Captures 1 280 px et 375 px, clair et sombre, des deux pages, fournies à la fin.
+- [x] Le hero est visible et complet au premier rendu, sans animation qui masque le contenu.
+- [x] Le lien `cv` est visible dans le header à 375 px.
+- [x] Le thème suit le système, le bouton force l'autre mode, et il n'y a pas de flash au chargement.
+- [x] Seules les variables Eucalyptus sont utilisées : plus aucune couleur slate ni bleue.
+- [x] Geist et Geist Mono uniquement. Aucun émoji dans le DOM.
+- [x] Rayon 2 px partout, 6 px pour l'avatar. Aucune ombre ni dégradé.
+- [x] Apostrophes `’`, demi-cadratins et espaces insécables corrects en FR. Aucune puce tapée à la main.
+- [x] Contraste ≥ 4,5:1 dans les deux modes. Focus visibles. Bouton thème avec `aria-label`.
+- [x] Les contenus FR correspondent mot pour mot à ce fichier, et EN est traduit avec la même structure.
+- [x] Lighthouse : accessibilité ≥ 95, CLS ≈ 0.
+- [x] Captures 1 280 px et 375 px, clair et sombre, des deux pages, fournies à la fin.

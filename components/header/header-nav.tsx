@@ -59,7 +59,8 @@ const HeaderNavComponent = ({
             href={otherLocalePath}
             hrefLang={otherLocale}
             lang={otherLocale}
-            aria-label={otherLocaleLabel}
+            // The accessible name keeps the visible text, then says where the link goes.
+            aria-label={`fr · en, ${otherLocaleLabel}`}
             className={cn(linkClass, "text-muted")}
             onClick={() => {
               saveLocale(otherLocale);
