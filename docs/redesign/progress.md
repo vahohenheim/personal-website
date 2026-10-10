@@ -43,21 +43,19 @@ Architecture is kept: routes `/[locale]/` and `/[locale]/resume/`, dictionaries 
 - [x] 6. Resume page.
 - [x] 7. Legal, 404 and error pages restyled with the new tokens and layout.
 - [x] 8. Metadata: titles, descriptions, Open Graph image, favicon.
-- [ ] 9. Data and structured data aligned with the new content (freelance since 2026-10,
+- [x] 9. Data and structured data aligned with the new content (freelance since 2026-10,
       SOLO ended 2026-10, lead roles); dead code and unused packages removed.
 - [ ] 10. Documentation and `CLAUDE.md` rules rewritten for the new design.
 - [ ] 11. Verification: screenshots at 1280 and 375 px, light and dark, both pages;
       Lighthouse; acceptance criteria of the brief ticked below.
 
-## State after step 8
+## State after step 9
 
-Home and resume were checked on screenshots (1280 px light, 375 px dark, resume 1280 px
-dark and 375 px light): they match the brief. The Open Graph image and the icons render.
-Still to do: steps 9, 10 and 11. Known leftovers for step 9: the old dictionary keys
-(`personal-projects`, `experiences`, `companies`…) and `lib/constants/` are now used by the
-structured data only and still describe SOLO as the current employer; `lucide-react`,
-`class-variance-authority`, `@radix-ui/react-slot`, `@radix-ui/react-icons` and
-`lib/utils/format-date-difference.ts` are probably unused.
+Code is complete: tokens, layout, components, contents, both pages, legal / 404 / error,
+metadata, Open Graph image, icons, structured data. `npm run check` and `npm run build`
+pass; the schema.org validator reports no error; no emoji in the built pages.
+Still to do: step 10 (the pages of `docs/` and the rules of `CLAUDE.md` still describe the
+previous design) and step 11 (full set of screenshots, Lighthouse, acceptance criteria).
 
 ## Decisions taken
 

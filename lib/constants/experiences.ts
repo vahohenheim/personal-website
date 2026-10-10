@@ -5,9 +5,17 @@ import { RoleId } from "@/lib/models/role";
 import { COMPANIES } from "./companies";
 
 export const MISSIONS: Record<MissionId, Mission> = {
+  [MissionId.SOLO_LEAD_FRONT_END]: {
+    id: MissionId.SOLO_LEAD_FRONT_END,
+    roles: [RoleId.FRONT_END_LEAD],
+    startDate: "2025-04-01",
+    endDate: "2026-10-01",
+  },
   [MissionId.SOLO_ENGINEER_FRONT_END]: {
     id: MissionId.SOLO_ENGINEER_FRONT_END,
-    roles: [RoleId.SENIOR_FRONT_END_ENGINEER],
+    roles: [RoleId.FRONT_END_ENGINEER],
+    startDate: "2024-10-21",
+    endDate: "2025-04-01",
   },
   [MissionId.EP_LEAD_FRONT_END]: {
     id: MissionId.EP_LEAD_FRONT_END,
@@ -47,12 +55,17 @@ export const MISSIONS: Record<MissionId, Mission> = {
   },
 };
 
+// Used by the structured data only: the texts shown on the pages are in locales/content/.
+// Freelance since 2026-10: no current employer, so every experience below has an end date.
 export const EXPERIENCES: Experience[] = [
   {
     company: COMPANIES[CompanyId.SOLO],
     startDate: "2024-10-21",
-    endDate: "today",
-    missions: [MISSIONS[MissionId.SOLO_ENGINEER_FRONT_END]],
+    endDate: "2026-10-01",
+    missions: [
+      MISSIONS[MissionId.SOLO_LEAD_FRONT_END],
+      MISSIONS[MissionId.SOLO_ENGINEER_FRONT_END],
+    ],
   },
   {
     company: COMPANIES[CompanyId.EP],

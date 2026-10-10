@@ -15,7 +15,7 @@ import { EXPERIENCES } from "@/lib/constants/experiences";
 import { USER_LANGUAGES } from "@/lib/constants/languages";
 import { MAIL_ADDRESS } from "@/lib/constants/mail-address";
 import { PAGES, type PageId } from "@/lib/constants/pages";
-import { PERSONAL_PROJECTS } from "@/lib/constants/personal-projects";
+import { PROJECT_LINKS } from "@/lib/constants/project-links";
 import { QUALIFICATIONS, SCHOOLS } from "@/lib/constants/qualifications";
 import { AVATAR_SIZE, AVATAR_URL, SITE_NAME, SITE_URL } from "@/lib/constants/site";
 import { SKILLS } from "@/lib/constants/skills";
@@ -99,13 +99,16 @@ const getPerson = (detail: "summary" | "full", context: Context): Person => {
       name: dictionary.languages.list[language.id].name,
       alternateName: language.id,
     })),
-    worksFor: current.flatMap((experience) =>
-      getRoles(experience, context).map(({ organization, ...role }) => ({
-        "@type": "EmployeeRole" as const,
-        ...role,
-        worksFor: organization,
-      })),
-    ),
+    // Omitted while freelance: there is no current employer.
+    ...(current.length > 0 && {
+      worksFor: current.flatMap((experience) =>
+        getRoles(experience, context).map(({ organization, ...role }) => ({
+          "@type": "EmployeeRole" as const,
+          ...role,
+          worksFor: organization,
+        })),
+      ),
+    }),
     ...(detail === "full" && {
       alumniOf: [
         ...past.flatMap((experience) =>
@@ -190,25 +193,31 @@ const getBreadcrumb = (
 });
 
 const getPersonalProjects = ({ locale, dictionary }: Context): ItemList => {
-  const texts = dictionary["personal-projects"];
+  const { projects } = dictionary.home;
+  // The cards first, then the projects only listed by name: same order as on the page.
+  const items = [
+    ...projects.items.map(({ id, name, text }) => ({ id, name, text })),
+    ...projects.moreItems.map(({ id, name }) => ({ id, name, text: undefined })),
+  ];
 
   return {
     "@type": "ItemList",
     "@id": `${getPageUrl("home", locale)}#projects`,
-    name: texts.title,
-    itemListElement: PERSONAL_PROJECTS.map((project, index) => {
-      const isRepository = project.link?.includes("github.com") ?? false;
+    name: projects.title,
+    itemListElement: items.map((project, index) => {
+      const url = PROJECT_LINKS[project.id];
+      const isRepository = url?.includes("github.com") ?? false;
 
       return {
         "@type": "ListItem",
         position: index + 1,
         item: {
           "@type": isRepository ? "SoftwareSourceCode" : "CreativeWork",
-          name: texts.list[project.id].title,
-          description: texts.list[project.id].description,
+          name: project.name,
           creator: { "@id": PERSON_ID },
-          ...(project.link && { url: project.link }),
-          ...(isRepository && { codeRepository: project.link }),
+          ...(project.text && { description: project.text }),
+          ...(url && { url }),
+          ...(isRepository && { codeRepository: url }),
         },
       };
     }),

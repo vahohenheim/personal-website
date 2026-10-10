@@ -53,7 +53,6 @@ const fr: Dictionary = {
         heading: "Propriété intellectuelle",
         paragraphs: [
           "Les textes, le portrait et le code source sont l’œuvre de Valentin Bourreau. Tous droits réservés.",
-          "Les logos des entreprises citées appartiennent à leurs propriétaires. Ils sont affichés uniquement pour indiquer où il a travaillé.",
         ],
       },
       {
@@ -94,39 +93,6 @@ const fr: Dictionary = {
         "CV de Valentin Bourreau, ingénieur front-end senior à Paris : expériences, compétences et diplômes en React, Next.js, Angular et management d’équipe.",
     },
   },
-  "personal-projects": {
-    title: "derniers projets personnels",
-    list: {
-      brut: {
-        title: "brut",
-        description:
-          "Site du food truck BRUT à Tours, réalisé avec Next.js 16 : contenu éditable, newsletter et avis clients.",
-      },
-      bloom: {
-        title: "bloom",
-        description: "Projet Next.js 15 d’assistant personnel.",
-      },
-      editorials: {
-        title: "editorials",
-        description:
-          "Monorepo NX pour des sites éditoriaux, créé avec Next.js et un adaptateur Notion.",
-      },
-      "notion-blog": {
-        title: "notion-blog",
-        description: "Starter Next.js connecté à l’API Notion.",
-      },
-      finance: {
-        title: "finance",
-        description:
-          "Application React pour gérer ses finances personnelles : budgets, dépenses, etc.",
-      },
-    },
-    status: {
-      "coming-soon": "bientôt disponible",
-      active: "actif",
-      archived: "archivé",
-    },
-  },
   companies: {
     list: {
       solo: {
@@ -165,50 +131,8 @@ const fr: Dictionary = {
       },
     },
   },
-  experiences: {
-    title: "expériences",
-    roles: {
-      "solo-engineer-front-end": {
-        content:
-          "Intégration au sein d’une équipe de dix développeurs pour la refonte du site e-commerce : migration d’une architecture Magento monolithique vers une solution headless basée sur Next.js 16 et Magento 2, avec une API GraphQL comme couche d’interface.<br/>· Développement d’une solution personnalisée d’intégration Algolia pour optimiser les performances de recherche et la pertinence des résultats.<br/>· Architecture et implémentation de Contentful CMS pour la gestion centralisée du contenu éditorial, en collaboration étroite avec l’équipe Marketing pour l’intégration dans leurs workflows.<br/>· Gestion des problématiques de sécurité via la configuration et l’optimisation de Cloudflare (WAF).<br/>· Élaboration et documentation des processus qualité, définition des bonnes pratiques de développement et mise en place des guidelines techniques.<br/>· Maintenance évolutive et corrective du projet avec veille technologique continue.<br/>· Architecture et implémentation d’une solution de notification avec Knock.<br/>· Industrialisation de la création de PDF avec PDFKit.<br/>· Consommation d’une API Gravitee.",
-      },
-      "ep-lead-front-end": {
-        content:
-          "· J’ai géré une équipe de 5 développeurs front-end : recrutements, onboardings et montée en compétence. J’étais le garant des bonnes pratiques et des améliorations autour du Design system. J’animais également l’équipe technique avec de nombreuses cérémonies : rétro dev, rétro dev full-stack.<br/>· J’ai amélioré la JAMStack par une migration vers Next.js 14 et mis en place le déploiement continu. Avec cette stack, j’ai également mené une nouvelle application web en Next.js 14 et Redux Toolkit.<br/>· J’ai fait le pont entre les équipes pluridisciplinaires pour garder en cible le produit et sa qualité.<br/>· J’ai continué à effectuer des missions d’ingénieur front-end en parallèle.",
-      },
-      "ep-engineer-front-end": {
-        content:
-          "· Garant et amélioration d’un design system en web components : une librairie de moteur de rendu de web components (cycle de vie, gestion des propriétés, rendu), et des librairies de features, de GUI et d’utilitaires.<br/>· Intégration au sein du Design system d’une façade à d3js pour la création de charts/dataviz, ainsi que d’une façade Mapbox.<br/>· Développement et choix d’architecture sur des projets Angular 5, 12 et 17 sur 2 ans.<br/>· Collaboration et mise en place de process avec l’équipe Audience/SEO pour des sites éditoriaux, sur l’intégration de contenu et l’amélioration SEO (JSON-LD, maillage, sitemaps).<br/>· Collaboration et mise en place de process avec l’équipe Design sur les évolutions produits et le Design system.<br/>· Amélioration continue d’un produit Meteor (full-stack) et d’une stack custom de génération statique en Node.js.<br/>· Templating d’e-mails sur Adobe Campaign.<br/>· Tests de librairies avec Jest (unitaire + snapshots visuels et DOM), Cypress et Playwright pour l’e2e.<br/>· Recherche et mise en place d’un monorepo NX.",
-      },
-      "conserto-engineer-front-end": {
-        content:
-          "Mission de prestation au sein de EP Tribe :<br/>· Intégration dans les processus de développement front-end agile sur les produits développés en Angular.<br/>· Amélioration continue d’un produit Meteor (full-stack) et d’une stack custom de génération statique en Node.js.<br/>· Templating d’e-mails sur Adobe Campaign.<br/>· Tests de librairies avec Jest (unitaire + snapshots visuels et DOM), Cypress et Playwright pour l’e2e.",
-      },
-      "troopers-engineer-front-end": {
-        content:
-          "Intégration au sein d’une agence web libérée et agile pour travailler sur divers projets : applications web en React, Redux et RxJS. Applications hybrides avec Expo et React Native. Intégration et styleguides en JSX et Twig avec Tailwind et Ant Design.",
-      },
-      "connexing-full-stack-developer-ui-ux-designer": {
-        content:
-          "Intégration au sein d’une entreprise commerciale, dans un service Marketing, pour les missions suivantes : zoning, wireframing et maquettes avec Sketch pour un audit UX et une refonte de site web. Développement d’une application en Laravel. Création de visuels pour des supports marketing avec Illustrator, Photoshop et InDesign pour du social media, des packagings et des catalogues.",
-      },
-      "nantes-metropole-teacher": {
-        content:
-          "J’ai enseigné à 20 personnes en reconversion professionnelle : les bases de HTML, CSS, JavaScript, React, Git et GitHub, ainsi que les bases du design et de l’expérience utilisateur.",
-      },
-      "anjou-full-stack-developer": {
-        content:
-          "Intégration au sein d’une administration publique pour la réalisation d’une analyse et d’un audit UX, puis le développement d’un gestionnaire de parc d’imprimantes en Perl, Angular 1.6 et CakePHP, puis Laravel, Polymer et Sass.",
-      },
-      "drouault-software-developer-help-desk": {
-        content:
-          "Intégration au sein du SI d’une entreprise industrielle :<br/>· Maintenance du réseau informatique (Windows Server 2003).<br/>· Développement informatique (ERP Silog, Crystal Reports, SQL Server, Visual Basic).<br/>· Assistance aux utilisateurs.",
-      },
-    },
-  },
   roles: {
     "front-end-lead": "lead tech front-end",
-    "senior-front-end-engineer": "ingénieur front-end senior",
     "front-end-engineer": "ingénieur front-end",
     "front-end-developer": "développeur front-end",
     "full-stack-developer": "développeur full-stack",
@@ -285,7 +209,6 @@ const fr: Dictionary = {
   },
   footer: {
     legal: "mentions légales",
-    copyright: "Copyright © {year}. Tous droits réservés, Valentin Bourreau.",
   },
 };
 

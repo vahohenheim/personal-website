@@ -8,6 +8,7 @@ export type Mission = {
 };
 
 export enum MissionId {
+  SOLO_LEAD_FRONT_END = "solo-lead-front-end",
   SOLO_ENGINEER_FRONT_END = "solo-engineer-front-end",
   EP_LEAD_FRONT_END = "ep-lead-front-end",
   EP_ENGINEER_FRONT_END = "ep-engineer-front-end",
