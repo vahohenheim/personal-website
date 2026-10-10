@@ -7,7 +7,7 @@ import { COMPANIES } from "./companies";
 export const MISSIONS: Record<MissionId, Mission> = {
   [MissionId.SOLO_ENGINEER_FRONT_END]: {
     id: MissionId.SOLO_ENGINEER_FRONT_END,
-    roles: [RoleId.FRONT_END_ENGINEER],
+    roles: [RoleId.SENIOR_FRONT_END_ENGINEER],
   },
   [MissionId.EP_LEAD_FRONT_END]: {
     id: MissionId.EP_LEAD_FRONT_END,

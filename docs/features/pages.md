@@ -27,7 +27,8 @@ structured data are keyed by that list, so a page cannot be added without comple
 1. **Cover**: portrait, name, title, summary with the main technologies, a contact button
    (`mailto:`) and the social network links.
 2. **Companies**: logo strip of every company in `COMPANIES`, each linking to its site.
-3. **Expertises**: three columns, with a button to the resume.
+3. **Expertises**: three columns, with a button to the resume. They are on the home page
+   only, so that the two pages do not repeat each other.
 4. **Personal projects**: cards with status badge; a card links to the project when it has
    a `link`.
 
@@ -36,10 +37,9 @@ structured data are keyed by that list, so a page cannot be added without comple
 [app/[locale]/resume/page.tsx](../../app/[locale]/resume/page.tsx):
 
 1. **Cover**, left-aligned, with a button back to the home page.
-2. **Expertises**, without the resume button.
-3. **Experiences**: one block per experience (logo, company, location, dates and duration),
+2. **Experiences**: one block per experience (logo, company, location, dates and duration),
    then one entry per mission (roles, optional dates, description).
-4. **Qualifications** and **Languages**.
+3. **Qualifications** and **Languages**.
 
 The components used only here live in
 [resume/_components/](../../app/[locale]/resume/_components/).
@@ -57,7 +57,9 @@ The components used only here live in
 ## Header menu
 
 Entries are in [header.constants.ts](../../components/header/header.constants.ts), as paths
-without the locale and with a trailing slash. The `retrospectives` and `posts` entries are
+without the locale and with a trailing slash. The menu is visible at every width: on a
+phone it is the only way to reach the other pages, so keep labels short (the French label
+of the resume is "cv") and check the header at 320 px when adding an entry. The `retrospectives` and `posts` entries are
 commented out there; their translations already exist.
 
 ## Adding a page

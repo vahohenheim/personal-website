@@ -45,27 +45,27 @@ const CoverComponent = ({
           />
         </AppearComponent>
         {ontitle && (
-          <AppearComponent delay={0.1}>
+          <AppearComponent delay={0.05}>
             <p
-              className="mb-0 text-xl text-slate-800 dark:text-slate-200"
+              className="mb-0 text-xl text-foreground"
               dangerouslySetInnerHTML={{ __html: ontitle }}
             />
           </AppearComponent>
         )}
-        <AppearComponent delay={0.2}>
+        <AppearComponent delay={0.1}>
           <HeadingComponent tag={HeadingTags.H1} className="my-0">
             {title}
           </HeadingComponent>
         </AppearComponent>
         {description && (
-          <AppearComponent delay={0.3}>
+          <AppearComponent delay={0.15}>
             <p
-              className="text-slate-600 dark:text-slate-300"
+              className="text-muted-foreground"
               dangerouslySetInnerHTML={{ __html: description as string }}
             />
           </AppearComponent>
         )}
-        <AppearComponent delay={0.4}>
+        <AppearComponent delay={0.2}>
           <div className="mt-4 flex flex-row items-center gap-8 max-md:flex-col-reverse max-md:items-start max-md:gap-6">
             <div className="flex items-center gap-4">
               <Button asChild variant={action.variant ?? "default"}>

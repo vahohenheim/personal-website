@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import AppearComponent from "@/components/appear/appear";
 import CoverComponent from "@/components/cover/cover";
 import { CoverAlignment } from "@/components/cover/cover.model";
-import ExpertisesComponent from "@/components/expertises/expertises";
 import JsonLdComponent from "@/components/json-ld/json-ld";
 import { EXPERIENCES } from "@/lib/constants/experiences";
 import { USER_LANGUAGES } from "@/lib/constants/languages";
@@ -34,9 +32,6 @@ export default async function ResumePage() {
         }}
         alignment={CoverAlignment.LEFT}
       />
-      <AppearComponent delay={0.3}>
-        <ExpertisesComponent hasLinkToResume={false} />
-      </AppearComponent>
       <ExperiencesComponent experiences={EXPERIENCES} />
       <QualificationsComponent qualifications={QUALIFICATIONS} />
       <LanguagesComponent languages={USER_LANGUAGES} />

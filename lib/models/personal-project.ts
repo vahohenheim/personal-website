@@ -1,6 +1,5 @@
 export type PersonalProject = {
   id: PersonalProjectId;
-  icon: string;
   status: PersonalProjectStatus;
   link?: string;
 };

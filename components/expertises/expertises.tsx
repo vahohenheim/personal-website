@@ -5,7 +5,7 @@ import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
 import { Expertise } from "../expertise/expertise";
 import SectionComponent from "../section/section";
 
-const ExpertisesComponent = async ({ hasLinkToResume = true }: { hasLinkToResume?: boolean }) => {
+const ExpertisesComponent = async () => {
   const locale = await getLocale();
   const { expertises } = await getDictionary();
 
@@ -16,13 +16,11 @@ const ExpertisesComponent = async ({ hasLinkToResume = true }: { hasLinkToResume
           <Expertise key={expertise.id} expertise={expertise} />
         ))}
       </div>
-      {hasLinkToResume && (
-        <div className="flex flex-col items-center justify-center pt-10">
-          <Button asChild>
-            <Link href={`/${locale}/resume/`}>{expertises.cta}</Link>
-          </Button>
-        </div>
-      )}
+      <div className="flex flex-col items-center justify-center pt-10">
+        <Button asChild>
+          <Link href={`/${locale}/resume/`}>{expertises.cta}</Link>
+        </Button>
+      </div>
     </SectionComponent>
   );
 };

@@ -3,11 +3,6 @@ export type LanguageUser = {
   level: LanguageLevel;
 };
 
-export type Language = {
-  icon: string;
-  id: LanguageId;
-};
-
 export enum LanguageLevel {
   NATIVE = "native",
   PROFESSIONAL = "professional",

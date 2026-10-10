@@ -32,16 +32,16 @@ flowchart LR
 
 ## Stack
 
-| Layer        | Choice                                                                         |
-| ------------ | ------------------------------------------------------------------------------ |
-| Framework    | Next.js 16 (App Router), React 19                                              |
-| Language     | TypeScript 6, strict                                                           |
-| Styling      | Tailwind CSS v4, shadcn/ui on Radix primitives                                 |
-| Translations | Plain dictionaries, no library ([i18n.md](i18n.md))                            |
-| Dates        | `dayjs`                                                                        |
-| Animation    | `motion` (reveal on scroll)                                                    |
-| Analytics    | Vercel Analytics                                                               |
-| Hosting      | Vercel, deployed on every push to `main` ([runbook](../operations/runbook.md)) |
+| Layer        | Choice                                                                                            |
+| ------------ | ------------------------------------------------------------------------------------------------- |
+| Framework    | Next.js 16 (App Router), React 19                                                                 |
+| Language     | TypeScript 6, strict                                                                              |
+| Styling      | Tailwind CSS v4, shadcn/ui on Radix primitives                                                    |
+| Translations | Plain dictionaries, no library ([i18n.md](i18n.md))                                               |
+| Dates        | `dayjs`                                                                                           |
+| Animation    | CSS only: entrance on load and reveal on scroll ([styling.md](../frontend/styling.md#animations)) |
+| Analytics    | Vercel Analytics                                                                                  |
+| Hosting      | Vercel, deployed on every push to `main` ([runbook](../operations/runbook.md))                    |
 
 ## Folder structure
 
@@ -86,8 +86,7 @@ folder (`../appear/appear`); anything further goes through the alias.
 - `generateStaticParams` in the root layout lists the locales, so `/en/`, `/fr/`,
   `/en/resume/` and `/fr/resume/` are prerendered.
 - Almost every component is a Server Component. Client Components exist only for
-  interactivity: the language and theme toggles, the reveal animation, the theme provider
-  and the error boundary.
+  interactivity: the language and theme toggles, the theme provider and the error boundary.
 - The catch-all route `[...rest]` is the only dynamic route. It calls `notFound()`, which
   renders `not-found.tsx` inside the layout, in the right language, with a 404 status.
 - Durations on the resume ("2 years") are computed at build time. They refresh on the next

@@ -10,6 +10,9 @@ related_code:
   - ../../components/section/section.tsx
   - ../../components/appear/appear.tsx
   - ../../components/cover/cover.tsx
+  - ../../components/wordmark/wordmark.tsx
+  - ../../components/header/header.tsx
+  - ../../components/personal-project/personal-project.tsx
   - ../../components.json
   - ../../lib/utils/cn.ts
 last_updated: 2026-10-10
@@ -29,20 +32,20 @@ into [components/ui/](../../components/ui/). Only what is used is kept.
 - Default export, named `<Name>Component`.
 - A component used by a single page lives in that page's `_components/` private folder. A
   shared component lives in the root `components/`.
-- `"use client"` only for interactivity: `LanguageToggle`, `ModeToggle`, `Appear`,
-  `ThemeProvider`.
+- `"use client"` only for interactivity: `LanguageToggle`, `ModeToggle`, `ThemeProvider`.
 - Conditional classes with `cn()` from [lib/utils/cn.ts](../../lib/utils/cn.ts).
 - Delete a component when its last usage goes away.
 
 ## Building blocks
 
-| Component                            | Role                                                                     |
-| ------------------------------------ | ------------------------------------------------------------------------ |
-| `SectionComponent`                   | Content width of the site (900 px) and optional section title            |
-| `AppearComponent`                    | Reveal on scroll, with an optional delay (`motion`)                      |
-| `CoverComponent`                     | Hero of both pages: portrait, name, title, summary, action, social links |
-| `HeaderComponent`, `FooterComponent` | Rendered by the root layout                                              |
-| `JsonLdComponent`                    | Structured data of a page ([seo.md](../features/seo.md))                 |
+| Component                            | Role                                                                                                           |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| `SectionComponent`                   | Content width of the site (900 px) and optional section title                                                  |
+| `AppearComponent`                    | Entrance animation in CSS: on load by default, on scroll with `onScroll` ([styling.md](styling.md#animations)) |
+| `CoverComponent`                     | Hero of both pages: portrait, name, title, summary, action, social links                                       |
+| `HeaderComponent`, `FooterComponent` | Rendered by the root layout, never animated                                                                    |
+| `WordmarkComponent`                  | The site signature in the header: the name with a contrast of weights, initials under 640 px                   |
+| `JsonLdComponent`                    | Structured data of a page ([seo.md](../features/seo.md))                                                       |
 
 ## shadcn/ui
 
@@ -72,7 +75,10 @@ SVGs are React components in [components/icons/](../../components/icons/), with 
   `Record<CompanyId, …>`: a company without a logo fails the type check.
 - **Social networks** are registered the same way in `SOCIAL_NETWORK_ICONS` in
   [social-network.tsx](../../components/social-network/social-network.tsx).
-- Generic icons come from `lucide-react`.
+- **Personal projects** get a `lucide-react` icon through `PROJECT_ICONS` in
+  `personal-project.tsx`.
+- Generic icons come from `lucide-react`. Do not use emoji as icons: they render differently
+  on every platform and cannot follow the theme.
 
 ## Lists
 

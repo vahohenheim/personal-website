@@ -1,5 +1,6 @@
 export enum RoleId {
   FRONT_END_LEAD = "front-end-lead",
+  SENIOR_FRONT_END_ENGINEER = "senior-front-end-engineer",
   FRONT_END_ENGINEER = "front-end-engineer",
   FRONT_END_DEVELOPER = "front-end-developer",
   FULL_STACK_DEVELOPER = "full-stack-developer",

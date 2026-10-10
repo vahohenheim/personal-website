@@ -1,17 +1,25 @@
-"use client";
+import { type CSSProperties, type ReactNode } from "react";
 
-import { motion } from "motion/react";
+type AppearComponentProps = {
+  children: ReactNode;
+  /** Seconds before the entrance starts. Keep it short: the content is hidden meanwhile. */
+  delay?: number;
+  /** Reveal when the block scrolls into view instead of on page load. */
+  onScroll?: boolean;
+};
 
-const AppearComponent = ({ children, delay }: { children: React.ReactNode; delay?: number }) => {
+/**
+ * Entrance animation, in CSS only (see `.appear` in globals.css): the content is in the
+ * HTML and visible without JavaScript, and nothing moves under `prefers-reduced-motion`.
+ */
+const AppearComponent = ({ children, delay = 0, onScroll = false }: AppearComponentProps) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 5 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.1, type: "spring", stiffness: 50, delay }}
-      viewport={{ once: true }}
+    <div
+      className={onScroll ? "appear-on-scroll" : "appear"}
+      style={{ "--appear-delay": `${delay}s` } as CSSProperties}
     >
       {children}
-    </motion.div>
+    </div>
   );
 };
 

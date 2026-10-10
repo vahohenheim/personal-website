@@ -15,6 +15,7 @@ related_code:
   - ../../locales/en.ts
   - ../../locales/fr.ts
   - ../../components/company-icon/company-icon.tsx
+  - ../../components/personal-project/personal-project.tsx
   - ../../lib/utils/format-date-difference.ts
 last_updated: 2026-10-10
 ---
@@ -60,6 +61,11 @@ companies.list[experience.company.id].name;
   when one experience holds several missions.
 - The domain, the site name and the portrait come from `lib/constants/site.ts`. Do not
   write them anywhere else.
+- The headline title ("senior front-end engineer") is the same in the hero, the resume
+  title, the meta tags, `person.jobTitle` and the role of the current position. Change
+  them together.
+- Texts use typographic apostrophes (`’`), no emoji, and an en dash in date ranges
+  ([styling.md](../frontend/styling.md#typography-of-texts)).
 - The same data feeds the structured data of the pages ([seo.md](../features/seo.md)), so
   a change here is also a change to what search engines read.
 
@@ -89,9 +95,11 @@ in declaration order), and as an employer in the structured data.
 ## Adding a personal project
 
 1. `lib/models/personal-project.ts`: a value in `PersonalProjectId`.
-2. `lib/constants/personal-projects.ts`: an entry with `status`, `icon` and, if the project
-   is public, `link`. A project without a link is displayed but not clickable.
-3. Both locale files: `personal-projects.list.<id>.title` and `.description`.
+2. `lib/constants/personal-projects.ts`: an entry with `status` and, if the project is
+   public, `link`. A project without a link is displayed but not clickable.
+3. `components/personal-project/personal-project.tsx`: its `lucide-react` icon in
+   `PROJECT_ICONS`.
+4. Both locale files: `personal-projects.list.<id>.title` and `.description`.
 
 ## Adding a qualification or a language
 

@@ -8,7 +8,7 @@ const DurationComponent = ({
   duration: string;
 }) => {
   const content = endDate
-    ? `${startDate} - ${endDate} · ${duration}`
+    ? `${startDate} – ${endDate} · ${duration}`
     : `${startDate} · ${duration}`;
 
   return (

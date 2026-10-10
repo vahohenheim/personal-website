@@ -21,13 +21,13 @@ const en = {
     ontitle: "<b>valentin bourreau</b>,",
     title: "a senior front-end engineer",
     summary:
-      "passionate about building products, user experiences and team management.<br/>I mainly work with <b>React 19</b>, <b>Next.js 16</b> and <b>Angular 17</b>.<br/>📍 Paris, France",
+      "passionate about building products, user experiences and team management.<br/>I mainly work with <b>React 19</b>, <b>Next.js 16</b> and <b>Angular 17</b>.<br/>Paris, France",
     cta: "contact me",
   },
   resume: {
     title: "senior front-end engineer",
     summary:
-      "With over a decade of experience in software and web development, I’ve honed my skills across a wide array of projects and technologies. At EP, I embraced leadership roles, guiding teams, managing projects and overseeing budgets: experiences that ignited my passion for people and collaboration.<br/><br/>➡️ Now, I’m excited to evolve into a Lead tech or Engineering Manager position, where I can combine my technical expertise in front-end development, back-end development, project management and design to improve team velocity and foster a thriving, innovative team environment.<br/><br/>🌱 I have bootstrapped many start-up products on the latest framework versions and migrated existing ones. Today, I want to learn more about products at scale-up stage.",
+      "With over a decade of experience in software and web development, I’ve honed my skills across a wide array of projects and technologies. At EP, I embraced leadership roles, guiding teams, managing projects and overseeing budgets: experiences that ignited my passion for people and collaboration.<br/><br/>Now, I’m excited to evolve into an Engineering Manager position, where I can combine my technical expertise in front-end development, back-end development, project management and design to improve team velocity and foster a thriving, innovative team environment.<br/><br/>I have bootstrapped many start-up products on the latest framework versions and migrated existing ones. Today, I want to learn more about products at scale-up stage.",
     cta: "back to homepage",
     metadata: {
       title: "Resume | valentin bourreau",
@@ -168,6 +168,7 @@ const en = {
   },
   roles: {
     "front-end-lead": "lead tech front-end",
+    "senior-front-end-engineer": "senior front-end engineer",
     "front-end-engineer": "front-end engineer",
     "front-end-developer": "front-end developer",
     "full-stack-developer": "full-stack developer",
@@ -231,13 +232,13 @@ const en = {
   },
   "not-found": {
     title: "Oops, page not found!",
-    description: "The page you're looking for doesn't exist. It might have been moved or deleted.",
+    description: "The page you’re looking for doesn’t exist. It might have been moved or deleted.",
     "back-to-homepage": "back to homepage",
   },
   error: {
     title: "Oops, an error occurred!",
     description:
-      "We're sorry, but there seems to be a problem on our end. Please try again later or contact me directly by <1>linkedin</1> if the issue persists.",
+      "We’re sorry, but there seems to be a problem on our end. Please try again later or contact me directly by <1>linkedin</1> if the issue persists.",
     "back-to-homepage": "back to homepage",
   },
   footer: {

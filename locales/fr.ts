@@ -4,7 +4,7 @@ const fr: Dictionary = {
   metadata: {
     title: "Ingénieur front-end senior | valentin bourreau",
     description:
-      "Ingénieur front-end senior avec plus de 10 ans d'expérience dans le développement logiciel et web. Passionné par la création de produits, l’expérience utilisateur et la gestion d’équipe. Je travaille principalement avec React 19, Next.js 16 et Angular 17. Paris, France",
+      "Ingénieur front-end senior avec plus de 10 ans d’expérience dans le développement logiciel et web. Passionné par la création de produits, l’expérience utilisateur et la gestion d’équipe. Je travaille principalement avec React 19, Next.js 16 et Angular 17. Paris, France",
   },
   person: {
     jobTitle: "Ingénieur front-end senior",
@@ -14,7 +14,7 @@ const fr: Dictionary = {
   },
   header: {
     menu: {
-      resume: "curriculum vitae",
+      resume: "cv",
       retrospectives: "rétrospectives",
       posts: "articles",
     },
@@ -23,18 +23,18 @@ const fr: Dictionary = {
     ontitle: "<b>valentin bourreau</b>,",
     title: "un ingénieur front-end senior",
     summary:
-      "passionné par la création de produits, l’expérience utilisateur et la gestion d’équipe.<br/>Je travaille principalement avec <b>React 19</b>, <b>Next.js 16</b> et <b>Angular 17</b>.<br/>📍 Paris, France",
+      "passionné par la création de produits, l’expérience utilisateur et la gestion d’équipe.<br/>Je travaille principalement avec <b>React 19</b>, <b>Next.js 16</b> et <b>Angular 17</b>.<br/>Paris, France",
     cta: "contactez-moi",
   },
   resume: {
     title: "ingénieur front-end senior",
     summary:
-      "Avec plus de 10 ans dans le développement logiciel et web, j’ai pu aiguiser mes compétences sur divers projets et langages. Chez EP, j’ai embrassé le rôle de lead : guider une équipe de 5 développeurs, gérer des projets et suivre les budgets. Cette expérience m’a permis de faire évoluer ma passion pour les gens et la collaboration.<br/><br/>➡️ Maintenant, je suis opérationnel sur ce rôle et je cherche à m’améliorer en tant qu’Engineering Manager. Je peux y combiner mes expertises techniques en développement front-end et back-end, en gestion de projet et en design pour améliorer la vélocité de l’équipe et favoriser un environnement d’équipe prospère et innovant.<br/><br/>🌱 J’ai démarré de nombreux produits de start-ups avec les dernières versions des frameworks, ou migré des produits existants. Maintenant, je veux en apprendre plus sur des produits qui passent à l’échelle.",
+      "Avec plus de 10 ans dans le développement logiciel et web, j’ai pu aiguiser mes compétences sur divers projets et langages. Chez EP, j’ai embrassé le rôle de lead : guider une équipe de 5 développeurs, gérer des projets et suivre les budgets. Cette expérience m’a permis de faire évoluer ma passion pour les gens et la collaboration.<br/><br/>Maintenant, je suis opérationnel sur ce rôle et je cherche à m’améliorer en tant qu’Engineering Manager. Je peux y combiner mes expertises techniques en développement front-end et back-end, en gestion de projet et en design pour améliorer la vélocité de l’équipe et favoriser un environnement d’équipe prospère et innovant.<br/><br/>J’ai démarré de nombreux produits de start-ups avec les dernières versions des frameworks, ou migré des produits existants. Maintenant, je veux en apprendre plus sur des produits qui passent à l’échelle.",
     cta: "retour à la page d’accueil",
     metadata: {
       title: "Curriculum Vitae | valentin bourreau",
       description:
-        "Curriculum vitae d'un ingénieur front-end senior avec plus de 10 ans d'expérience dans le développement logiciel et web. Passionné par la création de produits, l’expérience utilisateur et la gestion d’équipe. Je travaille principalement avec React 19, Next.js 16 et Angular 17. Paris, France",
+        "Curriculum vitae d’un ingénieur front-end senior avec plus de 10 ans d’expérience dans le développement logiciel et web. Passionné par la création de produits, l’expérience utilisateur et la gestion d’équipe. Je travaille principalement avec React 19, Next.js 16 et Angular 17. Paris, France",
     },
   },
   expertises: {
@@ -68,7 +68,7 @@ const fr: Dictionary = {
       },
       bloom: {
         title: "bloom",
-        description: "Projet Next.js 15 d'assistant personnel.",
+        description: "Projet Next.js 15 d’assistant personnel.",
       },
       editorials: {
         title: "editorials",
@@ -134,15 +134,15 @@ const fr: Dictionary = {
     roles: {
       "solo-engineer-front-end": {
         content:
-          "Intégration au sein d'une équipe de dix développeurs pour la refonte du site e-commerce : migration d'une architecture Magento monolithique vers une solution headless basée sur Next.js 16 et Magento 2, avec une API GraphQL comme couche d'interface.<br/>· Développement d'une solution personnalisée d'intégration Algolia pour optimiser les performances de recherche et la pertinence des résultats.<br/>· Architecture et implémentation de Contentful CMS pour la gestion centralisée du contenu éditorial, en collaboration étroite avec l'équipe Marketing pour l'intégration dans leurs workflows.<br/>· Gestion des problématiques de sécurité via la configuration et l'optimisation de Cloudflare (WAF).<br/>· Élaboration et documentation des processus qualité, définition des bonnes pratiques de développement et mise en place des guidelines techniques.<br/>· Maintenance évolutive et corrective du projet avec veille technologique continue.<br/>· Architecture et implémentation d'une solution de notification avec Knock.<br/>· Industrialisation de la création de PDF avec PDFKit.<br/>· Consommation d'une API Gravitee.",
+          "Intégration au sein d’une équipe de dix développeurs pour la refonte du site e-commerce : migration d’une architecture Magento monolithique vers une solution headless basée sur Next.js 16 et Magento 2, avec une API GraphQL comme couche d’interface.<br/>· Développement d’une solution personnalisée d’intégration Algolia pour optimiser les performances de recherche et la pertinence des résultats.<br/>· Architecture et implémentation de Contentful CMS pour la gestion centralisée du contenu éditorial, en collaboration étroite avec l’équipe Marketing pour l’intégration dans leurs workflows.<br/>· Gestion des problématiques de sécurité via la configuration et l’optimisation de Cloudflare (WAF).<br/>· Élaboration et documentation des processus qualité, définition des bonnes pratiques de développement et mise en place des guidelines techniques.<br/>· Maintenance évolutive et corrective du projet avec veille technologique continue.<br/>· Architecture et implémentation d’une solution de notification avec Knock.<br/>· Industrialisation de la création de PDF avec PDFKit.<br/>· Consommation d’une API Gravitee.",
       },
       "ep-lead-front-end": {
         content:
-          "· J’ai géré une équipe de 5 développeurs front-end : recrutements, onboardings et montée en compétence. J’étais le garant des bonnes pratiques et des améliorations autour du Design system. J'animais également l'équipe technique avec de nombreuses cérémonies : rétro dev, rétro dev full-stack.<br/>· J'ai amélioré la JAMStack par une migration vers Next.js 14 et mis en place le déploiement continu. Avec cette stack, j’ai également mené une nouvelle application web en Next.js 14 et Redux Toolkit.<br/>· J’ai fait le pont entre les équipes pluridisciplinaires pour garder en cible le produit et sa qualité.<br/>· J'ai continué à effectuer des missions d'ingénieur front-end en parallèle.",
+          "· J’ai géré une équipe de 5 développeurs front-end : recrutements, onboardings et montée en compétence. J’étais le garant des bonnes pratiques et des améliorations autour du Design system. J’animais également l’équipe technique avec de nombreuses cérémonies : rétro dev, rétro dev full-stack.<br/>· J’ai amélioré la JAMStack par une migration vers Next.js 14 et mis en place le déploiement continu. Avec cette stack, j’ai également mené une nouvelle application web en Next.js 14 et Redux Toolkit.<br/>· J’ai fait le pont entre les équipes pluridisciplinaires pour garder en cible le produit et sa qualité.<br/>· J’ai continué à effectuer des missions d’ingénieur front-end en parallèle.",
       },
       "ep-engineer-front-end": {
         content:
-          "· Garant et amélioration d’un design system en web components : une librairie de moteur de rendu de web components (cycle de vie, gestion des propriétés, rendu), et des librairies de features, de GUI et d’utilitaires.<br/>· Intégration au sein du Design system d’une façade à d3js pour la création de charts/dataviz, ainsi que d’une façade Mapbox.<br/>· Développement et choix d’architecture sur des projets Angular 5, 12 et 17 sur 2 ans.<br/>· Collaboration et mise en place de process avec l'équipe Audience/SEO pour des sites éditoriaux, sur l’intégration de contenu et l’amélioration SEO (JSON-LD, maillage, sitemaps).<br/>· Collaboration et mise en place de process avec l’équipe Design sur les évolutions produits et le Design system.<br/>· Amélioration continue d’un produit Meteor (full-stack) et d’une stack custom de génération statique en Node.js.<br/>· Templating d’e-mails sur Adobe Campaign.<br/>· Tests de librairies avec Jest (unitaire + snapshots visuels et DOM), Cypress et Playwright pour l’e2e.<br/>· Recherche et mise en place d’un monorepo NX.",
+          "· Garant et amélioration d’un design system en web components : une librairie de moteur de rendu de web components (cycle de vie, gestion des propriétés, rendu), et des librairies de features, de GUI et d’utilitaires.<br/>· Intégration au sein du Design system d’une façade à d3js pour la création de charts/dataviz, ainsi que d’une façade Mapbox.<br/>· Développement et choix d’architecture sur des projets Angular 5, 12 et 17 sur 2 ans.<br/>· Collaboration et mise en place de process avec l’équipe Audience/SEO pour des sites éditoriaux, sur l’intégration de contenu et l’amélioration SEO (JSON-LD, maillage, sitemaps).<br/>· Collaboration et mise en place de process avec l’équipe Design sur les évolutions produits et le Design system.<br/>· Amélioration continue d’un produit Meteor (full-stack) et d’une stack custom de génération statique en Node.js.<br/>· Templating d’e-mails sur Adobe Campaign.<br/>· Tests de librairies avec Jest (unitaire + snapshots visuels et DOM), Cypress et Playwright pour l’e2e.<br/>· Recherche et mise en place d’un monorepo NX.",
       },
       "conserto-engineer-front-end": {
         content:
@@ -154,24 +154,25 @@ const fr: Dictionary = {
       },
       "connexing-full-stack-developer-ui-ux-designer": {
         content:
-          "Intégration au sein d'une entreprise commerciale, dans un service Marketing, pour les missions suivantes : zoning, wireframing et maquettes avec Sketch pour un audit UX et une refonte de site web. Développement d'une application en Laravel. Création de visuels pour des supports marketing avec Illustrator, Photoshop et InDesign pour du social media, des packagings et des catalogues.",
+          "Intégration au sein d’une entreprise commerciale, dans un service Marketing, pour les missions suivantes : zoning, wireframing et maquettes avec Sketch pour un audit UX et une refonte de site web. Développement d’une application en Laravel. Création de visuels pour des supports marketing avec Illustrator, Photoshop et InDesign pour du social media, des packagings et des catalogues.",
       },
       "nantes-metropole-teacher": {
         content:
-          "J'ai enseigné à 20 personnes en reconversion professionnelle : les bases de HTML, CSS, JavaScript, React, Git et GitHub, ainsi que les bases du design et de l'expérience utilisateur.",
+          "J’ai enseigné à 20 personnes en reconversion professionnelle : les bases de HTML, CSS, JavaScript, React, Git et GitHub, ainsi que les bases du design et de l’expérience utilisateur.",
       },
       "anjou-full-stack-developer": {
         content:
-          "Intégration au sein d'une administration publique pour la réalisation d'une analyse et d'un audit UX, puis le développement d'un gestionnaire de parc d’imprimantes en Perl, Angular 1.6 et CakePHP, puis Laravel, Polymer et Sass.",
+          "Intégration au sein d’une administration publique pour la réalisation d’une analyse et d’un audit UX, puis le développement d’un gestionnaire de parc d’imprimantes en Perl, Angular 1.6 et CakePHP, puis Laravel, Polymer et Sass.",
       },
       "drouault-software-developer-help-desk": {
         content:
-          "Intégration au sein du SI d'une entreprise industrielle :<br/>· Maintenance du réseau informatique (Windows Server 2003).<br/>· Développement informatique (ERP Silog, Crystal Reports, SQL Server, Visual Basic).<br/>· Assistance aux utilisateurs.",
+          "Intégration au sein du SI d’une entreprise industrielle :<br/>· Maintenance du réseau informatique (Windows Server 2003).<br/>· Développement informatique (ERP Silog, Crystal Reports, SQL Server, Visual Basic).<br/>· Assistance aux utilisateurs.",
       },
     },
   },
   roles: {
     "front-end-lead": "lead tech front-end",
+    "senior-front-end-engineer": "ingénieur front-end senior",
     "front-end-engineer": "ingénieur front-end",
     "front-end-developer": "développeur front-end",
     "full-stack-developer": "développeur full-stack",
@@ -234,16 +235,16 @@ const fr: Dictionary = {
     },
   },
   "not-found": {
-    title: "Oups, la page n'a pas été trouvée !",
+    title: "Oups, la page n’a pas été trouvée !",
     description:
-      "La page que vous recherchez n'existe pas. Il se peut qu'elle ait été déplacée ou supprimée.",
-    "back-to-homepage": "retour à la page d'accueil",
+      "La page que vous recherchez n’existe pas. Il se peut qu’elle ait été déplacée ou supprimée.",
+    "back-to-homepage": "retour à la page d’accueil",
   },
   error: {
     title: "Oups, une erreur est survenue !",
     description:
-      "Nous sommes désolés, il semble qu'une erreur soit survenue de notre côté. Veuillez réessayer plus tard ou contactez-moi directement par <1>linkedin</1> si le problème persiste.",
-    "back-to-homepage": "retour à la page d'accueil",
+      "Nous sommes désolés, il semble qu’une erreur soit survenue de notre côté. Veuillez réessayer plus tard ou contactez-moi directement par <1>linkedin</1> si le problème persiste.",
+    "back-to-homepage": "retour à la page d’accueil",
   },
   footer: {
     copyright: "Copyright © {year}. Tous droits réservés, Valentin Bourreau.",

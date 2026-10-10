@@ -42,6 +42,7 @@ The same goes for the two other entry points: keep [README.md](README.md) true (
 - Never hardcode a visible text in a component: add it to both locale files.
 - Structure goes in `lib/constants/`, texts in `locales/`, linked by the enums of `lib/models/`. Reference data through the enum, not the string.
 - The domain, the site name and the portrait come from `lib/constants/site.ts` only.
+- One headline title for the whole site ("senior front-end engineer"): hero, resume title, meta tags, `person.jobTitle` and the role of the current position change together.
 - When the visible content of a page changes, bump its `updatedAt` in `lib/constants/pages.ts`.
 - Details and the step-by-step recipes (adding an experience, a project, a qualification): [docs/content/resume-data.md](docs/content/resume-data.md).
 
@@ -57,7 +58,11 @@ The same goes for the two other entry points: keep [README.md](README.md) true (
 - Server Component by default. `"use client"` only for interactivity.
 - Simple interface elements come from shadcn/ui first (`components/ui/`, one folder per component). Keep only the ones in use.
 - A link that looks like a button is `<Button asChild><Link …/></Button>`. Never nest a `<button>` or an `<a>` inside a `<Link>`.
-- Theme changes go in `app/globals.css` (there is no `tailwind.config.ts`). Use the colour tokens, and give any hardcoded colour its `dark:` variant.
+- Theme changes go in `app/globals.css` (there is no `tailwind.config.ts`). Use the colour tokens only (`bg-muted`, `text-muted-foreground`, `hover:bg-accent`…), never a Tailwind palette colour such as `gray-*` or `slate-*`.
+- The font is Geist, by Valentin's choice. Do not change the typography without asking him.
+- Entrance animations go through `AppearComponent` (CSS only). Never hide content until JavaScript runs, keep delays under 0.2 s, and do not animate the header or the footer.
+- No emoji in the interface or the texts: use `lucide-react` icons. Texts use typographic apostrophes (`’`) and an en dash in date ranges.
+- The header menu stays visible on phones. Check the header at 320 px after changing it.
 - Delete a component, a constant or a package when its last usage goes away.
 - Details: [docs/frontend/components.md](docs/frontend/components.md), [docs/frontend/styling.md](docs/frontend/styling.md).
 
@@ -76,12 +81,13 @@ The same goes for the two other entry points: keep [README.md](README.md) true (
 
 ## Known issues
 
-Listed in [docs/operations/runbook.md](docs/operations/runbook.md#known-issues) and [docs/frontend/styling.md](docs/frontend/styling.md#leftovers). Remove a line there when the issue is fixed.
+Listed in [docs/operations/runbook.md](docs/operations/runbook.md#known-issues). Remove a line there when the issue is fixed.
 
 ## Request log
 
 **Rule:** every request handled through Claude Code is recorded here, in the same change, as **one line** (date, request, main files), most recent first. Then update the pages of `docs/` concerned: create a page if none covers the topic, and update the index `docs/README.md` and the `last_updated` field. The detail goes in `docs/`, not here, because this file is read at every session.
 
+- 2026-10-10 — Design audit fixes: entrance animation moved from JavaScript to CSS so the top of the page is never blank (`motion` removed); resume link visible in the header on phones; one headline title (SOLO role is now "senior front-end engineer", English summary targets Engineering Manager only); a text wordmark instead of the SVG logo (a Fraunces and Hanken Grotesk pairing was tried and rejected by Valentin: the font stays Geist); colour tokens only, emoji replaced by icons or removed, typographic apostrophes, en dash in dates; expertises shown on the home page only; unused theme tokens and helper classes removed (`components/appear/`, `components/header/`, `components/wordmark/`, `app/globals.css`, `app/[locale]/layout.tsx`, `locales/`) → [docs/frontend/styling.md](docs/frontend/styling.md), [docs/frontend/components.md](docs/frontend/components.md), [docs/features/pages.md](docs/features/pages.md).
 - 2026-10-10 — English level on the resume changed from "in progress" to "professional"; the unused `progression` level is removed (`lib/models/language.ts`, `lib/constants/languages.ts`, `locales/`) → [docs/content/resume-data.md](docs/content/resume-data.md).
 - 2026-10-10 — Documentation moved to `docs/` (index, one page per topic, YAML header with `related_code`), on the model of the brut project; `CLAUDE.md` reduced to rules and pointers; `README.md` rewritten as a short entry point (`docs/`, `CLAUDE.md`, `README.md`) → [docs/README.md](docs/README.md).
 - 2026-10-10 — Structured data rebuilt: one typed `@graph` per page (`WebSite`, `ProfilePage`, `Person` with employer, past roles, schools, credentials, skills and languages, `BreadcrumbList`, project list), generated from the resume data and required for every page through `PAGE_GRAPHS`; page registry with dates in `lib/constants/pages.ts`; sitemap `lastModified` from it (`lib/helpers/json-ld.ts`, `components/json-ld/`, `lib/constants/pages.ts`, `lib/constants/skills.ts`, `app/sitemap.ts`).

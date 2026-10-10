@@ -1,19 +1,4 @@
-import { type Language, LanguageId, LanguageLevel, type LanguageUser } from "@/lib/models/language";
-
-export const LANGUAGES: Record<LanguageId, Language> = {
-  [LanguageId.FR]: {
-    icon: "🇫🇷",
-    id: LanguageId.FR,
-  },
-  [LanguageId.EN]: {
-    icon: "🇬🇧",
-    id: LanguageId.EN,
-  },
-  [LanguageId.ES]: {
-    icon: "🇪🇸",
-    id: LanguageId.ES,
-  },
-};
+import { LanguageId, LanguageLevel, type LanguageUser } from "@/lib/models/language";
 
 export const USER_LANGUAGES: LanguageUser[] = [
   {

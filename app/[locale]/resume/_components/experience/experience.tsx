@@ -14,10 +14,10 @@ const ExperienceComponent = async ({ experience }: ExperienceComponentProps) => 
   return (
     <div className="flex shrink-0 grow-0 flex-col items-start justify-start gap-8 self-stretch pb-10 [&:not(:last-child)]:border-b-2">
       <div className="relative flex shrink-0 grow-0 flex-col items-start justify-start gap-1 self-stretch">
-        <div className="mb-2 shrink-0 rounded-md bg-gray-100 px-3 py-2 dark:bg-gray-800">
+        <div className="mb-2 shrink-0 rounded-md bg-muted px-3 py-2">
           <CompanyIconComponent
             company={experience.company}
-            className="fill-gray-700 dark:fill-gray-300"
+            className="fill-foreground/80"
             height={40}
           />
         </div>

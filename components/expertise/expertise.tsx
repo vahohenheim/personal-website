@@ -10,16 +10,13 @@ export const Expertise = async ({ expertise }: ExpertiseComponentProps) => {
   return (
     <div>
       <p
-        className="text-base font-semibold text-slate-600 dark:text-slate-300"
+        className="text-base font-semibold text-muted-foreground"
         dangerouslySetInnerHTML={{ __html: texts.label }}
       />
       <HeadingComponent tag={HeadingTags.H2} apperance={HeadingTags.H3} className="mb-0">
         {texts.title}
       </HeadingComponent>
-      <p
-        className="text-slate-600 dark:text-slate-300"
-        dangerouslySetInnerHTML={{ __html: texts.text }}
-      />
+      <p className="text-muted-foreground" dangerouslySetInnerHTML={{ __html: texts.text }} />
     </div>
   );
 };

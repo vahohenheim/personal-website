@@ -34,13 +34,13 @@ export default async function HomePage() {
         socialNetworks={SOCIAL_NETWORKS}
         alignment={CoverAlignment.CENTER}
       />
-      <AppearComponent delay={0.4}>
+      <AppearComponent onScroll>
         <CompaniesComponent companies={Object.values(COMPANIES)} />
       </AppearComponent>
-      <AppearComponent delay={0.5}>
+      <AppearComponent onScroll>
         <ExpertisesComponent />
       </AppearComponent>
-      <AppearComponent delay={0.3}>
+      <AppearComponent onScroll>
         <PersonalProjectsComponent />
       </AppearComponent>
     </main>
