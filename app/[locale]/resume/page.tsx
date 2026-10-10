@@ -76,7 +76,7 @@ export default async function ResumePage() {
 
         <SectionComponent className="flex flex-col gap-6">
           <SectionTitleComponent>{resume.changelog.title}</SectionTitleComponent>
-          <ol className="list-none border-b border-line">
+          <ol className="list-none">
             {resume.changelog.entries.map((entry) => (
               <ChangelogEntryComponent key={entry.date} entry={entry} size="large" />
             ))}

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PAGES, type PageId } from "@/lib/constants/pages";
-import { AVATAR_PATH, AVATAR_SIZE, SITE_NAME, SITE_URL } from "@/lib/constants/site";
+import { SITE_NAME, SITE_URL } from "@/lib/constants/site";
 import { DEFAULT_LOCALE, type Locale, LOCALES, OPEN_GRAPH_LOCALES } from "@/lib/i18n/config";
 import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
 import { type Dictionary } from "@/locales/en";
@@ -38,21 +38,12 @@ export const getPageMetadata = async (page: PageId): Promise<Metadata> => {
       canonical: paths[locale],
       languages: { ...paths, "x-default": paths[DEFAULT_LOCALE] },
     },
-    // The portrait is square: a "summary" card shows it whole, a large one would crop it.
-    twitter: { card: "summary" },
+    twitter: { card: "summary_large_image" },
     openGraph: {
       type: "website",
       url: paths[locale],
       siteName: SITE_NAME,
       locale: OPEN_GRAPH_LOCALES[locale],
-      images: [
-        {
-          url: AVATAR_PATH,
-          width: AVATAR_SIZE,
-          height: AVATAR_SIZE,
-          alt: `${SITE_NAME} profile picture`,
-        },
-      ],
     },
   };
 };

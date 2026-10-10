@@ -1,20 +1,17 @@
-import { type MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "valentinbourreau",
     short_name: "valentinbourreau",
-    description: "Front-end engineer",
+    description: "Senior front-end engineer",
     start_url: "/",
     display: "standalone",
-    background_color: "#fff",
-    theme_color: "#fff",
+    background_color: "#F7F9F9",
+    theme_color: "#0E1111",
     icons: [
-      {
-        src: "/favicon.ico",
-        sizes: "any",
-        type: "image/x-icon",
-      },
+      { src: "/icon", sizes: "32x32", type: "image/png" },
+      { src: "/apple-icon", sizes: "180x180", type: "image/png" },
     ],
   };
 }

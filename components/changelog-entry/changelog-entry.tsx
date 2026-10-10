@@ -13,7 +13,9 @@ const ChangelogEntryComponent = ({ entry, size = "default" }: ChangelogEntryComp
   return (
     <li className="flex flex-wrap gap-x-8 gap-y-2 border-t border-line py-6">
       <div className="flex flex-[0_0_160px] flex-col gap-1 font-mono text-[13px]">
-        <span className={entry.current ? "text-accent" : "text-muted"}>{entry.date}</span>
+        <span className={cn("whitespace-nowrap", entry.current ? "text-accent" : "text-muted")}>
+          {entry.date}
+        </span>
         {entry.duration && <span className="text-[12px] text-muted">{entry.duration}</span>}
       </div>
       <div className="flex min-w-[min(100%,280px)] flex-1 flex-col gap-3">

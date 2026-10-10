@@ -79,7 +79,7 @@ export default async function HomePage() {
               {home.changelog.more}
             </Link>
           </div>
-          <ol className="list-none border-b border-line">
+          <ol className="list-none">
             {home.changelog.entries.map((entry) => (
               <ChangelogEntryComponent key={entry.date} entry={entry} />
             ))}
