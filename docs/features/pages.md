@@ -82,7 +82,8 @@ commented out there; their translations already exist.
 Structured data is part of the job, not a follow-up.
 
 1. Create `app/[locale]/<name>/page.tsx` and add its texts to both locale files.
-2. Add the page to `PAGES` in `lib/constants/pages.ts` (path, `createdAt`, `updatedAt`).
+2. Add the page to `PAGES` in `lib/constants/pages.ts` (path, `createdAt`, `updatedAt`,
+   sitemap `priority` and `changeFrequency`).
    This feeds the canonical URL, the `hreflang` alternates and the sitemap.
 3. Add its title and description to `getPageTexts` in `lib/helpers/metadata.ts`, and export
    `generateMetadata` from the page.

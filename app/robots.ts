@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/constants/site";
 
+/** Everything is public: crawlers may read the whole site. */
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
@@ -8,5 +9,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   };
 }

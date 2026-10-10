@@ -39,9 +39,12 @@ set once, in `SITE_URL` ([site.ts](../../lib/constants/site.ts)).
 ## Sitemap, robots, manifest
 
 - [app/sitemap.ts](../../app/sitemap.ts) is generated from `PAGES` and `LOCALES`: one entry
-  per page in the default locale, with the other locales as alternates. `lastModified` is
-  the `updatedAt` of the page, not the build date.
-- [app/robots.ts](../../app/robots.ts) allows everything and points to the sitemap.
+  per page and per locale. Each entry lists every language version of the page, itself
+  included, plus `x-default`, as search engines expect for `hreflang` in a sitemap.
+  `lastModified` is the `updatedAt` of the page, not the build date; `priority` and
+  `changeFrequency` also come from `PAGES`. A new page appears there by itself.
+- [app/robots.ts](../../app/robots.ts) allows everything, points to the sitemap and declares
+  the canonical host. Nothing on the site is private, so there is no `Disallow` rule.
 - [app/manifest.ts](../../app/manifest.ts) declares the name and the icon.
 
 ## Structured data (JSON-LD)
