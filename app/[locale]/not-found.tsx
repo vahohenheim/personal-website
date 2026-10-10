@@ -8,7 +8,10 @@ export default async function NotFound() {
   const { "not-found": notFound } = await getDictionary();
 
   return (
-    <main className="container mx-auto flex h-full grow flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
+    <main
+      id="main"
+      className="container mx-auto flex h-full grow flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8"
+    >
       <div className="mx-auto max-w-md text-center">
         <SearchX size={48} className="mx-auto mb-4" />
         <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">

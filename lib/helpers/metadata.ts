@@ -21,6 +21,7 @@ export const getPageTexts = (page: PageId, dictionary: Dictionary) =>
   ({
     home: dictionary.metadata,
     resume: dictionary.resume.metadata,
+    legal: dictionary.legal.metadata,
   })[page];
 
 /** Translated meta tags of a page, with its canonical URL and language alternates. */
@@ -37,6 +38,8 @@ export const getPageMetadata = async (page: PageId): Promise<Metadata> => {
       canonical: paths[locale],
       languages: { ...paths, "x-default": paths[DEFAULT_LOCALE] },
     },
+    // The portrait is square: a "summary" card shows it whole, a large one would crop it.
+    twitter: { card: "summary" },
     openGraph: {
       type: "website",
       url: paths[locale],

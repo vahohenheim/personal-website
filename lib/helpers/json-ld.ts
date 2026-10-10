@@ -8,6 +8,7 @@ import type {
   Person,
   ProfilePage,
   Thing,
+  WebPage,
   WebSite,
 } from "schema-dts";
 import { EXPERIENCES } from "@/lib/constants/experiences";
@@ -132,28 +133,39 @@ const getWebSite = ({ locale }: Context): WebSite => ({
   publisher: { "@id": PERSON_ID },
 });
 
-/** The page itself, as a profile of the person. Both pages of the site are about them. */
-const getProfilePage = (page: PageId, { locale, dictionary }: Context): ProfilePage => {
+/**
+ * The page itself. A page about the person is a `ProfilePage` whose main entity is the
+ * person; any other page is a plain `WebPage`.
+ */
+const getWebPage = (
+  page: PageId,
+  type: "ProfilePage" | "WebPage",
+  { locale, dictionary }: Context,
+): ProfilePage | WebPage => {
   const url = getPageUrl(page, locale);
   const { title, description } = getPageTexts(page, dictionary);
 
   return {
-    "@type": "ProfilePage",
+    "@type": type,
     "@id": `${url}#webpage`,
     url,
     name: title,
     description,
     inLanguage: locale,
     isPartOf: { "@id": WEBSITE_ID },
-    mainEntity: { "@id": PERSON_ID },
     dateCreated: PAGES[page].createdAt,
     dateModified: PAGES[page].updatedAt,
-    primaryImageOfPage: {
-      "@type": "ImageObject",
-      url: AVATAR_URL,
-      width: `${AVATAR_SIZE}`,
-      height: `${AVATAR_SIZE}`,
-    },
+    ...(type === "ProfilePage"
+      ? {
+          mainEntity: { "@id": PERSON_ID },
+          primaryImageOfPage: {
+            "@type": "ImageObject",
+            url: AVATAR_URL,
+            width: `${AVATAR_SIZE}`,
+            height: `${AVATAR_SIZE}`,
+          },
+        }
+      : { publisher: { "@id": PERSON_ID } }),
     ...(page !== "home" && { breadcrumb: { "@id": `${url}#breadcrumb` } }),
   };
 };
@@ -210,14 +222,18 @@ const getPersonalProjects = ({ locale, dictionary }: Context): ItemList => {
 const PAGE_GRAPHS: Record<PageId, (context: Context) => Thing[]> = {
   home: (context) => [
     getWebSite(context),
-    getProfilePage("home", context),
+    getWebPage("home", "ProfilePage", context),
     getPerson("summary", context),
     getPersonalProjects(context),
   ],
   resume: (context) => [
-    getProfilePage("resume", context),
+    getWebPage("resume", "ProfilePage", context),
     getPerson("full", context),
     getBreadcrumb("resume", context.dictionary.header.menu.resume, context),
+  ],
+  legal: (context) => [
+    getWebPage("legal", "WebPage", context),
+    getBreadcrumb("legal", context.dictionary.legal.title, context),
   ],
 };
 

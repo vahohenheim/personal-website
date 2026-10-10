@@ -13,10 +13,11 @@ const FALLBACK_MESSAGES = {
   title: "Oops, an error occurred!",
   description:
     "Please try again later or contact me directly by <1>linkedin</1> if the issue persists.",
+  retry: "try again",
   "back-to-homepage": "back to homepage",
 };
 
-export default function Error() {
+export default function Error({ retry }: { error: Error; retry: () => void }) {
   const params = useParams<{ locale?: string }>();
   const locale = hasLocale(params.locale) ? params.locale : DEFAULT_LOCALE;
   const messages = useErrorMessages() ?? FALLBACK_MESSAGES;
@@ -24,7 +25,10 @@ export default function Error() {
   const [before, linkLabel, after] = messages.description.split(/<\/?1>/);
 
   return (
-    <main className="container mx-auto flex h-full grow flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
+    <main
+      id="main"
+      className="container mx-auto flex h-full grow flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8"
+    >
       <div className="mx-auto max-w-md text-center">
         <CircleX size={48} className="mx-auto mb-4" />
         <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -37,8 +41,15 @@ export default function Error() {
           )}
           {after}
         </p>
-        <div className="mt-6">
-          <Button asChild>
+        <div className="mt-6 flex items-center justify-center gap-3">
+          <Button
+            onClick={() => {
+              retry();
+            }}
+          >
+            {messages.retry}
+          </Button>
+          <Button asChild variant="outline">
             <Link href={`/${locale}/`}>{messages["back-to-homepage"]}</Link>
           </Button>
         </div>

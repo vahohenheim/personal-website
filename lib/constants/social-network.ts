@@ -10,29 +10,29 @@ export const SOCIAL_NETWORK_LINKS = {
 
 export const MAIL_LINK = {
   type: SocialNetworkType.MAIL,
-  alt: "mail icon",
+  label: "Email",
   link: SOCIAL_NETWORK_LINKS[SocialNetworkType.MAIL],
 };
 
 export const SOCIAL_NETWORKS = [
   {
     type: SocialNetworkType.GITHUB,
-    alt: "github logo",
+    label: "GitHub",
     link: SOCIAL_NETWORK_LINKS[SocialNetworkType.GITHUB],
   },
   {
     type: SocialNetworkType.DRIBBBLE,
-    alt: "dribbble logo",
+    label: "Dribbble",
     link: SOCIAL_NETWORK_LINKS[SocialNetworkType.DRIBBBLE],
   },
   {
     type: SocialNetworkType.BEHANCE,
-    alt: "behance logo",
+    label: "Behance",
     link: SOCIAL_NETWORK_LINKS[SocialNetworkType.BEHANCE],
   },
   {
     type: SocialNetworkType.LINKEDIN,
-    alt: "linkedin logo",
+    label: "LinkedIn",
     link: SOCIAL_NETWORK_LINKS[SocialNetworkType.LINKEDIN],
   },
 ];

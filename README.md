@@ -1,14 +1,14 @@
 # valentinbourreau.com
 
-Personal website of Valentin Bourreau, senior front-end engineer: a home page and an online
-resume, in English and French. Live at [valentinbourreau.com](https://www.valentinbourreau.com).
+Personal website of Valentin Bourreau, senior front-end engineer: a home page, an online
+resume and a legal notice, in English and French. Live at [valentinbourreau.com](https://www.valentinbourreau.com).
 
 Built with Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4 and shadcn/ui.
 Every page is generated at build time: no database, no form, no environment variable.
 
 ## Getting started
 
-Requires Node 20.9 or later.
+Requires Node 22 or later (`.nvmrc` pins 24).
 
 ```bash
 npm install
@@ -53,7 +53,8 @@ Open [http://localhost:3000](http://localhost:3000): the root URL redirects to `
 - **The portrait**: replace [public/avatar.jpg](public/avatar.jpg) with another square image
   ([frontend/styling.md](docs/frontend/styling.md#portrait)).
 
-Before pushing, run `npm run check` and `npm run build`.
+Before pushing, run `npm run check` and `npm run build`. A GitHub Actions workflow runs both
+on every push.
 
 ## Deployment
 
@@ -65,3 +66,8 @@ dependencies and troubleshoot.
 
 The working rules and the request log are in [CLAUDE.md](CLAUDE.md). The main one: **every
 change updates, in the same commit, the pages of [docs/](docs/README.md) that cover it.**
+
+## Licence
+
+The code, the texts and the images are © Valentin Bourreau, all rights reserved. The
+repository is public for reference; it is not open source.

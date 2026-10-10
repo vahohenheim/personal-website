@@ -19,18 +19,19 @@ file in the `related_code` fields.
 
 ## Pages
 
-| Page                                                       | Description                                                                                                      |
-| ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| [architecture/overview.md](architecture/overview.md)       | Stack, folder structure, how a request is served, what is static and what is not.                                |
-| [architecture/i18n.md](architecture/i18n.md)               | Locales, the `proxy.ts` redirect, dictionaries read through `next/root-params`, adding a locale.                 |
-| [architecture/security.md](architecture/security.md)       | Content Security Policy and security headers, and what they imply for images and third-party services.           |
-| [content/resume-data.md](content/resume-data.md)           | How resume data and texts are split and linked by identifiers; adding an experience, a project, a qualification. |
-| [features/pages.md](features/pages.md)                     | The pages of the site (home, resume, 404, error) and the checklist to add one.                                   |
-| [features/seo.md](features/seo.md)                         | Meta tags, canonical and `hreflang`, sitemap, robots, and the JSON-LD graph of each page.                        |
-| [frontend/components.md](frontend/components.md)           | Component conventions, shadcn/ui usage, icons, links and buttons.                                                |
-| [frontend/styling.md](frontend/styling.md)                 | Tailwind v4 theme, light and dark mode, font, portrait.                                                          |
-| [development/code-quality.md](development/code-quality.md) | TypeScript, ESLint and Prettier setup, what the lint expects, the checks to run.                                 |
-| [operations/runbook.md](operations/runbook.md)             | Local setup, commands, deployment, dependency upgrades, troubleshooting.                                         |
+| Page                                                               | Description                                                                                                                                                     |
+| ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [architecture/overview.md](architecture/overview.md)               | Stack, folder structure, how a request is served, what is static and what is not.                                                                               |
+| [architecture/i18n.md](architecture/i18n.md)                       | Locales, the `proxy.ts` redirect, dictionaries read through `next/root-params`, adding a locale.                                                                |
+| [architecture/security.md](architecture/security.md)               | Content Security Policy and security headers, `security.txt`, the DNS records still to add, and what all this implies for third-party services.                 |
+| [content/resume-data.md](content/resume-data.md)                   | How resume data and texts are split and linked by identifiers; adding an experience, a project, a qualification.                                                |
+| [features/pages.md](features/pages.md)                             | The pages of the site (home, resume, legal notice, 404, error) and the checklist to add one.                                                                    |
+| [features/seo.md](features/seo.md)                                 | Meta tags, canonical and `hreflang`, sitemap, robots, and the JSON-LD graph of each page.                                                                       |
+| [frontend/components.md](frontend/components.md)                   | Component conventions, shadcn/ui usage, icons, links and buttons.                                                                                               |
+| [frontend/styling.md](frontend/styling.md)                         | Tailwind v4 theme, light and dark mode, font, portrait.                                                                                                         |
+| [development/code-quality.md](development/code-quality.md)         | TypeScript, ESLint and Prettier setup, what the lint expects, the checks to run.                                                                                |
+| [operations/runbook.md](operations/runbook.md)                     | Local setup, commands, continuous integration, Node version, deployment, dependency upgrades, troubleshooting.                                                  |
+| [audits/2026-10-10-full-audit.md](audits/2026-10-10-full-audit.md) | Audit of 2026-10-10: security, performance, accessibility, SEO, technical health and French legal obligations, with measurements, priorities and an action log. |
 
 ## Conventions
 
@@ -39,5 +40,6 @@ file in the `related_code` fields.
 - **Relative links** between pages and to the code.
 - **Language:** English, like everything else in this repository.
 - **No secrets.** The site has no environment variable today; if one appears, document its name only, never its value.
+- **Audits** are dated pages under `audits/`. They are a snapshot: do not rewrite the findings afterwards, record what was done in their action log.
 - **Maintenance:** every change to the site updates, in the same change, the pages that cover it and their `last_updated`. If no page covers the topic, create one and add it to the table above.
 - **Request log:** every request handled through Claude Code is recorded in one line in the "Request log" section of [CLAUDE.md](../CLAUDE.md), then reflected in the pages concerned here.

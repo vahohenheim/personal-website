@@ -62,9 +62,13 @@ applied by [AppearComponent](../../components/appear/appear.tsx)).
 
 - The content is in the HTML and visible without JavaScript. An earlier version hid it
   until a script ran, which left the top of the page blank for seconds.
-- Above the fold: a 0.4 s fade, with a stagger of at most 0.2 s. Keep delays short.
-- Below the fold: `onScroll` reveals a block as it enters the viewport, with CSS
-  scroll-driven animations. Browsers without them show the block as is.
+- The title and the portrait are never animated: they are the largest paint of the page,
+  and fading them in delays it.
+- Above the fold, secondary content (summary, buttons) fades in over 0.4 s, with a delay of
+  at most 0.1 s.
+- Below the fold, `onScroll` slides a block up as it enters the viewport, with CSS
+  scroll-driven animations. It only moves and never fades: a block resting at the edge of
+  the screen has to stay readable. Browsers without them show the block as is.
 - Nothing moves under `prefers-reduced-motion`.
 - The header and the footer are never animated.
 

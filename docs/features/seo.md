@@ -25,9 +25,11 @@ the current locale, so they always match what the page shows. Nothing is written
 `getPageMetadata("<page>")` in [lib/helpers/metadata.ts](../../lib/helpers/metadata.ts)
 returns, for the current locale:
 
-- the translated title and description (`metadata.*`, `resume.metadata.*`);
+- the translated title and description (`metadata.*`, `resume.metadata.*`,
+  `legal.metadata.*`). Keep descriptions under 155 characters: search engines cut the rest;
 - the canonical URL and the `hreflang` alternates of every locale, plus `x-default`;
-- the Open Graph data (URL, site name, locale, portrait).
+- the Open Graph data (URL, site name, locale, portrait), and a Twitter card of type
+  `summary`, the one made for a square image.
 
 Every page exports it: `export const generateMetadata = () => getPageMetadata("home")`.
 
@@ -52,6 +54,7 @@ set once, in `SITE_URL` ([site.ts](../../lib/constants/site.ts)).
 | ------ | ----------------------------------------------------------------------------------------- |
 | Home   | `WebSite` (site name), `ProfilePage`, `Person` (summary), `ItemList` of personal projects |
 | Resume | `ProfilePage`, `Person` (full), `BreadcrumbList`                                          |
+| Legal  | `WebPage`, `BreadcrumbList`                                                               |
 
 ```mermaid
 flowchart LR
@@ -83,7 +86,8 @@ Taken from Google's documentation on
 - One `Person` (`…/#person`) and one `WebSite` (`…/#website`) for the whole site. Other
   nodes point to them with `{ "@id": … }` instead of repeating them.
 - `WebSite` is emitted on the home page only, which is where Google reads the site name.
-- A page about Valentin is a `ProfilePage` with `mainEntity` set to the person. A page
+- A page about Valentin is a `ProfilePage` with `mainEntity` set to the person
+  (`getWebPage(page, "ProfilePage", …)`); the legal page is a plain `WebPage`. A page
   about something else takes the type of its content (`BlogPosting` for a post,
   `CollectionPage` for a list), with `author` pointing to the person.
 - Every page except the home page gets a `BreadcrumbList` (Google needs at least two items).
@@ -98,5 +102,5 @@ Taken from Google's documentation on
 - After deployment: run Google's
   [Rich Results Test](https://search.google.com/test/rich-results) on the live URL.
 
-On 2026-10-10 the validator reported no error and no warning on both pages. The Rich
+On 2026-10-10 the validator reported no error and no warning on the home page and the resume. The Rich
 Results Test has not been run yet.

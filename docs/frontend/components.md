@@ -10,6 +10,9 @@ related_code:
   - ../../components/section/section.tsx
   - ../../components/appear/appear.tsx
   - ../../components/cover/cover.tsx
+  - ../../components/ui/nav-link/nav-link.ts
+  - ../../components/skip-link/skip-link.tsx
+  - ../../components/companies/companies.tsx
   - ../../components/wordmark/wordmark.tsx
   - ../../components/header/header.tsx
   - ../../components/personal-project/personal-project.tsx
@@ -46,12 +49,13 @@ into [components/ui/](../../components/ui/). Only what is used is kept.
 | `HeaderComponent`, `FooterComponent` | Rendered by the root layout, never animated                                                                    |
 | `WordmarkComponent`                  | The site signature in the header: the name with a contrast of weights, initials under 640 px                   |
 | `JsonLdComponent`                    | Structured data of a page ([seo.md](../features/seo.md))                                                       |
+| `SkipLinkComponent`                  | "Skip to content" link, visible on keyboard focus                                                              |
 
 ## shadcn/ui
 
 - Style `new-york`, configured in [components.json](../../components.json).
-- Installed today: `badge`, `button`, `dropdown-menu`, `navigation-menu`. `heading` and
-  `mode-toggle` in the same folder are custom.
+- Installed today: `badge`, `button`, `dropdown-menu`. `heading`, `mode-toggle` and
+  `nav-link` in the same folder are custom.
 - Add one with `npx shadcn@latest add <component>`. Here each component sits in its own
   folder (`components/ui/button/button.tsx`): move the generated file and import from
   `@/components/ui/button/button`.
@@ -60,10 +64,21 @@ into [components/ui/](../../components/ui/). Only what is used is kept.
 ## Links and buttons
 
 - A link that looks like a button: `<Button asChild><Link href="…">…</Link></Button>`.
-- A navigation link: `<NavigationMenuLink asChild><Link … /></NavigationMenuLink>`.
+- A link in a navigation list (header menu, social links) is a plain `<a>` or `<Link>` in
+  a `<ul>`, styled with `navLinkStyle`. Radix `navigation-menu` was removed: it shipped
+  client code to render static links.
 - Never nest a `<button>` or an `<a>` inside a `<Link>`.
 - Internal links carry the locale and a trailing slash ([i18n.md](../architecture/i18n.md)).
 - External links open in a new tab with `rel="noopener noreferrer"`.
+
+## Accessibility
+
+- Every link and button has a name. An icon-only one gets an `aria-label` taken from the
+  dictionaries (`a11y.*`) or from the data (`SocialNetwork.label`, the company name). A
+  link that opens a new tab says so (`a11y.newTab`).
+- `SkipLinkComponent` is the first element of the page and jumps to `<main id="main">`.
+  Every page and special file renders that `main`.
+- Lighthouse accessibility was 100 on all pages on 2026-10-10. Keep it there.
 
 ## Icons
 

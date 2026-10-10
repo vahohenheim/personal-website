@@ -3,6 +3,7 @@ title: Security headers
 description: Content Security Policy and security headers set on every route, and what they imply for images, fonts and third-party services.
 related_code:
   - ../../next.config.ts
+  - ../../public/.well-known/security.txt
 last_updated: 2026-10-10
 ---
 
@@ -25,13 +26,13 @@ service therefore starts with a change to the policy.
 
 ## Content Security Policy
 
-| Directive                                            | Allowed                                         |
-| ---------------------------------------------------- | ----------------------------------------------- |
-| `default-src`, `font-src`, `base-uri`, `form-action` | same origin                                     |
-| `script-src`                                         | same origin, inline, `eval` (needed by Next.js) |
-| `style-src`                                          | same origin, inline                             |
-| `img-src`                                            | same origin, `blob:`, `data:`                   |
-| `object-src`, `frame-ancestors`                      | none                                            |
+| Directive                                            | Allowed                                                                           |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `default-src`, `font-src`, `base-uri`, `form-action` | same origin                                                                       |
+| `script-src`                                         | same origin and inline. `eval` is added in development only, where React needs it |
+| `style-src`                                          | same origin, inline                                                               |
+| `img-src`                                            | same origin, `blob:`, `data:`                                                     |
+| `object-src`, `frame-ancestors`                      | none                                                                              |
 
 ## What it implies
 
@@ -44,3 +45,21 @@ service therefore starts with a change to the policy.
   origin is blocked until the policy allows it. Open the policy explicitly, document it
   here and record it in the request log.
 - **SVG.** `images.dangerouslyAllowSVG` is on, with a sandboxed policy for optimised images.
+
+## Disclosure contact
+
+[public/.well-known/security.txt](../../public/.well-known/security.txt) gives the address
+to report a vulnerability. It carries an expiry date: renew it before 2027-10-10.
+
+## Outside the repository
+
+Two protections are DNS records, set at the domain provider and not in this code:
+
+- **DMARC.** The domain has an SPF record but no DMARC policy, so mail can be forged in its
+  name. Add a `TXT` record on `_dmarc.valentinbourreau.com`, starting with
+  `v=DMARC1; p=quarantine; rua=mailto:contact@valentinbourreau.com`, and enable DKIM at the
+  mail provider.
+- **CAA.** A `CAA` record limits which authorities may issue certificates for the domain.
+  Vercel uses Let's Encrypt: `0 issue "letsencrypt.org"`.
+
+Both were still missing on 2026-10-10.

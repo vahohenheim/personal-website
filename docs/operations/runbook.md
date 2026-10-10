@@ -4,6 +4,8 @@ description: Local setup, commands, deployment to Vercel, dependency upgrades an
 related_code:
   - ../../package.json
   - ../../next.config.ts
+  - ../../.github/workflows/ci.yml
+  - ../../.nvmrc
   - ../../AGENTS.md
   - ../../.gitignore
 last_updated: 2026-10-10
@@ -11,7 +13,7 @@ last_updated: 2026-10-10
 
 # Runbook
 
-**Summary.** The site needs Node 20.9 or later and nothing else: no environment variable,
+**Summary.** The site needs Node 22 or later (24 is the pinned version) and nothing else: no environment variable,
 no database, no external service to configure. A push to `main` deploys to production on
 Vercel.
 
@@ -34,6 +36,22 @@ browser language.
 
 `next dev` generates `AGENTS.md`, which points coding agents to the Next.js documentation
 shipped in `node_modules/next/dist/docs/`. Do not edit it; commit it when it changes.
+
+## Continuous integration
+
+[.github/workflows/ci.yml](../../.github/workflows/ci.yml) runs on every push to `main` and
+on pull requests: `npm ci`, `npm run check`, `npm run build`, on the Node version of
+`.nvmrc`. It does not gate the deployment: Vercel builds on its own. A red run means the
+commit that is live fails a check; fix it in the next push.
+
+Without the GitHub CLI, the last runs are visible at
+`https://api.github.com/repos/vahohenheim/personal-website/actions/runs?per_page=3`.
+
+## Node version
+
+`.nvmrc` pins Node 24 (the LTS line) for local work and CI; `engines` in `package.json`
+requires 22 or later, which is also what Vercel reads to choose its runtime. Node 20
+reached end of life in April 2026.
 
 ## Deployment
 
@@ -78,8 +96,8 @@ goes away.
 - `npm audit` reports 5 high-severity advisories in `braces`, `micromatch` and `fast-glob`,
   all reached through `eslint-config-next` (lint tooling only, nothing shipped to the
   browser). No fixed release exists yet.
-- Local Node is 20.15.1 and the repository pins no Node version (no `engines`, no
-  `.nvmrc`), while `@types/node` is on 26.
+- The machine used on 2026-10-10 still runs Node 20.15.1: `npm install` prints an engine
+  warning there until Node is upgraded (`nvm install`).
 - Under `public/`, only `avatar.jpg` is referenced by the code (logos are React components in
   `components/icons/`). The other files may still be linked from outside the site, so check
   before deleting.

@@ -13,7 +13,7 @@ const DurationComponent = ({
 
   return (
     <span
-      className="w-[760px] shrink-0 grow-0 self-stretch text-base font-semibold"
+      className="self-stretch text-base font-semibold"
       dangerouslySetInnerHTML={{ __html: content }}
     />
   );

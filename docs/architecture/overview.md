@@ -14,7 +14,7 @@ last_updated: 2026-10-10
 # Architecture overview
 
 **Summary.** The site is a Next.js 16 application (App Router, Turbopack) deployed on
-Vercel. It has two pages, the home page and the resume, each in English and French. Every
+Vercel. It has three pages (home, resume, legal notice), each in English and French. Every
 page is generated at build time: there is no database, no form, no API route and no
 environment variable. The only code that runs per request is `proxy.ts`, which redirects
 URLs that carry no locale.
@@ -60,6 +60,7 @@ app/
     resume/
       page.tsx              Resume
       _components/          Resume-only components (private folder, never routed)
+    legal/page.tsx          Legal notice and privacy
 components/                 Components shared across pages
   ui/                       shadcn/ui components
   icons/                    SVGs as React components

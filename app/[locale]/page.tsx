@@ -19,7 +19,7 @@ export default async function HomePage() {
   const { home } = await getDictionary();
 
   return (
-    <main>
+    <main id="main">
       <JsonLdComponent page="home" />
       <CoverComponent
         ontitle={home.ontitle}

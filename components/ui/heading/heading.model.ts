@@ -1,10 +1,10 @@
-import { type ReactNode } from "react";
-
 export type HeadingComponentProps = {
   tag: HeadingTags;
   className?: string;
-  apperance?: HeadingTags;
-  children: ReactNode;
+  /** Renders the size of another heading level. */
+  appearance?: HeadingTags;
+  /** Text from the dictionaries. It may contain HTML, so never pass external data. */
+  children: string;
 };
 
 export enum HeadingTags {

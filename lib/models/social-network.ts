@@ -1,6 +1,7 @@
 export type SocialNetwork = {
   type: SocialNetworkType;
-  alt: string;
+  /** Name read by screen readers: the link only shows an icon. */
+  label: string;
   link: string;
 };
 

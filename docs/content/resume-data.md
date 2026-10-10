@@ -30,19 +30,19 @@ enums, a missing entry or text fails the type check.
 
 ## The model
 
-| Data              | Model                                   | Constant                                     | Dictionary keys                                                    |
-| ----------------- | --------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------ |
-| Companies         | `CompanyId`                             | `COMPANIES` (`companies.ts`)                 | `companies.list.<id>.name`                                         |
-| Experiences       | `Experience`                            | `EXPERIENCES` (`experiences.ts`)             | none, through the company and the missions                         |
-| Missions          | `MissionId`                             | `MISSIONS` (`experiences.ts`)                | `experiences.roles.<id>.content`                                   |
-| Roles             | `RoleId`                                | inside each mission                          | `roles.<id>`                                                       |
-| Qualifications    | `QualificationId`, `QualificationLevel` | `QUALIFICATIONS` (`qualifications.ts`)       | `qualifications.list.<id>.label`, `qualifications.level.<id>.name` |
-| Schools           | `SchoolId`                              | `SCHOOLS` (`qualifications.ts`)              | `schools.list.<id>.name`                                           |
-| Languages         | `LanguageId`, `LanguageLevel`           | `USER_LANGUAGES` (`languages.ts`)            | `languages.list.<id>.name`, `languages.level.<id>.name`            |
-| Expertises        | `ExpertiseId`                           | `EXPERTISES` (`resume.ts`)                   | `expertises.list.<id>.{label,title,text}`                          |
-| Personal projects | `PersonalProjectId`                     | `PERSONAL_PROJECTS` (`personal-projects.ts`) | `personal-projects.list.<id>.{title,description}`                  |
-| Social networks   | `SocialNetworkType`                     | `SOCIAL_NETWORKS` (`social-network.ts`)      | none                                                               |
-| Skills            | none                                    | `SKILLS` (`skills.ts`)                       | none, used by the structured data only                             |
+| Data              | Model                                   | Constant                                                                         | Dictionary keys                                                    |
+| ----------------- | --------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Companies         | `CompanyId`                             | `COMPANIES` (`companies.ts`)                                                     | `companies.list.<id>.name`                                         |
+| Experiences       | `Experience`                            | `EXPERIENCES` (`experiences.ts`)                                                 | none, through the company and the missions                         |
+| Missions          | `MissionId`                             | `MISSIONS` (`experiences.ts`)                                                    | `experiences.roles.<id>.content`                                   |
+| Roles             | `RoleId`                                | inside each mission                                                              | `roles.<id>`                                                       |
+| Qualifications    | `QualificationId`, `QualificationLevel` | `QUALIFICATIONS` (`qualifications.ts`)                                           | `qualifications.list.<id>.label`, `qualifications.level.<id>.name` |
+| Schools           | `SchoolId`                              | `SCHOOLS` (`qualifications.ts`)                                                  | `schools.list.<id>.name`                                           |
+| Languages         | `LanguageId`, `LanguageLevel`           | `USER_LANGUAGES` (`languages.ts`)                                                | `languages.list.<id>.name`, `languages.level.<id>.name`            |
+| Expertises        | `ExpertiseId`                           | `EXPERTISES` (`resume.ts`)                                                       | `expertises.list.<id>.{label,title,text}`                          |
+| Personal projects | `PersonalProjectId`                     | `PERSONAL_PROJECTS` (`personal-projects.ts`)                                     | `personal-projects.list.<id>.{title,description}`                  |
+| Social networks   | `SocialNetworkType`                     | `SOCIAL_NETWORKS` (`social-network.ts`), with the `label` read by screen readers | `a11y.email` for the mail link                                     |
+| Skills            | none                                    | `SKILLS` (`skills.ts`)                                                           | none, used by the structured data only                             |
 
 Texts are read by indexing the dictionary with the identifier:
 

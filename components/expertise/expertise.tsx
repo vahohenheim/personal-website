@@ -13,7 +13,7 @@ export const Expertise = async ({ expertise }: ExpertiseComponentProps) => {
         className="text-base font-semibold text-muted-foreground"
         dangerouslySetInnerHTML={{ __html: texts.label }}
       />
-      <HeadingComponent tag={HeadingTags.H2} apperance={HeadingTags.H3} className="mb-0">
+      <HeadingComponent tag={HeadingTags.H2} appearance={HeadingTags.H3} className="mb-0">
         {texts.title}
       </HeadingComponent>
       <p className="text-muted-foreground" dangerouslySetInnerHTML={{ __html: texts.text }} />

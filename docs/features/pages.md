@@ -5,6 +5,8 @@ related_code:
   - ../../app/[locale]/page.tsx
   - ../../app/[locale]/resume/page.tsx
   - ../../app/[locale]/resume/_components/
+  - ../../app/[locale]/legal/page.tsx
+  - ../../components/footer/footer.tsx
   - ../../app/[locale]/not-found.tsx
   - ../../app/[locale]/error.tsx
   - ../../app/[locale]/[...rest]/page.tsx
@@ -15,8 +17,8 @@ last_updated: 2026-10-10
 
 # Pages
 
-**Summary.** The site has two public pages, each in English and French, plus a translated
-404 page and a translated error page. Pages are declared in
+**Summary.** The site has three public pages, each in English and French (home, resume,
+legal notice), plus a translated 404 page and a translated error page. Pages are declared in
 [lib/constants/pages.ts](../../lib/constants/pages.ts): metadata, the sitemap and the
 structured data are keyed by that list, so a page cannot be added without completing them.
 
@@ -44,6 +46,18 @@ structured data are keyed by that list, so a page cannot be added without comple
 The components used only here live in
 [resume/_components/](../../app/[locale]/resume/_components/).
 
+## Legal notice and privacy: `/[locale]/legal/`
+
+[app/[locale]/legal/page.tsx](../../app/[locale]/legal/page.tsx) renders the sections of
+`legal.sections` in the dictionaries: publisher, hosting, intellectual property, personal
+data, cookies and local storage, rights. The footer links to it on every page.
+
+It exists because French law requires a site to name at least its hosting provider, and
+the GDPR requires visitors to be told how their data is handled. Keep it true: whenever a
+tool that touches visitor data is added, removed or changed (analytics, fonts or scripts
+from another origin, a form, a cookie), update the texts in both languages and bump
+`updatedAt` for `legal` in `PAGES`. The date shown on the page comes from there.
+
 ## 404 and error
 
 - **404.** An unknown URL under a locale reaches `[...rest]/page.tsx`, which calls
@@ -52,7 +66,8 @@ The components used only here live in
   a locale is first redirected by `proxy.ts`.
 - **Error.** [error.tsx](../../app/[locale]/error.tsx) is a Client Component. It gets its
   texts from a context set by the root layout ([i18n.md](../architecture/i18n.md)) and
-  falls back to English if the context is missing.
+  falls back to English if the context is missing. It offers a "try again" button, wired to
+  the `retry` function Next.js passes to error boundaries, and a link to the home page.
 
 ## Header menu
 

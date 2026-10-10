@@ -2,13 +2,81 @@ const en = {
   metadata: {
     title: "Senior Front-end Engineer | valentin bourreau",
     description:
-      "Senior front-end engineer with over a decade of experience in software and web development. Passionate about building products, user experiences and team management. I mainly work with React 19, Next.js 16 and Angular 17. Paris, France",
+      "Valentin Bourreau, senior front-end engineer in Paris. Over a decade building products with React, Next.js and Angular, and leading front-end teams.",
   },
   person: {
     jobTitle: "Senior front-end engineer",
   },
   breadcrumb: {
     home: "Home",
+  },
+  a11y: {
+    skipToContent: "Skip to content",
+    mainMenu: "Main menu",
+    socialNetworks: "Profiles and contact",
+    email: "Email",
+    newTab: "(opens in a new tab)",
+    portrait: "Portrait of Valentin Bourreau",
+    toggleLanguage: "Change language",
+    toggleTheme: "Change theme",
+    themeLight: "Light",
+    themeDark: "Dark",
+    themeSystem: "System",
+  },
+  legal: {
+    title: "legal notice and privacy",
+    updated: "Last updated on {date}.",
+    metadata: {
+      title: "Legal notice and privacy | valentin bourreau",
+      description:
+        "Publisher and host of valentinbourreau.com, and how the site handles visitor data: audience measurement, hosting, cookies and your rights.",
+    },
+    sections: [
+      {
+        heading: "Publisher",
+        paragraphs: [
+          "This website is published by Valentin Bourreau, in a personal capacity.",
+          "Contact: contact@valentinbourreau.com.",
+        ],
+      },
+      {
+        heading: "Hosting",
+        paragraphs: [
+          "The site is hosted by Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, United States (vercel.com).",
+        ],
+      },
+      {
+        heading: "Intellectual property",
+        paragraphs: [
+          "The texts, the portrait and the source code are the work of Valentin Bourreau. All rights reserved.",
+          "The logos of the companies mentioned belong to their owners. They are shown only to indicate where he worked.",
+        ],
+      },
+      {
+        heading: "Personal data",
+        paragraphs: [
+          "This site has no account, no form and no advertising. Valentin Bourreau is the controller of the processing described below.",
+          "Audience measurement. Vercel Web Analytics counts page views, to know how the site is used. According to Vercel, it sets no cookie, recognises a visit through a hash of the incoming request that is discarded after 24 hours, and records with each page view the page, the referring site, the country and region, the browser, the operating system and the type of device. The statistics are aggregated.",
+          "Hosting. Like any host, Vercel processes the IP address and the technical data of each request to deliver the pages and to protect the service, for the period it sets.",
+          "Legal basis. The legitimate interest in running the site, keeping it secure and knowing its audience.",
+          "Recipients and transfers. Vercel Inc. acts as a processor. It is established in the United States, so data may be processed outside the European Union, under the safeguards set out in Vercel’s data processing agreement.",
+          "Email. If you write to the contact address, your message and your address are used only to reply to you.",
+        ],
+      },
+      {
+        heading: "Cookies and local storage",
+        paragraphs: [
+          "The site keeps two preferences in your browser, and only when you change them: the language (a cookie named NEXT_LOCALE, kept for one year) and the light or dark theme (local storage). They are not used to track you and need no consent.",
+        ],
+      },
+      {
+        heading: "Your rights",
+        paragraphs: [
+          "Under the GDPR, you can ask to access, correct or delete your data, or object to their processing, by writing to contact@valentinbourreau.com.",
+          "You can also lodge a complaint with the French data protection authority, the CNIL (cnil.fr).",
+        ],
+      },
+    ],
   },
   header: {
     menu: {
@@ -32,7 +100,7 @@ const en = {
     metadata: {
       title: "Resume | valentin bourreau",
       description:
-        "Resume of a senior front-end engineer with over a decade of experience in software and web development. Passionate about building products, user experiences and team management. I mainly work with React 19, Next.js 16 and Angular 17. Paris, France",
+        "Resume of Valentin Bourreau, senior front-end engineer in Paris: experience, skills and qualifications in React, Next.js, Angular and team leadership.",
     },
   },
   "personal-projects": {
@@ -239,9 +307,11 @@ const en = {
     title: "Oops, an error occurred!",
     description:
       "We’re sorry, but there seems to be a problem on our end. Please try again later or contact me directly by <1>linkedin</1> if the issue persists.",
+    retry: "try again",
     "back-to-homepage": "back to homepage",
   },
   footer: {
+    legal: "legal notice and privacy",
     // {year} is replaced by the current year in the footer component.
     copyright: "Copyright © {year}. All rights reserved, Valentin Bourreau.",
   },

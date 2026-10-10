@@ -37,6 +37,8 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Skip Next.js internals, API routes and every file with an extension.
-  matcher: ["/((?!api|_next|.*\\..*).*)"],
+  // Skip Next.js internals, API routes, every file with an extension, and URLs that
+  // already start with a locale, so that pages are served by the CDN without running
+  // this function. The matcher must be a literal: keep the locales in line with LOCALES.
+  matcher: ["/((?!api|_next|en(?:/|$)|fr(?:/|$)|.*\\..*).*)"],
 };

@@ -1,12 +1,6 @@
 import Link from "next/link";
 import { ModeToggle } from "@/components/ui/mode-toggle/mode-toggle";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu/navigation-menu";
+import { navLinkStyle } from "@/components/ui/nav-link/nav-link";
 import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
 import { cn } from "@/lib/utils/cn";
 import { HEADER_NAVIGATION_MENU_ITEMS } from "./header.constants";
@@ -15,7 +9,7 @@ import WordmarkComponent from "../wordmark/wordmark";
 
 const HeaderComponent = async () => {
   const locale = await getLocale();
-  const { header } = await getDictionary();
+  const { header, a11y } = await getDictionary();
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/80">
@@ -25,24 +19,28 @@ const HeaderComponent = async () => {
             <WordmarkComponent />
           </Link>
           {/* Visible at every width: on a phone it is the only way to reach the other pages. */}
-          <NavigationMenu>
-            <NavigationMenuList>
+          <nav aria-label={a11y.mainMenu}>
+            <ul className="flex list-none items-center space-x-1">
               {HEADER_NAVIGATION_MENU_ITEMS.map((item) => (
-                <NavigationMenuItem key={item.id}>
-                  <NavigationMenuLink
-                    asChild
-                    className={cn(navigationMenuTriggerStyle(), "max-sm:px-3")}
-                  >
-                    <Link href={`/${locale}${item.href}`}>{header.menu[item.id]}</Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+                <li key={item.id}>
+                  <Link className={cn(navLinkStyle, "max-sm:px-3")} href={`/${locale}${item.href}`}>
+                    {header.menu[item.id]}
+                  </Link>
+                </li>
               ))}
-            </NavigationMenuList>
-          </NavigationMenu>
+            </ul>
+          </nav>
         </div>
         <div className="flex items-center gap-1">
-          <LanguageToggle locale={locale} />
-          <ModeToggle />
+          <LanguageToggle locale={locale} label={a11y.toggleLanguage} />
+          <ModeToggle
+            labels={{
+              toggle: a11y.toggleTheme,
+              light: a11y.themeLight,
+              dark: a11y.themeDark,
+              system: a11y.themeSystem,
+            }}
+          />
         </div>
       </div>
     </header>

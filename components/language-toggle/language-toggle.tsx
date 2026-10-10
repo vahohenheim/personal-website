@@ -22,7 +22,7 @@ const saveLocale = (locale: Locale) => {
   document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=${ONE_YEAR_IN_SECONDS}; samesite=lax`;
 };
 
-const LanguageToggle = ({ locale }: { locale: Locale }) => {
+const LanguageToggle = ({ locale, label }: { locale: Locale; label: string }) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -40,18 +40,19 @@ const LanguageToggle = ({ locale }: { locale: Locale }) => {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="text-xs font-semibold uppercase">
           <span aria-hidden>{locale}</span>
-          <span className="sr-only">Toggle Language</span>
+          <span className="sr-only">{label}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {Object.entries(LANGUAGES).map(([code, label]) => (
+        {Object.entries(LANGUAGES).map(([code, name]) => (
           <DropdownMenuItem
             key={code}
+            lang={code}
             onClick={() => {
               navigateToLanguage(code as Locale);
             }}
           >
-            {label}
+            {name}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

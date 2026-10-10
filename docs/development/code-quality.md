@@ -29,7 +29,8 @@ icon maps).
 | `npm run format`       | Prettier on the whole repository             |
 | `npm run format:check` | Prettier, read-only                          |
 
-Before handing work back, `npm run check` and `npm run build` must both pass.
+Before handing work back, `npm run check` and `npm run build` must both pass. The same two
+commands run in CI on every push ([runbook](../operations/runbook.md#continuous-integration)).
 
 The `typegen` step matters: `LayoutProps`, `PageProps` and the exports of `next/root-params`
 are generated types.

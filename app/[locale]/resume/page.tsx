@@ -19,7 +19,7 @@ export default async function ResumePage() {
   const { resume } = await getDictionary();
 
   return (
-    <main>
+    <main id="main">
       <JsonLdComponent page="resume" />
       <CoverComponent
         title={resume.title}

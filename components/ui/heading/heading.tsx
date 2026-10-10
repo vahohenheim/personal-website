@@ -5,13 +5,13 @@ import { type HeadingComponentProps } from "./heading.model";
 export const HeadingComponent = ({
   tag,
   className,
-  apperance,
+  appearance,
   children,
 }: HeadingComponentProps) => {
   return React.createElement(tag, {
     className: cn(
       "w-full max-w-full px-[2px] py-[3px] font-bold break-words whitespace-pre-wrap",
-      apperance,
+      appearance,
       "mb-2",
       className,
     ),

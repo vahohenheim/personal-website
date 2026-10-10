@@ -15,6 +15,7 @@ type PageDefinition = {
 export const PAGES = {
   home: { path: "/", createdAt: "2024-07-12", updatedAt: "2026-10-10" },
   resume: { path: "/resume/", createdAt: "2024-07-12", updatedAt: "2026-10-10" },
+  legal: { path: "/legal/", createdAt: "2026-10-10", updatedAt: "2026-10-10" },
 } as const satisfies Record<string, PageDefinition>;
 
 export type PageId = keyof typeof PAGES;

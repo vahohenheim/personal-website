@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Geist } from "next/font/google";
 import FooterComponent from "@/components/footer/footer";
 import HeaderComponent from "@/components/header/header";
+import SkipLinkComponent from "@/components/skip-link/skip-link";
 import ThemeProvider from "@/components/theme-provider/theme-provider";
 import { MAIL_LINK, SOCIAL_NETWORKS } from "@/lib/constants/social-network";
 import { LOCALES } from "@/lib/i18n/config";
@@ -38,6 +39,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[locale]">)
           enableSystem
           disableTransitionOnChange
         >
+          <SkipLinkComponent label={dictionary.a11y.skipToContent} />
           <HeaderComponent />
           <ErrorMessagesProvider messages={dictionary.error}>{children}</ErrorMessagesProvider>
           <FooterComponent socialNetworks={[MAIL_LINK, ...SOCIAL_NETWORKS]} />

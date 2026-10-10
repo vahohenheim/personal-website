@@ -1,10 +1,7 @@
 import { MailIcon } from "lucide-react";
 import { type ComponentType } from "react";
-import {
-  NavigationMenuItem,
-  NavigationMenuLink,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu/navigation-menu";
+import { navLinkStyle } from "@/components/ui/nav-link/nav-link";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import { SocialNetworkType } from "@/lib/models/social-network";
 import { cn } from "@/lib/utils/cn";
 import { type SocialNetworkComponentProps } from "./social-network.model";
@@ -22,22 +19,22 @@ const SOCIAL_NETWORK_ICONS: Record<SocialNetworkType, ComponentType<IconProps>> 
   [SocialNetworkType.LINKEDIN]: LinkedinIcon,
 };
 
-const SocialNetworkIconComponent = ({ socialNetwork }: SocialNetworkComponentProps) => {
+/** One icon link, as a list item: render it inside a `<ul>`. */
+const SocialNetworkComponent = async ({ socialNetwork }: SocialNetworkComponentProps) => {
+  const { a11y } = await getDictionary();
   const Icon = SOCIAL_NETWORK_ICONS[socialNetwork.type];
+  const isMail = socialNetwork.type === SocialNetworkType.MAIL;
 
-  return <Icon width={20} height={20} className="stroke-foreground" />;
-};
-
-const SocialNetworkComponent = ({ socialNetwork }: SocialNetworkComponentProps) => {
   return (
-    <NavigationMenuItem>
-      <NavigationMenuLink
-        className={cn(navigationMenuTriggerStyle(), "px-2")}
+    <li>
+      <a
+        className={cn(navLinkStyle, "px-2")}
         href={socialNetwork.link}
+        aria-label={isMail ? a11y.email : socialNetwork.label}
       >
-        <SocialNetworkIconComponent socialNetwork={socialNetwork} />
-      </NavigationMenuLink>
-    </NavigationMenuItem>
+        <Icon width={20} height={20} className="stroke-foreground" />
+      </a>
+    </li>
   );
 };
 

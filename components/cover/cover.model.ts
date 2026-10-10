@@ -1,10 +1,9 @@
-import { type ReactNode } from "react";
 import { type SocialNetwork } from "@/lib/models/social-network";
 
 export type CoverComponentProps = {
   ontitle?: string;
   title: string;
-  description?: ReactNode;
+  description?: string;
   avatar: string;
   alignment?: CoverAlignment;
   action: CoverButton;
