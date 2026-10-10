@@ -1,24 +1,32 @@
 import type { Metadata } from "next";
+import { PAGES, type PageId } from "@/lib/constants/pages";
 import { AVATAR_PATH, AVATAR_SIZE, SITE_NAME, SITE_URL } from "@/lib/constants/site";
-import { DEFAULT_LOCALE, LOCALES, OPEN_GRAPH_LOCALES } from "@/lib/i18n/config";
+import { DEFAULT_LOCALE, type Locale, LOCALES, OPEN_GRAPH_LOCALES } from "@/lib/i18n/config";
 import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
-
-const PAGES = {
-  home: "/",
-  resume: "/resume/",
-} as const;
-
-export type PageId = keyof typeof PAGES;
+import { type Dictionary } from "@/locales/en";
 
 /** Path of a page in every locale, used for `hreflang` alternates and the sitemap. */
 export const getLocalizedPaths = (page: PageId) =>
-  Object.fromEntries(LOCALES.map((locale) => [locale, `/${locale}${PAGES[page]}`]));
+  Object.fromEntries(LOCALES.map((locale) => [locale, `/${locale}${PAGES[page].path}`])) as Record<
+    Locale,
+    string
+  >;
+
+/** Absolute URL of a page in one locale. */
+export const getPageUrl = (page: PageId, locale: Locale) =>
+  `${SITE_URL}${getLocalizedPaths(page)[locale]}`;
+
+/** Translated title and description of a page, shared by the meta tags and the structured data. */
+export const getPageTexts = (page: PageId, dictionary: Dictionary) =>
+  ({
+    home: dictionary.metadata,
+    resume: dictionary.resume.metadata,
+  })[page];
 
 /** Translated meta tags of a page, with its canonical URL and language alternates. */
 export const getPageMetadata = async (page: PageId): Promise<Metadata> => {
   const locale = await getLocale();
-  const dictionary = await getDictionary();
-  const { title, description } = page === "home" ? dictionary.metadata : dictionary.resume.metadata;
+  const { title, description } = getPageTexts(page, await getDictionary());
   const paths = getLocalizedPaths(page);
 
   return {
@@ -45,5 +53,3 @@ export const getPageMetadata = async (page: PageId): Promise<Metadata> => {
     },
   };
 };
-
-export const PAGE_IDS = Object.keys(PAGES) as PageId[];

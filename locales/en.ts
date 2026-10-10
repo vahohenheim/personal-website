@@ -4,6 +4,12 @@ const en = {
     description:
       "Senior front-end engineer with over a decade of experience in software and web development. Passionate about building products, user experiences and team management. I mainly work with React 19, Next.js 16 and Angular 17. Paris, France",
   },
+  person: {
+    jobTitle: "Senior front-end engineer",
+  },
+  breadcrumb: {
+    home: "Home",
+  },
   header: {
     menu: {
       resume: "resume",

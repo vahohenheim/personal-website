@@ -6,6 +6,12 @@ const fr: Dictionary = {
     description:
       "Ingénieur front-end senior avec plus de 10 ans d'expérience dans le développement logiciel et web. Passionné par la création de produits, l’expérience utilisateur et la gestion d’équipe. Je travaille principalement avec React 19, Next.js 16 et Angular 17. Paris, France",
   },
+  person: {
+    jobTitle: "Ingénieur front-end senior",
+  },
+  breadcrumb: {
+    home: "Accueil",
+  },
   header: {
     menu: {
       resume: "curriculum vitae",

@@ -1,0 +1,20 @@
+/** Topics listed as `knowsAbout` in the structured data. Keep them in line with the resume. */
+export const SKILLS = [
+  "Front-end development",
+  "React",
+  "Next.js",
+  "TypeScript",
+  "Angular",
+  "GraphQL",
+  "Headless e-commerce",
+  "Magento 2",
+  "Algolia",
+  "Contentful",
+  "Design systems",
+  "Web Components",
+  "Tailwind CSS",
+  "Technical SEO",
+  "Automated testing",
+  "Team leadership",
+  "UX design",
+] as const;

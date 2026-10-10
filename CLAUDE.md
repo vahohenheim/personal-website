@@ -42,13 +42,13 @@ app/
 components/                 Components shared across pages
   ui/                       shadcn/ui components
   icons/                    SVGs as React components (companies/, social-networks/, logo)
-  jsonld/                   <script type="application/ld+json"> tags
+  json-ld/                  The <script type="application/ld+json"> tag of a page
 lib/
   i18n/                     config.ts (locales), dictionaries.ts (getLocale, getDictionary),
                             error-messages.tsx (context for error.tsx)
   models/                   Types and enums (enums are used as identifiers)
   constants/                Site data, typed by models/ (site.ts holds the domain and avatar)
-  helpers/                  metadata.ts (meta tags, alternates), json-ld/ (schema.org)
+  helpers/                  metadata.ts (meta tags, alternates), json-ld.ts (schema.org graph of each page)
   utils/                    cn.ts, format-date-difference.ts
 locales/                    en.ts, fr.ts (all visible texts)
 proxy.ts                    Redirects URLs without a locale to /en or /fr
@@ -72,7 +72,13 @@ Import alias: `@/*` points to the repository root. A relative import may reach a
 
 Adding a locale: add it to `LOCALES` and `OPEN_GRAPH_LOCALES` in `lib/i18n/config.ts`, create `locales/<code>.ts` typed as `Dictionary`, register it in `lib/i18n/dictionaries.ts`, and add its entry to `LANGUAGES` in `components/language-toggle/language-toggle.tsx`. Routes, metadata alternates and the sitemap follow `LOCALES`.
 
-Adding a page: create `app/[locale]/<name>/page.tsx`, add it to `PAGES` in `lib/helpers/metadata.ts` (this feeds the canonical URL, the `hreflang` alternates and the sitemap), export `generateMetadata` from the page, and add its texts to both locale files.
+Adding a page. Structured data is part of the job, not a follow-up:
+
+1. Create `app/[locale]/<name>/page.tsx` and add its texts to both locale files.
+2. Add the page to `PAGES` in `lib/constants/pages.ts` (path, `createdAt`, `updatedAt`). This feeds the canonical URL, the `hreflang` alternates and the sitemap.
+3. Add its title and description to `getPageTexts` in `lib/helpers/metadata.ts`, and export `generateMetadata` from the page.
+4. Describe it in `PAGE_GRAPHS` in `lib/helpers/json-ld.ts`, then render `<JsonLdComponent page="<name>" />` at the top of the page. Steps 3 and 4 are records keyed by `PageId`: `typecheck` fails until both are filled in.
+5. Choose the schema.org type from what the page is, following the rules in the SEO section below.
 
 ## Content: data and identifiers
 
@@ -144,8 +150,27 @@ ESLint (`eslint.config.mjs`) runs the Next.js rules, the `typescript-eslint` str
 ## SEO
 
 - Meta tags: `getPageMetadata('<page>')` (`lib/helpers/metadata.ts`) returns the translated title and description, the canonical URL, the `hreflang` alternates and the Open Graph data. Texts are in `metadata.*` and `resume.metadata.*`.
-- Structured data: `JsonLd` (`lib/helpers/json-ld/`), data in `lib/constants/structured-data.ts`, rendered by `components/jsonld/` with `<` escaped, as the Next.js JSON-LD guide requires.
-- `app/sitemap.ts` is generated from `PAGES` and `LOCALES`.
+- Structured data: see below.
+
+### Structured data (JSON-LD)
+
+Every page renders one `<script type="application/ld+json">` holding a `@graph`, built by `getPageJsonLd(page)` in `lib/helpers/json-ld.ts` and typed with `schema-dts`. Nothing is written by hand: names, roles, companies, schools, languages and projects come from `lib/constants/` and from the dictionary of the current locale, so the markup always matches what the page shows.
+
+| Page   | Nodes                                                                                                                                         |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Home   | `WebSite` (site name), `ProfilePage`, `Person` (summary: job, current employer, profiles, skills, languages), `ItemList` of personal projects |
+| Resume | `ProfilePage`, `Person` (full: adds past roles, schools and credentials), `BreadcrumbList`                                                    |
+
+Rules, taken from Google's structured data documentation:
+
+- Describe only what is visible on the page. A fact that is not on the page does not go in its markup.
+- One `Person` (`…/#person`) and one `WebSite` (`…/#website`) for the whole site. Other nodes point to them with `{ "@id": … }` instead of repeating them. `WebSite` is emitted on the home page only, which is where Google reads the site name.
+- A page about Valentin is a `ProfilePage` with `mainEntity` set to the person. A page about something else takes the type of its content (`BlogPosting` for a post, `CollectionPage` for a list) with `author` pointing to the person.
+- Every page except the home page gets a `BreadcrumbList` (Google needs at least two items).
+- `dateModified` is `updatedAt` in `PAGES`. Bump it when the content of a page changes, and only then.
+- Skills in `knowsAbout` come from `lib/constants/skills.ts`. Keep the list in line with the resume.
+- After changing the markup, check the built page in the [Schema Markup Validator](https://validator.schema.org/) and, once deployed, in Google's [Rich Results Test](https://search.google.com/test/rich-results).
+- `app/sitemap.ts` is generated from `PAGES` and `LOCALES`. `lastModified` is the `updatedAt` of the page, not the build date.
 
 ## Security
 
@@ -181,6 +206,7 @@ State on 2026-10-10. Remove a line when the issue is fixed.
 
 **Rule:** every request handled through Claude Code is recorded here, in the same change, as **one line** (date, request, main files), most recent first. If the request changes a rule or the structure described above, update the matching section in the same change. Keep it short: this file is read at every session.
 
+- 2026-10-10 — Structured data rebuilt: one typed `@graph` per page (`WebSite`, `ProfilePage`, `Person` with employer, past roles, schools, credentials, skills and languages, `BreadcrumbList`, project list), generated from the resume data and required for every page through `PAGE_GRAPHS`; page registry with dates in `lib/constants/pages.ts`; sitemap `lastModified` from it (`lib/helpers/json-ld.ts`, `components/json-ld/`, `lib/constants/pages.ts`, `lib/constants/skills.ts`, `app/sitemap.ts`).
 - 2026-10-10 — Stricter lint and Prettier defaults: `typescript-eslint` strict and stylistic presets with type information, full `jsx-a11y` set, import ordering, `eslint-config-prettier`; Prettier back to its defaults at 100 columns like the brut project, plus `.editorconfig`; new `npm run check`; code adapted (typed icon maps instead of a dynamic import by file name, JSON-LD helpers as functions, stable list keys, `IsoDate` type) (`eslint.config.mjs`, `.prettierrc.json`, `package.json`).
 - 2026-10-10 — Hero name in bold with a comma (`locales/`); LCP warning fixed: the hero portrait loads eagerly with high fetch priority (`components/cover/cover.tsx`).
 - 2026-10-10 — Durations rewritten without `dayjs` `humanize()`, which turned 23 months into "a year and a year": rounded to the nearest month, so the SOLO experience reads "2 years" (`lib/utils/format-date-difference.ts`); hero line above the title is now "valentin bourreau"; Angular mention back to 17 (`locales/`, `lib/constants/structured-data.ts`).

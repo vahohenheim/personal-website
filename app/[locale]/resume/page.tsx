@@ -3,7 +3,7 @@ import AppearComponent from "@/components/appear/appear";
 import CoverComponent from "@/components/cover/cover";
 import { CoverAlignment } from "@/components/cover/cover.model";
 import ExpertisesComponent from "@/components/expertises/expertises";
-import JsonLdProfilePageComponent from "@/components/jsonld/profil-page/profil-page";
+import JsonLdComponent from "@/components/json-ld/json-ld";
 import { EXPERIENCES } from "@/lib/constants/experiences";
 import { USER_LANGUAGES } from "@/lib/constants/languages";
 import { QUALIFICATIONS } from "@/lib/constants/qualifications";
@@ -22,7 +22,7 @@ export default async function ResumePage() {
 
   return (
     <main>
-      <JsonLdProfilePageComponent />
+      <JsonLdComponent page="resume" />
       <CoverComponent
         title={resume.title}
         description={resume.summary}

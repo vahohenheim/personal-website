@@ -4,8 +4,7 @@ import CompaniesComponent from "@/components/companies/companies";
 import CoverComponent from "@/components/cover/cover";
 import { CoverAlignment } from "@/components/cover/cover.model";
 import ExpertisesComponent from "@/components/expertises/expertises";
-import JsonLdPortfolioComponent from "@/components/jsonld/portfolio/portfolio";
-import JsonLdProfilePageComponent from "@/components/jsonld/profil-page/profil-page";
+import JsonLdComponent from "@/components/json-ld/json-ld";
 import PersonalProjectsComponent from "@/components/personal-projects/personal-projects";
 import { COMPANIES } from "@/lib/constants/companies";
 import { MAIL_ADDRESS } from "@/lib/constants/mail-address";
@@ -21,8 +20,7 @@ export default async function HomePage() {
 
   return (
     <main>
-      <JsonLdProfilePageComponent />
-      <JsonLdPortfolioComponent />
+      <JsonLdComponent page="home" />
       <CoverComponent
         ontitle={home.ontitle}
         title={home.title}
