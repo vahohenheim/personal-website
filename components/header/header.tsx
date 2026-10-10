@@ -1,47 +1,35 @@
 import Link from "next/link";
-import { ModeToggle } from "@/components/ui/mode-toggle/mode-toggle";
-import { navLinkStyle } from "@/components/ui/nav-link/nav-link";
+import { LOCALES } from "@/lib/i18n/config";
 import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
-import { cn } from "@/lib/utils/cn";
-import { HEADER_NAVIGATION_MENU_ITEMS } from "./header.constants";
-import LanguageToggle from "../language-toggle/language-toggle";
-import WordmarkComponent from "../wordmark/wordmark";
+import HeaderNavComponent from "./header-nav";
+import ThemeToggleComponent from "../theme-toggle/theme-toggle";
 
 const HeaderComponent = async () => {
   const locale = await getLocale();
   const { header, a11y } = await getDictionary();
+  const otherLocale = LOCALES.find((candidate) => candidate !== locale) ?? locale;
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className="container-mobile mx-auto flex h-14 max-w-[900px] items-center justify-between">
-        <div className="flex items-center gap-4 max-sm:gap-2">
-          <Link href={`/${locale}/`}>
-            <WordmarkComponent />
-          </Link>
-          {/* Visible at every width: on a phone it is the only way to reach the other pages. */}
-          <nav aria-label={a11y.mainMenu}>
-            <ul className="flex list-none items-center space-x-1">
-              {HEADER_NAVIGATION_MENU_ITEMS.map((item) => (
-                <li key={item.id}>
-                  <Link className={cn(navLinkStyle, "max-sm:px-3")} href={`/${locale}${item.href}`}>
-                    {header.menu[item.id]}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-        <div className="flex items-center gap-1">
-          <LanguageToggle locale={locale} label={a11y.toggleLanguage} />
-          <ModeToggle
-            labels={{
-              toggle: a11y.toggleTheme,
-              light: a11y.themeLight,
-              dark: a11y.themeDark,
-              system: a11y.themeSystem,
-            }}
-          />
-        </div>
+    <header className="container-page flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-6">
+      <Link
+        href={`/${locale}/`}
+        className="text-[18px] leading-none font-bold tracking-[-0.02em] text-text no-underline"
+      >
+        valentinbourreau
+      </Link>
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+        <HeaderNavComponent
+          locale={locale}
+          otherLocale={otherLocale}
+          menuLabel={a11y.mainMenu}
+          otherLocaleLabel={a11y.otherLanguage}
+          items={[
+            { label: header.menu.resume, href: `/${locale}/resume/` },
+            { label: header.menu.projects, href: `/${locale}/#projects` },
+            { label: header.menu.contact, href: `/${locale}/#contact` },
+          ]}
+        />
+        <ThemeToggleComponent label={a11y.toggleTheme} />
       </div>
     </header>
   );

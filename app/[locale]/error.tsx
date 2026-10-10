@@ -27,14 +27,14 @@ export default function Error({ retry }: { error: Error; retry: () => void }) {
   return (
     <main
       id="main"
-      className="container mx-auto flex h-full grow flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8"
+      className="bg-background container mx-auto flex h-full grow flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8"
     >
       <div className="mx-auto max-w-md text-center">
         <CircleX size={48} className="mx-auto mb-4" />
-        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+        <h1 className="text-foreground text-3xl font-bold tracking-tight sm:text-4xl">
           {messages.title}
         </h1>
-        <p className="mt-4 text-muted-foreground">
+        <p className="text-muted-foreground mt-4">
           {before}
           {linkLabel && (
             <Link href={SOCIAL_NETWORK_LINKS[SocialNetworkType.LINKEDIN]}>{linkLabel}</Link>

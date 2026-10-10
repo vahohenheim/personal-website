@@ -20,7 +20,8 @@ const fr: Dictionary = {
     newTab: "(s’ouvre dans un nouvel onglet)",
     portrait: "Portrait de Valentin Bourreau",
     toggleLanguage: "Changer de langue",
-    toggleTheme: "Changer de thème",
+    toggleTheme: "Passer en mode jour ou nuit",
+    otherLanguage: "English version",
     themeLight: "Clair",
     themeDark: "Sombre",
     themeSystem: "Système",
@@ -81,11 +82,7 @@ const fr: Dictionary = {
     ],
   },
   header: {
-    menu: {
-      resume: "cv",
-      retrospectives: "rétrospectives",
-      posts: "articles",
-    },
+    menu: { resume: "cv", projects: "projets", contact: "contact" },
   },
   home: {
     ontitle: "<b>valentin bourreau</b>,",

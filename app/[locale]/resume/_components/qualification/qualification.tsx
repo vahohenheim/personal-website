@@ -7,7 +7,7 @@ const QualificationComponent = async ({ qualification }: QualificationComponentP
 
   return (
     <div className="flex shrink-0 grow-0 flex-col items-start justify-start gap-2 self-stretch">
-      <div className="flex shrink-0 grow-0 flex-col items-start justify-start gap-4 self-stretch rounded-lg">
+      <div className="rounded-lg flex shrink-0 grow-0 flex-col items-start justify-start gap-4 self-stretch">
         <div className="flex shrink-0 grow-0 flex-col items-start justify-start gap-2 self-stretch">
           <div className="relative flex shrink-0 grow-0 flex-col items-start justify-start gap-0.5 self-stretch">
             <p className="text-2xl font-bold">{qualifications.list[qualification.id].label}</p>

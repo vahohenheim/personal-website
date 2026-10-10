@@ -18,7 +18,8 @@ const en = {
     newTab: "(opens in a new tab)",
     portrait: "Portrait of Valentin Bourreau",
     toggleLanguage: "Change language",
-    toggleTheme: "Change theme",
+    toggleTheme: "Switch between day and night mode",
+    otherLanguage: "Version française",
     themeLight: "Light",
     themeDark: "Dark",
     themeSystem: "System",
@@ -79,11 +80,7 @@ const en = {
     ],
   },
   header: {
-    menu: {
-      resume: "resume",
-      retrospectives: "retrospectives",
-      posts: "posts",
-    },
+    menu: { resume: "cv", projects: "projects", contact: "contact" },
   },
   home: {
     ontitle: "<b>valentin bourreau</b>,",

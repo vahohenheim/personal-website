@@ -10,14 +10,14 @@ export default async function NotFound() {
   return (
     <main
       id="main"
-      className="container mx-auto flex h-full grow flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8"
+      className="bg-background container mx-auto flex h-full grow flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8"
     >
       <div className="mx-auto max-w-md text-center">
         <SearchX size={48} className="mx-auto mb-4" />
-        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+        <h1 className="text-foreground text-3xl font-bold tracking-tight sm:text-4xl">
           {notFound.title}
         </h1>
-        <p className="mt-4 text-muted-foreground">{notFound.description}</p>
+        <p className="text-muted-foreground mt-4">{notFound.description}</p>
         <div className="mt-6">
           <Button asChild>
             <Link href={`/${locale}/`}>{notFound["back-to-homepage"]}</Link>

@@ -31,10 +31,10 @@ Architecture is kept: routes `/[locale]/` and `/[locale]/resume/`, dictionaries 
 ## Steps
 
 - [x] 0. Save the brief, the charter and this file (`docs/redesign/`).
-- [ ] 1. Tokens, fonts and global rules: Eucalyptus variables, Tailwind theme (`bg`,
+- [x] 1. Tokens, fonts and global rules: Eucalyptus variables, Tailwind theme (`bg`,
       `surface`, `line`, `muted`, `text2`, `text`, `accent`, `on-accent`, radius 2 px),
       `geist` package, selection, focus, links, motion.
-- [ ] 2. Layout: container, header (logo, nav `cv · projets · contact · fr · en`, theme
+- [ ] 2. (header, theme button and container done; footers still to do) Layout: container, header (logo, nav `cv · projets · contact · fr · en`, theme
       button), footers (home and resume variants).
 - [ ] 3. Primitives: `Avatar`, `Breadcrumb`, `Button`, `ProfileCard`, `StatusDot`,
       section and section title, `ChangelogEntry`, `AchievementList`, `ProjectCard`.

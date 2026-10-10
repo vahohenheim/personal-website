@@ -20,7 +20,7 @@ export default async function LegalPage() {
       <JsonLdComponent page="legal" />
       <SectionComponent>
         <h1 className="mb-2 font-bold">{legal.title}</h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           {legal.updated.replace("{date}", updatedAt)}
         </p>
         <div className="mt-10 flex flex-col gap-10">

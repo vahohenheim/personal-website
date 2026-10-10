@@ -44,7 +44,7 @@ const CoverComponent = async ({
         />
         {ontitle && (
           <p
-            className="mb-0 text-xl text-foreground"
+            className="text-foreground mb-0 text-xl"
             dangerouslySetInnerHTML={{ __html: ontitle }}
           />
         )}

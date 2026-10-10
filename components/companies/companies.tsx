@@ -17,7 +17,7 @@ const CompaniesComponent = async ({ companies }: { companies: Company[] }) => {
               // The link only shows a logo: this is its name for screen readers.
               aria-label={`${texts.list[company.id].name} ${a11y.newTab}`}
             >
-              <CompanyIconComponent company={company} className="shrink-0 fill-muted-foreground" />
+              <CompanyIconComponent company={company} className="fill-muted-foreground shrink-0" />
             </a>
           </li>
         ))}

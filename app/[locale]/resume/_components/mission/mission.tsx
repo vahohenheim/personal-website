@@ -30,7 +30,7 @@ const MissionComponent = async ({ mission }: { mission: Mission }) => {
         )}
       </div>
       <p
-        className="shrink-0 grow-0 list-disc self-stretch text-base text-secondary-foreground"
+        className="text-secondary-foreground shrink-0 grow-0 list-disc self-stretch text-base"
         dangerouslySetInnerHTML={{ __html: experiences.roles[mission.id].content }}
       />
     </div>

@@ -1,162 +1,130 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-}
-
+/*
+ * Eucalyptus palette: the only colours of the site, in two modes.
+ * Source: docs/redesign/charte-graphique-valentinbourreau.md.
+ */
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --bg: #f7f9f9;
+  --surface: #eef1f0;
+  --line: #dce2e0;
+  --muted: #646c6a;
+  --text2: #393f3e;
+  --text: #141818;
+  --accent: #3d6a60;
+  --on-accent: #ffffff;
+  color-scheme: light;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --bg: #0e1111;
+  --surface: #151918;
+  --line: #272d2c;
+  --muted: #8f9896;
+  --text2: #bec5c3;
+  --text: #e8eceb;
+  --accent: #9ec4ba;
+  --on-accent: #0e1111;
+  color-scheme: dark;
+}
+
+@theme inline {
+  /* No Tailwind palette: only the tokens above exist as colour utilities. */
+  --color-*: initial;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-muted: var(--muted);
+  --color-text2: var(--text2);
+  --color-text: var(--text);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* One radius: 2 px. The portrait is the only exception. */
+  --radius-*: initial;
+  --radius-photo: 6px;
+
+  /* No shadow anywhere. */
+  --shadow-*: initial;
+}
+
+/* `rounded` is 2 px by default. */
+@utility rounded {
+  border-radius: 2px;
+}
+
+/* Page container: 1040 px at most, fluid side padding. */
+@utility container-page {
+  width: 100%;
+  max-width: 1040px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 4vw, 48px);
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--line);
+  }
+
+  html {
+    background: var(--bg);
   }
 
   body {
-    @apply bg-background text-foreground;
-    font-feature-settings:
-      "rlig" 1,
-      "calt" 1;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
   }
 
-  h1,
-  .h1 {
-    @apply text-4xl;
+  ::selection {
+    background: var(--accent);
+    color: var(--on-accent);
   }
 
-  h2,
-  .h2 {
-    @apply text-3xl;
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
   }
 
-  h3,
-  .h3,
-  h4,
-  .h4 {
-    @apply text-2xl;
-  }
-}
-
-/*
- * Entrance animations, used by AppearComponent. They are CSS only, so the content is
- * never hidden while JavaScript loads, and they are skipped under reduced motion.
- */
-@keyframes appear {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
+  a {
+    color: var(--text);
+    text-decoration-line: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 3px;
+    transition:
+      color 150ms,
+      text-decoration-color 150ms,
+      background-color 150ms,
+      border-color 150ms;
   }
 
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes rise {
-  from {
-    transform: translateY(24px);
+  a:hover {
+    color: var(--accent);
   }
 
-  to {
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  /* On page load, for secondary content above the fold. Never the title or the portrait. */
-  .appear {
-    animation: appear 0.4s ease-out both;
-    animation-delay: var(--appear-delay, 0s);
+  button {
+    transition:
+      color 150ms,
+      background-color 150ms,
+      border-color 150ms;
   }
 
-  /*
-   * While scrolling into view. It only moves: a block resting at the edge of the screen
-   * must stay fully readable. Browsers without scroll-driven animations show it as is.
-   */
-  @supports (animation-timeline: view()) {
-    .appear-on-scroll {
-      animation: rise linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 60%;
+  /* Motion is limited to colour transitions, and removed on request. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition: none !important;
+      animation: none !important;
     }
-  }
-}
-
-.container {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-@media (max-width: 900px) {
-  .container,
-  .container-mobile {
-    padding-left: 2rem;
-    padding-right: 2rem;
   }
 }

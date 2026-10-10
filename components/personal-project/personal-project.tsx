@@ -24,7 +24,7 @@ const PersonalProjectComponent = async ({ project }: { project: PersonalProject 
   const card = (
     <div
       className={cn(
-        "relative flex h-full min-h-[200px] flex-shrink-0 flex-grow-1 flex-col items-start justify-start gap-1 rounded-lg border p-6 backdrop-blur-sm",
+        "rounded-lg relative flex h-full min-h-[200px] flex-shrink-0 flex-grow-1 flex-col items-start justify-start gap-1 border p-6 backdrop-blur-sm",
         {
           ["border-border/50"]: project.status === PersonalProjectStatus.COMING_SOON,
           ["cursor-pointer transition-colors hover:bg-accent"]:
@@ -51,7 +51,7 @@ const PersonalProjectComponent = async ({ project }: { project: PersonalProject 
         {texts.list[project.id].title}
       </p>
       <p
-        className={cn("text-sm text-muted-foreground", {
+        className={cn("text-muted-foreground text-sm", {
           ["opacity-60"]: project.status === PersonalProjectStatus.COMING_SOON,
         })}
       >
