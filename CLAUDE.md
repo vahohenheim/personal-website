@@ -15,11 +15,12 @@ Stack: Next.js 16 (App Router, Turbopack), React 19, strict TypeScript 6, Tailwi
 - `npm run dev`: local server.
 - `npm run build`: production build. This is the reference check before shipping.
 - `npm run typecheck`: `next typegen` then `tsc --noEmit`. The typegen step is required: `LayoutProps`, `PageProps` and the `next/root-params` exports are generated types.
-- `npm run lint:check`: ESLint without changes. `npm run lint` applies `--fix`.
+- `npm run lint:check`: ESLint without changes, failing on any warning. `npm run lint` applies `--fix`.
+- `npm run check`: `typecheck`, `lint:check` and `format:check` in one command.
 - `npm run format`: Prettier on the whole repository. `npm run format:check` verifies it.
 - There are no automated tests.
 
-Before handing work back: `typecheck`, `lint:check`, `format:check` and `build` must all pass.
+Before handing work back: `npm run check` and `npm run build` must both pass.
 
 ## Structure
 
@@ -54,7 +55,7 @@ proxy.ts                    Redirects URLs without a locale to /en or /fr
 public/                     Images
 ```
 
-Import alias: `@/*` points to the repository root. Use it for every import that leaves the current folder.
+Import alias: `@/*` points to the repository root. A relative import may reach a sibling folder (`../appear/appear`); anything further goes through the alias, and ESLint rejects `../../`.
 
 ## Routing and translations
 
@@ -103,7 +104,7 @@ Rules:
 Adding an experience:
 
 1. `lib/models/company.ts`: a value in `CompanyId`. `lib/constants/companies.ts`: an entry in `COMPANIES`.
-2. `components/icons/companies/<id>.tsx`: the logo as an SVG component (`IconProps` props, colour through `className` and `fill`). The file name must be exactly the `CompanyId` value, because `CompanyIconComponent` loads it with a dynamic `import()`.
+2. `components/icons/companies/<id>.tsx`: the logo as an SVG component (`IconProps` props, colour through `className` and `fill`). Register it in `COMPANY_ICONS` in `components/company-icon/company-icon.tsx`: the map is a `Record<CompanyId, …>`, so a missing icon fails `typecheck`.
 3. `lib/models/mission.ts`: a value in `MissionId`. `lib/constants/experiences.ts`: an entry in `MISSIONS`, then in `EXPERIENCES`.
 4. `locales/en.ts` and `locales/fr.ts`: `companies.list.<id>.name` and `experiences.roles.<mission-id>.content`.
 5. The company also appears in the logo strip on the home page (`Object.values(COMPANIES)`, in declaration order).
@@ -122,12 +123,23 @@ Adding an experience:
 - Header menu: `components/header/header.constants.ts` (paths without the locale, with a trailing slash). The `retrospectives` and `posts` entries are commented out there; their translations already exist.
 - Delete a component when its last usage goes away.
 
+## Code style
+
+ESLint (`eslint.config.mjs`) runs the Next.js rules, the `typescript-eslint` strict and stylistic presets with type information, the full `jsx-a11y` recommended set and import ordering. Most of it is fixed by `npm run lint`. What it expects when writing code:
+
+- `type` rather than `interface`, `T[]` rather than `Array<T>`, and inline type imports (`import { type Company } from …`).
+- No `any`, no non-null assertion, no condition that the types make always true or always false, `??` rather than `||` for defaults.
+- Imports in one block, sorted: packages, then `@/…`, then relative.
+- A stable `key` in lists (an id from the data), never the array index.
+- No class used as a namespace: export plain functions.
+- Do not add an `eslint-disable` comment without a reason written next to it. Unused ones are reported as errors.
+
 ## Styling
 
 - Tailwind v4, configured in `app/globals.css` (`@theme inline`, CSS variables, class-based `dark` variant). There is no `tailwind.config.ts`: every theme change goes in `globals.css`.
 - Light / dark theme through `next-themes` (`attribute="class"`, system default). Use the tokens (`bg-background`, `text-foreground`, `text-muted-foreground`…) and provide a `dark:` variant for any hardcoded colour.
 - Geist font through `next/font/google` in the root layout.
-- Prettier formats everything (4 spaces, single quotes, 120 columns) and sorts Tailwind classes.
+- Prettier formats everything with its defaults (2 spaces, double quotes, trailing commas) at 100 columns, and sorts Tailwind classes. `.editorconfig` mirrors it.
 
 ## SEO
 
@@ -169,6 +181,7 @@ State on 2026-10-10. Remove a line when the issue is fixed.
 
 **Rule:** every request handled through Claude Code is recorded here, in the same change, as **one line** (date, request, main files), most recent first. If the request changes a rule or the structure described above, update the matching section in the same change. Keep it short: this file is read at every session.
 
+- 2026-10-10 — Stricter lint and Prettier defaults: `typescript-eslint` strict and stylistic presets with type information, full `jsx-a11y` set, import ordering, `eslint-config-prettier`; Prettier back to its defaults at 100 columns like the brut project, plus `.editorconfig`; new `npm run check`; code adapted (typed icon maps instead of a dynamic import by file name, JSON-LD helpers as functions, stable list keys, `IsoDate` type) (`eslint.config.mjs`, `.prettierrc.json`, `package.json`).
 - 2026-10-10 — Hero name in bold with a comma (`locales/`); LCP warning fixed: the hero portrait loads eagerly with high fetch priority (`components/cover/cover.tsx`).
 - 2026-10-10 — Durations rewritten without `dayjs` `humanize()`, which turned 23 months into "a year and a year": rounded to the nearest month, so the SOLO experience reads "2 years" (`lib/utils/format-date-difference.ts`); hero line above the title is now "valentin bourreau"; Angular mention back to 17 (`locales/`, `lib/constants/structured-data.ts`).
 - 2026-10-10 — New portrait, cropped square on the face and compressed (480 px, 44 KB), served locally instead of the GitHub avatar (`public/avatar.jpg`, `lib/constants/site.ts`, `next.config.ts`); SOLO mission text replaced by the one Valentin provided (`locales/`).

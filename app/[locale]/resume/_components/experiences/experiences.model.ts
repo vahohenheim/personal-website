@@ -1,5 +1,5 @@
-import { Experience } from '@/lib/models/experience';
+import { type Experience } from "@/lib/models/experience";
 
-export interface ExperiencesComponentProps {
-    experiences: Array<Experience>;
-}
+export type ExperiencesComponentProps = {
+  experiences: Experience[];
+};

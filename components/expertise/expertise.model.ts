@@ -1,5 +1,5 @@
-import { Expertise } from '@/lib/models/expertise';
+import { type Expertise } from "@/lib/models/expertise";
 
-export interface ExpertiseComponentProps {
-    expertise: Expertise;
-}
+export type ExpertiseComponentProps = {
+  expertise: Expertise;
+};

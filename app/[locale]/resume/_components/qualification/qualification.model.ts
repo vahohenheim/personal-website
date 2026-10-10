@@ -1,5 +1,5 @@
-import { Qualification } from '@/lib/models/qualification';
+import { type Qualification } from "@/lib/models/qualification";
 
-export interface QualificationComponentProps {
-    qualification: Qualification;
-}
+export type QualificationComponentProps = {
+  qualification: Qualification;
+};

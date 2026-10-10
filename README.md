@@ -239,9 +239,9 @@ The website supports multiple languages using **Next International**.
    // locales/es.ts
    export default {
      metadata: {
-       title: 'Ingeniero Frontend Senior | valentin bourreau',
-       description: '...'
-     }
+       title: "Ingeniero Frontend Senior | valentin bourreau",
+       description: "...",
+     },
      // ... other translations
    };
    ```
@@ -250,8 +250,8 @@ The website supports multiple languages using **Next International**.
    ```typescript
    // middleware.ts
    export default createI18nMiddleware({
-     locales: ['en', 'fr', 'es'],
-     defaultLocale: 'en'
+     locales: ["en", "fr", "es"],
+     defaultLocale: "en",
    });
    ```
 

@@ -1,9 +1,9 @@
-export const SITE_URL = 'https://www.valentinbourreau.com';
+export const SITE_URL = "https://www.valentinbourreau.com";
 
-export const SITE_NAME = 'Valentin Bourreau';
+export const SITE_NAME = "Valentin Bourreau";
 
 /** Square portrait in `public/`, 480 × 480. */
-export const AVATAR_PATH = '/avatar.jpg';
+export const AVATAR_PATH = "/avatar.jpg";
 
 export const AVATAR_SIZE = 480;
 

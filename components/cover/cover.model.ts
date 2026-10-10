@@ -1,23 +1,23 @@
-import { ReactNode } from 'react';
-import { SocialNetwork } from '@/lib/models/social-network';
+import { type ReactNode } from "react";
+import { type SocialNetwork } from "@/lib/models/social-network";
 
 export type CoverComponentProps = {
-    ontitle?: string;
-    title: string;
-    description?: ReactNode;
-    avatar: string;
-    alignment?: CoverAlignment;
-    action: CoverButton;
-    socialNetworks?: Array<SocialNetwork>;
+  ontitle?: string;
+  title: string;
+  description?: ReactNode;
+  avatar: string;
+  alignment?: CoverAlignment;
+  action: CoverButton;
+  socialNetworks?: SocialNetwork[];
 };
 
 export type CoverButton = {
-    label: string;
-    link: string;
-    variant?: 'default' | 'outline';
+  label: string;
+  link: string;
+  variant?: "default" | "outline";
 };
 
 export enum CoverAlignment {
-    CENTER = 'center',
-    LEFT = 'left'
+  CENTER = "center",
+  LEFT = "left",
 }

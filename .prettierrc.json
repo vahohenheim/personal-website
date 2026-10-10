@@ -1,25 +1,8 @@
 {
-  "printWidth": 120,
-  "tabWidth": 4,
-  "arrowParens": "avoid",
-  "singleQuote": true,
-  "trailingComma": "none",
-  "endOfLine": "auto",
+  "printWidth": 100,
+  "trailingComma": "all",
+  "endOfLine": "lf",
   "plugins": ["prettier-plugin-tailwindcss"],
   "tailwindStylesheet": "./app/globals.css",
-  "tailwindFunctions": ["clsx", "cn", "cva"],
-  "overrides": [
-    {
-      "files": ["*.json", "*.md", "*.yml", "*.yaml"],
-      "options": {
-        "tabWidth": 2
-      }
-    },
-    {
-      "files": ["*.json"],
-      "options": {
-        "printWidth": 80
-      }
-    }
-  ]
+  "tailwindFunctions": ["clsx", "cn", "cva"]
 }
