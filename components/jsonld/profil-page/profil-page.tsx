@@ -1,5 +1,5 @@
-import { JsonLd } from '@/app/helpers/json-ld/json-ld';
-import { PROFILE_PAGE_JSON_LD } from '@/app/constants/structured-data';
+import { JsonLd } from '@/lib/helpers/json-ld/json-ld';
+import { PROFILE_PAGE_JSON_LD } from '@/lib/constants/structured-data';
 
 const JsonLdProfilePageComponent = () => {
     const profilePageJsonLd = JsonLd.generateProfilePage(
@@ -12,7 +12,7 @@ const JsonLdProfilePageComponent = () => {
         <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-                __html: JSON.stringify(profilePageJsonLd)
+                __html: JSON.stringify(profilePageJsonLd).replace(/</g, '\\u003c')
             }}
         />
     );

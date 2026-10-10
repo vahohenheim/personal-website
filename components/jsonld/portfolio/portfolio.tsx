@@ -1,5 +1,5 @@
-import { JsonLd } from '@/app/helpers/json-ld/json-ld';
-import { PERSON_JSON_LD } from '@/app/constants/structured-data';
+import { JsonLd } from '@/lib/helpers/json-ld/json-ld';
+import { PERSON_JSON_LD } from '@/lib/constants/structured-data';
 
 const JsonLdPortfolioComponent = () => {
     const portfolioJsonLd = JsonLd.generatePortfolio({
@@ -14,7 +14,7 @@ const JsonLdPortfolioComponent = () => {
         <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-                __html: JSON.stringify(portfolioJsonLd)
+                __html: JSON.stringify(portfolioJsonLd).replace(/</g, '\\u003c')
             }}
         />
     );

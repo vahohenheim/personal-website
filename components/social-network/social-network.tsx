@@ -11,13 +11,13 @@ import {
     navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu/navigation-menu';
 import { cn } from '@/lib/utils/cn';
-import { SocialNetworkType } from '@/app/models/social-network';
+import { SocialNetworkType } from '@/lib/models/social-network';
 
 const SocialNetworkIconComponent = ({ socialNetwork }: SocialNetworkComponentProps) => {
     const defaultProps: IconProps = {
         width: 20,
         height: 20,
-        className: "stroke-foreground"
+        className: 'stroke-foreground'
     };
 
     if (socialNetwork.type === SocialNetworkType.MAIL) {
@@ -44,7 +44,7 @@ const SocialNetworkIconComponent = ({ socialNetwork }: SocialNetworkComponentPro
 const SocialNetworkComponent = ({ socialNetwork }: SocialNetworkComponentProps) => {
     return (
         <NavigationMenuItem>
-            <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "px-2")} href={socialNetwork.link}>
+            <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), 'px-2')} href={socialNetwork.link}>
                 <SocialNetworkIconComponent socialNetwork={socialNetwork} />
             </NavigationMenuLink>
         </NavigationMenuItem>

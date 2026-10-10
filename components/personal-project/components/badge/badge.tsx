@@ -1,13 +1,13 @@
-import { PersonalProjectStatus } from '@/app/models/personal-project';
-import { getScopedI18n } from '@/locales/server';
+import { PersonalProjectStatus } from '@/lib/models/personal-project';
+import { getDictionary } from '@/lib/i18n/dictionaries';
 import { Badge } from '@/components/ui/badge/badge';
 
 const BadgePersonalProjectComponent = async ({ status }: { status: PersonalProjectStatus }) => {
-    const scopedT = await getScopedI18n('personal-projects.status');
+    const { status: texts } = (await getDictionary())['personal-projects'];
 
     switch (status) {
         case PersonalProjectStatus.COMING_SOON:
-            return <Badge variant="outline">{scopedT('coming-soon')}</Badge>;
+            return <Badge variant="outline">{texts['coming-soon']}</Badge>;
         case PersonalProjectStatus.ACTIVE:
             return (
                 <Badge variant="outline" className="gap-1.5">
@@ -22,7 +22,7 @@ const BadgePersonalProjectComponent = async ({ status }: { status: PersonalProje
                     >
                         <circle cx="3" cy="3" r="3" fill="#4F7EFF"></circle>
                     </svg>
-                    {scopedT('active')}
+                    {texts.active}
                 </Badge>
             );
         case PersonalProjectStatus.ARCHIVED:
@@ -39,7 +39,7 @@ const BadgePersonalProjectComponent = async ({ status }: { status: PersonalProje
                     >
                         <circle cx="3" cy="3" r="3" fill="#EFB74F"></circle>
                     </svg>
-                    {scopedT('archived')}
+                    {texts.archived}
                 </Badge>
             );
         default:

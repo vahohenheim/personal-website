@@ -1,55 +1,24 @@
 {
   "printWidth": 120,
+  "tabWidth": 4,
   "arrowParens": "avoid",
   "singleQuote": true,
   "trailingComma": "none",
-  "parser": "flow",
   "endOfLine": "auto",
   "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindStylesheet": "./app/globals.css",
   "tailwindFunctions": ["clsx", "cn", "cva"],
   "overrides": [
     {
-      "files": ["*.ts", "*.mjs", "*.mts"],
+      "files": ["*.json", "*.md", "*.yml", "*.yaml"],
       "options": {
-        "parser": "typescript"
+        "tabWidth": 2
       }
     },
     {
-      "files": ["*.json", ".*.json", "*.code-snippets", "*.webmanifest"],
+      "files": ["*.json"],
       "options": {
-        "parser": "json",
         "printWidth": 80
-      }
-    },
-    {
-      "files": [".lintstagedrc"],
-      "options": {
-        "parser": "json",
-        "printWidth": 80
-      }
-    },
-    {
-      "files": ["*.md", "LICENSE"],
-      "options": {
-        "parser": "markdown"
-      }
-    },
-    {
-      "files": "*.scss",
-      "options": {
-        "parser": "scss"
-      }
-    },
-    {
-      "files": "*.css",
-      "options": {
-        "parser": "css"
-      }
-    },
-    {
-      "files": ["*.yml", "*.yaml", ".*.yml"],
-      "options": {
-        "parser": "yaml"
       }
     }
   ]

@@ -23,9 +23,9 @@ const CoverComponent = ({
         <SectionComponent>
             <div
                 className={cn(
-                    "flex items-center justify-center flex-col text-center max-md:items-start max-md:text-left",
+                    'flex flex-col items-center justify-center text-center max-md:items-start max-md:text-left',
                     {
-                        "items-start text-left": alignment === CoverAlignment.LEFT
+                        'items-start text-left': alignment === CoverAlignment.LEFT
                     }
                 )}
             >
@@ -36,6 +36,9 @@ const CoverComponent = ({
                         alt="valentin bourreau picture"
                         width={120}
                         height={120}
+                        // Always above the fold and the largest element of the hero.
+                        loading="eager"
+                        fetchPriority="high"
                     />
                 </AppearComponent>
                 {ontitle && (
@@ -60,13 +63,11 @@ const CoverComponent = ({
                     </AppearComponent>
                 )}
                 <AppearComponent delay={0.4}>
-                    <div className="flex flex-row items-center gap-8 mt-4 max-md:flex-col-reverse max-md:items-start max-md:gap-6">
+                    <div className="mt-4 flex flex-row items-center gap-8 max-md:flex-col-reverse max-md:items-start max-md:gap-6">
                         <div className="flex items-center gap-4">
-                            <Link href={action.link} scroll={true}>
-                                <Button variant={action.variant || 'default'}>
-                                    {action.label}
-                                </Button>
-                            </Link>
+                            <Button asChild variant={action.variant || 'default'}>
+                                <Link href={action.link}>{action.label}</Link>
+                            </Button>
                         </div>
                         <NavigationMenu>
                             <NavigationMenuList>

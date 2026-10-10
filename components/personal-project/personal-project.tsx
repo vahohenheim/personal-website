@@ -1,52 +1,59 @@
 import Link from 'next/link';
 import BadgePersonalProjectComponent from './components/badge/badge';
-import { getScopedI18n } from '@/locales/server';
+import { getDictionary } from '@/lib/i18n/dictionaries';
 import { cn } from '@/lib/utils/cn';
-import { PersonalProject, PersonalProjectStatus } from '@/app/models/personal-project';
+import { PersonalProject, PersonalProjectStatus } from '@/lib/models/personal-project';
 
 const PersonalProjectComponent = async ({ project }: { project: PersonalProject }) => {
-    const scopedT = await getScopedI18n('personal-projects.list');
+    const { 'personal-projects': texts } = await getDictionary();
+
+    const card = (
+        <div
+            className={cn(
+                'relative flex h-full min-h-[200px] flex-shrink-0 flex-grow-1 flex-col items-start justify-start gap-1 rounded-lg border p-6 backdrop-blur-sm',
+                {
+                    ['border-gray-100 dark:border-gray-950']: project.status === PersonalProjectStatus.COMING_SOON,
+                    ['cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-800']:
+                        !!project.link && project.status !== PersonalProjectStatus.COMING_SOON
+                }
+            )}
+        >
+            <div className="flex w-full items-center justify-between">
+                <p
+                    className={cn('text-lg', {
+                        ['opacity-60']: project.status === PersonalProjectStatus.COMING_SOON
+                    })}
+                >
+                    {project.icon}
+                </p>
+                <div>
+                    <BadgePersonalProjectComponent status={project.status} />
+                </div>
+            </div>
+            <p
+                className={cn('text-semibold w-full text-xl font-bold', {
+                    ['opacity-60']: project.status === PersonalProjectStatus.COMING_SOON
+                })}
+            >
+                {texts.list[project.id].title}
+            </p>
+            <p
+                className={cn('text-sm text-slate-600 dark:text-slate-300', {
+                    ['opacity-60']: project.status === PersonalProjectStatus.COMING_SOON
+                })}
+            >
+                {texts.list[project.id].description}
+            </p>
+        </div>
+    );
+
+    if (!project.link) {
+        return card;
+    }
 
     return (
-        <Link key={project.id} href={project.link || '#'} scroll={true}>
-            <div
-                key={project.id}
-                className={cn(
-                    'flex flex-col justify-start items-start flex-grow-1 flex-shrink-0 h-full relative gap-1 p-6 rounded-lg border backdrop-blur-sm min-h-[200px]',
-                    {
-                        ['border-gray-100 dark:border-gray-950']: project.status === PersonalProjectStatus.COMING_SOON,
-                        ['cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors']:
-                            project.status !== PersonalProjectStatus.COMING_SOON
-                    }
-                )}
-            >
-                <div className="flex w-full items-center justify-between">
-                    <p
-                        className={cn('text-lg', {
-                            ['opacity-60']: project.status === PersonalProjectStatus.COMING_SOON
-                        })}
-                    >
-                        {project.icon}
-                    </p>
-                    <div>
-                        <BadgePersonalProjectComponent status={project.status} />
-                    </div>
-                </div>
-                <p
-                    className={cn('w-full text-xl font-bold text-semibold', {
-                        ['opacity-60']: project.status === PersonalProjectStatus.COMING_SOON
-                    })}
-                >
-                    {scopedT(`${project.id}.title`)}
-                </p>
-                <p
-                    className={cn('text-sm text-slate-600 dark:text-slate-300', {
-                        ['opacity-60']: project.status === PersonalProjectStatus.COMING_SOON
-                    })}
-                >
-                    {scopedT(`${project.id}.description`)}
-                </p>
-            </div>
+        <Link href={project.link} target="_blank" rel="noopener noreferrer">
+            {card}
         </Link>
     );
 };

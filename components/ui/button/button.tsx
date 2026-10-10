@@ -4,12 +4,12 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils/cn';
 
 const buttonVariants = cva(
-    'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
+    'inline-flex items-center justify-center rounded-md text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
     {
         variants: {
             variant: {
                 default: 'bg-primary text-white shadow hover:bg-primary/90 dark:text-primary-foreground',
-                destructive: 'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
+                destructive: 'text-destructive-foreground bg-destructive shadow-sm hover:bg-destructive/90',
                 outline:
                     'border border-input bg-transparent shadow-sm hover:bg-gray-100 hover:text-accent-foreground dark:hover:bg-gray-800',
                 secondary: 'bg-gray-100 text-secondary-foreground shadow-sm hover:bg-gray-100 dark:hover:bg-gray-800',
@@ -31,8 +31,7 @@ const buttonVariants = cva(
 );
 
 export interface ButtonProps
-    extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+    extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
     asChild?: boolean;
 }
 

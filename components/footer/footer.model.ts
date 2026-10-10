@@ -1,5 +1,5 @@
-import { SocialNetwork } from "../../app/models/social-network";
+import { SocialNetwork } from '@/lib/models/social-network';
 
 export type FooterComponentProps = {
-  socialNetworks: Array<SocialNetwork>;
-}
+    socialNetworks: Array<SocialNetwork>;
+};

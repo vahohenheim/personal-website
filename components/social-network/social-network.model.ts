@@ -1,5 +1,5 @@
-import { SocialNetwork } from "../../app/models/social-network";
+import { SocialNetwork } from '@/lib/models/social-network';
 
 export type SocialNetworkComponentProps = {
-  socialNetwork: SocialNetwork;
-}
+    socialNetwork: SocialNetwork;
+};

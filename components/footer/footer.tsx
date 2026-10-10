@@ -1,11 +1,11 @@
 import { FooterComponentProps } from './footer.model';
 import SocialNetworkComponent from '../social-network/social-network';
 import AppearComponent from '../appear/appear';
-import { getScopedI18n } from '@/locales/server';
+import { getDictionary } from '@/lib/i18n/dictionaries';
 import { NavigationMenu, NavigationMenuList } from '@/components/ui/navigation-menu/navigation-menu';
 
 const FooterComponent = async ({ socialNetworks }: FooterComponentProps) => {
-    const scopedT = await getScopedI18n('footer');
+    const { footer } = await getDictionary();
     const hasSocialNetwork = socialNetworks && socialNetworks.length > 0;
 
     return (
@@ -21,7 +21,9 @@ const FooterComponent = async ({ socialNetworks }: FooterComponentProps) => {
                             </NavigationMenuList>
                         </NavigationMenu>
                     )}
-                    <div className="text-sm">{scopedT('copyright')}</div>
+                    <div className="text-sm">
+                        {footer.copyright.replace('{year}', String(new Date().getFullYear()))}
+                    </div>
                 </div>
             </AppearComponent>
         </footer>

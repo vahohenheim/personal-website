@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { SocialNetwork } from "../../app/models/social-network";
+import { ReactNode } from 'react';
+import { SocialNetwork } from '@/lib/models/social-network';
 
 export type CoverComponentProps = {
     ontitle?: string;
@@ -7,15 +7,15 @@ export type CoverComponentProps = {
     description?: ReactNode;
     avatar: string;
     alignment?: CoverAlignment;
-    action: CoverButton
+    action: CoverButton;
     socialNetworks?: Array<SocialNetwork>;
-}
+};
 
 export type CoverButton = {
     label: string;
     link: string;
     variant?: 'default' | 'outline';
-}
+};
 
 export enum CoverAlignment {
     CENTER = 'center',

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import CompanyIconComponent from '../company-icon/company-icon';
-import { Company } from '@/app/models/company';
+import { Company } from '@/lib/models/company';
 
 const CompanyComponent = ({ company }: { company: Company }) => {
     return (
@@ -17,7 +17,7 @@ const CompaniesComponent = ({ companies = [] }: { companies: Array<Company> }) =
     return (
         <div className="w-full bg-gray-100 dark:bg-gray-500/10">
             <div className="flex w-full shrink-0 grow items-center justify-start gap-12 overflow-y-scroll p-8 lg:justify-center">
-                {companies.map((company) => (
+                {companies.map(company => (
                     <CompanyComponent key={company.id} company={company} />
                 ))}
             </div>

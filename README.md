@@ -27,27 +27,25 @@
 ## ✨ Features
 
 ### 🎯 Core Features
+
 - **📱 Responsive Design** - Mobile-first approach with beautiful animations
 - **🌍 Multilingual Support** - French and English with Next International
 - **🌙 Dark/Light Mode** - Theme switcher with system preference detection
 - **⚡ Performance Optimized** - Next.js 15 with Turbopack for lightning-fast builds
 - **📊 Professional Resume** - Interactive CV with downloadable PDF
 - **🎨 Modern UI** - Shadcn/ui components with Tailwind CSS v4
-- **🚀 PWA Ready** - Progressive Web App with offline capabilities
 - **📈 Analytics** - Vercel Analytics integration
 
 ### 🔧 Technical Features
-- **💾 Type-Safe Database** - Drizzle ORM with PostgreSQL
-- **🔐 Authentication** - NextAuth.js v5 integration ready
+
 - **📱 Drag & Drop** - DnD Kit for interactive elements
-- **📊 Data Visualization** - Recharts for beautiful charts
 - **🎭 Animations** - Framer Motion for smooth interactions
-- **🛡️ Form Validation** - Zod schema validation
 - **🎯 Accessibility** - WCAG compliant with Radix UI primitives
 
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **Framework:** [Next.js 15](https://nextjs.org) with App Router
 - **Language:** [TypeScript 5](https://typescriptlang.org)
 - **Styling:** [Tailwind CSS v4](https://tailwindcss.com)
@@ -55,12 +53,8 @@
 - **Icons:** [Lucide React](https://lucide.dev) + [Tabler Icons](https://tabler.io/icons)
 - **Animations:** [Framer Motion](https://framer.com/motion)
 
-### Backend & Database
-- **Database:** [PostgreSQL](https://postgresql.org) with [Vercel Postgres](https://vercel.com/storage/postgres)
-- **ORM:** [Drizzle ORM](https://orm.drizzle.team)
-- **Authentication:** [NextAuth.js v5](https://authjs.dev)
-
 ### Development & Deployment
+
 - **Build Tool:** [Turbopack](https://turbo.build/pack)
 - **Linting:** [ESLint 9](https://eslint.org) + [TypeScript ESLint](https://typescript-eslint.io)
 - **Formatting:** [Prettier](https://prettier.io) with Tailwind plugin
@@ -68,47 +62,50 @@
 - **Analytics:** [Vercel Analytics](https://vercel.com/analytics)
 
 ### Additional Libraries
+
 - **Internationalization:** [Next International](https://github.com/QuiiBz/next-international)
 - **Theme Management:** [Next Themes](https://github.com/pacocoursey/next-themes)
 - **Drag & Drop:** [DnD Kit](https://dndkit.com)
-- **Charts:** [Recharts](https://recharts.org)
-- **Form Validation:** [Zod](https://zod.dev)
-- **Date Handling:** [Date-fns](https://date-fns.org) + [Day.js](https://dayjs.gitee.io)
-- **Notifications:** [Sonner](https://sonner.emilkowal.ski)
-- **PWA:** [Next PWA](https://github.com/shadowwalker/next-pwa)
+- **Date Handling:** [Date-fns](https://date-fns.org)
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
 Make sure you have the following installed:
+
 - **Node.js** 18.17+ ([Download](https://nodejs.org))
 - **npm** 9+ (comes with Node.js)
 - **Git** ([Download](https://git-scm.com))
 
 ### System Requirements
+
 - **Node.js:** 18.17 or later
 - **macOS, Windows (including WSL), and Linux** are supported
 
 ## 📦 Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/valentinbourreau/personal-website.git
    cd personal-website
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
+
    ```bash
    cp .env.example .env.local
    ```
 
    Configure the following variables in `.env.local`:
+
    ```env
    # Database (optional for basic usage)
    POSTGRES_URL="postgresql://..."
@@ -124,6 +121,7 @@ Make sure you have the following installed:
 ## 🔧 Development
 
 ### Start the development server
+
 ```bash
 npm run dev
 ```
@@ -132,17 +130,18 @@ The application will be available at [http://localhost:3000](http://localhost:30
 
 ### Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server with Turbopack |
-| `npm run build` | Build for production |
-| `npm run start` | Start production server |
-| `npm run lint` | Run ESLint and fix issues |
-| `npm run lint:check` | Check for linting issues without fixing |
-| `npm run format` | Format code with Prettier |
-| `npm run format:check` | Check code formatting |
+| Command                | Description                             |
+| ---------------------- | --------------------------------------- |
+| `npm run dev`          | Start development server with Turbopack |
+| `npm run build`        | Build for production                    |
+| `npm run start`        | Start production server                 |
+| `npm run lint`         | Run ESLint and fix issues               |
+| `npm run lint:check`   | Check for linting issues without fixing |
+| `npm run format`       | Format code with Prettier               |
+| `npm run format:check` | Check code formatting                   |
 
 ### Development Features
+
 - **⚡ Hot Reload** - Instant updates with Turbopack
 - **🔧 TypeScript** - Full type checking and IntelliSense
 - **🎨 Tailwind CSS** - Utility-first styling with JIT compilation
@@ -151,6 +150,7 @@ The application will be available at [http://localhost:3000](http://localhost:30
 ## 🏗️ Build & Deployment
 
 ### Build for Production
+
 ```bash
 npm run build
 ```
@@ -158,6 +158,7 @@ npm run build
 ### Deploy to Vercel (Recommended)
 
 1. **Push your code to GitHub**
+
    ```bash
    git add .
    git commit -m "Initial commit"
@@ -171,6 +172,7 @@ npm run build
    - Deploy!
 
 ### Alternative Deployment Options
+
 - **Netlify:** Connect your repository and deploy
 - **Railway:** One-click deployment with database
 - **Docker:** Use the included Dockerfile for containerization
@@ -219,26 +221,29 @@ personal-website/
 The website supports multiple languages using **Next International**.
 
 ### Supported Languages
+
 - 🇺🇸 **English** (default)
 - 🇫🇷 **French**
 
 ### Adding a New Language
 
 1. **Create translation file**
+
    ```bash
    touch locales/es.ts  # For Spanish
    ```
 
 2. **Add translations**
+
    ```typescript
    // locales/es.ts
    export default {
-     "metadata": {
-       "title": "Ingeniero Frontend Senior | valentin bourreau",
-       "description": "..."
-     },
+     metadata: {
+       title: 'Ingeniero Frontend Senior | valentin bourreau',
+       description: '...'
+     }
      // ... other translations
-   }
+   };
    ```
 
 3. **Update middleware**
@@ -247,10 +252,11 @@ The website supports multiple languages using **Next International**.
    export default createI18nMiddleware({
      locales: ['en', 'fr', 'es'],
      defaultLocale: 'en'
-   })
+   });
    ```
 
 ### Translation Structure
+
 ```typescript
 {
   "metadata": {        // SEO metadata
@@ -274,6 +280,7 @@ The website supports multiple languages using **Next International**.
 ## 🎨 Styling
 
 ### Tailwind CSS v4
+
 This project uses the latest **Tailwind CSS v4** with modern features:
 
 - **🎨 CSS-first Configuration** - Configuration in CSS, not JS
@@ -282,37 +289,25 @@ This project uses the latest **Tailwind CSS v4** with modern features:
 - **📱 Container Queries** - Native container query support
 
 ### Design System
+
 - **🎨 Color Palette** - Semantic color tokens with dark/light mode
 - **📝 Typography** - Geist Sans and Geist Mono fonts
 - **📐 Spacing** - Consistent spacing scale
 - **🎭 Animations** - Custom animations with Tailwind Animate
 
 ### Component Library
+
 Built with **Shadcn/ui** components:
+
 - ✅ Accessible by default (Radix UI primitives)
 - 🎨 Customizable design tokens
 - 📱 Mobile-optimized components
 - 🎭 Beautiful animations
 
-## 📱 Progressive Web App
-
-The website is a fully functional PWA with:
-
-### Features
-- **📱 Installable** - Add to home screen on mobile/desktop
-- **⚡ Fast Loading** - Service worker caching
-- **📴 Offline Support** - Core functionality works offline
-- **🔔 Push Notifications** - Ready for notification features
-
-### PWA Capabilities
-- **📊 App-like Experience** - Full-screen mode
-- **🎨 Custom Theme** - Branded splash screen and icons
-- **📱 Responsive** - Optimized for all devices
-- **⚡ Performance** - Lighthouse score 95+
-
 ## 🔍 SEO & Analytics
 
 ### SEO Optimization
+
 - **📊 Structured Data** - JSON-LD markup for rich snippets
 - **🌐 Meta Tags** - Comprehensive Open Graph and Twitter Cards
 - **🗺️ XML Sitemap** - Auto-generated with Next.js
@@ -320,6 +315,7 @@ The website is a fully functional PWA with:
 - **📱 Mobile-First** - Mobile-optimized for better rankings
 
 ### Analytics
+
 - **📈 Vercel Analytics** - Privacy-friendly analytics
 - **🎯 Performance Monitoring** - Core Web Vitals tracking
 - **👥 User Insights** - Page views and user interactions
@@ -327,18 +323,21 @@ The website is a fully functional PWA with:
 ## 🧪 Testing & Quality
 
 ### Code Quality Tools
+
 - **🔍 ESLint 9** - Modern linting with flat config
 - **💅 Prettier** - Consistent code formatting
 - **📘 TypeScript** - Type safety and better DX
 - **🎨 Tailwind CSS IntelliSense** - Class name validation
 
 ### Performance
+
 - **⚡ Lighthouse Score** - 95+ across all metrics
 - **📦 Bundle Analysis** - Optimized chunk sizes
 - **🖼️ Image Optimization** - Next.js Image component
 - **⚡ Code Splitting** - Automatic route-based splitting
 
 ### Best Practices
+
 - **♿ Accessibility** - WCAG 2.1 AA compliance
 - **🔒 Security** - CSP headers and security best practices
 - **📱 Performance** - Optimized Core Web Vitals
@@ -349,6 +348,7 @@ The website is a fully functional PWA with:
 We welcome contributions! Please follow these steps:
 
 ### Development Workflow
+
 1. **Fork the repository**
 2. **Create a feature branch**
    ```bash
@@ -372,7 +372,9 @@ We welcome contributions! Please follow these steps:
 7. **Open a Pull Request**
 
 ### Commit Convention
+
 We use [Conventional Commits](https://conventionalcommits.org/):
+
 - `feat:` New feature
 - `fix:` Bug fix
 - `docs:` Documentation changes
@@ -382,6 +384,7 @@ We use [Conventional Commits](https://conventionalcommits.org/):
 - `chore:` Maintenance tasks
 
 ### Code Standards
+
 - **TypeScript** for type safety
 - **ESLint** for code quality
 - **Prettier** for formatting
@@ -391,11 +394,13 @@ We use [Conventional Commits](https://conventionalcommits.org/):
 ## 📞 Support & Contact
 
 ### Getting Help
+
 - **🐛 Bug Reports:** [Open an issue](https://github.com/valentinbourreau/personal-website/issues)
 - **💡 Feature Requests:** [Start a discussion](https://github.com/valentinbourreau/personal-website/discussions)
 - **📧 Contact:** [valentin@example.com](mailto:valentin@example.com)
 
 ### Professional Links
+
 - **🌐 Website:** [valentinbourreau.com](https://valentinbourreau.com)
 - **💼 LinkedIn:** [linkedin.com/in/valentinbourreau](https://linkedin.com/in/valentinbourreau)
 - **🐙 GitHub:** [github.com/valentinbourreau](https://github.com/valentinbourreau)
@@ -410,7 +415,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 **Built with ❤️ by [Valentin Bourreau](https://valentinbourreau.com)**
 
-*Senior Front-end Engineer | React, Next.js, TypeScript Expert*
+_Senior Front-end Engineer | React, Next.js, TypeScript Expert_
 
 [🌐 Website](https://valentinbourreau.com) • [💼 LinkedIn](https://linkedin.com/in/valentinbourreau) • [🐙 GitHub](https://github.com/valentinbourreau)
 

@@ -1,12 +1,14 @@
 import '../globals.css';
-import { MAIL_LINK, SOCIAL_NETWORKS } from '../constants/social-network';
-import { cn } from '@/lib/utils/cn';
-import { ReactNode } from 'react';
 import { Geist } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
+import { MAIL_LINK, SOCIAL_NETWORKS } from '@/lib/constants/social-network';
+import { LOCALES } from '@/lib/i18n/config';
+import { getDictionary, getLocale } from '@/lib/i18n/dictionaries';
+import { ErrorMessagesProvider } from '@/lib/i18n/error-messages';
+import { cn } from '@/lib/utils/cn';
 import ThemeProvider from '@/components/theme-provider/theme-provider';
 import HeaderComponent from '@/components/header/header';
 import FooterComponent from '@/components/footer/footer';
-import { AnalyticsWrapper } from '@/components/analytics/analytics';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -14,35 +16,27 @@ const geistSans = Geist({
 });
 
 export function generateStaticParams() {
-    return [{ locale: 'en' }, { locale: 'fr' }];
+    return LOCALES.map(locale => ({ locale }));
 }
 
-export default async function LocaleLayout({
-    children,
-    params
-}: {
-    children: ReactNode;
-    params: Promise<{ locale: string }>;
-}) {
-    const { locale } = await params;
-    const validLocale = locale === 'fr' ? 'fr' : 'en';
+export default async function RootLayout({ children }: LayoutProps<'/[locale]'>) {
+    const locale = await getLocale();
+    const dictionary = await getDictionary();
+
     return (
-        <html lang={validLocale} suppressHydrationWarning>
-            <head>
-                <meta content="width=device-width, initial-scale=1" name="viewport" />
-            </head>
+        <html lang={locale} suppressHydrationWarning>
             <body
                 className={cn(
-                    'min-h-screen bg-background font-sans antialiased flex flex-col',
+                    'flex min-h-screen flex-col bg-background font-sans antialiased',
                     geistSans.className,
                     geistSans.variable
                 )}
             >
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-                    <HeaderComponent lang={validLocale} />
-                    {children}
+                    <HeaderComponent />
+                    <ErrorMessagesProvider messages={dictionary.error}>{children}</ErrorMessagesProvider>
                     <FooterComponent socialNetworks={[MAIL_LINK, ...SOCIAL_NETWORKS]} />
-                    <AnalyticsWrapper />
+                    <Analytics />
                 </ThemeProvider>
             </body>
         </html>
