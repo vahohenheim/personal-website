@@ -1,17 +1,24 @@
 import { type ReactNode } from "react";
-import { HeadingComponent } from "@/components/ui/heading/heading";
-import { HeadingTags } from "@/components/ui/heading/heading.model";
+import { cn } from "@/lib/utils/cn";
 
-const SectionComponent = ({ title, children }: { title?: string; children: ReactNode }) => {
+/** Section title: mono, lowercase, muted, no prefix. */
+export const SectionTitleComponent = ({ children }: { children: ReactNode }) => {
+  return <h2 className="font-mono text-[13px] font-medium text-muted">{children}</h2>;
+};
+
+type SectionComponentProps = {
+  id?: string;
+  className?: string;
+  children: ReactNode;
+};
+
+/** A block of a page, opened by a 1 px rule. */
+const SectionComponent = ({ id, className, children }: SectionComponentProps) => {
   return (
-    <section className="container mx-auto my-20 w-full max-w-[900px] md:my-36">
-      {title && (
-        <div className="mx-auto w-full max-w-[900px]">
-          <HeadingComponent tag={HeadingTags.H2} className="mb-6">
-            {title}
-          </HeadingComponent>
-        </div>
-      )}
+    <section
+      id={id}
+      className={cn("border-t border-line pt-10 pb-[clamp(56px,7vw,96px)]", className)}
+    >
       {children}
     </section>
   );

@@ -1,9 +1,8 @@
 "use client";
 
-import { CircleX } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Button } from "@/components/ui/button/button";
+import { buttonClass } from "@/components/ui/button/button";
 import { SOCIAL_NETWORK_LINKS } from "@/lib/constants/social-network";
 import { DEFAULT_LOCALE, hasLocale } from "@/lib/i18n/config";
 import { useErrorMessages } from "@/lib/i18n/error-messages";
@@ -27,32 +26,31 @@ export default function Error({ retry }: { error: Error; retry: () => void }) {
   return (
     <main
       id="main"
-      className="bg-background container mx-auto flex h-full grow flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8"
+      className="container-page flex grow flex-col items-start gap-6 pt-[clamp(48px,8vw,112px)] pb-[clamp(56px,7vw,96px)]"
     >
-      <div className="mx-auto max-w-md text-center">
-        <CircleX size={48} className="mx-auto mb-4" />
-        <h1 className="text-foreground text-3xl font-bold tracking-tight sm:text-4xl">
-          {messages.title}
-        </h1>
-        <p className="text-muted-foreground mt-4">
-          {before}
-          {linkLabel && (
-            <Link href={SOCIAL_NETWORK_LINKS[SocialNetworkType.LINKEDIN]}>{linkLabel}</Link>
-          )}
-          {after}
-        </p>
-        <div className="mt-6 flex items-center justify-center gap-3">
-          <Button
-            onClick={() => {
-              retry();
-            }}
-          >
-            {messages.retry}
-          </Button>
-          <Button asChild variant="outline">
-            <Link href={`/${locale}/`}>{messages["back-to-homepage"]}</Link>
-          </Button>
-        </div>
+      <h1 className="text-[clamp(32px,4.4vw,48px)] leading-[1.05] font-semibold tracking-[-0.03em]">
+        {messages.title}
+      </h1>
+      <p className="max-w-[40em] text-text2">
+        {before}
+        {linkLabel && (
+          <Link href={SOCIAL_NETWORK_LINKS[SocialNetworkType.LINKEDIN]}>{linkLabel}</Link>
+        )}
+        {after}
+      </p>
+      <div className="flex flex-wrap gap-3">
+        <button
+          type="button"
+          className={buttonClass("primary")}
+          onClick={() => {
+            retry();
+          }}
+        >
+          {messages.retry}
+        </button>
+        <Link href={`/${locale}/`} className={buttonClass("secondary")}>
+          {messages["back-to-homepage"]}
+        </Link>
       </div>
     </main>
   );

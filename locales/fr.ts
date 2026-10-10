@@ -1,10 +1,10 @@
+import * as content from "./content/fr";
 import type { Dictionary } from "./en";
 
 const fr: Dictionary = {
   metadata: {
-    title: "Ingénieur front-end senior | valentin bourreau",
-    description:
-      "Valentin Bourreau, ingénieur front-end senior à Paris. Plus de 10 ans à créer des produits avec React, Next.js et Angular, et à mener des équipes front-end.",
+    title: "Ingénieur front-end senior · freelance | valentinbourreau",
+    description: content.home.lead,
   },
   person: {
     jobTitle: "Ingénieur front-end senior",
@@ -20,6 +20,7 @@ const fr: Dictionary = {
     newTab: "(s’ouvre dans un nouvel onglet)",
     portrait: "Portrait de Valentin Bourreau",
     toggleLanguage: "Changer de langue",
+    breadcrumb: "Fil d’Ariane",
     toggleTheme: "Passer en mode jour ou nuit",
     otherLanguage: "English version",
     themeLight: "Clair",
@@ -30,7 +31,7 @@ const fr: Dictionary = {
     title: "mentions légales et confidentialité",
     updated: "Dernière mise à jour le {date}.",
     metadata: {
-      title: "Mentions légales et confidentialité | valentin bourreau",
+      title: "Mentions légales et confidentialité | valentinbourreau",
       description:
         "Éditeur et hébergeur de valentinbourreau.com, et traitement des données des visiteurs : mesure d’audience, hébergement, cookies et vos droits.",
     },
@@ -84,44 +85,14 @@ const fr: Dictionary = {
   header: {
     menu: { resume: "cv", projects: "projets", contact: "contact" },
   },
-  home: {
-    ontitle: "<b>valentin bourreau</b>,",
-    title: "un ingénieur front-end senior",
-    summary:
-      "passionné par la création de produits, l’expérience utilisateur et la gestion d’équipe.<br/>Je travaille principalement avec <b>React 19</b>, <b>Next.js 16</b> et <b>Angular 17</b>.<br/>Paris, France",
-    cta: "contactez-moi",
-  },
+  home: content.home,
   resume: {
-    title: "ingénieur front-end senior",
-    summary:
-      "Avec plus de 10 ans dans le développement logiciel et web, j’ai pu aiguiser mes compétences sur divers projets et langages. Chez EP, j’ai embrassé le rôle de lead : guider une équipe de 5 développeurs, gérer des projets et suivre les budgets. Cette expérience m’a permis de faire évoluer ma passion pour les gens et la collaboration.<br/><br/>Maintenant, je suis opérationnel sur ce rôle et je cherche à m’améliorer en tant qu’Engineering Manager. Je peux y combiner mes expertises techniques en développement front-end et back-end, en gestion de projet et en design pour améliorer la vélocité de l’équipe et favoriser un environnement d’équipe prospère et innovant.<br/><br/>J’ai démarré de nombreux produits de start-ups avec les dernières versions des frameworks, ou migré des produits existants. Maintenant, je veux en apprendre plus sur des produits qui passent à l’échelle.",
-    cta: "retour à la page d’accueil",
+    ...content.resume,
     metadata: {
-      title: "Curriculum Vitae | valentin bourreau",
+      title: "CV · Ingénieur front-end senior | valentinbourreau",
       description:
         "CV de Valentin Bourreau, ingénieur front-end senior à Paris : expériences, compétences et diplômes en React, Next.js, Angular et management d’équipe.",
     },
-  },
-  expertises: {
-    title: "Expertises",
-    list: {
-      "engineer-developer": {
-        label: "expert",
-        title: "ingénieur développeur",
-        text: "Recherche, création, développement, conception d’architecture, documentation, retours d’expérience (REX), tests.<br/><br/>Je travaille principalement sur la partie front-end, mais j’ai fait mes études en développement back-end et je réponds aussi à des besoins full-stack.<br/><br/>J’accompagne des développeurs de différents niveaux d’expérience.",
-      },
-      "lead-tech-team": {
-        label: "confirmé",
-        title: "lead tech front-end",
-        text: "J’ai passé l’année 2023 dans le rôle de lead tech front-end d’une équipe de 5 développeurs. J’ai pu créer de l’adhésion, unir l’équipe autour d’un objectif et chercher avec elle de meilleures pratiques communes.<br/><br/>J’ai aussi amélioré le processus de recrutement avec le CTO, les exercices techniques et le processus d’intégration. Ces chantiers sont passés par une réorganisation de la documentation et de la façon de l’alimenter.",
-      },
-      "ux-conception": {
-        label: "demain",
-        title: "engineering manager",
-        text: "J’ai passé 6 mois à gérer des projets et leur conception, et à mener une équipe pluridisciplinaire (dev, design, audience, acquisition, data analyst, product owner).<br/><br/>J’ai pu utiliser mes compétences en UX pour améliorer l’interopérabilité et la vélocité de l’équipe. J’ai beaucoup appris sur la mise en place de rapports et l’interprétation des KPI.",
-      },
-    },
-    cta: "voir mon curriculum vitae",
   },
   "personal-projects": {
     title: "derniers projets personnels",
@@ -313,7 +284,7 @@ const fr: Dictionary = {
     "back-to-homepage": "retour à la page d’accueil",
   },
   footer: {
-    legal: "mentions légales et confidentialité",
+    legal: "mentions légales",
     copyright: "Copyright © {year}. Tous droits réservés, Valentin Bourreau.",
   },
 };

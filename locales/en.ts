@@ -1,8 +1,9 @@
+import * as content from "./content/en";
+
 const en = {
   metadata: {
-    title: "Senior Front-end Engineer | valentin bourreau",
-    description:
-      "Valentin Bourreau, senior front-end engineer in Paris. Over a decade building products with React, Next.js and Angular, and leading front-end teams.",
+    title: "Senior front-end engineer · freelance | valentinbourreau",
+    description: content.home.lead,
   },
   person: {
     jobTitle: "Senior front-end engineer",
@@ -18,6 +19,7 @@ const en = {
     newTab: "(opens in a new tab)",
     portrait: "Portrait of Valentin Bourreau",
     toggleLanguage: "Change language",
+    breadcrumb: "Breadcrumb",
     toggleTheme: "Switch between day and night mode",
     otherLanguage: "Version française",
     themeLight: "Light",
@@ -28,7 +30,7 @@ const en = {
     title: "legal notice and privacy",
     updated: "Last updated on {date}.",
     metadata: {
-      title: "Legal notice and privacy | valentin bourreau",
+      title: "Legal notice and privacy | valentinbourreau",
       description:
         "Publisher and host of valentinbourreau.com, and how the site handles visitor data: audience measurement, hosting, cookies and your rights.",
     },
@@ -82,20 +84,11 @@ const en = {
   header: {
     menu: { resume: "cv", projects: "projects", contact: "contact" },
   },
-  home: {
-    ontitle: "<b>valentin bourreau</b>,",
-    title: "a senior front-end engineer",
-    summary:
-      "passionate about building products, user experiences and team management.<br/>I mainly work with <b>React 19</b>, <b>Next.js 16</b> and <b>Angular 17</b>.<br/>Paris, France",
-    cta: "contact me",
-  },
+  home: content.home,
   resume: {
-    title: "senior front-end engineer",
-    summary:
-      "With over a decade of experience in software and web development, I’ve honed my skills across a wide array of projects and technologies. At EP, I embraced leadership roles, guiding teams, managing projects and overseeing budgets: experiences that ignited my passion for people and collaboration.<br/><br/>Now, I’m excited to evolve into an Engineering Manager position, where I can combine my technical expertise in front-end development, back-end development, project management and design to improve team velocity and foster a thriving, innovative team environment.<br/><br/>I have bootstrapped many start-up products on the latest framework versions and migrated existing ones. Today, I want to learn more about products at scale-up stage.",
-    cta: "back to homepage",
+    ...content.resume,
     metadata: {
-      title: "Resume | valentin bourreau",
+      title: "Résumé · Senior front-end engineer | valentinbourreau",
       description:
         "Resume of Valentin Bourreau, senior front-end engineer in Paris: experience, skills and qualifications in React, Next.js, Angular and team leadership.",
     },
@@ -130,27 +123,6 @@ const en = {
       active: "active",
       archived: "archived",
     },
-  },
-  expertises: {
-    title: "Expertises",
-    list: {
-      "engineer-developer": {
-        label: "expert",
-        title: "engineer developer",
-        text: "Research, design, development, architecture, documentation, feedback reviews (REX) and tests.<br/><br/>I mainly work on the front-end, but I studied back-end development and I deliver full-stack solutions too.<br/><br/>I mentor developers with different levels of experience.",
-      },
-      "lead-tech-team": {
-        label: "confirmed",
-        title: "lead tech front-end",
-        text: "I spent 2023 leading a front-end team of 5 developers. I built commitment around a shared goal and worked with the team to define common best practices.<br/><br/>I also improved the recruitment process with the CTO, the technical exercises and the onboarding. This went through a reorganisation of the documentation and of the way it is kept up to date.",
-      },
-      "ux-conception": {
-        label: "tomorrow",
-        title: "engineering manager",
-        text: "I spent 6 months managing projects and leading multidisciplinary teams (dev, design, audience, acquisition, data analyst, product owner).<br/><br/>I use my UX skills to improve interoperability and increase the overall team velocity. I learned a lot about building reports and interpreting KPIs.",
-      },
-    },
-    cta: "see my resume",
   },
   companies: {
     list: {
@@ -308,7 +280,7 @@ const en = {
     "back-to-homepage": "back to homepage",
   },
   footer: {
-    legal: "legal notice and privacy",
+    legal: "legal notice",
     // {year} is replaced by the current year in the footer component.
     copyright: "Copyright © {year}. All rights reserved, Valentin Bourreau.",
   },

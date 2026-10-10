@@ -34,20 +34,25 @@ Architecture is kept: routes `/[locale]/` and `/[locale]/resume/`, dictionaries 
 - [x] 1. Tokens, fonts and global rules: Eucalyptus variables, Tailwind theme (`bg`,
       `surface`, `line`, `muted`, `text2`, `text`, `accent`, `on-accent`, radius 2 px),
       `geist` package, selection, focus, links, motion.
-- [ ] 2. (header, theme button and container done; footers still to do) Layout: container, header (logo, nav `cv · projets · contact · fr · en`, theme
+- [x] 2. Layout: container, header (logo, nav `cv · projets · contact · fr · en`, theme
       button), footers (home and resume variants).
-- [ ] 3. Primitives: `Avatar`, `Breadcrumb`, `Button`, `ProfileCard`, `StatusDot`,
+- [x] 3. Primitives: `Avatar`, `Breadcrumb`, `Button`, `ProfileCard`, `StatusDot`,
       section and section title, `ChangelogEntry`, `AchievementList`, `ProjectCard`.
-- [ ] 4. Content: French texts word for word from the brief, English mirror, micro-typography.
-- [ ] 5. Home page.
-- [ ] 6. Resume page.
-- [ ] 7. Legal, 404 and error pages restyled with the new tokens and layout.
+- [x] 4. Content: French texts word for word from the brief, English mirror, micro-typography.
+- [x] 5. Home page.
+- [x] 6. Resume page.
+- [x] 7. Legal, 404 and error pages restyled with the new tokens and layout.
 - [ ] 8. Metadata: titles, descriptions, Open Graph image, favicon.
 - [ ] 9. Data and structured data aligned with the new content (freelance since 2026-10,
       SOLO ended 2026-10, lead roles); dead code and unused packages removed.
 - [ ] 10. Documentation and `CLAUDE.md` rules rewritten for the new design.
 - [ ] 11. Verification: screenshots at 1280 and 375 px, light and dark, both pages;
       Lighthouse; acceptance criteria of the brief ticked below.
+
+## State after step 7
+
+The pages are written but **not yet checked in a browser**. Next: take screenshots (step 11
+tooling), fix what is off against the brief, then steps 8 to 10.
 
 ## Decisions taken
 
