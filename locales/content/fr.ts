@@ -48,7 +48,7 @@ export const home: HomeContent = {
   brings: {
     title: "ce que j’apporte",
     quote:
-      "Le front-end est en bout de chaîne de décision. J’aime y jouer le rôle de pont entre les services\u00a0: produit, design, marketing et technique.",
+      "Le front-end arrive en dernier dans la chaîne de décision. C’est là que je fais le lien entre produit, design, marketing et technique.",
     items: [
       {
         meta: "depuis 2013",

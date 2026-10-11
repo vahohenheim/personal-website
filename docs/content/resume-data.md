@@ -30,7 +30,8 @@ tell the same story: a change to one usually means a change to the other.
 ## Page texts
 
 `locales/content/fr.ts` and `en.ts` export `home` and `resume`. The French file is the
-reference: it reproduces the redesign brief word for word. The English file mirrors it,
+reference: it reproduces the redesign brief word for word, except the pull quote of the
+home page, reworded by Valentin on 2026-10-11. The English file mirrors it,
 entry for entry.
 
 | Content                                              | Type               | Where it shows     |

@@ -59,7 +59,7 @@ export default async function ResumePage() {
             <li>{resume.meta.location}</li>
           </ul>
           <p className="max-w-[64ch] text-[18px] leading-[1.5] text-text2">{resume.summary}</p>
-          <div className="flex flex-wrap gap-3">
+          <div className="print-hidden flex flex-wrap gap-3">
             <a href="/cv.pdf" download className={buttonClass("primary")}>
               {resume.actions.download}
             </a>

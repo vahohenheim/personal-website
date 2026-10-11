@@ -100,7 +100,13 @@ goes away.
   warning there until Node is upgraded (`nvm install`).
 - Under `public/`, only `avatar.jpg` and `.well-known/security.txt` are used. The old logo
   and icon files may still be linked from outside the site, so check before deleting.
-- `public/cv.pdf` does not exist yet, although the resume links to it.
+- `public/cv.pdf` is the French resume page printed to PDF (3 pages), not yet the one-page
+  A4 layout of the design charter. Regenerate it after any change to the resume: build,
+  `next start`, then print `/fr/resume/` to PDF with backgrounds (the print styles of
+  `globals.css` switch to day mode and hide the navigation and the buttons).
+- The legal notice still says the site is published "in a personal capacity". As a
+  freelancer, it probably needs the business identity (SIRET, address).
+- The footers carry a "mentions légales" link that the redesign brief did not specify.
 - The `bloom` personal project has no link: `github.com/vahohenheim/bloom` returns a 404.
 
 ## Troubleshooting

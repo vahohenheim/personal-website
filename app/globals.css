@@ -128,3 +128,49 @@
     }
   }
 }
+
+/*
+ * Print: always day mode, without navigation or actions. Used to produce public/cv.pdf
+ * from the resume page.
+ */
+@media print {
+  :root,
+  .dark {
+    --bg: #ffffff;
+    --surface: #eef1f0;
+    --line: #dce2e0;
+    --muted: #646c6a;
+    --text2: #393f3e;
+    --text: #141818;
+    --accent: #3d6a60;
+    --on-accent: #ffffff;
+    color-scheme: light;
+  }
+
+  header nav,
+  header button,
+  footer,
+  .print-hidden {
+    display: none !important;
+  }
+
+  /* Tighter rhythm on paper. */
+  header {
+    padding-block: 0 !important;
+  }
+
+  main section {
+    padding-top: 14px !important;
+    padding-bottom: 18px !important;
+  }
+
+  main ol > li {
+    padding-block: 10px !important;
+    break-inside: avoid;
+  }
+
+  @page {
+    size: A4;
+    margin: 12mm 14mm;
+  }
+}

@@ -1,8 +1,8 @@
 # Redesign de valentinbourreau.com — accueil et /resume
 
 > Brief fourni par Valentin le 2026-10-10, conservé tel quel (en français) pour que le
-> travail puisse être repris d'une session à l'autre. L'avancement est dans
-> [progress.md](progress.md).
+> travail puisse être repris d'une session à l'autre. Le redesign est fusionné depuis le 2026-10-11 ; les
+> captures de vérification sont dans [screenshots/](screenshots/).
 
 Tu travailles sur mon site personnel (Next.js, Tailwind, i18n FR/EN, thème clair/sombre). Je veux appliquer un redesign complet de la page d'accueil et de la page `/resume`, dans les deux langues. Le design est figé : respecte-le au pixel et au caractère près. La charte graphique jointe (`charte-graphique-valentinbourreau.md`) fait foi pour tout ce qui n'est pas précisé ici.
 

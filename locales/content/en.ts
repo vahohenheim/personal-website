@@ -47,7 +47,7 @@ export const home: HomeContent = {
   brings: {
     title: "what i bring",
     quote:
-      "Front-end sits at the end of the decision chain. I like to act as the bridge between teams there: product, design, marketing and engineering.",
+      "Front-end comes last in the decision chain. That is where I connect product, design, marketing and engineering.",
     items: [
       {
         meta: "since 2013",
