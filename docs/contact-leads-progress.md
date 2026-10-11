@@ -57,9 +57,9 @@ English and with this repository's conventions.
 - [x] 1. Database layer: `@neondatabase/serverless`, `lib/db/`, `db/schema.sql`,
       `db/setup.mjs`, `npm run db:setup`, `.env.example`, in-memory store for development.
 - [x] 2. Lead model, validation and `POST /api/contact` with BotID, honeypot and time trap.
-- [ ] 3. shadcn `dialog`, `sonner`, `input`, `textarea`, `label`, `radio-group` restyled
+- [x] 3. shadcn `dialog`, `sonner`, `input`, `textarea`, `label`, `radio-group` restyled
       for the charter; toasts mounted in the root layout.
-- [ ] 4. Contact dialog (three steps and success), translated, opened by the contact
+- [x] 4. Contact dialog (three steps and success), translated, opened by the contact
       buttons of the home page and the resume; error toasts; home page change after sending.
 - [ ] 5. Admin: Basic auth in `proxy.ts`, guard, credentials generated in `.env.local`,
       layout, dashboard with figures, chart, tables, status change, deletion, CSV export.
@@ -70,6 +70,9 @@ English and with this repository's conventions.
       the home page change, the admin with and without credentials; screenshots.
 
 ## Notes for the next steps
+
+- Step 4 is written and builds, but the dialog has **not been tried in a browser yet**:
+  that is part of step 8.
 
 - The API URL is `/api/contact/` (with the trailing slash: `trailingSlash` is on).
 - `LEADS_MEMORY_STORE=1` forces the in-memory store with `next start`, to test a

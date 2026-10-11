@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import AvatarComponent from "@/components/avatar/avatar";
 import BreadcrumbComponent from "@/components/breadcrumb/breadcrumb";
 import ChangelogEntryComponent from "@/components/changelog-entry/changelog-entry";
+import ContactTriggerComponent from "@/components/contact/contact-trigger";
 import JsonLdComponent from "@/components/json-ld/json-ld";
 import ProfileCardComponent from "@/components/profile-card/profile-card";
 import SectionComponent, { SectionTitleComponent } from "@/components/section/section";
@@ -30,7 +31,7 @@ const DatedList = ({ rows }: { rows: ProfileRow[] }) => (
 
 export default async function ResumePage() {
   const locale = await getLocale();
-  const { resume, a11y } = await getDictionary();
+  const { resume, a11y, contact } = await getDictionary();
 
   return (
     <>
@@ -65,9 +66,14 @@ export default async function ResumePage() {
                 {resume.actions.download}
               </a>
             </Button>
-            <Button asChild variant="secondary">
-              <a href={`mailto:${MAIL_ADDRESS}`}>{resume.actions.contact}</a>
-            </Button>
+            <ContactTriggerComponent
+              href={`mailto:${MAIL_ADDRESS}`}
+              variant="secondary"
+              sentText={contact.sent.text}
+              againText={contact.sent.again}
+            >
+              {resume.actions.contact}
+            </ContactTriggerComponent>
           </div>
         </section>
 

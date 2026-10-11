@@ -3,6 +3,7 @@ import Link from "next/link";
 import AvatarComponent from "@/components/avatar/avatar";
 import BreadcrumbComponent from "@/components/breadcrumb/breadcrumb";
 import ChangelogEntryComponent from "@/components/changelog-entry/changelog-entry";
+import ContactTriggerComponent from "@/components/contact/contact-trigger";
 import JsonLdComponent from "@/components/json-ld/json-ld";
 import ProfileCardComponent from "@/components/profile-card/profile-card";
 import ProjectCardComponent from "@/components/project-card/project-card";
@@ -24,7 +25,7 @@ const FOOTER_NETWORKS = ["GitHub", "LinkedIn", "Dribbble", "Behance"];
 
 export default async function HomePage() {
   const locale = await getLocale();
-  const { home, a11y, footer } = await getDictionary();
+  const { home, a11y, footer, contact } = await getDictionary();
   const networks = FOOTER_NETWORKS.flatMap(
     (label) => SOCIAL_NETWORKS.find((network) => network.label === label) ?? [],
   );
@@ -47,9 +48,14 @@ export default async function HomePage() {
           </p>
           <ProfileCardComponent rows={home.card} />
           <div className="flex flex-wrap gap-3">
-            <Button asChild>
-              <a href={`mailto:${MAIL_ADDRESS}`}>{home.actions.contact}</a>
-            </Button>
+            <ContactTriggerComponent
+              href={`mailto:${MAIL_ADDRESS}`}
+              variant="primary"
+              sentText={contact.sent.text}
+              againText={contact.sent.again}
+            >
+              {home.actions.contact}
+            </ContactTriggerComponent>
             <Button asChild variant="secondary">
               <Link href={`/${locale}/resume/`}>{home.actions.resume}</Link>
             </Button>
@@ -126,12 +132,14 @@ export default async function HomePage() {
         <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-8 pt-10 pb-12">
           <div className="flex flex-col gap-6">
             <SectionTitleComponent>{home.contact.title}</SectionTitleComponent>
-            <a
+            <ContactTriggerComponent
               href={`mailto:${MAIL_ADDRESS}`}
-              className="text-[clamp(24px,3vw,32px)] leading-[1.2] font-semibold tracking-[-0.02em]"
+              variant="link"
+              sentText={contact.sent.text}
+              againText={contact.sent.again}
             >
               {home.contact.cta}
-            </a>
+            </ContactTriggerComponent>
             <ul className="flex list-none flex-wrap gap-x-5 gap-y-2 font-mono text-[13px]">
               {networks.map((network) => (
                 <li key={network.type}>
