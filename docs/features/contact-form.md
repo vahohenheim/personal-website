@@ -110,6 +110,10 @@ Three filters, in this order, as on the brut project:
 For 2 and 3 the answer is `{ "ok": true }`, so that a bot learns nothing. There is no rate
 limit yet.
 
+Checked in production on 2026-10-11: a request sent with `curl` and one sent from a
+headless browser both got `403 forbidden`, and the dialog showed the matching toast. A
+submission by a person in a normal browser has not been confirmed yet.
+
 ## Rules
 
 - A form is sent with `fetch`, never as a native HTML post: BotID would not apply.
