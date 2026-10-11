@@ -58,18 +58,20 @@ const fr: Dictionary = {
       {
         heading: "Données personnelles",
         paragraphs: [
-          "Ce site n’a ni compte, ni formulaire, ni publicité. Valentin Bourreau est le responsable des traitements décrits ci-dessous.",
+          "Ce site n’a ni compte ni publicité. Valentin Bourreau est le responsable des traitements décrits ci-dessous.",
+          "Formulaire de contact. Quand vous envoyez une demande, le site enregistre ce que vous avez saisi\u00a0: votre besoin, le démarrage souhaité, votre message, votre nom, votre adresse e-mail, votre entreprise si vous l’indiquez, et la langue de la page. Ces données servent uniquement à vous répondre et à suivre votre demande. Elles sont conservées au plus trois ans après notre dernier échange, puis supprimées. Vous pouvez demander leur suppression à tout moment.",
+          "Protection contre les robots. À l’envoi du formulaire, Vercel BotID analyse des signaux techniques de votre navigateur pour distinguer une personne d’un robot. Aucun de ces signaux n’est enregistré avec votre demande.",
           "Mesure d’audience. Vercel Web Analytics compte les pages vues, pour savoir comment le site est utilisé. D’après Vercel, l’outil ne dépose aucun cookie, reconnaît une visite grâce à une empreinte de la requête supprimée au bout de 24 heures, et enregistre avec chaque page vue la page, le site d’origine, le pays et la région, le navigateur, le système d’exploitation et le type d’appareil. Les statistiques sont agrégées.",
           "Hébergement. Comme tout hébergeur, Vercel traite l’adresse IP et les données techniques de chaque requête pour servir les pages et protéger le service, pendant la durée qu’il fixe.",
-          "Base légale. L’intérêt légitime à faire fonctionner le site, à le sécuriser et à connaître son audience.",
-          "Destinataires et transferts. Vercel Inc. agit comme sous-traitant. La société est établie aux États-Unis : des données peuvent donc être traitées hors de l’Union européenne, selon les garanties prévues par l’accord de traitement des données de Vercel.",
+          "Base légale. Pour le formulaire\u00a0: les mesures prises à votre demande avant un éventuel contrat. Pour le reste\u00a0: l’intérêt légitime à faire fonctionner le site, à le sécuriser et à connaître son audience.",
+          "Destinataires et transferts. Vercel Inc. (hébergement, mesure d’audience, protection contre les robots) et Neon Inc. (base de données où sont stockées les demandes) agissent comme sous-traitants. Ces sociétés sont établies aux États-Unis\u00a0: des données peuvent donc être traitées hors de l’Union européenne, selon les garanties prévues par leurs accords de traitement des données. Personne d’autre que Valentin Bourreau ne lit les demandes.",
           "E-mail. Si vous écrivez à l’adresse de contact, votre message et votre adresse ne servent qu’à vous répondre.",
         ],
       },
       {
         heading: "Cookies et stockage local",
         paragraphs: [
-          "Le site conserve deux préférences dans votre navigateur, et seulement si vous les modifiez : la langue (un cookie nommé NEXT_LOCALE, conservé un an) et le thème clair ou sombre (stockage local). Elles ne servent pas à vous suivre et ne nécessitent pas de consentement.",
+          "Le site conserve dans votre navigateur, et seulement quand vous agissez\u00a0: la langue choisie (un cookie nommé NEXT_LOCALE, conservé un an), le thème clair ou sombre (stockage local) et, après l’envoi du formulaire, la date de cet envoi (stockage local), pour vous confirmer que votre message est parti. Rien de cela ne sert à vous suivre ni ne nécessite de consentement.",
         ],
       },
       {

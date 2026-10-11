@@ -63,7 +63,7 @@ English and with this repository's conventions.
       buttons of the home page and the resume; error toasts; home page change after sending.
 - [x] 5. Admin: Basic auth in `proxy.ts`, guard, credentials generated in `.env.local`,
       layout, dashboard with figures, chart, tables, status change, deletion, CSV export.
-- [ ] 6. Legal notice and privacy texts in both languages; CSP checked.
+- [x] 6. Legal notice and privacy texts in both languages; CSP checked.
 - [ ] 7. Documentation (`docs/features/contact-form.md`, `docs/features/admin.md`,
       `docs/database/`, runbook, security, overview, README) and `CLAUDE.md` rules.
 - [ ] 8. Verification in a browser: the three steps, each error toast, the success screen,

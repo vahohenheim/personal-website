@@ -197,7 +197,7 @@ export default async function AdminPage() {
                         </TableCell>
                         <TableCell className="min-w-[180px]">
                           <p className="font-semibold">{lead.name}</p>
-                          <a href={`mailto:${lead.email}`} className="text-[15px] break-all">
+                          <a href={`mailto:${lead.email}`} className="text-[15px] break-words">
                             {lead.email}
                           </a>
                           {lead.company && <p className="text-[15px] text-text2">{lead.company}</p>}

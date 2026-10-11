@@ -57,18 +57,20 @@ const en = {
       {
         heading: "Personal data",
         paragraphs: [
-          "This site has no account, no form and no advertising. Valentin Bourreau is the controller of the processing described below.",
+          "This site has no account and no advertising. Valentin Bourreau is the controller of the processing described below.",
+          "Contact form. When you send a request, the site stores what you entered: your need, the preferred start, your message, your name, your email address, your company if you give it, and the language of the page. This data is used only to reply to you and to follow up on your request. It is kept for at most three years after our last exchange, then deleted. You can ask for its deletion at any time.",
+          "Bot protection. When the form is sent, Vercel BotID analyses technical signals from your browser to tell a person from a bot. None of these signals is stored with your request.",
           "Audience measurement. Vercel Web Analytics counts page views, to know how the site is used. According to Vercel, it sets no cookie, recognises a visit through a hash of the incoming request that is discarded after 24 hours, and records with each page view the page, the referring site, the country and region, the browser, the operating system and the type of device. The statistics are aggregated.",
           "Hosting. Like any host, Vercel processes the IP address and the technical data of each request to deliver the pages and to protect the service, for the period it sets.",
-          "Legal basis. The legitimate interest in running the site, keeping it secure and knowing its audience.",
-          "Recipients and transfers. Vercel Inc. acts as a processor. It is established in the United States, so data may be processed outside the European Union, under the safeguards set out in Vercel’s data processing agreement.",
+          "Legal basis. For the form: steps taken at your request before a possible contract. For the rest: the legitimate interest in running the site, keeping it secure and knowing its audience.",
+          "Recipients and transfers. Vercel Inc. (hosting, audience measurement, bot protection) and Neon Inc. (the database where requests are stored) act as processors. They are established in the United States, so data may be processed outside the European Union, under the safeguards set out in their data processing agreements. Nobody but Valentin Bourreau reads the requests.",
           "Email. If you write to the contact address, your message and your address are used only to reply to you.",
         ],
       },
       {
         heading: "Cookies and local storage",
         paragraphs: [
-          "The site keeps two preferences in your browser, and only when you change them: the language (a cookie named NEXT_LOCALE, kept for one year) and the light or dark theme (local storage). They are not used to track you and need no consent.",
+          "The site keeps in your browser, and only when you act: the language you chose (a cookie named NEXT_LOCALE, kept for one year), the light or dark theme (local storage) and, after you send the form, the date it was sent (local storage), to confirm that your message has gone. None of this is used to track you or needs consent.",
         ],
       },
       {
