@@ -92,11 +92,17 @@ so. Unique visitors over a long period cannot be rebuilt from daily totals.
 
 ## State and limits
 
-- Verified on 2026-10-11 against a stand-in API returning the documented response shape,
-  with the in-memory store: cron authorisation, snapshot, idempotence, admin display.
-  **Not verified against the real Vercel API:** that needs the token.
-- The tables exist in the Neon database since 2026-10-11.
+- **In production since 2026-10-11.** The first snapshot stored 30 days of daily totals and
+  the breakdowns of the last 3 days, read from the real Vercel API.
+- **Asking for one day.** The API returns nothing when `since` and `until` are the same
+  date. The snapshot tries three forms on a day that had traffic (`DAY_RANGES` in
+  `lib/analytics/vercel.ts`) and keeps the first that returns data; in production it is
+  `timestamps`, the first to the last millisecond of the day. The cron answer reports it
+  (`dayRange`) with the number of rows written (`breakdownRows`).
+- Before the first "Importer 30 jours", breakdowns exist only from the first snapshot on;
+  the daily totals go back a month.
 - History starts on the day of the first successful snapshot, minus the 30 days Vercel
   still had.
-- The response shape of the API is the one the brut project relies on; if Vercel changes
-  it, `lib/analytics/vercel.ts` is the only file to adapt.
+- Also verified against a stand-in API with the in-memory store: cron authorisation,
+  idempotence, admin display.
+- If Vercel changes the response shape, `lib/analytics/vercel.ts` is the only file to adapt.
