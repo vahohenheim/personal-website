@@ -1,6 +1,6 @@
 ---
 title: Admin area
-description: The /admin dashboard for leads: how access is protected, where the credentials are, what the page shows, and the rules for adding an admin page or action.
+description: The /admin dashboard for leads and audience figures: how access is protected, where the credentials are, what the page shows, and the rules for adding an admin page or action.
 related_code:
   - ../../app/admin/layout.tsx
   - ../../app/admin/page.tsx
@@ -8,7 +8,9 @@ related_code:
   - ../../app/admin/export/route.ts
   - ../../app/admin/labels.ts
   - ../../components/admin/lead-actions.tsx
-  - ../../components/admin/leads-chart.tsx
+  - ../../components/admin/bars-chart.tsx
+  - ../../components/admin/analytics-actions.tsx
+  - ../../lib/analytics/report.ts
   - ../../lib/admin/auth.ts
   - ../../lib/admin/guard.ts
   - ../../lib/admin/stats.ts
@@ -19,7 +21,7 @@ last_updated: 2026-10-11
 # Admin area
 
 **Summary.** `/admin` is where Valentin reads the leads sent through the
-[contact form](contact-form.md). It is protected by HTTP Basic authentication, closed by
+[contact form](contact-form.md) and the [audience figures](analytics.md) of the site. It is protected by HTTP Basic authentication, closed by
 default, never indexed and never cached. It is in French only and sits outside the
 `[locale]` segment, with a root layout of its own.
 
@@ -49,12 +51,15 @@ They are environment variables, never written in the code or the docs.
 1. **Key figures:** leads received, leads still to answer (in the accent colour when there
    are some), leads of the last 30 days compared with the 30 before.
 2. **Charts:** leads per week over twelve weeks, and leads by need (shadcn `Chart`, bars in
-   the accent colour).
+   the accent colour, through `BarsChartComponent`).
 3. **Table of leads** (shadcn `Table`): date, contact, need, message, and follow-up, where
    the status can be changed (`à traiter`, `contacté`, `clos`) and a lead deleted after a
    confirmation. Results and failures are toasts.
 4. **CSV export** (`/admin/export/`): every lead, `;` separated, UTF-8 with a byte order
    mark for Excel. Cells that start with `=`, `+`, `-` or `@` are neutralised.
+5. **Audience** ("fréquentation"): page views and visits over a chosen period, a chart, and
+   the top pages, referrers, countries and devices, read from the figures copied to Neon
+   every day. Two buttons copy them on demand. See [analytics.md](analytics.md).
 
 Figures are computed by [lib/admin/stats.ts](../../lib/admin/stats.ts), a pure function.
 

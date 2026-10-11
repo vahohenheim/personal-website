@@ -57,6 +57,10 @@ The site now accepts input and has a private area. What protects them:
 - **Admin:** HTTP Basic over HTTPS, closed by default, constant-time comparison, access
   re-checked in every page, action and route, `no-store` and `noindex`
   ([admin.md](../features/admin.md)).
+- **Cron route:** `/api/cron/analytics-snapshot/` only answers to the bearer secret Vercel
+  sends (`CRON_SECRET`), compared in constant time, and is closed without it. The Vercel
+  token it uses stays on the server and is never logged
+  ([analytics.md](../features/analytics.md)).
 - **CSP:** unchanged. BotID is loaded through same-origin rewrites added by `withBotId`,
   and the form posts to the site's own origin.
 

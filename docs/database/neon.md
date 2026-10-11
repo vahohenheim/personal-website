@@ -4,6 +4,7 @@ description: The Neon Postgres database that stores leads: how it is attached to
 related_code:
   - ../../lib/db/client.ts
   - ../../lib/leads/store.ts
+  - ../../lib/analytics/store.ts
   - ../../db/schema.sql
   - ../../db/setup.mjs
   - ../../.env.example
@@ -13,7 +14,8 @@ last_updated: 2026-10-11
 
 # Neon database
 
-**Summary.** Leads are stored in a Neon Postgres database, reached with the HTTP driver
+**Summary.** Leads and the daily copy of the audience figures are stored in a Neon Postgres
+database, reached with the HTTP driver
 `@neondatabase/serverless`, as on the brut project. The database belongs to the Vercel
 project (Storage, Neon), which provides the connection strings as environment variables.
 
@@ -38,19 +40,21 @@ Names only: a value never appears in the code, the logs, an answer or the docs.
 
 ## State
 
-The database exists and the schema was applied on 2026-10-11 (table `leads`, Postgres 18).
+The database exists and the schema was applied on 2026-10-11 (tables `leads`,
+`analytics_daily` and `analytics_breakdown`, Postgres 18).
 An end-to-end test lead was inserted through the API, read in the admin, then deleted.
 
 ## Without a database
 
-[getLeadStore](../../lib/leads/store.ts) chooses where leads go:
+[getLeadStore](../../lib/leads/store.ts) and
+[getAnalyticsStore](../../lib/analytics/store.ts) choose where data goes, in this order:
 
-| Situation              | Store                                                             |
-| ---------------------- | ----------------------------------------------------------------- |
-| `DATABASE_URL` is set  | Neon                                                              |
-| not set, development   | memory, lost when the server restarts                             |
-| not set, production    | error: the form answers `unavailable`, the admin shows a notice   |
-| `LEADS_MEMORY_STORE=1` | memory even with `next start`, to test a production build locally |
+| Situation              | Store                                                                                                        |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `LEADS_MEMORY_STORE=1` | memory, even with a database configured: to test a production build (`next start`) without touching the data |
+| `DATABASE_URL` is set  | Neon                                                                                                         |
+| not set, development   | memory, lost when the server restarts                                                                        |
+| not set, production    | error: the form answers `unavailable`, the admin shows a notice                                              |
 
 ## Rules
 

@@ -6,6 +6,8 @@ related_code:
   - ../../next.config.ts
   - ../../.github/workflows/ci.yml
   - ../../.nvmrc
+  - ../../vercel.json
+  - ../../.env.example
   - ../../AGENTS.md
   - ../../.gitignore
 last_updated: 2026-10-11
@@ -14,8 +16,8 @@ last_updated: 2026-10-11
 # Runbook
 
 **Summary.** The site needs Node 22 or later (24 is the pinned version). Locally it runs
-without any configuration: leads then stay in memory. Production needs four environment
-variables (the Neon database and the admin credentials). A push to `main` deploys to
+without any configuration: leads then stay in memory. Production needs the Neon database
+and the admin credentials, plus a Vercel token and a cron secret for the audience figures. A push to `main` deploys to
 production on Vercel.
 
 ## Local setup
@@ -42,16 +44,25 @@ shipped in `node_modules/next/dist/docs/`. Do not edit it; commit it when it cha
 
 Listed with their role in [.env.example](../../.env.example). All are server-only.
 
-| Variable                       | Needed for                | Without it                                                      |
-| ------------------------------ | ------------------------- | --------------------------------------------------------------- |
-| `DATABASE_URL`                 | storing and reading leads | development: memory; production: the form answers "unavailable" |
-| `DATABASE_URL_UNPOOLED`        | `npm run db:setup`        | falls back to `DATABASE_URL`                                    |
-| `ADMIN_USER`, `ADMIN_PASSWORD` | `/admin`                  | `/admin` refuses everyone                                       |
+| Variable                                                                                   | Needed for                             | Without it                                                      |
+| ------------------------------------------------------------------------------------------ | -------------------------------------- | --------------------------------------------------------------- |
+| `DATABASE_URL`                                                                             | storing and reading leads              | development: memory; production: the form answers "unavailable" |
+| `DATABASE_URL_UNPOOLED`                                                                    | `npm run db:setup`                     | falls back to `DATABASE_URL`                                    |
+| `ADMIN_USER`, `ADMIN_PASSWORD`                                                             | `/admin`                               | `/admin` refuses everyone                                       |
+| `WEB_ANALYTICS_TOKEN` (and optionally `WEB_ANALYTICS_PROJECT_ID`, `WEB_ANALYTICS_TEAM_ID`) | the daily copy of the audience figures | the copy does nothing; the admin says it is inactive            |
+| `CRON_SECRET`                                                                              | the cron route                         | the route refuses Vercel, so nothing is copied                  |
 
 `.env.local` holds the local values and is ignored by git. See
 [database/neon.md](../database/neon.md) for the database and
-[features/admin.md](../features/admin.md) for the credentials. Vercel BotID must be
+[features/admin.md](../features/admin.md) for the credentials and
+[features/analytics.md](../features/analytics.md) for the audience figures. Vercel BotID must be
 enabled on the project for the bot check of the contact form.
+
+## Scheduled job
+
+[vercel.json](../../vercel.json) declares one cron: every day at 03:15 UTC, Vercel calls
+`/api/cron/analytics-snapshot/`, which copies the audience figures to Neon. Its runs are
+listed in the Vercel project (Settings, Cron Jobs), where it can also be run by hand.
 
 ## Continuous integration
 
@@ -136,5 +147,8 @@ goes away.
 | A new text shows in one language only, or the build fails on a dictionary key | The key is missing in one of the two locale files. See [i18n.md](../architecture/i18n.md#dictionaries).                                                               |
 | The contact form shows "momentanément indisponible"                           | `DATABASE_URL` is missing in that environment, or the schema was never applied. See [database/neon.md](../database/neon.md).                                          |
 | `/admin` asks for a password again and again                                  | `ADMIN_USER` or `ADMIN_PASSWORD` is missing or different in that environment (the server logs say when one is missing).                                               |
+| The admin says "la copie quotidienne est inactive"                            | `WEB_ANALYTICS_TOKEN` is missing in that environment.                                                                                                                 |
+| "Actualiser" answers that Vercel or the database did not reply                | The token is wrong or expired, the project or team id does not match, or the tables were never created (`npm run db:setup`). The server logs give the HTTP status.    |
+| The history has a hole of several days                                        | The cron did not run (check `CRON_SECRET` and the Cron Jobs page). "Importer 30 jours" refills what Vercel still has.                                                 |
 | The contact form answers 500 on a host that is not Vercel                     | BotID only runs on Vercel; the route skips it elsewhere. Check that the `VERCEL` variable is not set by hand.                                                         |
 | The duration of the current job looks out of date                             | It is computed at build time. Redeploy.                                                                                                                               |

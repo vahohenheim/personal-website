@@ -2,7 +2,7 @@
 
 # personal-website
 
-Personal website of Valentin Bourreau (`valentinbourreau.com`): a home page, an online resume and a legal notice, in French and English, generated at build time, plus a contact form for leads stored in Neon and a private admin area. Next.js 16.
+Personal website of Valentin Bourreau (`valentinbourreau.com`): a home page, an online resume and a legal notice, in French and English, generated at build time, plus a contact form for leads stored in Neon, a private admin area (leads and audience figures) and a daily cron that copies Vercel Web Analytics to Neon. Next.js 16.
 
 This file holds the working rules. The explanations are in [docs/](docs/README.md): start there.
 
@@ -80,7 +80,7 @@ The same goes for the two other entry points: keep [README.md](README.md) true (
 - Delete a component, a constant or a package when its last usage goes away.
 - Details: [docs/frontend/components.md](docs/frontend/components.md).
 
-## Contact form, database and admin
+## Contact form, database, admin and audience figures
 
 - Leads go through `POST /api/contact/`: Vercel BotID, honeypot and time trap, validation on the server, then Neon. A form is sent with `fetch`, never as a native HTML post. Every protected route is declared in `initBotId` and calls `checkBotId()`.
 - Every error shown to a visitor or to the admin is a shadcn toast (`toast` from `sonner`), with its text in the dictionaries. No inline error messages.
@@ -89,8 +89,11 @@ The same goes for the two other entry points: keep [README.md](README.md) true (
 - The stored values of `LEAD_NEEDS`, `LEAD_TIMELINES` and `LEAD_STATUSES` are never renamed.
 - Every admin page stays under `/admin` and calls `requireAdmin()`; every admin Server Action and route calls `assertAdmin()`. Never rely on the proxy alone. Admin pages are `noindex`, `no-store` and `force-dynamic`.
 - A schema change is made in `db/schema.sql` and recorded in the change log of `docs/database/schema.md`.
+- Audience figures are read from Neon, never live from Vercel: the daily cron (`vercel.json`) copies them because Vercel keeps one month only. Only aggregated counts are stored. The snapshot must stay idempotent.
+- A cron route lives under `/api/cron/`, checks `Authorization: Bearer <CRON_SECRET>` in constant time and is closed without the variable.
+- `LEADS_MEMORY_STORE=1` forces the in-memory stores: use it to test a production build locally, because `.env.local` points to the production database.
 - Any change to what is collected, stored or sent to a provider updates the legal page in both languages.
-- Details: [docs/features/contact-form.md](docs/features/contact-form.md), [docs/features/admin.md](docs/features/admin.md), [docs/database/neon.md](docs/database/neon.md).
+- Details: [docs/features/contact-form.md](docs/features/contact-form.md), [docs/features/admin.md](docs/features/admin.md), [docs/features/analytics.md](docs/features/analytics.md), [docs/database/neon.md](docs/database/neon.md).
 
 ## Code style
 
@@ -113,6 +116,7 @@ Listed in [docs/operations/runbook.md](docs/operations/runbook.md#known-issues).
 
 **Rule:** every request handled through Claude Code is recorded here, in the same change, as **one line** (date, request, main files), most recent first. Then update the pages of `docs/` concerned: create a page if none covers the topic, and update the index `docs/README.md` and the `last_updated` field. The detail goes in `docs/`, not here, because this file is read at every session.
 
+- 2026-10-11 — Audience figures in the admin, kept beyond Vercel's one-month retention: daily cron copying Vercel Web Analytics to Neon (`analytics_daily`, `analytics_breakdown`), traffic section with period filter, chart and breakdowns, refresh and 30-day import buttons, privacy text updated; schema setup moved to the HTTP driver (`lib/analytics/`, `app/api/cron/analytics-snapshot/`, `vercel.json`, `app/admin/`, `db/`) → [docs/features/analytics.md](docs/features/analytics.md), [docs/database/schema.md](docs/database/schema.md).
 - 2026-10-11 — Contact form for leads: three-step dialog opened by every contact button, errors as toasts, confirmation and change on the home page after sending; `POST /api/contact/` with BotID, honeypot and time trap; leads in Neon; `/admin` behind HTTP Basic with figures, charts, table, status, deletion and CSV export; legal and privacy texts updated (`components/contact/`, `app/api/contact/`, `app/admin/`, `lib/leads/`, `lib/admin/`, `lib/db/`, `db/`, `proxy.ts`, `locales/`) → [docs/features/contact-form.md](docs/features/contact-form.md), [docs/features/admin.md](docs/features/admin.md), [docs/database/neon.md](docs/database/neon.md).
 - 2026-10-11 — shadcn/ui brought back into the redesign: `Button`, `Card`, `Badge`, `Separator` and `Breadcrumb` restyled for the charter and used by the buttons, the profile sheet, the project cards, the "what I bring" cells, the section rules and the breadcrumb; theme mapped onto the Eucalyptus tokens (`components/ui/`, `app/globals.css`, `components/`) → [docs/frontend/components.md](docs/frontend/components.md), [docs/frontend/styling.md](docs/frontend/styling.md).
 - 2026-10-11 — Favicon: the previous `favicon.ico` is back, at Valentin's request, in place of the generated one (`app/favicon.ico`, `app/manifest.ts`, `proxy.ts`) → [docs/features/seo.md](docs/features/seo.md).

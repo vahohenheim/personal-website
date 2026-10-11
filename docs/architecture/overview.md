@@ -15,9 +15,10 @@ last_updated: 2026-10-11
 
 **Summary.** The site is a Next.js 16 application (App Router, Turbopack) deployed on
 Vercel. Its three public pages (home, resume, legal notice), each in French and English,
-are generated at build time. Three things run per request: `proxy.ts` (locale redirect and
+are generated at build time. Four things run on the server: `proxy.ts` (locale redirect and
 the gate of the admin area), `POST /api/contact/` (the contact form, stored in a Neon
-database) and `/admin` (the dashboard of leads).
+database), `/admin` (the dashboard of leads and audience figures) and a daily cron that
+copies the audience figures from Vercel to Neon.
 
 ## The system at a glance
 
@@ -31,6 +32,7 @@ flowchart LR
     C --> DB[(Neon: leads)]
     T([Valentin]) -->|/admin, HTTP Basic| ADM[Admin dashboard]
     ADM --> DB
+    CRON[Vercel Cron, daily] -->|/api/cron/analytics-snapshot/| DB
     S -->|page views| A[Vercel Analytics]
 ```
 
@@ -67,12 +69,14 @@ app/
     legal/page.tsx          Legal notice and privacy
   admin/                    Dashboard of leads: own root layout, French only
   api/contact/route.ts      Receives a lead from the contact dialog
+  api/cron/                 Scheduled jobs: daily copy of the audience figures
 components/                 One folder per component (header, avatar, breadcrumb,
                             profile-card, changelog-entry, project-card…)
   ui/                       shadcn/ui components, restyled for the charter
 lib/
   i18n/                     Locales, getLocale, getDictionary
   leads/                    Validation and storage of leads
+  analytics/                Vercel Web Analytics client, daily snapshot, storage, report
   db/                       Neon client
   admin/                    Authentication, guard and figures of the admin
   models/                   Types: page contents (content.ts) and resume data
@@ -84,6 +88,7 @@ locales/                    en.ts, fr.ts: dictionaries
 proxy.ts                    Locale redirect and gate of /admin
 instrumentation-client.ts   Routes protected by Vercel BotID
 db/                         schema.sql and its setup script
+vercel.json                 Cron schedule
 public/                     Portrait, security.txt
 docs/                       This documentation; redesign/ holds the brief and the charter
 ```
