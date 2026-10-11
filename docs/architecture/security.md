@@ -4,7 +4,7 @@ description: Content Security Policy and security headers set on every route, an
 related_code:
   - ../../next.config.ts
   - ../../public/.well-known/security.txt
-last_updated: 2026-10-10
+last_updated: 2026-10-11
 ---
 
 # Security headers
@@ -46,6 +46,19 @@ service therefore starts with a change to the policy.
   origin is blocked until the policy allows it. Open the policy explicitly, document it
   here and record it in the request log.
 - **SVG.** `images.dangerouslyAllowSVG` is on, with a sandboxed policy for optimised images.
+
+## Contact form and admin
+
+The site now accepts input and has a private area. What protects them:
+
+- **Contact API:** Vercel BotID, a honeypot and a time trap; validation and length limits
+  on the server; parameterised SQL only; no personal data in the logs
+  ([contact-form.md](../features/contact-form.md)). Not in place: a rate limit.
+- **Admin:** HTTP Basic over HTTPS, closed by default, constant-time comparison, access
+  re-checked in every page, action and route, `no-store` and `noindex`
+  ([admin.md](../features/admin.md)).
+- **CSP:** unchanged. BotID is loaded through same-origin rewrites added by `withBotId`,
+  and the form posts to the site's own origin.
 
 ## Disclosure contact
 

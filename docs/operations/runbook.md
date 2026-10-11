@@ -13,9 +13,10 @@ last_updated: 2026-10-11
 
 # Runbook
 
-**Summary.** The site needs Node 22 or later (24 is the pinned version) and nothing else: no environment variable,
-no database, no external service to configure. A push to `main` deploys to production on
-Vercel.
+**Summary.** The site needs Node 22 or later (24 is the pinned version). Locally it runs
+without any configuration: leads then stay in memory. Production needs four environment
+variables (the Neon database and the admin credentials). A push to `main` deploys to
+production on Vercel.
 
 ## Local setup
 
@@ -36,6 +37,21 @@ browser language.
 
 `next dev` generates `AGENTS.md`, which points coding agents to the Next.js documentation
 shipped in `node_modules/next/dist/docs/`. Do not edit it; commit it when it changes.
+
+## Environment variables
+
+Listed with their role in [.env.example](../../.env.example). All are server-only.
+
+| Variable                       | Needed for                | Without it                                                      |
+| ------------------------------ | ------------------------- | --------------------------------------------------------------- |
+| `DATABASE_URL`                 | storing and reading leads | development: memory; production: the form answers "unavailable" |
+| `DATABASE_URL_UNPOOLED`        | `npm run db:setup`        | falls back to `DATABASE_URL`                                    |
+| `ADMIN_USER`, `ADMIN_PASSWORD` | `/admin`                  | `/admin` refuses everyone                                       |
+
+`.env.local` holds the local values and is ignored by git. See
+[database/neon.md](../database/neon.md) for the database and
+[features/admin.md](../features/admin.md) for the credentials. Vercel BotID must be
+enabled on the project for the bot check of the contact form.
 
 ## Continuous integration
 
@@ -118,4 +134,7 @@ goes away.
 | Next.js warns about the workspace root or picks the wrong one                 | A stray lockfile exists higher up the tree. `turbopack.root` in `next.config.ts` pins the root to the repository.                                                     |
 | An image or a script from another site does not load                          | Blocked by the CSP. See [security.md](../architecture/security.md).                                                                                                   |
 | A new text shows in one language only, or the build fails on a dictionary key | The key is missing in one of the two locale files. See [i18n.md](../architecture/i18n.md#dictionaries).                                                               |
+| The contact form shows "momentanément indisponible"                           | `DATABASE_URL` is missing in that environment, or the schema was never applied. See [database/neon.md](../database/neon.md).                                          |
+| `/admin` asks for a password again and again                                  | `ADMIN_USER` or `ADMIN_PASSWORD` is missing or different in that environment (the server logs say when one is missing).                                               |
+| The contact form answers 500 on a host that is not Vercel                     | BotID only runs on Vercel; the route skips it elsewhere. Check that the `VERCEL` variable is not set by hand.                                                         |
 | The duration of the current job looks out of date                             | It is computed at build time. Redeploy.                                                                                                                               |

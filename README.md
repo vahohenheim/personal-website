@@ -5,7 +5,8 @@ resume and a legal notice, in English and French. Live at [valentinbourreau.com]
 
 Built with Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4 and shadcn/ui, on a design
 charter of its own ([docs/redesign/](docs/redesign/charte-graphique-valentinbourreau.md)).
-Every page is generated at build time: no database, no form, no environment variable.
+Pages are generated at build time. A contact form stores leads in a Neon database, read in
+a private admin area.
 
 ## Getting started
 
@@ -18,6 +19,10 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000): the root URL redirects to `/en/` or
 `/fr/` according to the browser language.
+
+No configuration is needed locally: without a database, leads sent through the contact
+form stay in memory. Copy [.env.example](.env.example) to `.env.local` to set the admin
+credentials or a database.
 
 ## Scripts
 
@@ -32,17 +37,20 @@ Open [http://localhost:3000](http://localhost:3000): the root URL redirects to `
 
 ## Where things are
 
-| Folder                          | Content                                                        | Documentation                                                                                          |
-| ------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `app/`                          | Routing only: pages, layout, 404, error, sitemap, robots       | [features/pages.md](docs/features/pages.md), [architecture/overview.md](docs/architecture/overview.md) |
-| `components/`                   | Header, portrait, profile card, changelog entry, project card… | [frontend/components.md](docs/frontend/components.md), [frontend/styling.md](docs/frontend/styling.md) |
-| `locales/content/`              | Texts of the home page and the resume, in French and English   | [content/resume-data.md](docs/content/resume-data.md)                                                  |
-| `lib/constants/`, `lib/models/` | Resume data used by the structured data, content types         | [content/resume-data.md](docs/content/resume-data.md)                                                  |
-| `locales/`                      | Dictionaries: metadata, labels, legal texts                    | [architecture/i18n.md](docs/architecture/i18n.md)                                                      |
-| `lib/i18n/`, `proxy.ts`         | Locales, dictionaries, language redirect                       | [architecture/i18n.md](docs/architecture/i18n.md)                                                      |
-| `lib/helpers/`                  | Meta tags and structured data (JSON-LD)                        | [features/seo.md](docs/features/seo.md)                                                                |
-| `next.config.ts`                | Security headers and CSP                                       | [architecture/security.md](docs/architecture/security.md)                                              |
-| `docs/`                         | Documentation                                                  | [docs/README.md](docs/README.md)                                                                       |
+| Folder                                    | Content                                                        | Documentation                                                                                          |
+| ----------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `app/`                                    | Routing only: pages, layout, 404, error, sitemap, robots       | [features/pages.md](docs/features/pages.md), [architecture/overview.md](docs/architecture/overview.md) |
+| `components/`                             | Header, portrait, profile card, changelog entry, project card… | [frontend/components.md](docs/frontend/components.md), [frontend/styling.md](docs/frontend/styling.md) |
+| `locales/content/`                        | Texts of the home page and the resume, in French and English   | [content/resume-data.md](docs/content/resume-data.md)                                                  |
+| `lib/constants/`, `lib/models/`           | Resume data used by the structured data, content types         | [content/resume-data.md](docs/content/resume-data.md)                                                  |
+| `locales/`                                | Dictionaries: metadata, labels, legal texts                    | [architecture/i18n.md](docs/architecture/i18n.md)                                                      |
+| `lib/i18n/`, `proxy.ts`                   | Locales, dictionaries, language redirect                       | [architecture/i18n.md](docs/architecture/i18n.md)                                                      |
+| `lib/helpers/`                            | Meta tags and structured data (JSON-LD)                        | [features/seo.md](docs/features/seo.md)                                                                |
+| `components/contact/`, `app/api/contact/` | Contact dialog for leads and its API                           | [features/contact-form.md](docs/features/contact-form.md)                                              |
+| `app/admin/`, `lib/admin/`                | Dashboard of leads, behind HTTP Basic                          | [features/admin.md](docs/features/admin.md)                                                            |
+| `db/`, `lib/db/`, `lib/leads/`            | Neon schema, client and lead storage                           | [database/neon.md](docs/database/neon.md)                                                              |
+| `next.config.ts`                          | Security headers and CSP                                       | [architecture/security.md](docs/architecture/security.md)                                              |
+| `docs/`                                   | Documentation                                                  | [docs/README.md](docs/README.md)                                                                       |
 
 ## Changing the site
 

@@ -14,10 +14,10 @@ last_updated: 2026-10-11
 # Architecture overview
 
 **Summary.** The site is a Next.js 16 application (App Router, Turbopack) deployed on
-Vercel. It has three pages (home, resume, legal notice), each in English and French. Every
-page is generated at build time: there is no database, no form, no API route and no
-environment variable. The only code that runs per request is `proxy.ts`, which redirects
-URLs that carry no locale.
+Vercel. Its three public pages (home, resume, legal notice), each in French and English,
+are generated at build time. Three things run per request: `proxy.ts` (locale redirect and
+the gate of the admin area), `POST /api/contact/` (the contact form, stored in a Neon
+database) and `/admin` (the dashboard of leads).
 
 ## The system at a glance
 
@@ -27,6 +27,10 @@ flowchart LR
     P -->|307 to /fr/...| V
     V -->|/fr/, /en/resume/...| S[Static pages<br/>built from locales/ and lib/constants/]
     V -->|unknown URL| N[not-found.tsx<br/>rendered on demand, 404]
+    V -->|contact dialog| C[POST /api/contact/<br/>BotID, validation]
+    C --> DB[(Neon: leads)]
+    T([Valentin]) -->|/admin, HTTP Basic| ADM[Admin dashboard]
+    ADM --> DB
     S -->|page views| A[Vercel Analytics]
 ```
 
@@ -61,18 +65,25 @@ app/
     [...rest]/page.tsx      Catch-all that sends unknown URLs to not-found.tsx
     resume/page.tsx         Resume
     legal/page.tsx          Legal notice and privacy
+  admin/                    Dashboard of leads: own root layout, French only
+  api/contact/route.ts      Receives a lead from the contact dialog
 components/                 One folder per component (header, avatar, breadcrumb,
                             profile-card, changelog-entry, project-card…)
   ui/                       shadcn/ui components, restyled for the charter
 lib/
   i18n/                     Locales, getLocale, getDictionary
+  leads/                    Validation and storage of leads
+  db/                       Neon client
+  admin/                    Authentication, guard and figures of the admin
   models/                   Types: page contents (content.ts) and resume data
   constants/                Site data used by the structured data, page registry
   helpers/                  metadata.ts, json-ld.ts, og-fonts.ts
   utils/                    cn.ts
 locales/                    en.ts, fr.ts: dictionaries
   content/                  en.ts, fr.ts: texts of the home page and the resume
-proxy.ts                    Locale redirect
+proxy.ts                    Locale redirect and gate of /admin
+instrumentation-client.ts   Routes protected by Vercel BotID
+db/                         schema.sql and its setup script
 public/                     Portrait, security.txt
 docs/                       This documentation; redesign/ holds the brief and the charter
 ```

@@ -28,7 +28,7 @@ structured data are keyed by that list.
 [app/[locale]/page.tsx](../../app/[locale]/page.tsx), top to bottom:
 
 1. **Hero:** portrait and breadcrumb, title, lead, the key / value sheet, two buttons
-   (contact by e-mail, resume).
+   (contact, resume). Contact buttons open the [contact dialog](contact-form.md).
 2. **What I bring:** a pull quote, then three cells separated by 1 px rules.
 3. **Changelog:** five entries, the current one dated in the accent colour, with a link
    to the full changelog (the resume).

@@ -27,6 +27,10 @@ file in the `related_code` fields.
 | [content/resume-data.md](content/resume-data.md)                                               | Where the page texts live and how they are typed, the data kept for the structured data, and how to update the changelog, the projects and the profile.         |
 | [features/pages.md](features/pages.md)                                                         | The pages of the site (home, resume, legal notice, 404, error) and the checklist to add one.                                                                    |
 | [features/seo.md](features/seo.md)                                                             | Meta tags, canonical and `hreflang`, sitemap, robots, sharing image and icons, and the JSON-LD graph of each page.                                              |
+| [features/contact-form.md](features/contact-form.md)                                           | The contact dialog for leads: steps, API contract, anti-spam, error toasts, what changes after sending.                                                         |
+| [features/admin.md](features/admin.md)                                                         | The `/admin` dashboard for leads: access protection, credentials, figures, charts, table, export, rules.                                                        |
+| [database/neon.md](database/neon.md)                                                           | The Neon database: attachment to Vercel, connection strings, driver, local development without a database, setup.                                               |
+| [database/schema.md](database/schema.md)                                                       | Tables and columns, with the log of schema changes.                                                                                                             |
 | [frontend/components.md](frontend/components.md)                                               | Component conventions and the building blocks of the Changelog design.                                                                                          |
 | [frontend/styling.md](frontend/styling.md)                                                     | Eucalyptus tokens, Tailwind theme, light and dark mode, Geist and Geist Mono, type scale, global rules.                                                         |
 | [development/code-quality.md](development/code-quality.md)                                     | TypeScript, ESLint and Prettier setup, what the lint expects, the checks to run.                                                                                |
@@ -41,7 +45,7 @@ file in the `related_code` fields.
 - **YAML header required**, then a summary of 3 to 5 lines before the detail.
 - **Relative links** between pages and to the code.
 - **Language:** English, like everything else in this repository.
-- **No secrets.** The site has no environment variable today; if one appears, document its name only, never its value.
+- **No secrets.** Environment variables are documented by name only, never by value.
 - **Audits** are dated pages under `audits/`. They are a snapshot: do not rewrite the findings afterwards, record what was done in their action log.
 - **Maintenance:** every change to the site updates, in the same change, the pages that cover it and their `last_updated`. If no page covers the topic, create one and add it to the table above.
 - **Request log:** every request handled through Claude Code is recorded in one line in the "Request log" section of [CLAUDE.md](../CLAUDE.md), then reflected in the pages concerned here.

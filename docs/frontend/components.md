@@ -62,13 +62,19 @@ The blocks of the design (profile sheet, project card, changelog entry…) are b
 Configured in [components.json](../../components.json) (style `new-york`, Tailwind v4, CSS
 variables). Files are flat, as the CLI writes them: `components/ui/button.tsx`.
 
-| Component    | Used for                                                        | Changed from the original                                                                                                               |
-| ------------ | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `Button`     | every button and button-like link (`asChild`), the theme button | 44 px high, 2 px radius, no shadow; variants `default` (filled, the main action) and `secondary` (outlined); sizes `default` and `icon` |
-| `Card`       | the profile sheet, the project cards, the "what I bring" cells  | 1 px rule, 2 px radius, no shadow, padding set by the caller; `CardTitle` accepts `asChild` to be a real heading                        |
-| `Badge`      | the status of a project                                         | a mono label with no pill; `default` is live (accent), `secondary` is archived (muted)                                                  |
-| `Separator`  | the rule that opens each section and the footers                | colour only                                                                                                                             |
-| `Breadcrumb` | the path next to the portrait                                   | mono, set tight, a slash as separator instead of a chevron icon                                                                         |
+| Component                    | Used for                                                        | Changed from the original                                                                                                               |
+| ---------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `Button`                     | every button and button-like link (`asChild`), the theme button | 44 px high, 2 px radius, no shadow; variants `default` (filled, the main action) and `secondary` (outlined); sizes `default` and `icon` |
+| `Card`                       | the profile sheet, the project cards, the "what I bring" cells  | 1 px rule, 2 px radius, no shadow, padding set by the caller; `CardTitle` accepts `asChild` to be a real heading                        |
+| `Badge`                      | the status of a project                                         | a mono label with no pill; `default` is live (accent), `secondary` is archived (muted)                                                  |
+| `Separator`                  | the rule that opens each section and the footers                | colour only                                                                                                                             |
+| `Breadcrumb`                 | the path next to the portrait                                   | mono, set tight, a slash as separator instead of a chevron icon                                                                         |
+| `Dialog`                     | the contact dialog                                              | no shadow, no blur, no entrance animation; the close control is a word in mono (`closeLabel`)                                           |
+| `Sonner`                     | every error and confirmation toast                              | surface block, no icon, no shadow                                                                                                       |
+| `Input`, `Textarea`, `Label` | the fields of the contact form                                  | 44 px high, 1 px rule; labels in mono                                                                                                   |
+| `RadioGroup`                 | the choices of the contact form                                 | the checked mark is the accent dot                                                                                                      |
+| `Table`                      | the leads of the admin                                          | mono header on the surface colour                                                                                                       |
+| `Chart`                      | the charts of the admin (Recharts)                              | no shadow; kept close to the original, with relaxed lint rules for this file                                                            |
 
 Adding one: `npx shadcn@latest add <component>`, then restyle it in its file: remove
 shadows, use `rounded`, check the colours in both modes
@@ -83,6 +89,11 @@ Not shadcn, on purpose:
   menu does not need; it was removed for that reason after the October 2026 audit.
 - **Changelog entries, achievement lists, dated lists** have no shadcn equivalent: they
   are semantic lists (`<ol>`, `<ul>`, `<dl>`).
+- **The status select of the admin** is a native `<select>`: three fixed choices do not
+  need a custom listbox.
+
+The CLI overwrites files it depends on: adding `chart` rewrote `card.tsx`. After every
+`add`, check `git status` and restore what was restyled.
 
 ## Links and buttons
 

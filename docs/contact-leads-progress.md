@@ -64,12 +64,23 @@ English and with this repository's conventions.
 - [x] 5. Admin: Basic auth in `proxy.ts`, guard, credentials generated in `.env.local`,
       layout, dashboard with figures, chart, tables, status change, deletion, CSV export.
 - [x] 6. Legal notice and privacy texts in both languages; CSP checked.
-- [ ] 7. Documentation (`docs/features/contact-form.md`, `docs/features/admin.md`,
+- [x] 7. Documentation (`docs/features/contact-form.md`, `docs/features/admin.md`,
       `docs/database/`, runbook, security, overview, README) and `CLAUDE.md` rules.
-- [ ] 8. Verification in a browser: the three steps, each error toast, the success screen,
+- [x] 8. Verification in a browser: the three steps, each error toast, the success screen,
       the home page change, the admin with and without credentials; screenshots.
 
-## Notes for the next steps
+## State: all steps done
+
+Checked in a browser on 2026-10-11, on a production build with the in-memory store: the
+three steps, the error toasts (need, short message, invalid e-mail), the success screen,
+the confirmation on the home page and "nouveau message", the dialog at 375 px, `/admin`
+without credentials (401), with a wrong password (401), with credentials (200), the export,
+and the dashboard with four test leads. **Not checked:** anything against a real Neon
+database, and BotID, which only runs on Vercel.
+
+Before merging: Valentin validates the result and does the three actions listed below.
+
+## Notes
 
 - The dialog was tried in a browser (French, desktop): every step, the three error
   toasts and the success screen work. Still to check in step 8: the return to the home
