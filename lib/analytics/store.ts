@@ -22,9 +22,6 @@ export type AnalyticsStore = {
 
 const EPOCH = "1970-01-01";
 
-const toDay = (value: unknown) =>
-  value instanceof Date ? value.toISOString().slice(0, 10) : String(value).slice(0, 10);
-
 // Every query goes through the `sql` template tag: values are parameters, never concatenated.
 const neonStore: AnalyticsStore = {
   upsertDaily: async (rows) => {
@@ -68,14 +65,14 @@ const neonStore: AnalyticsStore = {
   daily: async (since) => {
     const sql = getSql();
     const rows = (await sql`
-      select day, visitors, pageviews
+      select to_char(day, 'YYYY-MM-DD') as day, visitors, pageviews
       from analytics_daily
       where day >= ${since ?? EPOCH}
       order by day
-    `) as { day: unknown; visitors: number; pageviews: number }[];
+    `) as DailyTrafficRow[];
 
     return rows.map((row) => ({
-      day: toDay(row.day),
+      day: row.day,
       visitors: row.visitors,
       pageviews: row.pageviews,
     }));

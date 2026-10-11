@@ -107,15 +107,33 @@ export const fetchDailyTraffic = async (
   );
 };
 
+/** Ways of asking the API for a single day. Which one it honours is not documented. */
+export const DAY_RANGES = {
+  /** `since` and `until` set to the same date. */
+  sameDate: (day: string) => ({ since: day, until: day }),
+  /** Full timestamps, from the first to the last millisecond of the day. */
+  timestamps: (day: string) => ({ since: `${day}T00:00:00.000Z`, until: `${day}T23:59:59.999Z` }),
+  /** `until` set to the next date, for an API that excludes it. */
+  nextDate: (day: string) => {
+    const next = new Date(`${day}T00:00:00.000Z`);
+    next.setUTCDate(next.getUTCDate() + 1);
+
+    return { since: day, until: next.toISOString().slice(0, 10) };
+  },
+} as const;
+
+export type DayRangeMode = keyof typeof DAY_RANGES;
+
 /** Visitors and page views of one day, split by a dimension. The value is kept raw. */
 export const fetchBreakdown = async (
   config: Config,
   day: string,
   dimension: AnalyticsDimension,
   limit: number,
+  mode: DayRangeMode,
 ): Promise<BreakdownRow[]> => {
   const key = ANALYTICS_DIMENSIONS[dimension];
-  const rows = await aggregate(config, { since: day, until: day }, key, limit);
+  const rows = await aggregate(config, DAY_RANGES[mode](day), key, limit);
 
   return rows
     .map((row) => ({

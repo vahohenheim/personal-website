@@ -3,6 +3,8 @@ import {
   ANALYTICS_DIMENSIONS,
   type AnalyticsDimension,
   AnalyticsApiError,
+  DAY_RANGES,
+  type DayRangeMode,
   fetchBreakdown,
   fetchDailyTraffic,
   getAnalyticsConfig,
@@ -16,7 +18,14 @@ export const DAILY_SNAPSHOT_DAYS = 3;
 const BREAKDOWN_LIMIT = 50;
 
 export type SnapshotResult =
-  | { status: "ok"; days: number; breakdownDays: number }
+  | {
+      status: "ok";
+      days: number;
+      breakdownDays: number;
+      /** Rows written to the breakdown table, and how a single day had to be asked for. */
+      breakdownRows: number;
+      dayRange: DayRangeMode | null;
+    }
   | { status: "unconfigured" }
   | { status: "error" };
 
@@ -61,18 +70,60 @@ export const snapshotAnalytics = async (
     );
 
     const days = lastDays(Math.min(Math.max(breakdownDays, 1), VERCEL_RETENTION_DAYS), now);
+    const dimensions = Object.keys(ANALYTICS_DIMENSIONS) as AnalyticsDimension[];
+    const modes = Object.keys(DAY_RANGES) as DayRangeMode[];
+    // The way of asking for one day that returned data. Found once, then reused.
+    let dayRange: DayRangeMode | null = null;
+    let breakdownRows = 0;
 
-    // One day at a time: a month of history is 120 requests, spread out rather than fired at once.
+    /** Rows of one day and dimension, with a given way of asking. Null when the API refuses it. */
+    const read = async (day: string, dimension: AnalyticsDimension, mode: DayRangeMode) => {
+      try {
+        return await fetchBreakdown(config, day, dimension, BREAKDOWN_LIMIT, mode);
+      } catch (error) {
+        // A refused range is only a wrong guess; anything else is a real failure.
+        if (error instanceof AnalyticsApiError && error.httpStatus === 400) {
+          return null;
+        }
+
+        throw error;
+      }
+    };
+
+    // One day at a time: a month of history is spread out rather than fired at once.
     for (const day of days) {
+      const hadTraffic = (byDay.get(day)?.pageviews ?? 0) > 0;
+
+      if (dayRange === null && hadTraffic) {
+        for (const mode of modes) {
+          const rows = await read(day, "page", mode);
+
+          if (rows && rows.length > 0) {
+            dayRange = mode;
+            break;
+          }
+        }
+      }
+
+      const mode = dayRange;
+
       await Promise.all(
-        (Object.keys(ANALYTICS_DIMENSIONS) as AnalyticsDimension[]).map(async (dimension) => {
-          const rows = await fetchBreakdown(config, day, dimension, BREAKDOWN_LIMIT);
+        dimensions.map(async (dimension) => {
+          // Without a known way of asking, or without traffic, the day has no breakdown.
+          const rows = mode && hadTraffic ? ((await read(day, dimension, mode)) ?? []) : [];
           await store.replaceBreakdown(day, dimension, rows);
+          breakdownRows += rows.length;
         }),
       );
     }
 
-    return { status: "ok", days: month.length, breakdownDays: days.length };
+    return {
+      status: "ok",
+      days: month.length,
+      breakdownDays: days.length,
+      breakdownRows,
+      dayRange,
+    };
   } catch (error) {
     // Neither the token nor an identifier in the logs: error name and HTTP status only.
     console.error("[analytics] snapshot failed", {
