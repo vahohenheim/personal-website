@@ -15,6 +15,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "db:setup": "node --env-file=.env.local db/setup.mjs",
+    "cv:pdf": "node scripts/cv-pdf.mjs",
     "check": "npm run typecheck && npm run lint:check && npm run format:check"
   },
   "dependencies": {

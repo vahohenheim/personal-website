@@ -158,6 +158,44 @@
 }
 
 /*
+ * The resume on one A4 sheet (/[locale]/resume/print/), printed to public/cv-<locale>.pdf.
+ * Always day mode, on screen too. The sheet carries its own 20 mm margins, so its page has
+ * none; everything else the layout renders (header, skip link, toasts) is hidden.
+ */
+.resume-sheet {
+  --bg: #ffffff;
+  --surface: #eef1f0;
+  --line: #dce2e0;
+  --muted: #646c6a;
+  --text2: #393f3e;
+  --text: #141818;
+  --accent: #3d6a60;
+  --on-accent: #ffffff;
+
+  page: resume-sheet;
+  box-sizing: border-box;
+  width: 210mm;
+  margin-inline: auto;
+  padding: 20mm;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body:has(.resume-sheet) {
+  display: block;
+  min-height: 0;
+}
+
+body:has(.resume-sheet) > :not(.resume-sheet) {
+  display: none !important;
+}
+
+@page resume-sheet {
+  size: A4;
+  margin: 0;
+}
+
+/*
  * Print: always day mode, without navigation or actions. Used to produce public/cv.pdf
  * from the resume page.
  */

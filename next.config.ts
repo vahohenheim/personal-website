@@ -33,6 +33,12 @@ const nextConfig: NextConfig = {
     // A stray lockfile higher up the tree would otherwise be picked as the root.
     root: __dirname,
   },
+  redirects() {
+    return Promise.resolve([
+      // The resume used to be a single file; it now exists in each language.
+      { source: "/cv.pdf", destination: "/cv-fr.pdf", permanent: true },
+    ]);
+  },
   headers() {
     return Promise.resolve([
       {

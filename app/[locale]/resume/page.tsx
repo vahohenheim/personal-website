@@ -62,7 +62,7 @@ export default async function ResumePage() {
           <p className="max-w-[64ch] text-[18px] leading-[1.5] text-text2">{resume.summary}</p>
           <div className="print-hidden flex flex-wrap gap-3">
             <Button asChild>
-              <a href="/cv.pdf" download>
+              <a href={`/cv-${locale}.pdf`} download>
                 {resume.actions.download}
               </a>
             </Button>
