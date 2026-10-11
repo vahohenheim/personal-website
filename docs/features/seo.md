@@ -12,7 +12,7 @@ related_code:
   - ../../app/robots.ts
   - ../../app/manifest.ts
   - ../../app/[locale]/opengraph-image.tsx
-  - ../../app/icon.tsx
+  - ../../app/favicon.ico
   - ../../app/apple-icon.tsx
   - ../../lib/helpers/og-fonts.ts
 last_updated: 2026-10-11
@@ -59,9 +59,11 @@ design charter.
 
 - [app/[locale]/opengraph-image.tsx](../../app/[locale]/opengraph-image.tsx): 1200 × 630,
   day mode, one per locale: breadcrumb, title, status line.
-- [app/icon.tsx](../../app/icon.tsx) and [app/apple-icon.tsx](../../app/apple-icon.tsx): the
-  letter `v` in Geist Bold, night colours. `proxy.ts` lets `/icon` and `/apple-icon`
-  through; a new generated file at the root needs the same exception in its `matcher`.
+- [app/favicon.ico](../../app/favicon.ico): the favicon Valentin drew before the redesign.
+  He prefers it to a generated one: do not replace it.
+- [app/apple-icon.tsx](../../app/apple-icon.tsx): the letter `v` in Geist Bold, night
+  colours, for iOS home screens. `proxy.ts` lets `/apple-icon` through; a new generated
+  file at the root needs the same exception in its `matcher`.
 
 ## Structured data (JSON-LD)
 

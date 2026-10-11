@@ -32,16 +32,16 @@ flowchart LR
 
 ## Stack
 
-| Layer        | Choice                                                                                                  |
-| ------------ | ------------------------------------------------------------------------------------------------------- |
-| Framework    | Next.js 16 (App Router), React 19                                                                       |
-| Language     | TypeScript 6, strict                                                                                    |
-| Styling      | Tailwind CSS v4 with the Eucalyptus tokens of the design charter ([styling.md](../frontend/styling.md)) |
-| Translations | Plain dictionaries, no library ([i18n.md](i18n.md))                                                     |
-| Dates        | `dayjs`                                                                                                 |
-| Fonts        | Geist and Geist Mono, from the `geist` package                                                          |
-| Analytics    | Vercel Analytics                                                                                        |
-| Hosting      | Vercel, deployed on every push to `main` ([runbook](../operations/runbook.md))                          |
+| Layer        | Choice                                                                                                                        |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| Framework    | Next.js 16 (App Router), React 19                                                                                             |
+| Language     | TypeScript 6, strict                                                                                                          |
+| Styling      | Tailwind CSS v4 and shadcn/ui, themed with the Eucalyptus tokens of the design charter ([styling.md](../frontend/styling.md)) |
+| Translations | Plain dictionaries, no library ([i18n.md](i18n.md))                                                                           |
+| Dates        | `dayjs`                                                                                                                       |
+| Fonts        | Geist and Geist Mono, from the `geist` package                                                                                |
+| Analytics    | Vercel Analytics                                                                                                              |
+| Hosting      | Vercel, deployed on every push to `main` ([runbook](../operations/runbook.md))                                                |
 
 ## Folder structure
 
@@ -50,7 +50,7 @@ flowchart LR
 ```
 app/
   globals.css               Tailwind v4 + the Eucalyptus tokens and global rules
-  icon.tsx, apple-icon.tsx  Generated icons (the letter v)
+  favicon.ico, apple-icon.tsx  Favicon, and the generated Apple icon
   manifest.ts, robots.ts, sitemap.ts
   [locale]/                 Root segment: every route is under a locale
     layout.tsx              Root layout: <html>, fonts, theme, header, analytics
@@ -63,6 +63,7 @@ app/
     legal/page.tsx          Legal notice and privacy
 components/                 One folder per component (header, avatar, breadcrumb,
                             profile-card, changelog-entry, project-card…)
+  ui/                       shadcn/ui components, restyled for the charter
 lib/
   i18n/                     Locales, getLocale, getDictionary
   models/                   Types: page contents (content.ts) and resume data
