@@ -14,10 +14,13 @@
     "lint:check": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "db:setup": "node --env-file=.env.local db/setup.mjs",
     "check": "npm run typecheck && npm run lint:check && npm run format:check"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.2.0",
     "@vercel/analytics": "^2.0.1",
+    "botid": "^1.5.11",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.4.0",
     "dayjs": "^1.11.23",

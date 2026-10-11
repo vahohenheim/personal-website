@@ -54,9 +54,9 @@ English and with this repository's conventions.
 ## Steps
 
 - [x] 0. Branch, pending work committed (favicon, shadcn), this file.
-- [ ] 1. Database layer: `@neondatabase/serverless`, `lib/db/`, `db/schema.sql`,
+- [x] 1. Database layer: `@neondatabase/serverless`, `lib/db/`, `db/schema.sql`,
       `db/setup.mjs`, `npm run db:setup`, `.env.example`, in-memory store for development.
-- [ ] 2. Lead model, validation and `POST /api/contact` with BotID, honeypot and time trap.
+- [x] 2. Lead model, validation and `POST /api/contact` with BotID, honeypot and time trap.
 - [ ] 3. shadcn `dialog`, `sonner`, `input`, `textarea`, `label`, `radio-group` restyled
       for the charter; toasts mounted in the root layout.
 - [ ] 4. Contact dialog (three steps and success), translated, opened by the contact
@@ -68,6 +68,16 @@ English and with this repository's conventions.
       `docs/database/`, runbook, security, overview, README) and `CLAUDE.md` rules.
 - [ ] 8. Verification in a browser: the three steps, each error toast, the success screen,
       the home page change, the admin with and without credentials; screenshots.
+
+## Notes for the next steps
+
+- The API URL is `/api/contact/` (with the trailing slash: `trailingSlash` is on).
+- `LEADS_MEMORY_STORE=1` forces the in-memory store with `next start`, to test a
+  production build locally: `LEADS_MEMORY_STORE=1 npx next start`.
+- BotID only runs on Vercel (`process.env.VERCEL`): locally only the honeypot and the time
+  trap apply. `startedAt` must be at least 3 seconds old or the request is silently dropped.
+- The BotID rewrites live under `/149e9513-01fa-4fb0-aad4-566afd725d1b/`: the `matcher` of
+  `proxy.ts` must leave that prefix alone (to do in step 5, with `/admin`).
 
 ## What Valentin has to do (cannot be done from the repository)
 

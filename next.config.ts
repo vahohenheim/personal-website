@@ -1,3 +1,4 @@
+import { withBotId } from "botid/next/config";
 import type { NextConfig } from "next";
 
 // React needs eval for its debugging tools in development only.
@@ -63,4 +64,5 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// withBotId adds the rewrites of the BotID proxy.
+export default withBotId(nextConfig);
