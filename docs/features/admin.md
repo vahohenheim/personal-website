@@ -1,16 +1,17 @@
 ---
 title: Admin area
-description: The /admin dashboard for leads and audience figures: how access is protected, where the credentials are, what the page shows, and the rules for adding an admin page or action.
+description: The /admin dashboard for leads, their follow-up, conversion and audience figures: how access is protected, where the credentials are, what the page shows, and the rules for adding an admin page or action.
 related_code:
   - ../../app/admin/layout.tsx
   - ../../app/admin/page.tsx
   - ../../app/admin/actions.ts
   - ../../app/admin/export/route.ts
   - ../../app/admin/labels.ts
-  - ../../components/admin/lead-actions.tsx
+  - ../../components/admin/lead-follow-up.tsx
   - ../../components/admin/bars-chart.tsx
   - ../../components/admin/analytics-actions.tsx
   - ../../lib/analytics/report.ts
+  - ../../lib/funnel/report.ts
   - ../../lib/admin/auth.ts
   - ../../lib/admin/guard.ts
   - ../../lib/admin/stats.ts
@@ -48,27 +49,52 @@ They are environment variables, never written in the code or the docs.
 
 ## What the page shows
 
-1. **Key figures:** leads received, leads still to answer (in the accent colour when there
-   are some), leads of the last 30 days compared with the 30 before.
+1. **Key figures:** leads received, leads still to answer and leads to follow up (both in
+   the accent colour when there are some), amount of the quotes waiting for an answer,
+   amount won, leads of the last 30 days compared with the 30 before.
 2. **Charts:** leads per week over twelve weeks, and leads by need (shadcn `Chart`, bars in
    the accent colour, through `BarsChartComponent`).
-3. **Table of leads** (shadcn `Table`): date, contact, need, message, and follow-up, where
-   the status can be changed (`à traiter`, `contacté`, `clos`) and a lead deleted after a
-   confirmation. Results and failures are toasts.
-4. **CSV export** (`/admin/export/`): every lead, `;` separated, UTF-8 with a byte order
-   mark for Excel. Cells that start with `=`, `+`, `-` or `@` are neutralised.
-5. **Audience** ("fréquentation"): page views and visits over a chosen period, a chart, and
+3. **Audience** ("fréquentation"): page views and visits over a chosen period, a chart, and
    the top pages, referrers, countries and devices, read from the figures copied to Neon
    every day. Two buttons copy them on demand. See [analytics.md](analytics.md).
+4. **Conversion:** over the same period, the funnel from a visit to a message sent, and
+   where the leads came from. See [conversion.md](conversion.md).
+5. **Table of leads** (shadcn `Table`): date, contact (with the origin), need, message, and
+   follow-up: status, amount, follow-up date (in the accent colour once it has come) and
+   the start of the notes.
+6. **CSV export** (`/admin/export/`): every lead with its follow-up, `;` separated, UTF-8
+   with a byte order mark for Excel. Cells that start with `=`, `+`, `-` or `@` are
+   neutralised.
 
 Figures are computed by [lib/admin/stats.ts](../../lib/admin/stats.ts), a pure function.
+
+## Following a lead up
+
+The "Suivi" button of a row opens a dialog
+([lead-follow-up.tsx](../../components/admin/lead-follow-up.tsx)) with:
+
+| Field          | Stored in      | Notes                                                                   |
+| -------------- | -------------- | ----------------------------------------------------------------------- |
+| statut         | `status`       | `à traiter`, `contacté`, `devis envoyé`, `gagné`, `perdu`, `sans suite` |
+| montant estimé | `amount`       | whole euros, optional; summed in the figures for quotes and wins        |
+| relancer le    | `follow_up_on` | optional date; the lead counts as "à relancer" from that day on         |
+| notes          | `notes`        | free text, 4,000 characters at most                                     |
+
+Saving calls the Server Action `updateLeadFollowUpAction`, which checks every field again
+on the server. The same dialog deletes the lead, after a confirmation. Results and
+failures are toasts.
+
+A lead whose status is `gagné`, `perdu` or `sans suite` (`CLOSED_STATUSES`) is never due
+for a follow-up, whatever its date. The stored value of `sans suite` is `closed`: it was
+labelled "clos" before the statuses of a sale existed.
 
 ## Rules
 
 - Every admin page stays under `/admin`, and calls `requireAdmin()`.
 - Every admin Server Action and route calls `assertAdmin()` first.
 - Admin pages are `force-dynamic`: live data, no cache.
-- No lead data in the logs.
+- No lead data in the logs. Notes are personal data like the rest of a lead: they are
+  deleted with it.
 - The admin follows the design charter like the rest of the site: tokens only, charts in
   the accent and muted colours.
 - Its texts are in French, in [app/admin/labels.ts](../../app/admin/labels.ts) and in the

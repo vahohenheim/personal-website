@@ -66,7 +66,9 @@ The same goes for the two other entry points: keep [README.md](README.md) true (
 - Meta descriptions stay under 155 characters.
 - The legal page (`/legal/`) describes how visitor data is handled. Adding, removing or changing anything that touches it (analytics, a resource from another origin, a form, a cookie) updates its texts in both languages and its `updatedAt`.
 - A generated file served at the root without an extension (`/apple-icon`) must be excluded in the `matcher` of `proxy.ts`.
-- Details and the checklist: [docs/features/pages.md](docs/features/pages.md), [docs/features/seo.md](docs/features/seo.md).
+- A post is an MDX file in `content/posts/<slug>/<locale>.mdx` plus an entry in `POSTS` (`lib/constants/posts.ts`). `draft: true` keeps it out of production. A slug never changes once published. Valentin writes the posts: never publish a text under his name that he did not write.
+- The resume PDFs (`public/cv-fr.pdf`, `public/cv-en.pdf`) are printed from `/[locale]/resume/print/` by `npm run build && npm run cv:pdf` and committed. Regenerate them after any change to the resume content; each must stay on one A4 page.
+- Details and the checklist: [docs/features/pages.md](docs/features/pages.md), [docs/features/seo.md](docs/features/seo.md), [docs/features/posts.md](docs/features/posts.md), [docs/features/resume-pdf.md](docs/features/resume-pdf.md).
 
 ## Components
 
@@ -86,14 +88,15 @@ The same goes for the two other entry points: keep [README.md](README.md) true (
 - Every error shown to a visitor or to the admin is a shadcn toast (`toast` from `sonner`), with its text in the dictionaries. No inline error messages.
 - SQL always goes through the `sql` template tag of the Neon driver. Never concatenate.
 - No environment variable value in the code, the logs, an answer or the docs: names only. No name, e-mail address or message in the logs.
-- The stored values of `LEAD_NEEDS`, `LEAD_TIMELINES` and `LEAD_STATUSES` are never renamed.
+- The stored values of `LEAD_NEEDS`, `LEAD_TIMELINES`, `LEAD_STATUSES` and `FUNNEL_EVENTS` are never renamed.
+- Conversion is measured with anonymous daily counters only (`POST /api/events/`, table `funnel_daily`): no identifier, nothing written to the visitor's browser. The origin of a lead is kept in memory until the form is sent.
 - Every admin page stays under `/admin` and calls `requireAdmin()`; every admin Server Action and route calls `assertAdmin()`. Never rely on the proxy alone. Admin pages are `noindex`, `no-store` and `force-dynamic`.
 - A schema change is made in `db/schema.sql` and recorded in the change log of `docs/database/schema.md`.
 - Audience figures are read from Neon, never live from Vercel: the daily cron (`vercel.json`) copies them because Vercel keeps one month only. Only aggregated counts are stored. The snapshot must stay idempotent.
 - A cron route lives under `/api/cron/`, checks `Authorization: Bearer <CRON_SECRET>` in constant time and is closed without the variable.
 - `LEADS_MEMORY_STORE=1` forces the in-memory stores: use it to test a production build locally, because `.env.local` points to the production database.
 - Any change to what is collected, stored or sent to a provider updates the legal page in both languages.
-- Details: [docs/features/contact-form.md](docs/features/contact-form.md), [docs/features/admin.md](docs/features/admin.md), [docs/features/analytics.md](docs/features/analytics.md), [docs/database/neon.md](docs/database/neon.md).
+- Details: [docs/features/contact-form.md](docs/features/contact-form.md), [docs/features/admin.md](docs/features/admin.md), [docs/features/analytics.md](docs/features/analytics.md), [docs/features/conversion.md](docs/features/conversion.md), [docs/database/neon.md](docs/database/neon.md).
 
 ## Code style
 
@@ -116,6 +119,7 @@ Listed in [docs/operations/runbook.md](docs/operations/runbook.md#known-issues).
 
 **Rule:** every request handled through Claude Code is recorded here, in the same change, as **one line** (date, request, main files), most recent first. Then update the pages of `docs/` concerned: create a page if none covers the topic, and update the index `docs/README.md` and the `last_updated` field. The detail goes in `docs/`, not here, because this file is read at every session.
 
+- 2026-10-11 — Four features, on branch `feature/crm-posts-cv-conversion`: follow-up of leads in the admin (statuses of a sale, amount, follow-up date, notes, new figures, export); conversion measured with anonymous daily counters and the origin of each lead; the resume on one A4 page per language, printed by `npm run cv:pdf`; posts written in MDX with list, feed, structured data and drafts; schema and legal texts updated (`app/admin/`, `lib/funnel/`, `app/api/events/`, `app/[locale]/resume/print/`, `scripts/cv-pdf.mjs`, `app/[locale]/posts/`, `content/posts/`, `lib/constants/posts.ts`, `db/schema.sql`) → [docs/features/admin.md](docs/features/admin.md), [docs/features/conversion.md](docs/features/conversion.md), [docs/features/resume-pdf.md](docs/features/resume-pdf.md), [docs/features/posts.md](docs/features/posts.md).
 - 2026-10-11 — Fix: breakdowns of the audience figures came back empty from the real API; a single day is now asked for with full timestamps, found by trying three range forms (`lib/analytics/vercel.ts`, `lib/analytics/snapshot.ts`) → [docs/features/analytics.md](docs/features/analytics.md#state-and-limits).
 - 2026-10-11 — Audience figures in the admin, kept beyond Vercel's one-month retention: daily cron copying Vercel Web Analytics to Neon (`analytics_daily`, `analytics_breakdown`), traffic section with period filter, chart and breakdowns, refresh and 30-day import buttons, privacy text updated; schema setup moved to the HTTP driver (`lib/analytics/`, `app/api/cron/analytics-snapshot/`, `vercel.json`, `app/admin/`, `db/`) → [docs/features/analytics.md](docs/features/analytics.md), [docs/database/schema.md](docs/database/schema.md).
 - 2026-10-11 — Contact form for leads: three-step dialog opened by every contact button, errors as toasts, confirmation and change on the home page after sending; `POST /api/contact/` with BotID, honeypot and time trap; leads in Neon; `/admin` behind HTTP Basic with figures, charts, table, status, deletion and CSV export; legal and privacy texts updated (`components/contact/`, `app/api/contact/`, `app/admin/`, `lib/leads/`, `lib/admin/`, `lib/db/`, `db/`, `proxy.ts`, `locales/`) → [docs/features/contact-form.md](docs/features/contact-form.md), [docs/features/admin.md](docs/features/admin.md), [docs/database/neon.md](docs/database/neon.md).

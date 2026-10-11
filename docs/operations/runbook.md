@@ -30,12 +30,14 @@ npm run dev
 Open `http://localhost:3000`. The root URL redirects to `/en/` or `/fr/` according to the
 browser language.
 
-| Command         | What it does                                                                   |
-| --------------- | ------------------------------------------------------------------------------ |
-| `npm run dev`   | Development server (Turbopack)                                                 |
-| `npm run build` | Production build                                                               |
-| `npm run start` | Serves the production build                                                    |
-| `npm run check` | Types, lint and formatting ([code-quality.md](../development/code-quality.md)) |
+| Command            | What it does                                                                                                               |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`      | Development server (Turbopack)                                                                                             |
+| `npm run build`    | Production build                                                                                                           |
+| `npm run start`    | Serves the production build                                                                                                |
+| `npm run check`    | Types, lint and formatting ([code-quality.md](../development/code-quality.md))                                             |
+| `npm run cv:pdf`   | Prints the resume to `public/cv-fr.pdf` and `public/cv-en.pdf`, after a build ([resume-pdf.md](../features/resume-pdf.md)) |
+| `npm run db:setup` | Applies `db/schema.sql` to the database of `.env.local` ([neon.md](../database/neon.md))                                   |
 
 `next dev` generates `AGENTS.md`, which points coding agents to the Next.js documentation
 shipped in `node_modules/next/dist/docs/`. Do not edit it; commit it when it changes.
@@ -127,10 +129,10 @@ goes away.
   warning there until Node is upgraded (`nvm install`).
 - Under `public/`, only `avatar.jpg` and `.well-known/security.txt` are used. The old logo
   and icon files may still be linked from outside the site, so check before deleting.
-- `public/cv.pdf` is the French resume page printed to PDF (3 pages), not yet the one-page
-  A4 layout of the design charter. Regenerate it after any change to the resume: build,
-  `next start`, then print `/fr/resume/` to PDF with backgrounds (the print styles of
-  `globals.css` switch to day mode and hide the navigation and the buttons).
+- The resume PDFs are not rebuilt on deployment: after a change to the resume, run
+  `npm run build && npm run cv:pdf` and commit both files.
+- No post is published yet: the posts section does not exist on the live site
+  ([posts.md](../features/posts.md)).
 - The legal notice still says the site is published "in a personal capacity". As a
   freelancer, it probably needs the business identity (SIRET, address).
 - The footers carry a "mentions légales" link that the redesign brief did not specify.
@@ -152,3 +154,6 @@ goes away.
 | The history has a hole of several days                                        | The cron did not run (check `CRON_SECRET` and the Cron Jobs page). "Importer 30 jours" refills what Vercel still has.                                                 |
 | The contact form answers 500 on a host that is not Vercel                     | BotID only runs on Vercel; the route skips it elsewhere. Check that the `VERCEL` variable is not set by hand.                                                         |
 | The duration of the current job looks out of date                             | It is computed at build time. Redeploy.                                                                                                                               |
+| `npm run cv:pdf` says a file has 2 pages                                      | The resume got longer than one A4 page. Shorten the content or reduce a size in the print page ([resume-pdf.md](../features/resume-pdf.md)).                          |
+| A post does not show on the live site                                         | It is still a draft (`draft: true` in `lib/constants/posts.ts`), or it is not written in that language.                                                               |
+| The conversion counters stay at zero in production                            | The table `funnel_daily` is missing (`npm run db:setup`), or BotID blocks the requests: `/api/events/` must be listed in `initBotId`.                                 |

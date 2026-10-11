@@ -119,3 +119,11 @@ loaded in the [root layout](../../app/[locale]/layout.tsx) and exposed as `font-
 with a 6 px radius by [AvatarComponent](../../components/avatar/avatar.tsx), preloaded
 because it is above the fold. It is a human marker, never a cover image: do not show it
 larger. To change it, replace the file with another square image.
+
+## Print
+
+Two sets of rules in [globals.css](../../app/globals.css):
+
+- `@media print` switches any page to day mode and hides the navigation and the buttons.
+- `.resume-sheet` lays out the one-page A4 resume, in mm and pt, always in day mode. See
+  [resume-pdf.md](../features/resume-pdf.md).

@@ -53,7 +53,7 @@ everything is merged and deployed.
 - [x] 5. Posts: MDX setup, registry, list and post pages, structured data, sitemap, feed,
       nav link, one draft example.
 - [x] 6. Legal and privacy texts; schema applied to Neon.
-- [ ] 7. Documentation, `CLAUDE.md`, README.
+- [x] 7. Documentation, `CLAUDE.md`, README.
 - [ ] 8. Verification in a browser; screenshots.
 
 ## Open questions for Valentin

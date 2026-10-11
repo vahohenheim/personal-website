@@ -14,10 +14,11 @@ last_updated: 2026-10-11
 # Architecture overview
 
 **Summary.** The site is a Next.js 16 application (App Router, Turbopack) deployed on
-Vercel. Its three public pages (home, resume, legal notice), each in French and English,
-are generated at build time. Four things run on the server: `proxy.ts` (locale redirect and
-the gate of the admin area), `POST /api/contact/` (the contact form, stored in a Neon
-database), `/admin` (the dashboard of leads and audience figures) and a daily cron that
+Vercel. Its public pages (home, resume, legal notice, and posts written in MDX), each in French
+and English, are generated at build time. Five things run on the server: `proxy.ts`
+(locale redirect and the gate of the admin area), `POST /api/contact/` (the contact form,
+stored in a Neon database), `POST /api/events/` (anonymous counters of the contact form),
+`/admin` (the dashboard of leads, conversion and audience figures) and a daily cron that
 copies the audience figures from Vercel to Neon.
 
 ## The system at a glance
@@ -29,7 +30,9 @@ flowchart LR
     V -->|/fr/, /en/resume/...| S[Static pages<br/>built from locales/ and lib/constants/]
     V -->|unknown URL| N[not-found.tsx<br/>rendered on demand, 404]
     V -->|contact dialog| C[POST /api/contact/<br/>BotID, validation]
-    C --> DB[(Neon: leads)]
+    C --> DB[(Neon: leads, counters, audience)]
+    V -->|steps of the dialog| E[POST /api/events/<br/>BotID, counters]
+    E --> DB
     T([Valentin]) -->|/admin, HTTP Basic| ADM[Admin dashboard]
     ADM --> DB
     CRON[Vercel Cron, daily] -->|/api/cron/analytics-snapshot/| DB
@@ -66,9 +69,12 @@ app/
     not-found.tsx           Translated 404, rendered inside the layout
     [...rest]/page.tsx      Catch-all that sends unknown URLs to not-found.tsx
     resume/page.tsx         Resume
+    resume/print/page.tsx   The resume on one A4 sheet, printed to public/cv-<locale>.pdf
+    posts/                  List of posts, a post ([slug]), RSS feed (feed.xml)
     legal/page.tsx          Legal notice and privacy
   admin/                    Dashboard of leads: own root layout, French only
   api/contact/route.ts      Receives a lead from the contact dialog
+  api/events/route.ts       Counts a step of the contact dialog
   api/cron/                 Scheduled jobs: daily copy of the audience figures
 components/                 One folder per component (header, avatar, breadcrumb,
                             profile-card, changelog-entry, project-card…)
@@ -76,20 +82,24 @@ components/                 One folder per component (header, avatar, breadcrumb
 lib/
   i18n/                     Locales, getLocale, getDictionary
   leads/                    Validation and storage of leads
+  funnel/                   Counters of the contact dialog: tracking, storage, report
   analytics/                Vercel Web Analytics client, daily snapshot, storage, report
   db/                       Neon client
   admin/                    Authentication, guard and figures of the admin
   models/                   Types: page contents (content.ts) and resume data
   constants/                Site data used by the structured data, page registry
-  helpers/                  metadata.ts, json-ld.ts, og-fonts.ts
+  helpers/                  metadata.ts, json-ld.ts, posts.ts, og-fonts.ts
   utils/                    cn.ts
+content/posts/              Posts: <slug>/<locale>.mdx
+mdx-components.tsx          How the elements of a post are drawn
 locales/                    en.ts, fr.ts: dictionaries
   content/                  en.ts, fr.ts: texts of the home page and the resume
 proxy.ts                    Locale redirect and gate of /admin
 instrumentation-client.ts   Routes protected by Vercel BotID
 db/                         schema.sql and its setup script
+scripts/                    cv-pdf.mjs: prints the resume PDFs
 vercel.json                 Cron schedule
-public/                     Portrait, security.txt
+public/                     Portrait, resume PDFs, security.txt
 docs/                       This documentation; redesign/ holds the brief and the charter
 ```
 
@@ -113,5 +123,7 @@ folder (`../appear/appear`); anything further goes through the alias.
 ## Related pages
 
 - Pages and how to add one: [features/pages.md](../features/pages.md).
+- Posts: [features/posts.md](../features/posts.md). Resume PDF: [features/resume-pdf.md](../features/resume-pdf.md).
+- Conversion: [features/conversion.md](../features/conversion.md).
 - Where the content lives: [content/resume-data.md](../content/resume-data.md).
 - Headers and CSP: [security.md](security.md).
