@@ -51,6 +51,13 @@ set once, in `SITE_URL` ([site.ts](../../lib/constants/site.ts)).
   the canonical host. Nothing on the site is private, so there is no `Disallow` rule.
 - [app/manifest.ts](../../app/manifest.ts) declares the name, the colours and the icons.
 
+Posts are added after the pages: one entry per post and per language it is written in,
+with only those languages as alternates. The list of posts is listed only in the languages
+that have a published post. Drafts never appear. Each language also has an RSS feed,
+`/[locale]/posts/feed.xml`, declared by the pages of the posts section.
+
+`/[locale]/resume/print/` is `noindex` and is not in the sitemap.
+
 ## Sharing image and icons
 
 Both are generated at build time with `next/og`, in Geist, from the font files of the
@@ -67,7 +74,7 @@ design charter.
 
 ## Structured data (JSON-LD)
 
-`<JsonLdComponent page="…" />` renders one `<script type="application/ld+json">` holding a
+`<JsonLdComponent page="…" />` (or `post={…}` for a [post](posts.md)) renders one `<script type="application/ld+json">` holding a
 `@graph`, built by `getPageJsonLd(page)` in
 [lib/helpers/json-ld.ts](../../lib/helpers/json-ld.ts) and typed with `schema-dts`.
 
@@ -76,6 +83,8 @@ design charter.
 | Home   | `WebSite` (site name), `ProfilePage`, `Person` (summary), `ItemList` of personal projects |
 | Resume | `ProfilePage`, `Person` (full), `BreadcrumbList`                                          |
 | Legal  | `WebPage`, `BreadcrumbList`                                                               |
+| Posts  | `WebPage`, `Blog` listing a `BlogPosting` per post, `BreadcrumbList`                      |
+| A post | `WebPage`, `BlogPosting` (full), `BreadcrumbList` of three items                          |
 
 ```mermaid
 flowchart LR
@@ -95,6 +104,10 @@ The `Person` node carries:
   `knowsLanguage`. No `worksFor` while freelance: there is no current employer.
 - **Full (resume only):** `alumniOf` with every past role (name, start and end dates,
   organisation) and the schools, and `hasCredential` with the qualifications.
+
+A `BlogPosting` carries the headline, the description, both dates, the language, and
+`author` and `publisher` pointing to the person. It is built by `getPostJsonLd(post)`,
+outside `PAGE_GRAPHS`, because posts are not in `PAGES`.
 
 ### Rules
 

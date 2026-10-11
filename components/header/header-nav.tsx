@@ -14,6 +14,8 @@ type HeaderNavProps = {
   /** Name of the language link, written in the other language. */
   otherLocaleLabel: string;
   menuLabel: string;
+  /** Pages without a version in the other language, and where to send the reader instead. */
+  languageFallbacks: Record<string, string>;
 };
 
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
@@ -32,9 +34,11 @@ const HeaderNavComponent = ({
   items,
   otherLocaleLabel,
   menuLabel,
+  languageFallbacks,
 }: HeaderNavProps) => {
   const pathname = usePathname();
-  const otherLocalePath = pathname.replace(`/${locale}`, `/${otherLocale}`);
+  const otherLocalePath =
+    languageFallbacks[pathname] ?? pathname.replace(`/${locale}`, `/${otherLocale}`);
 
   return (
     <nav aria-label={menuLabel}>

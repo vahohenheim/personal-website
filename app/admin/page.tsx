@@ -1,7 +1,7 @@
 import Link from "next/link";
 import AnalyticsActionsComponent from "@/components/admin/analytics-actions";
 import BarsChartComponent from "@/components/admin/bars-chart";
-import LeadActionsComponent from "@/components/admin/lead-actions";
+import LeadFollowUpComponent from "@/components/admin/lead-follow-up";
 import SectionComponent, { SectionTitleComponent } from "@/components/section/section";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -23,15 +23,22 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { requireAdmin } from "@/lib/admin/guard";
-import { computeLeadStats } from "@/lib/admin/stats";
-import { isTrafficPeriod, loadTrafficReport, TRAFFIC_PERIODS } from "@/lib/analytics/report";
+import { computeLeadStats, isFollowUpDue } from "@/lib/admin/stats";
+import {
+  getPeriodStart,
+  isTrafficPeriod,
+  loadTrafficReport,
+  TRAFFIC_PERIODS,
+} from "@/lib/analytics/report";
 import { DAILY_SNAPSHOT_DAYS, VERCEL_RETENTION_DAYS } from "@/lib/analytics/snapshot";
 import { type AnalyticsDimension } from "@/lib/analytics/vercel";
 import { isDatabaseConfigured } from "@/lib/db/client";
+import { loadFunnelReport } from "@/lib/funnel/report";
 import { getLeadStore } from "@/lib/leads/store";
 import { type Lead } from "@/lib/models/lead";
 import {
   breakdownLabel,
+  FUNNEL_LABELS,
   NEED_LABELS,
   PERIOD_LABELS,
   STATUS_LABELS,
@@ -77,6 +84,15 @@ const loadLeads = async (): Promise<{ leads: Lead[]; error: string | null }> => 
 };
 
 const numberFormat = new Intl.NumberFormat("fr-FR");
+const amountFormat = new Intl.NumberFormat("fr-FR", {
+  style: "currency",
+  currency: "EUR",
+  maximumFractionDigits: 0,
+});
+const percentFormat = new Intl.NumberFormat("fr-FR", {
+  style: "percent",
+  maximumFractionDigits: 1,
+});
 const dayFormat = new Intl.DateTimeFormat("fr-FR", {
   day: "2-digit",
   month: "2-digit",
@@ -101,17 +117,38 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
 
   const { periode } = await searchParams;
   const period = isTrafficPeriod(periode) ? periode : "30";
-  const traffic = await loadTrafficReport(period);
+  const now = new Date();
+  const today = now.toISOString().slice(0, 10);
+  const [traffic, funnel] = await Promise.all([
+    loadTrafficReport(period, now),
+    loadFunnelReport(getPeriodStart(period, now)),
+  ]);
 
   const { leads, error } = await loadLeads();
-  const stats = computeLeadStats(leads, new Date());
+  const stats = computeLeadStats(leads, now);
   const figures = [
     { label: "demandes reçues", value: stats.total, detail: "depuis le début" },
     {
       label: "à traiter",
       value: stats.open,
-      detail: `${stats.byStatus.contacted} contactées · ${stats.byStatus.closed} closes`,
+      detail: `${stats.byStatus.contacted} contactées`,
       live: stats.open > 0,
+    },
+    {
+      label: "à relancer",
+      value: stats.followUpsDue,
+      detail: "date de relance atteinte",
+      live: stats.followUpsDue > 0,
+    },
+    {
+      label: "devis en attente",
+      value: amountFormat.format(stats.quotedAmount),
+      detail: `${stats.byStatus.quoted} devis envoyés`,
+    },
+    {
+      label: "gagné",
+      value: amountFormat.format(stats.wonAmount),
+      detail: `${stats.byStatus.won} gagnées · ${stats.byStatus.lost} perdues`,
     },
     {
       label: "30 derniers jours",
@@ -161,7 +198,8 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
               redémarrage du serveur.
             </p>
           )}
-          <ul className="grid list-none grid-cols-[repeat(auto-fit,minmax(min(220px,100%),1fr))] gap-px overflow-hidden rounded border border-border bg-border">
+          {/* Six figures: fixed columns, so that no row is left with an empty cell. */}
+          <ul className="grid list-none grid-cols-1 gap-px overflow-hidden rounded border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
             {figures.map((figure) => (
               <li key={figure.label} className="bg-background">
                 <Card className="h-full gap-1 rounded-none border-0 p-6">
@@ -332,6 +370,86 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
           )}
         </SectionComponent>
 
+        <SectionComponent id="conversion" className="flex flex-col gap-6">
+          <SectionTitleComponent>conversion</SectionTitleComponent>
+          <p className="max-w-[64ch] font-mono text-[13px] text-muted-foreground">
+            Du visiteur au message envoyé, sur la période choisie ci-dessus ({PERIOD_LABELS[period]}
+            ). Compteurs anonymes par jour : aucun cookie, aucun identifiant.
+          </p>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(380px,100%),1fr))] gap-6">
+            <Card>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>étape</TableHead>
+                      <TableHead className="text-right">nombre</TableHead>
+                      <TableHead className="text-right">de l’étape précédente</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {funnel.status === "error" ? (
+                      <TableRow>
+                        <TableCell colSpan={3} className="font-semibold">
+                          Les compteurs n’ont pas pu être lus dans la base.
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      funnel.steps.map((step) => (
+                        <TableRow key={step.id}>
+                          <TableCell className="text-[15px]">{FUNNEL_LABELS[step.id]}</TableCell>
+                          <TableCell className="text-right font-mono text-[13px]">
+                            {numberFormat.format(step.count)}
+                          </TableCell>
+                          <TableCell className="text-right font-mono text-[13px] text-muted-foreground">
+                            {step.rate === null ? "–" : percentFormat.format(step.rate)}
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>origine des demandes</TableHead>
+                      <TableHead className="text-right">demandes</TableHead>
+                      <TableHead className="text-right">gagnées</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {stats.bySource.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={3} className="text-[15px] text-text2">
+                          Aucune demande pour l’instant.
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      stats.bySource.map((row) => (
+                        <TableRow key={row.source}>
+                          <TableCell className="max-w-[220px] text-[15px] break-words">
+                            {row.source === "" ? "Accès direct ou inconnu" : row.source}
+                          </TableCell>
+                          <TableCell className="text-right font-mono text-[13px]">
+                            {numberFormat.format(row.leads)}
+                          </TableCell>
+                          <TableCell className="text-right font-mono text-[13px] text-muted-foreground">
+                            {numberFormat.format(row.won)}
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </div>
+        </SectionComponent>
+
         <SectionComponent className="flex flex-col gap-6">
           <SectionTitleComponent>toutes les demandes</SectionTitleComponent>
           {leads.length === 0 ? (
@@ -361,6 +479,11 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                             {lead.email}
                           </a>
                           {lead.company && <p className="text-[15px] text-text2">{lead.company}</p>}
+                          {lead.source && (
+                            <p className="font-mono text-[12px] text-muted-foreground">
+                              via {lead.source}
+                            </p>
+                          )}
                         </TableCell>
                         <TableCell className="min-w-[160px]">
                           <p>{NEED_LABELS[lead.need]}</p>
@@ -373,13 +496,41 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                         <TableCell className="max-w-[420px] min-w-[260px] text-[15px] whitespace-pre-wrap text-text2">
                           {lead.message}
                         </TableCell>
-                        <TableCell className="min-w-[200px]">
-                          <div className="flex flex-col gap-2">
+                        <TableCell className="min-w-[220px]">
+                          <div className="flex flex-col items-start gap-2">
                             <Badge variant={lead.status === "new" ? "default" : "secondary"}>
                               <span aria-hidden>{lead.status === "new" ? "●" : "○"}</span>
                               {STATUS_LABELS[lead.status]}
                             </Badge>
-                            <LeadActionsComponent id={lead.id} status={lead.status} />
+                            {lead.amount !== null && (
+                              <p className="font-mono text-[13px]">
+                                {amountFormat.format(lead.amount)}
+                              </p>
+                            )}
+                            {lead.followUpOn && (
+                              <p
+                                className={
+                                  isFollowUpDue(lead, today)
+                                    ? "font-mono text-[12px] font-semibold text-primary"
+                                    : "font-mono text-[12px] text-muted-foreground"
+                                }
+                              >
+                                relance le {longDayFormat.format(new Date(lead.followUpOn))}
+                              </p>
+                            )}
+                            {lead.notes && (
+                              <p className="line-clamp-3 max-w-[280px] text-[14px] whitespace-pre-wrap text-text2">
+                                {lead.notes}
+                              </p>
+                            )}
+                            <LeadFollowUpComponent
+                              id={lead.id}
+                              name={lead.name}
+                              status={lead.status}
+                              notes={lead.notes}
+                              amount={lead.amount}
+                              followUpOn={lead.followUpOn}
+                            />
                           </div>
                         </TableCell>
                       </TableRow>

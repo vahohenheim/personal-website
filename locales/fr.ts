@@ -59,9 +59,10 @@ const fr: Dictionary = {
         heading: "Données personnelles",
         paragraphs: [
           "Ce site n’a ni compte ni publicité. Valentin Bourreau est le responsable des traitements décrits ci-dessous.",
-          "Formulaire de contact. Quand vous envoyez une demande, le site enregistre ce que vous avez saisi\u00a0: votre besoin, le démarrage souhaité, votre message, votre nom, votre adresse e-mail, votre entreprise si vous l’indiquez, et la langue de la page. Ces données servent uniquement à vous répondre et à suivre votre demande. Elles sont conservées au plus trois ans après notre dernier échange, puis supprimées. Vous pouvez demander leur suppression à tout moment.",
+          "Formulaire de contact. Quand vous envoyez une demande, le site enregistre ce que vous avez saisi\u00a0: votre besoin, le démarrage souhaité, votre message, votre nom, votre adresse e-mail, votre entreprise si vous l’indiquez, la langue de la page et, quand il est connu, le site depuis lequel vous êtes arrivé (son nom de domaine, ou l’origine indiquée dans le lien suivi). Au fil de nos échanges, des notes de suivi peuvent y être ajoutées\u00a0: état de la demande, montant estimé, date de relance. Ces données servent uniquement à vous répondre et à suivre votre demande. Elles sont conservées au plus trois ans après notre dernier échange, puis supprimées. Vous pouvez demander leur suppression à tout moment.",
           "Protection contre les robots. À l’envoi du formulaire, Vercel BotID analyse des signaux techniques de votre navigateur pour distinguer une personne d’un robot. Aucun de ces signaux n’est enregistré avec votre demande.",
           "Mesure d’audience. Vercel Web Analytics compte les pages vues, pour savoir comment le site est utilisé. D’après Vercel, l’outil ne dépose aucun cookie, reconnaît une visite grâce à une empreinte de la requête supprimée au bout de 24 heures, et enregistre avec chaque page vue la page, le site d’origine, le pays et la région, le navigateur, le système d’exploitation et le type d’appareil. Chaque jour, le site recopie dans sa base de données des totaux anonymes (nombre de visites et de pages vues par jour, par page, par site d’origine, par pays et par type d’appareil) et les conserve sans limite de durée. Ces totaux ne permettent d’identifier personne.",
+          "Formulaire\u00a0: mesure d’utilisation. Le site compte, par jour, combien de fois le formulaire de contact est ouvert, combien de fois chaque étape est atteinte et combien de messages sont envoyés. Ce sont de simples compteurs\u00a0: aucun identifiant, aucune adresse IP ni aucun contenu saisi n’y est associé, et ils ne permettent d’identifier personne.",
           "Hébergement. Comme tout hébergeur, Vercel traite l’adresse IP et les données techniques de chaque requête pour servir les pages et protéger le service, pendant la durée qu’il fixe.",
           "Base légale. Pour le formulaire\u00a0: les mesures prises à votre demande avant un éventuel contrat. Pour le reste\u00a0: l’intérêt légitime à faire fonctionner le site, à le sécuriser et à connaître son audience.",
           "Destinataires et transferts. Vercel Inc. (hébergement, mesure d’audience, protection contre les robots) et Neon Inc. (base de données où sont stockées les demandes) agissent comme sous-traitants. Ces sociétés sont établies aux États-Unis\u00a0: des données peuvent donc être traitées hors de l’Union européenne, selon les garanties prévues par leurs accords de traitement des données. Personne d’autre que Valentin Bourreau ne lit les demandes.",
@@ -154,7 +155,22 @@ const fr: Dictionary = {
     },
   },
   header: {
-    menu: { resume: "cv", projects: "projets", contact: "contact" },
+    menu: { resume: "cv", projects: "projets", posts: "articles", contact: "contact" },
+  },
+  posts: {
+    title: "Articles",
+    breadcrumb: "articles",
+    lead: "Rétrospectives et notes sur l’architecture front-end, les design systems et la qualité.",
+    feed: "flux rss →",
+    draft: "brouillon",
+    published: "Publié le {date}",
+    updated: "Mis à jour le {date}",
+    back: "← tous les articles",
+    metadata: {
+      title: "Articles · architecture front-end, design systems, qualité | valentinbourreau",
+      description:
+        "Rétrospectives et notes de Valentin Bourreau, ingénieur front-end senior\u00a0: architecture front-end, design systems, qualité et lead technique.",
+    },
   },
   home: content.home,
   resume: {

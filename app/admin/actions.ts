@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { assertAdmin } from "@/lib/admin/guard";
 import { snapshotAnalytics, VERCEL_RETENTION_DAYS } from "@/lib/analytics/snapshot";
 import { getLeadStore } from "@/lib/leads/store";
-import { LEAD_STATUSES, type LeadStatus } from "@/lib/models/lead";
+import { LEAD_STATUSES, MAX_NOTES_LENGTH } from "@/lib/models/lead";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
@@ -26,13 +26,30 @@ const run = async (change: () => Promise<void>): Promise<ActionResult> => {
   }
 };
 
-export const updateLeadStatusAction = async (id: number, status: string) =>
+/** What the follow-up form sends: every field as typed, checked here. */
+type FollowUpForm = { status: string; notes: string; amount: string; followUpOn: string };
+
+export const updateLeadFollowUpAction = async (id: number, form: FollowUpForm) =>
   run(async () => {
-    if (!Number.isInteger(id) || !LEAD_STATUSES.includes(status as LeadStatus)) {
+    const status = LEAD_STATUSES.find((value) => value === form.status);
+    const amount = form.amount.trim() === "" ? null : Number(form.amount);
+    const followUpOn = form.followUpOn.trim() === "" ? null : form.followUpOn.trim();
+
+    if (
+      !Number.isInteger(id) ||
+      !status ||
+      (amount !== null && (!Number.isInteger(amount) || amount < 0 || amount > 10_000_000)) ||
+      (followUpOn !== null && !/^\d{4}-\d{2}-\d{2}$/.test(followUpOn))
+    ) {
       throw new Error("Invalid input");
     }
 
-    await getLeadStore().updateStatus(id, status as LeadStatus);
+    await getLeadStore().updateFollowUp(id, {
+      status,
+      notes: form.notes.trim().slice(0, MAX_NOTES_LENGTH) || null,
+      amount,
+      followUpOn,
+    });
   });
 
 export const deleteLeadAction = async (id: number) =>

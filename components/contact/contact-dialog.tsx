@@ -2,7 +2,15 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { type ReactNode, type SyntheticEvent, useCallback, useMemo, useRef, useState } from "react";
+import {
+  type ReactNode,
+  type SyntheticEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,8 +26,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
+import { readSource, rememberSource, trackFunnel } from "@/lib/funnel/track";
 import { type Locale } from "@/lib/i18n/config";
 import { isValidEmail } from "@/lib/leads/validation";
+import { type FunnelEvent } from "@/lib/models/funnel";
 import {
   type ContactErrorCode,
   LEAD_NEEDS,
@@ -65,6 +75,12 @@ const EMPTY: Fields = {
 };
 
 const STEPS = ["need", "details", "identity"] as const;
+/** Counter moved when a step is reached. Opening the dialog shows the first one. */
+const STEP_EVENTS: FunnelEvent[] = [
+  "contact_open",
+  "contact_step_details",
+  "contact_step_identity",
+];
 const SUCCESS = STEPS.length;
 
 type ErrorKey = ContactErrorCode | "network";
@@ -106,7 +122,13 @@ const ContactDialogProvider = ({ locale, email, texts, children }: ContactDialog
   // When the dialog was opened: the server refuses forms filled in faster than a person can.
   const startedAt = useRef(0);
 
+  // Where the visitor came from is noted on arrival, before any navigation inside the site.
+  useEffect(() => {
+    rememberSource();
+  }, []);
+
   const open = useCallback(() => {
+    trackFunnel("contact_open");
     startedAt.current = Date.now();
     setStep(0);
     setFields(EMPTY);
@@ -143,7 +165,12 @@ const ContactDialogProvider = ({ locale, email, texts, children }: ContactDialog
       const response = await fetch("/api/contact/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...fields, locale, startedAt: startedAt.current }),
+        body: JSON.stringify({
+          ...fields,
+          locale,
+          source: readSource(),
+          startedAt: startedAt.current,
+        }),
       });
 
       if (!response.ok) {
@@ -157,6 +184,7 @@ const ContactDialogProvider = ({ locale, email, texts, children }: ContactDialog
 
       // An earlier error toast would contradict the confirmation.
       toast.dismiss();
+      trackFunnel("contact_sent");
       markContactSent(true);
       setStep(SUCCESS);
     } catch {
@@ -178,6 +206,7 @@ const ContactDialogProvider = ({ locale, email, texts, children }: ContactDialog
     }
 
     if (step < STEPS.length - 1) {
+      trackFunnel(STEP_EVENTS[step + 1]);
       setStep(step + 1);
 
       return;

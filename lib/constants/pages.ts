@@ -30,6 +30,14 @@ export const PAGES = {
     priority: 0.8,
     changeFrequency: "monthly",
   },
+  // The list of posts. It only exists in the languages that have a published post.
+  posts: {
+    path: "/posts/",
+    createdAt: "2026-10-11",
+    updatedAt: "2026-10-11",
+    priority: 0.6,
+    changeFrequency: "monthly",
+  },
   legal: {
     path: "/legal/",
     createdAt: "2026-10-10",

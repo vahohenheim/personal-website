@@ -54,6 +54,9 @@ The site now accepts input and has a private area. What protects them:
 - **Contact API:** Vercel BotID, a honeypot and a time trap; validation and length limits
   on the server; parameterised SQL only; no personal data in the logs
   ([contact-form.md](../features/contact-form.md)). Not in place: a rate limit.
+- **Counters of the contact form:** `POST /api/events/` is public by nature. It is behind
+  Vercel BotID, accepts only the event names of an allow-list, stores a date, a name and a
+  number, and always answers `204`. See [conversion.md](../features/conversion.md).
 - **Admin:** HTTP Basic over HTTPS, closed by default, constant-time comparison, access
   re-checked in every page, action and route, `no-store` and `noindex`
   ([admin.md](../features/admin.md)).

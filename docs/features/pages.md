@@ -1,10 +1,12 @@
 ---
 title: Pages
-description: The pages of the site (home, resume, legal notice, 404, error), what each one shows, and the checklist to add a page.
+description: The pages of the site (home, resume, posts, legal notice, 404, error), what each one shows, and the checklist to add a page.
 related_code:
   - ../../app/[locale]/page.tsx
   - ../../app/[locale]/resume/page.tsx
   - ../../app/[locale]/legal/page.tsx
+  - ../../app/[locale]/posts/page.tsx
+  - ../../app/[locale]/resume/print/page.tsx
   - ../../app/[locale]/not-found.tsx
   - ../../app/[locale]/error.tsx
   - ../../app/[locale]/[...rest]/page.tsx
@@ -17,7 +19,8 @@ last_updated: 2026-10-11
 # Pages
 
 **Summary.** The site has three public pages, each in French and English (home, resume,
-legal notice), plus a translated 404 page and a translated error page. The home page and
+legal notice), a posts section that appears with the first published post, plus a
+translated 404 page and a translated error page. The home page and
 the resume follow the brief of the redesign ([brief.md](../redesign/brief.md)), whose
 French texts are reproduced word for word. Pages are declared in
 [lib/constants/pages.ts](../../lib/constants/pages.ts): metadata, the sitemap and the
@@ -41,13 +44,20 @@ structured data are keyed by that list.
 [app/[locale]/resume/page.tsx](../../app/[locale]/resume/page.tsx):
 
 1. **Header:** portrait and breadcrumb, title, a mono line (name, status, experience,
-   location), summary, two buttons (download `cv.pdf`, contact).
+   location), summary, two buttons (download the PDF, contact).
 2. **Stack:** a key / value sheet.
 3. **Changelog:** every position, with durations, successive roles, achievements, and the
    earlier positions grouped in a last entry.
 4. **Education** and **languages**, side by side.
 
-The download button points to `/cv.pdf`, which is expected in `public/`.
+The download button points to `/cv-<locale>.pdf`: the one-page A4 resume, printed from
+`/[locale]/resume/print/`. See [resume-pdf.md](resume-pdf.md).
+
+## Posts: `/[locale]/posts/` and `/[locale]/posts/<slug>/`
+
+A list and one page per post, written in MDX. The list is declared in `PAGES`; posts are
+declared in their own registry. Both only exist in a language once a post is published in
+it. See [posts.md](posts.md).
 
 ## Legal notice and privacy: `/[locale]/legal/`
 
@@ -70,7 +80,8 @@ bump `updatedAt` for `legal` in `PAGES`.
 ## Header and footers
 
 The header is rendered by the root layout. Its links are `cv` (the resume), `projets` and
-`contact` (the two anchors of the home page), the language link and the theme button.
+`contact` (the two anchors of the home page), `articles` once a post is published in the
+language, the language link and the theme button.
 Each page renders its own footer: the home page ends with its contact section, the other
 pages with `SiteFooterComponent`.
 
@@ -89,5 +100,8 @@ Structured data is part of the job, not a follow-up.
    `<JsonLdComponent page="<name>" />`.
 6. Add it to the header nav only if it belongs there, and check the header at 375 px.
 7. Document it on this page.
+
+A page that does not exist in every language (like the list of posts) also needs its own
+alternates and its own filter in `app/sitemap.ts`: see `getPostsMetadata`.
 
 Steps 4 and 5 are records keyed by `PageId`: the type check fails until both are filled in.

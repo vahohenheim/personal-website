@@ -57,6 +57,8 @@ contact buttons are replaced by a confirmation line ("Message envoyé…") with 
 write again. This is remembered in `localStorage` (`contact-sent-at`), read through
 `useSyncExternalStore`, so nothing differs between the server and the first client render.
 
+Each step reached is counted, anonymously, for the [conversion funnel](conversion.md).
+
 The dialog is built with the shadcn components `Dialog`, `RadioGroup`, `Input`,
 `Textarea`, `Label`, `Button` and `Card`.
 
@@ -82,17 +84,18 @@ dictionary keep them in line.
 
 `POST /api/contact/` (with the trailing slash), JSON body:
 
-| Field       | Type            | Notes                                       |
-| ----------- | --------------- | ------------------------------------------- |
-| `need`      | string          | one of `LEAD_NEEDS`                         |
-| `timeline`  | string or empty | one of `LEAD_TIMELINES`                     |
-| `message`   | string          | 10 to 3000 characters                       |
-| `name`      | string          | up to 80 characters                         |
-| `email`     | string          | lowercased, validated                       |
-| `company`   | string or empty | up to 120 characters                        |
-| `locale`    | string          | `fr` or `en`                                |
-| `website`   | string          | honeypot: must be empty                     |
-| `startedAt` | number          | time the dialog was opened, in milliseconds |
+| Field       | Type            | Notes                                                                                                |
+| ----------- | --------------- | ---------------------------------------------------------------------------------------------------- |
+| `need`      | string          | one of `LEAD_NEEDS`                                                                                  |
+| `timeline`  | string or empty | one of `LEAD_TIMELINES`                                                                              |
+| `message`   | string          | 10 to 3000 characters                                                                                |
+| `name`      | string          | up to 80 characters                                                                                  |
+| `email`     | string          | lowercased, validated                                                                                |
+| `company`   | string or empty | up to 120 characters                                                                                 |
+| `locale`    | string          | `fr` or `en`                                                                                         |
+| `website`   | string          | honeypot: must be empty                                                                              |
+| `startedAt` | number          | time the dialog was opened, in milliseconds                                                          |
+| `source`    | string or empty | where the visitor came from, 80 characters at most ([conversion.md](conversion.md#origin-of-a-lead)) |
 
 Answers: `200 { "ok": true }`, or `{ "error": "<code>" }` with status 400, 403, 500 or 503.
 

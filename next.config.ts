@@ -1,3 +1,4 @@
+import createMDX from "@next/mdx";
 import { withBotId } from "botid/next/config";
 import type { NextConfig } from "next";
 
@@ -33,6 +34,12 @@ const nextConfig: NextConfig = {
     // A stray lockfile higher up the tree would otherwise be picked as the root.
     root: __dirname,
   },
+  redirects() {
+    return Promise.resolve([
+      // The resume used to be a single file; it now exists in each language.
+      { source: "/cv.pdf", destination: "/cv-fr.pdf", permanent: true },
+    ]);
+  },
   headers() {
     return Promise.resolve([
       {
@@ -64,5 +71,8 @@ const nextConfig: NextConfig = {
   },
 };
 
+// Lets the posts in content/posts/ be imported as components. They are not routes.
+const withMDX = createMDX();
+
 // withBotId adds the rewrites of the BotID proxy.
-export default withBotId(nextConfig);
+export default withBotId(withMDX(nextConfig));

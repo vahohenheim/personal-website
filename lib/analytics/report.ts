@@ -29,6 +29,12 @@ export type TrafficReportResult = { status: "ok"; report: TrafficReport } | { st
 
 const isoDay = (date: Date) => date.toISOString().slice(0, 10);
 
+/** First day of a period, as `YYYY-MM-DD`. `null` for the whole history. */
+export const getPeriodStart = (period: TrafficPeriod, now = new Date()) =>
+  period === "all"
+    ? null
+    : isoDay(new Date(now.getTime() - (Number(period) - 1) * 24 * 60 * 60 * 1000));
+
 /** Audience figures stored in the database for a period. Never throws. */
 export const loadTrafficReport = async (
   period: TrafficPeriod,
@@ -36,10 +42,7 @@ export const loadTrafficReport = async (
 ): Promise<TrafficReportResult> => {
   try {
     const store = getAnalyticsStore();
-    const since =
-      period === "all"
-        ? null
-        : isoDay(new Date(now.getTime() - (Number(period) - 1) * 24 * 60 * 60 * 1000));
+    const since = getPeriodStart(period, now);
 
     const [everything, page, referrer, country, device] = await Promise.all([
       store.daily(null),

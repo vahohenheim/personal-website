@@ -21,8 +21,19 @@ export const TIMELINE_LABELS: Record<LeadTimeline, string> = {
 export const STATUS_LABELS: Record<LeadStatus, string> = {
   new: "à traiter",
   contacted: "contacté",
-  closed: "clos",
+  quoted: "devis envoyé",
+  won: "gagné",
+  lost: "perdu",
+  closed: "sans suite",
 };
+
+export const FUNNEL_LABELS = {
+  visits: "Visites",
+  contact_open: "Formulaire ouvert",
+  contact_step_details: "Étape 2 : le projet",
+  contact_step_identity: "Étape 3 : les coordonnées",
+  contact_sent: "Message envoyé",
+} as const;
 
 export const PERIOD_LABELS = {
   "30": "30 jours",

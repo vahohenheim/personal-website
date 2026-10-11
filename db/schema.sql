@@ -36,3 +36,17 @@ create table if not exists analytics_breakdown (
 );
 
 create index if not exists analytics_breakdown_dimension_idx on analytics_breakdown (dimension, day);
+
+-- Follow-up of a lead, filled from the admin, and where the visitor came from.
+alter table leads add column if not exists notes text;
+alter table leads add column if not exists amount integer;
+alter table leads add column if not exists follow_up_on date;
+alter table leads add column if not exists source text;
+
+-- Steps of the contact form, counted per day. Counters only: no visitor, no identifier.
+create table if not exists funnel_daily (
+  day date not null,
+  event text not null,
+  count integer not null default 0,
+  primary key (day, event)
+);

@@ -1,9 +1,13 @@
 import { type PageId } from "@/lib/constants/pages";
-import { getPageJsonLd } from "@/lib/helpers/json-ld";
+import { getPageJsonLd, getPostJsonLd } from "@/lib/helpers/json-ld";
+import { type LocalizedPost } from "@/lib/models/post";
 
-/** Structured data of a page. Render it once, at the top of the page component. */
-const JsonLdComponent = async ({ page }: { page: PageId }) => {
-  const jsonLd = await getPageJsonLd(page);
+type JsonLdComponentProps = { page: PageId } | { post: LocalizedPost };
+
+/** Structured data of a page or of a post. Render it once, at the top of the page component. */
+const JsonLdComponent = async (props: JsonLdComponentProps) => {
+  const jsonLd =
+    "post" in props ? await getPostJsonLd(props.post) : await getPageJsonLd(props.page);
 
   return (
     <script
