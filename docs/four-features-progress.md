@@ -54,7 +54,7 @@ everything is merged and deployed.
       nav link, one draft example.
 - [x] 6. Legal and privacy texts; schema applied to Neon.
 - [x] 7. Documentation, `CLAUDE.md`, README.
-- [ ] 8. Verification in a browser; screenshots.
+- [x] 8. Verification in a browser; screenshots.
 
 ## Open questions for Valentin
 
