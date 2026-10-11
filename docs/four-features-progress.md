@@ -46,9 +46,9 @@ everything is merged and deployed.
 ## Steps
 
 - [x] 0. Branch and this file.
-- [ ] 1. Schema: `funnel_daily`, new columns on `leads`; stores and models.
-- [ ] 2. Conversion: events API, tracking in the contact dialog, lead source, admin section.
-- [ ] 3. Follow-up of leads: statuses, follow-up dialog, figures, table columns, export.
+- [x] 1. Schema: `funnel_daily`, new columns on `leads`; stores and models.
+- [x] 2. Conversion: events API, tracking in the contact dialog, lead source, admin section.
+- [x] 3. Follow-up of leads: statuses, follow-up dialog, figures, table columns, export.
 - [ ] 4. Resume PDF: print route, generation script, both files, download links.
 - [ ] 5. Posts: MDX setup, registry, list and post pages, structured data, sitemap, feed,
       nav link, one draft example.

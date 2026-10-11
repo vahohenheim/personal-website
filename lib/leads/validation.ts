@@ -9,6 +9,7 @@ import {
   MAX_EMAIL_LENGTH,
   MAX_MESSAGE_LENGTH,
   MAX_NAME_LENGTH,
+  MAX_SOURCE_LENGTH,
   MIN_MESSAGE_LENGTH,
 } from "@/lib/models/lead";
 
@@ -26,6 +27,12 @@ const text = (value: unknown, max: number) =>
 
 const oneOf = <T extends string>(value: unknown, allowed: readonly T[]): T | null =>
   allowed.find((candidate) => candidate === value) ?? null;
+
+/** A referrer host or a campaign name: letters, digits, dots, dashes and underscores only. */
+const source = (value: unknown) =>
+  text(value, MAX_SOURCE_LENGTH)
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]/g, "") || null;
 
 export const isValidEmail = (value: string) =>
   value.length <= MAX_EMAIL_LENGTH && EMAIL_PATTERN.test(value);
@@ -92,6 +99,7 @@ export const parseLead = (body: Record<string, unknown>): ParseResult => {
       email,
       company: text(body.company, MAX_COMPANY_LENGTH) || null,
       locale: oneOf(body.locale, LOCALES) ?? LOCALES[0],
+      source: source(body.source),
     },
   };
 };
