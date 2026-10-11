@@ -108,11 +108,16 @@ const memoryStore: LeadStore = {
  * in memory until the server restarts.
  */
 export const getLeadStore = (): LeadStore => {
+  // Set by hand to test a production build without touching the database.
+  if (process.env.LEADS_MEMORY_STORE === "1") {
+    return memoryStore;
+  }
+
   if (isDatabaseConfigured()) {
     return neonStore;
   }
 
-  if (process.env.NODE_ENV === "production" && process.env.LEADS_MEMORY_STORE !== "1") {
+  if (process.env.NODE_ENV === "production") {
     throw new MissingDatabaseUrlError();
   }
 

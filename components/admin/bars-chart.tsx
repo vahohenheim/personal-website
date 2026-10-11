@@ -8,18 +8,20 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-const config = {
-  leads: { label: "Demandes", color: "var(--accent)" },
-} satisfies ChartConfig;
-
-type LeadsChartProps = {
-  data: { label: string; leads: number }[];
+type BarsChartProps = {
+  /** Name of the series, shown in the tooltip. */
+  seriesLabel: string;
+  data: { label: string; value: number }[];
   /** Horizontal bars, for a breakdown by category. */
   horizontal?: boolean;
 };
 
 /** Bars in the accent colour, on rules in the line colour. */
-const LeadsChartComponent = ({ data, horizontal = false }: LeadsChartProps) => {
+const BarsChartComponent = ({ seriesLabel, data, horizontal = false }: BarsChartProps) => {
+  const config = {
+    value: { label: seriesLabel, color: "var(--accent)" },
+  } satisfies ChartConfig;
+
   return (
     <ChartContainer config={config} className="aspect-auto h-[220px] w-full">
       <BarChart
@@ -41,10 +43,10 @@ const LeadsChartComponent = ({ data, horizontal = false }: LeadsChartProps) => {
           </>
         )}
         <ChartTooltip cursor={{ fill: "var(--surface)" }} content={<ChartTooltipContent />} />
-        <Bar dataKey="leads" fill="var(--color-leads)" radius={2} maxBarSize={36} />
+        <Bar dataKey="value" fill="var(--color-value)" radius={2} maxBarSize={36} />
       </BarChart>
     </ChartContainer>
   );
 };
 
-export default LeadsChartComponent;
+export default BarsChartComponent;

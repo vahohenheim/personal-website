@@ -23,3 +23,47 @@ export const STATUS_LABELS: Record<LeadStatus, string> = {
   contacted: "contacté",
   closed: "clos",
 };
+
+export const PERIOD_LABELS = {
+  "30": "30 jours",
+  "90": "90 jours",
+  "365": "12 mois",
+  all: "tout",
+} as const;
+
+const DEVICE_LABELS: Record<string, string> = {
+  desktop: "Ordinateur",
+  mobile: "Mobile",
+  tablet: "Tablette",
+};
+
+const regionNames = new Intl.DisplayNames("fr", { type: "region" });
+
+const countryLabel = (code: string) => {
+  try {
+    return regionNames.of(code.toUpperCase()) ?? code;
+  } catch {
+    return code;
+  }
+};
+
+/** Readable name of a breakdown value. Vercel groups the tail under "Others". */
+export const breakdownLabel = (dimension: string, value: string) => {
+  if (value === "Others") {
+    return "Autres";
+  }
+
+  if (value === "") {
+    return dimension === "referrer" ? "Accès direct" : dimension === "page" ? "/" : "Inconnu";
+  }
+
+  if (dimension === "country") {
+    return countryLabel(value);
+  }
+
+  if (dimension === "device") {
+    return DEVICE_LABELS[value.toLowerCase()] ?? value;
+  }
+
+  return value;
+};
