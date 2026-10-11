@@ -1,3 +1,4 @@
+import createMDX from "@next/mdx";
 import { withBotId } from "botid/next/config";
 import type { NextConfig } from "next";
 
@@ -70,5 +71,8 @@ const nextConfig: NextConfig = {
   },
 };
 
+// Lets the posts in content/posts/ be imported as components. They are not routes.
+const withMDX = createMDX();
+
 // withBotId adds the rewrites of the BotID proxy.
-export default withBotId(nextConfig);
+export default withBotId(withMDX(nextConfig));

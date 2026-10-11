@@ -131,8 +131,14 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
     {
       label: "à traiter",
       value: stats.open,
-      detail: `${stats.byStatus.contacted} contactées · ${stats.followUpsDue} à relancer`,
+      detail: `${stats.byStatus.contacted} contactées`,
       live: stats.open > 0,
+    },
+    {
+      label: "à relancer",
+      value: stats.followUpsDue,
+      detail: "date de relance atteinte",
+      live: stats.followUpsDue > 0,
     },
     {
       label: "devis en attente",
@@ -192,7 +198,8 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
               redémarrage du serveur.
             </p>
           )}
-          <ul className="grid list-none grid-cols-[repeat(auto-fit,minmax(min(220px,100%),1fr))] gap-px overflow-hidden rounded border border-border bg-border">
+          {/* Six figures: fixed columns, so that no row is left with an empty cell. */}
+          <ul className="grid list-none grid-cols-1 gap-px overflow-hidden rounded border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
             {figures.map((figure) => (
               <li key={figure.label} className="bg-background">
                 <Card className="h-full gap-1 rounded-none border-0 p-6">

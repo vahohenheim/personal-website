@@ -154,7 +154,22 @@ const fr: Dictionary = {
     },
   },
   header: {
-    menu: { resume: "cv", projects: "projets", contact: "contact" },
+    menu: { resume: "cv", projects: "projets", posts: "articles", contact: "contact" },
+  },
+  posts: {
+    title: "Articles",
+    breadcrumb: "articles",
+    lead: "Rétrospectives et notes sur l’architecture front-end, les design systems et la qualité.",
+    feed: "flux rss →",
+    draft: "brouillon",
+    published: "Publié le {date}",
+    updated: "Mis à jour le {date}",
+    back: "← tous les articles",
+    metadata: {
+      title: "Articles · architecture front-end, design systems, qualité | valentinbourreau",
+      description:
+        "Rétrospectives et notes de Valentin Bourreau, ingénieur front-end senior\u00a0: architecture front-end, design systems, qualité et lead technique.",
+    },
   },
   home: content.home,
   resume: {

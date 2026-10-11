@@ -1,4 +1,6 @@
 import type {
+  Blog,
+  BlogPosting,
   BreadcrumbList,
   EducationalOccupationalCredential,
   EducationalOrganization,
@@ -21,10 +23,12 @@ import { AVATAR_SIZE, AVATAR_URL, SITE_NAME, SITE_URL } from "@/lib/constants/si
 import { SKILLS } from "@/lib/constants/skills";
 import { SOCIAL_NETWORKS } from "@/lib/constants/social-network";
 import { getPageTexts, getPageUrl } from "@/lib/helpers/metadata";
+import { getPosts, getPostUrl } from "@/lib/helpers/posts";
 import { type Locale } from "@/lib/i18n/config";
 import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
 import { type Company } from "@/lib/models/company";
 import { type Experience } from "@/lib/models/experience";
+import { type LocalizedPost } from "@/lib/models/post";
 import { type School } from "@/lib/models/school";
 import { type Dictionary } from "@/locales/en";
 
@@ -224,6 +228,40 @@ const getPersonalProjects = ({ locale, dictionary }: Context): ItemList => {
   };
 };
 
+/** A post, written by the person the site is about. `summary` is the form used in lists. */
+const getBlogPosting = (post: LocalizedPost, detail: "summary" | "full"): BlogPosting => {
+  const url = getPostUrl(post.slug, post.locale);
+
+  return {
+    "@type": "BlogPosting",
+    "@id": `${url}#post`,
+    url,
+    headline: post.title,
+    description: post.description,
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt,
+    inLanguage: post.locale,
+    author: { "@id": PERSON_ID },
+    ...(detail === "full" && {
+      publisher: { "@id": PERSON_ID },
+      image: AVATAR_URL,
+      mainEntityOfPage: { "@id": `${url}#webpage` },
+      isPartOf: { "@id": `${getPageUrl("posts", post.locale)}#blog` },
+    }),
+  };
+};
+
+/** The list of posts of one language. */
+const getBlog = ({ locale, dictionary }: Context): Blog => ({
+  "@type": "Blog",
+  "@id": `${getPageUrl("posts", locale)}#blog`,
+  name: dictionary.posts.title,
+  description: dictionary.posts.metadata.description,
+  inLanguage: locale,
+  author: { "@id": PERSON_ID },
+  blogPost: getPosts(locale).map((post) => getBlogPosting(post, "summary")),
+});
+
 /**
  * Structured data of each page. The record is keyed by `PageId`, so adding a page
  * to `PAGES` without describing it here fails the type check.
@@ -240,6 +278,11 @@ const PAGE_GRAPHS: Record<PageId, (context: Context) => Thing[]> = {
     getPerson("full", context),
     getBreadcrumb("resume", context.dictionary.header.menu.resume, context),
   ],
+  posts: (context) => [
+    getWebPage("posts", "WebPage", context),
+    getBlog(context),
+    getBreadcrumb("posts", context.dictionary.posts.title, context),
+  ],
   legal: (context) => [
     getWebPage("legal", "WebPage", context),
     getBreadcrumb("legal", context.dictionary.legal.title, context),
@@ -253,5 +296,42 @@ export const getPageJsonLd = async (page: PageId): Promise<Graph> => {
   return {
     "@context": "https://schema.org",
     "@graph": PAGE_GRAPHS[page](context),
+  };
+};
+
+/** The JSON-LD document of a post: the page, the post and the trail down to it. */
+export const getPostJsonLd = async (post: LocalizedPost): Promise<Graph> => {
+  const dictionary = await getDictionary();
+  const url = getPostUrl(post.slug, post.locale);
+  const trail = [
+    { name: dictionary.breadcrumb.home, item: getPageUrl("home", post.locale) },
+    { name: dictionary.posts.title, item: getPageUrl("posts", post.locale) },
+    { name: post.title, item: url },
+  ];
+  const webPage: WebPage = {
+    "@type": "WebPage",
+    "@id": `${url}#webpage`,
+    url,
+    name: post.title,
+    description: post.description,
+    inLanguage: post.locale,
+    isPartOf: { "@id": WEBSITE_ID },
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt,
+    breadcrumb: { "@id": `${url}#breadcrumb` },
+  };
+  const breadcrumb: BreadcrumbList = {
+    "@type": "BreadcrumbList",
+    "@id": `${url}#breadcrumb`,
+    itemListElement: trail.map((step, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      ...step,
+    })),
+  };
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [webPage, getBlogPosting(post, "full"), breadcrumb],
   };
 };

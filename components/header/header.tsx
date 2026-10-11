@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getLanguageFallbacks, getPosts, getPostsPath } from "@/lib/helpers/posts";
 import { LOCALES } from "@/lib/i18n/config";
 import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
 import HeaderNavComponent from "./header-nav";
@@ -23,9 +24,14 @@ const HeaderComponent = async () => {
           otherLocale={otherLocale}
           menuLabel={a11y.mainMenu}
           otherLocaleLabel={a11y.otherLanguage}
+          languageFallbacks={getLanguageFallbacks(locale, otherLocale)}
           items={[
             { label: header.menu.resume, href: `/${locale}/resume/` },
             { label: header.menu.projects, href: `/${locale}/#projects` },
+            // Shown once a post is published in this language.
+            ...(getPosts(locale).length > 0
+              ? [{ label: header.menu.posts, href: getPostsPath(locale) }]
+              : []),
             { label: header.menu.contact, href: `/${locale}/#contact` },
           ]}
         />

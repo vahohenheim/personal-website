@@ -152,7 +152,22 @@ const en = {
     },
   },
   header: {
-    menu: { resume: "cv", projects: "projects", contact: "contact" },
+    menu: { resume: "cv", projects: "projects", posts: "posts", contact: "contact" },
+  },
+  posts: {
+    title: "Posts",
+    breadcrumb: "posts",
+    lead: "Retrospectives and notes on front-end architecture, design systems and quality.",
+    feed: "rss feed →",
+    draft: "draft",
+    published: "Published on {date}",
+    updated: "Updated on {date}",
+    back: "← all posts",
+    metadata: {
+      title: "Posts · front-end architecture, design systems, quality | valentinbourreau",
+      description:
+        "Retrospectives and notes by Valentin Bourreau, senior front-end engineer: front-end architecture, design systems, quality and team leadership.",
+    },
   },
   home: content.home,
   resume: {
