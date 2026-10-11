@@ -75,10 +75,12 @@ Checked in a browser on 2026-10-11, on a production build with the in-memory sto
 three steps, the error toasts (need, short message, invalid e-mail), the success screen,
 the confirmation on the home page and "nouveau message", the dialog at 375 px, `/admin`
 without credentials (401), with a wrong password (401), with credentials (200), the export,
-and the dashboard with four test leads. **Not checked:** anything against a real Neon
-database, and BotID, which only runs on Vercel.
+and the dashboard with four test leads. Then, against the real Neon database (schema
+applied with `npm run db:setup`): one lead sent through the API, read in the admin, and
+deleted. **Not checked:** BotID, which only runs on Vercel.
 
-Before merging: Valentin validates the result and does the three actions listed below.
+Valentin created the Neon database and set the variables locally and on Vercel
+(2026-10-11). Left before merging: his go-ahead to deploy.
 
 ## Notes
 

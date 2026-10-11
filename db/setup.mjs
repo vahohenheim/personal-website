@@ -1,8 +1,10 @@
 // Applies db/schema.sql to the Neon database.
 // Usage: npm run db:setup (loads .env.local through node --env-file).
-// The unpooled connection is preferred: DDL does not need to go through PgBouncer.
+// It uses the HTTP driver, which needs nothing but `fetch`: the WebSocket pool does not
+// work on Node versions without a global WebSocket. HTTP runs one statement per request,
+// so the file is split on semicolons: keep one statement per semicolon in schema.sql.
 import { readFile } from "node:fs/promises";
-import { Pool } from "@neondatabase/serverless";
+import { neon } from "@neondatabase/serverless";
 
 const connectionString = process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
 
@@ -12,15 +14,23 @@ if (!connectionString) {
 }
 
 const schema = await readFile(new URL("./schema.sql", import.meta.url), "utf8");
-const pool = new Pool({ connectionString });
+const statements = schema
+  .split("\n")
+  .filter((line) => !line.trimStart().startsWith("--"))
+  .join("\n")
+  .split(";")
+  .map((statement) => statement.trim())
+  .filter(Boolean);
+
+const sql = neon(connectionString);
 
 try {
-  // No parameter: the simple protocol is used, so several statements are allowed.
-  await pool.query(schema);
-  console.warn("Schema applied.");
+  for (const statement of statements) {
+    await sql.query(statement);
+  }
+
+  console.warn(`Schema applied (${statements.length} statements).`);
 } catch (error) {
   console.error("Could not apply the schema:", error instanceof Error ? error.message : error);
   process.exitCode = 1;
-} finally {
-  await pool.end();
 }

@@ -32,8 +32,14 @@ Names only: a value never appears in the code, the logs, an answer or the docs.
    connect it to every environment. Vercel adds the variables.
 2. Locally: `vercel env pull .env.local`, keeping the `ADMIN_*` lines of the file.
 3. `npm run db:setup` applies [db/schema.sql](../../db/schema.sql). It is safe to run
-   again. Without the Vercel CLI, paste the file in the SQL editor of the Neon console.
+   again. The script uses the HTTP driver, one request per statement: keep one statement
+   per semicolon in the schema file. Without the Vercel CLI, paste the file in the SQL editor of the Neon console.
 4. Redeploy, so that the functions get the variables.
+
+## State
+
+The database exists and the schema was applied on 2026-10-11 (table `leads`, Postgres 18).
+An end-to-end test lead was inserted through the API, read in the admin, then deleted.
 
 ## Without a database
 
