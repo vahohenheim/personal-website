@@ -41,6 +41,29 @@ no other colour can be used by accident.
 The accent is never used for running text or decoration. All text tokens reach a contrast
 of at least 4.5:1 on the backgrounds they are used on (measured on 2026-10-11).
 
+## shadcn theme
+
+The semantic names shadcn/ui components use are declared in the same `@theme` block and
+point to the eight tokens, so a component added with the CLI is in the charter's colours
+without retouching.
+
+| shadcn name                                                                   | Token                             |
+| ----------------------------------------------------------------------------- | --------------------------------- |
+| `background`, `card`, `popover`                                               | `--bg`                            |
+| `foreground`, `card-foreground`, `popover-foreground`, `secondary-foreground` | `--text`                          |
+| `primary`, `ring`                                                             | `--accent`                        |
+| `primary-foreground`, `accent-foreground`                                     | `--on-accent`                     |
+| `secondary`                                                                   | `--surface`                       |
+| `muted-foreground`                                                            | `--muted`                         |
+| `border`, `input`                                                             | `--line`                          |
+| `destructive`                                                                 | `--text` (the charter has no red) |
+
+Two names keep the charter's meaning, not shadcn's: `muted` is the meta text colour and
+`accent` the accent colour, where shadcn expects two background tints. A generated
+component that uses `bg-muted` or `hover:bg-accent` must be adjusted (`bg-surface`, or a
+colour change on hover). The radius scale (`rounded-sm` to `rounded-xl`) is 2 px at every
+step, and no shadow utility exists.
+
 ## Global rules
 
 - **Radius:** `rounded` is 2 px. `rounded-photo` (6 px) is for the portrait only,

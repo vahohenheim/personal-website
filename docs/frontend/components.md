@@ -6,7 +6,12 @@ related_code:
   - ../../components/header/header.tsx
   - ../../components/header/header-nav.tsx
   - ../../components/site-footer/site-footer.tsx
-  - ../../components/ui/button/button.ts
+  - ../../components/ui/button.tsx
+  - ../../components/ui/card.tsx
+  - ../../components/ui/badge.tsx
+  - ../../components/ui/separator.tsx
+  - ../../components/ui/breadcrumb.tsx
+  - ../../components.json
   - ../../components/profile-card/profile-card.tsx
   - ../../components/changelog-entry/changelog-entry.tsx
   - ../../components/project-card/project-card.tsx
@@ -18,9 +23,10 @@ last_updated: 2026-10-11
 # Components
 
 **Summary.** Components are Server Components by default, one folder each under
-[components/](../../components/). They are few and plain: the design is made of text,
-rules and a handful of blocks defined by the design charter. There is no component
-library any more: shadcn/ui, Radix and the icon packages were removed with the redesign.
+[components/](../../components/). Interface elements come from
+[shadcn/ui](https://ui.shadcn.com) first: its source is copied into
+[components/ui/](../../components/ui/) and restyled there to follow the design charter.
+The blocks of the design (profile sheet, project card, changelog entry…) are built on top.
 
 ## Conventions
 
@@ -42,7 +48,6 @@ library any more: shadcn/ui, Radix and the icon packages were removed with the r
 | `ThemeToggleComponent`                      | 44 px square button, half-filled circle, forces the other mode.                                                                                        |
 | `AvatarComponent`                           | The portrait, 88 px.                                                                                                                                   |
 | `BreadcrumbComponent`                       | `~/valentin-bourreau`, or `~/valentin-bourreau/<page>` with the root linking home.                                                                     |
-| `buttonClass(variant)`                      | Classes of a button, `primary` or `secondary`, applied to a link or a `<button>`.                                                                      |
 | `ProfileCardComponent`                      | Key / value sheet in mono on a surface block. A row with `live` shows the status dot.                                                                  |
 | `StatusDotComponent`                        | 7 px accent dot.                                                                                                                                       |
 | `SectionComponent`, `SectionTitleComponent` | A block opened by a rule, and its mono title.                                                                                                          |
@@ -52,9 +57,37 @@ library any more: shadcn/ui, Radix and the icon packages were removed with the r
 | `SiteFooterComponent`                       | Closing line of inner pages: copyright, legal link, `cd ~/`. The home page has its own footer, the contact section.                                    |
 | `JsonLdComponent`, `SkipLinkComponent`      | Structured data of a page; "skip to content" link.                                                                                                     |
 
+## shadcn/ui
+
+Configured in [components.json](../../components.json) (style `new-york`, Tailwind v4, CSS
+variables). Files are flat, as the CLI writes them: `components/ui/button.tsx`.
+
+| Component    | Used for                                                        | Changed from the original                                                                                                               |
+| ------------ | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `Button`     | every button and button-like link (`asChild`), the theme button | 44 px high, 2 px radius, no shadow; variants `default` (filled, the main action) and `secondary` (outlined); sizes `default` and `icon` |
+| `Card`       | the profile sheet, the project cards, the "what I bring" cells  | 1 px rule, 2 px radius, no shadow, padding set by the caller; `CardTitle` accepts `asChild` to be a real heading                        |
+| `Badge`      | the status of a project                                         | a mono label with no pill; `default` is live (accent), `secondary` is archived (muted)                                                  |
+| `Separator`  | the rule that opens each section and the footers                | colour only                                                                                                                             |
+| `Breadcrumb` | the path next to the portrait                                   | mono, set tight, a slash as separator instead of a chevron icon                                                                         |
+
+Adding one: `npx shadcn@latest add <component>`, then restyle it in its file: remove
+shadows, use `rounded`, check the colours in both modes
+([styling.md](styling.md#shadcn-theme)). The CLI imports `cn` from the `cn` package; this
+repository imports it from `@/lib/utils/cn`, which re-exports it.
+
+Not shadcn, on purpose:
+
+- **The portrait** uses `next/image`. shadcn `Avatar` renders a plain `<img>` once loaded
+  on the client, which would lose image optimisation and delay the largest paint.
+- **The header nav** is a list of links. `NavigationMenu` ships client code that a static
+  menu does not need; it was removed for that reason after the October 2026 audit.
+- **Changelog entries, achievement lists, dated lists** have no shadcn equivalent: they
+  are semantic lists (`<ol>`, `<ul>`, `<dl>`).
+
 ## Links and buttons
 
-- A button is a link styled with `buttonClass`. There is one primary button per page.
+- A button-like link is `<Button asChild><Link …/></Button>` (or `<a>`). There is one
+  primary button per page.
 - Internal links carry the locale and a trailing slash.
 - External links open in a new tab with `rel="noopener noreferrer"`.
 - Social links are words (`github`, `linkedin`…), not icons.

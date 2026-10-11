@@ -1,4 +1,12 @@
 import Link from "next/link";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const ROOT = "~/valentin-bourreau";
 
@@ -13,16 +21,27 @@ type BreadcrumbComponentProps = {
 /** Path-like trail in mono: `~/valentin-bourreau` or `~/valentin-bourreau/cv`. */
 const BreadcrumbComponent = ({ homeHref, current, label }: BreadcrumbComponentProps) => {
   return (
-    <nav aria-label={label} className="font-mono text-[13px] text-muted">
-      {homeHref ? (
-        <Link href={homeHref} className="text-muted no-underline hover:text-accent">
-          {ROOT}
-        </Link>
-      ) : (
-        <span aria-current="page">{ROOT}</span>
-      )}
-      {current && <span aria-current="page">/{current}</span>}
-    </nav>
+    <Breadcrumb aria-label={label}>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          {homeHref ? (
+            <BreadcrumbLink asChild>
+              <Link href={homeHref}>{ROOT}</Link>
+            </BreadcrumbLink>
+          ) : (
+            <BreadcrumbPage>{ROOT}</BreadcrumbPage>
+          )}
+        </BreadcrumbItem>
+        {current && (
+          <>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{current}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </>
+        )}
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 };
 

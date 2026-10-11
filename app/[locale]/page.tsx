@@ -7,7 +7,9 @@ import JsonLdComponent from "@/components/json-ld/json-ld";
 import ProfileCardComponent from "@/components/profile-card/profile-card";
 import ProjectCardComponent from "@/components/project-card/project-card";
 import SectionComponent, { SectionTitleComponent } from "@/components/section/section";
-import { buttonClass } from "@/components/ui/button/button";
+import { Button } from "@/components/ui/button";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { MAIL_ADDRESS } from "@/lib/constants/mail-address";
 import { PROJECT_LINKS } from "@/lib/constants/project-links";
 import { SITE_NAME } from "@/lib/constants/site";
@@ -45,12 +47,12 @@ export default async function HomePage() {
           </p>
           <ProfileCardComponent rows={home.card} />
           <div className="flex flex-wrap gap-3">
-            <a href={`mailto:${MAIL_ADDRESS}`} className={buttonClass("primary")}>
-              {home.actions.contact}
-            </a>
-            <Link href={`/${locale}/resume/`} className={buttonClass("secondary")}>
-              {home.actions.resume}
-            </Link>
+            <Button asChild>
+              <a href={`mailto:${MAIL_ADDRESS}`}>{home.actions.contact}</a>
+            </Button>
+            <Button asChild variant="secondary">
+              <Link href={`/${locale}/resume/`}>{home.actions.resume}</Link>
+            </Button>
           </div>
         </section>
 
@@ -61,12 +63,14 @@ export default async function HomePage() {
           </p>
           <ul className="grid list-none grid-cols-[repeat(auto-fit,minmax(min(280px,100%),1fr))] gap-px overflow-hidden rounded border border-line bg-line">
             {home.brings.items.map((item) => (
-              <li key={item.title} className="flex flex-col gap-2 bg-bg p-6">
-                <p className="font-mono text-[12px] text-muted">{item.meta}</p>
-                <h3 className="text-[20px] leading-[1.3] font-semibold tracking-[-0.01em]">
-                  {item.title}
-                </h3>
-                <p className="text-[15px] text-text2">{item.text}</p>
+              <li key={item.title} className="bg-bg">
+                <Card className="h-full gap-2 rounded-none border-0 p-6">
+                  <p className="font-mono text-[12px] text-muted-foreground">{item.meta}</p>
+                  <CardTitle asChild>
+                    <h3 className="text-[20px] leading-[1.3] tracking-[-0.01em]">{item.title}</h3>
+                  </CardTitle>
+                  <CardDescription>{item.text}</CardDescription>
+                </Card>
               </li>
             ))}
           </ul>
@@ -118,7 +122,8 @@ export default async function HomePage() {
       </main>
 
       <footer id="contact" className="container-page">
-        <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-8 border-t border-line pt-10 pb-12">
+        <Separator />
+        <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-8 pt-10 pb-12">
           <div className="flex flex-col gap-6">
             <SectionTitleComponent>{home.contact.title}</SectionTitleComponent>
             <a

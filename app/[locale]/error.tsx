@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { buttonClass } from "@/components/ui/button/button";
+import { Button } from "@/components/ui/button";
 import { SOCIAL_NETWORK_LINKS } from "@/lib/constants/social-network";
 import { DEFAULT_LOCALE, hasLocale } from "@/lib/i18n/config";
 import { useErrorMessages } from "@/lib/i18n/error-messages";
@@ -39,18 +39,17 @@ export default function Error({ retry }: { error: Error; retry: () => void }) {
         {after}
       </p>
       <div className="flex flex-wrap gap-3">
-        <button
+        <Button
           type="button"
-          className={buttonClass("primary")}
           onClick={() => {
             retry();
           }}
         >
           {messages.retry}
-        </button>
-        <Link href={`/${locale}/`} className={buttonClass("secondary")}>
-          {messages["back-to-homepage"]}
-        </Link>
+        </Button>
+        <Button asChild variant="secondary">
+          <Link href={`/${locale}/`}>{messages["back-to-homepage"]}</Link>
+        </Button>
       </div>
     </main>
   );

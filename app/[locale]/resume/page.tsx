@@ -7,7 +7,7 @@ import ProfileCardComponent from "@/components/profile-card/profile-card";
 import SectionComponent, { SectionTitleComponent } from "@/components/section/section";
 import SiteFooterComponent from "@/components/site-footer/site-footer";
 import StatusDotComponent from "@/components/status-dot/status-dot";
-import { buttonClass } from "@/components/ui/button/button";
+import { Button } from "@/components/ui/button";
 import { MAIL_ADDRESS } from "@/lib/constants/mail-address";
 import { SITE_NAME } from "@/lib/constants/site";
 import { getPageMetadata } from "@/lib/helpers/metadata";
@@ -60,12 +60,14 @@ export default async function ResumePage() {
           </ul>
           <p className="max-w-[64ch] text-[18px] leading-[1.5] text-text2">{resume.summary}</p>
           <div className="print-hidden flex flex-wrap gap-3">
-            <a href="/cv.pdf" download className={buttonClass("primary")}>
-              {resume.actions.download}
-            </a>
-            <a href={`mailto:${MAIL_ADDRESS}`} className={buttonClass("secondary")}>
-              {resume.actions.contact}
-            </a>
+            <Button asChild>
+              <a href="/cv.pdf" download>
+                {resume.actions.download}
+              </a>
+            </Button>
+            <Button asChild variant="secondary">
+              <a href={`mailto:${MAIL_ADDRESS}`}>{resume.actions.contact}</a>
+            </Button>
           </div>
         </section>
 

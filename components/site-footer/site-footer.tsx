@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
 import { SITE_NAME } from "@/lib/constants/site";
 import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
 
@@ -12,7 +13,8 @@ const SiteFooterComponent = async () => {
 
   return (
     <footer className="container-page">
-      <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-2 border-t border-line py-6 font-mono text-[12px] text-muted">
+      <Separator />
+      <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 font-mono text-[12px] text-muted">
         <p className="flex flex-wrap gap-x-4 gap-y-1">
           <span>
             © {new Date().getFullYear()} {SITE_NAME}

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { buttonClass } from "@/components/ui/button/button";
+import { Button } from "@/components/ui/button";
 import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
 
 export default async function NotFound() {
@@ -16,9 +16,9 @@ export default async function NotFound() {
         {notFound.title}
       </h1>
       <p className="max-w-[40em] text-text2">{notFound.description}</p>
-      <Link href={`/${locale}/`} className={buttonClass("primary")}>
-        {notFound["back-to-homepage"]}
-      </Link>
+      <Button asChild>
+        <Link href={`/${locale}/`}>{notFound["back-to-homepage"]}</Link>
+      </Button>
     </main>
   );
 }

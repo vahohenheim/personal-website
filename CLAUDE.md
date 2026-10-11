@@ -65,13 +65,15 @@ The same goes for the two other entry points: keep [README.md](README.md) true (
 - One `Person` and one `WebSite` node for the whole site, referenced by `@id`. `WebSite` on the home page only. A `BreadcrumbList` on every page except the home page.
 - Meta descriptions stay under 155 characters.
 - The legal page (`/legal/`) describes how visitor data is handled. Adding, removing or changing anything that touches it (analytics, a resource from another origin, a form, a cookie) updates its texts in both languages and its `updatedAt`.
-- A generated file served at the root without an extension (`/icon`, `/apple-icon`) must be excluded in the `matcher` of `proxy.ts`.
+- A generated file served at the root without an extension (`/apple-icon`) must be excluded in the `matcher` of `proxy.ts`.
 - Details and the checklist: [docs/features/pages.md](docs/features/pages.md), [docs/features/seo.md](docs/features/seo.md).
 
 ## Components
 
 - Server Component by default. `"use client"` only for what needs the browser.
-- No component library: build with the blocks of the design (`ProfileCard`, `ChangelogEntry`, `ProjectCard`, `buttonClass`…). Do not add shadcn/ui, Radix or an icon package back.
+- shadcn/ui first. A button, card, badge, separator or breadcrumb is the shadcn component (`components/ui/`, added with `npx shadcn@latest add <component>`), restyled in its own file to follow the charter. Write a component from scratch only when shadcn has no equivalent, and say why in a comment.
+- The shadcn theme is mapped onto the Eucalyptus tokens in `app/globals.css`, so a new component comes out in the charter's colours. Two names differ from shadcn's defaults: `muted` and `accent` are the charter's text and accent colours, not background tints (use `surface` for a tinted background). After adding a component, remove its shadows, set its radius to `rounded` and check both modes.
+- Two deliberate exceptions: the portrait uses `next/image`, not shadcn `Avatar` (which would lose image optimisation and delay the largest paint), and the header nav is a plain list of links, not `NavigationMenu` (client code for static links).
 - Components hold no text: content comes in as typed props.
 - The header nav stays visible on phones (it wraps). Check the header at 375 px after changing it.
 - Every link and button has an accessible name; an `aria-label` contains the visible text.
@@ -99,6 +101,8 @@ Listed in [docs/operations/runbook.md](docs/operations/runbook.md#known-issues).
 
 **Rule:** every request handled through Claude Code is recorded here, in the same change, as **one line** (date, request, main files), most recent first. Then update the pages of `docs/` concerned: create a page if none covers the topic, and update the index `docs/README.md` and the `last_updated` field. The detail goes in `docs/`, not here, because this file is read at every session.
 
+- 2026-10-11 — shadcn/ui brought back into the redesign: `Button`, `Card`, `Badge`, `Separator` and `Breadcrumb` restyled for the charter and used by the buttons, the profile sheet, the project cards, the "what I bring" cells, the section rules and the breadcrumb; theme mapped onto the Eucalyptus tokens (`components/ui/`, `app/globals.css`, `components/`) → [docs/frontend/components.md](docs/frontend/components.md), [docs/frontend/styling.md](docs/frontend/styling.md).
+- 2026-10-11 — Favicon: the previous `favicon.ico` is back, at Valentin's request, in place of the generated one (`app/favicon.ico`, `app/manifest.ts`, `proxy.ts`) → [docs/features/seo.md](docs/features/seo.md).
 - 2026-10-11 — Redesign of the home page and the resume on the "Changelog" direction, on branch `redesign/changelog`: Eucalyptus tokens, Geist and Geist Mono, new header and footers, new components, texts from the brief in both languages, Open Graph image and icons, structured data realigned (freelance, SOLO ended), shadcn/Radix/lucide removed, docs rewritten. Merged and deployed on 2026-10-11, with a reworded pull quote and a `cv.pdf` printed from the resume page (`app/`, `components/`, `locales/content/`, `app/globals.css`) → [docs/redesign/brief.md](docs/redesign/brief.md), [docs/frontend/styling.md](docs/frontend/styling.md), [docs/features/pages.md](docs/features/pages.md).
 - 2026-10-10 — Sitemap lists every page in every locale, each with all its language versions and `x-default`, with a priority per page; `robots.txt` declares the host (`app/sitemap.ts`, `app/robots.ts`, `lib/constants/pages.ts`) → [docs/features/seo.md](docs/features/seo.md).
 - 2026-10-10 — Audit fixes: legal notice and privacy page with footer link; accessible names on all links, translated labels, skip link; hero title and portrait no longer faded, scroll reveal without opacity; Radix `navigation-menu` replaced by plain lists; `unsafe-eval` in development only; proxy skipped for localized URLs; shorter meta descriptions, `summary` card; CI workflow, Node 24 pinned; `security.txt`; error page retry (`app/[locale]/legal/`, `components/`, `next.config.ts`, `proxy.ts`, `.github/workflows/ci.yml`, `locales/`) → [docs/audits/2026-10-10-full-audit.md](docs/audits/2026-10-10-full-audit.md#action-log), [docs/features/pages.md](docs/features/pages.md), [docs/architecture/security.md](docs/architecture/security.md).

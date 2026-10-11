@@ -42,6 +42,29 @@
   --color-accent: var(--accent);
   --color-on-accent: var(--on-accent);
   --color-transparent: transparent;
+
+  /*
+   * shadcn/ui semantic names, mapped onto the same eight tokens, so that a component
+   * added with the CLI comes out in the colours of the charter. Two names differ from
+   * shadcn's defaults: `muted` and `accent` are the charter's text and accent colours,
+   * not background tints. Use `surface` where shadcn would use a muted background.
+   */
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --color-card: var(--bg);
+  --color-card-foreground: var(--text);
+  --color-popover: var(--bg);
+  --color-popover-foreground: var(--text);
+  --color-primary: var(--accent);
+  --color-primary-foreground: var(--on-accent);
+  --color-secondary: var(--surface);
+  --color-secondary-foreground: var(--text);
+  --color-muted-foreground: var(--muted);
+  --color-accent-foreground: var(--on-accent);
+  --color-destructive: var(--text);
+  --color-border: var(--line);
+  --color-input: var(--line);
+  --color-ring: var(--accent);
   --color-current: currentColor;
 
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
@@ -50,6 +73,11 @@
   /* One radius: 2 px. The portrait is the only exception. */
   --radius-*: initial;
   --radius-photo: 6px;
+  /* shadcn/ui components use this scale: every step is the same 2 px. */
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
 
   /* No shadow anywhere. */
   --shadow-*: initial;

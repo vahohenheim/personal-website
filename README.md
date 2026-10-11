@@ -3,7 +3,7 @@
 Personal website of Valentin Bourreau, senior front-end engineer: a home page, an online
 resume and a legal notice, in English and French. Live at [valentinbourreau.com](https://www.valentinbourreau.com).
 
-Built with Next.js 16 (App Router), React 19, TypeScript and Tailwind CSS v4, on a design
+Built with Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4 and shadcn/ui, on a design
 charter of its own ([docs/redesign/](docs/redesign/charte-graphique-valentinbourreau.md)).
 Every page is generated at build time: no database, no form, no environment variable.
 
