@@ -29,7 +29,7 @@ everything is merged and deployed.
   (`funnel_daily`), incremented by `POST /api/events/` (BotID, allow-list of event names,
   no identifier). Events: `contact_open`, `contact_step_details`, `contact_step_identity`,
   `contact_sent`. The origin of a lead (referrer host or `utm_source`, kept in
-  `sessionStorage` on arrival) is stored with the lead in a `source` column.
+  memory on arrival, nothing written to the browser) is stored with the lead in a `source` column.
 - **Follow-up.** New columns on `leads`: `notes`, `amount` (euros), `follow_up_on`. New
   statuses `quoted`, `won`, `lost`, added to the existing ones (stored values are never
   renamed). Edited in a dialog opened from the table.
@@ -52,7 +52,7 @@ everything is merged and deployed.
 - [x] 4. Resume PDF: print route, generation script, both files, download links.
 - [x] 5. Posts: MDX setup, registry, list and post pages, structured data, sitemap, feed,
       nav link, one draft example.
-- [ ] 6. Legal and privacy texts; schema applied to Neon.
+- [x] 6. Legal and privacy texts; schema applied to Neon.
 - [ ] 7. Documentation, `CLAUDE.md`, README.
 - [ ] 8. Verification in a browser; screenshots.
 
