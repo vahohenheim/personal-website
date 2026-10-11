@@ -123,6 +123,7 @@ const en = {
     privacy: "Your answers are only used to reply to you.",
     privacyLink: "Legal notice and privacy",
     success: {
+      status: "sent",
       title: "Message sent",
       text: "Thank you {name}. I have received your message and will reply by email.",
       recap: {

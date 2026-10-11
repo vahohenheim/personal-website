@@ -124,6 +124,7 @@ const fr: Dictionary = {
     privacy: "Vos réponses servent uniquement à vous répondre.",
     privacyLink: "Mentions légales et confidentialité",
     success: {
+      status: "envoyé",
       title: "Message envoyé",
       text: "Merci {name}. J’ai bien reçu votre message et je vous réponds par e-mail.",
       recap: {

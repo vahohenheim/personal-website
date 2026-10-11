@@ -155,6 +155,8 @@ const ContactDialogProvider = ({ locale, email, texts, children }: ContactDialog
         return;
       }
 
+      // An earlier error toast would contradict the confirmation.
+      toast.dismiss();
       markContactSent(true);
       setStep(SUCCESS);
     } catch {
@@ -203,7 +205,7 @@ const ContactDialogProvider = ({ locale, email, texts, children }: ContactDialog
               <DialogHeader>
                 <p className="flex items-center gap-2 font-mono text-[13px] text-primary">
                   <StatusDotComponent />
-                  {texts.sent.text}
+                  {texts.success.status}
                 </p>
                 <DialogTitle className="text-[clamp(28px,4vw,36px)] leading-[1.1] tracking-[-0.03em]">
                   {texts.success.title}
