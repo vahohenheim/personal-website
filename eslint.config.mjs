@@ -94,6 +94,22 @@ export default defineConfig([
     extends: [tseslint.configs.disableTypeChecked],
   },
 
+  // shadcn/ui Chart is generated code built on Recharts, whose types are loose. It is kept
+  // close to the original so that it can be updated with the CLI: the strict type rules
+  // are relaxed for this one file only.
+  {
+    files: ["components/ui/chart.tsx"],
+    rules: {
+      "@typescript-eslint/no-unnecessary-condition": "off",
+      "@typescript-eslint/no-unsafe-argument": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/restrict-template-expressions": "off",
+      "react/no-array-index-key": "off",
+      eqeqeq: "off",
+    },
+  },
+
   // Turns off every rule that would fight with Prettier. Keep it last.
   prettier,
 

@@ -61,7 +61,7 @@ English and with this repository's conventions.
       for the charter; toasts mounted in the root layout.
 - [x] 4. Contact dialog (three steps and success), translated, opened by the contact
       buttons of the home page and the resume; error toasts; home page change after sending.
-- [ ] 5. Admin: Basic auth in `proxy.ts`, guard, credentials generated in `.env.local`,
+- [x] 5. Admin: Basic auth in `proxy.ts`, guard, credentials generated in `.env.local`,
       layout, dashboard with figures, chart, tables, status change, deletion, CSV export.
 - [ ] 6. Legal notice and privacy texts in both languages; CSP checked.
 - [ ] 7. Documentation (`docs/features/contact-form.md`, `docs/features/admin.md`,
@@ -71,8 +71,9 @@ English and with this repository's conventions.
 
 ## Notes for the next steps
 
-- Step 4 is written and builds, but the dialog has **not been tried in a browser yet**:
-  that is part of step 8.
+- The dialog was tried in a browser (French, desktop): every step, the three error
+  toasts and the success screen work. Still to check in step 8: the return to the home
+  page, the mobile width, and the admin area, which is written but untested.
 
 - The API URL is `/api/contact/` (with the trailing slash: `trailingSlash` is on).
 - `LEADS_MEMORY_STORE=1` forces the in-memory store with `next start`, to test a
