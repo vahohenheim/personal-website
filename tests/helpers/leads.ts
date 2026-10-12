@@ -37,6 +37,12 @@ export const makeLead = (overrides: Partial<Lead> = {}): Lead => ({
   amount: null,
   followUpOn: null,
   createdAt: "2026-10-01T10:00:00.000Z",
+  lotusStatus: "pending",
+  lotusLeadId: null,
+  lotusSyncedAt: null,
+  lotusError: null,
+  lotusAttempts: 0,
+  lotusAttemptedAt: null,
   ...overrides,
 });
 

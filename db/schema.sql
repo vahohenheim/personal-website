@@ -50,3 +50,15 @@ create table if not exists funnel_daily (
   count integer not null default 0,
   primary key (day, event)
 );
+
+-- Forwarding of a lead to lotus (docs/features/lotus-sync.md). `lotus_status` is
+-- `pending` until lotus confirms, then `synced`; `rejected` when lotus refuses the lead for
+-- good. `lotus_error` is the code of the last failed attempt, never any lead content.
+alter table leads add column if not exists lotus_status text not null default 'pending';
+alter table leads add column if not exists lotus_lead_id text;
+alter table leads add column if not exists lotus_synced_at timestamptz;
+alter table leads add column if not exists lotus_error text;
+alter table leads add column if not exists lotus_attempts integer not null default 0;
+alter table leads add column if not exists lotus_attempted_at timestamptz;
+
+create index if not exists leads_lotus_pending_idx on leads (created_at) where lotus_status = 'pending';

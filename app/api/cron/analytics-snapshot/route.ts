@@ -1,5 +1,5 @@
-import { timingSafeEqual } from "node:crypto";
 import { DAILY_SNAPSHOT_DAYS, snapshotAnalytics } from "@/lib/analytics/snapshot";
+import { isCronAuthorized } from "@/lib/cron/auth";
 
 // Daily Vercel job (vercel.json, "crons"): copies the audience figures to the database
 // before Vercel drops them. Vercel calls this route with `Authorization: Bearer
@@ -8,21 +8,8 @@ import { DAILY_SNAPSHOT_DAYS, snapshotAnalytics } from "@/lib/analytics/snapshot
 // A month of history can take a while on the first run.
 export const maxDuration = 60;
 
-const isAuthorized = (request: Request) => {
-  const secret = process.env.CRON_SECRET;
-
-  if (!secret) {
-    return false;
-  }
-
-  const received = Buffer.from(request.headers.get("authorization") ?? "");
-  const expected = Buffer.from(`Bearer ${secret}`);
-
-  return received.length === expected.length && timingSafeEqual(received, expected);
-};
-
 export async function GET(request: Request) {
-  if (!isAuthorized(request)) {
+  if (!isCronAuthorized(request)) {
     return Response.json({ error: "forbidden" }, { status: 403 });
   }
 

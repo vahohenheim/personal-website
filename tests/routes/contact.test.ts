@@ -1,15 +1,30 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { POST } from "@/app/api/contact/route";
 import { getLeadStore } from "@/lib/leads/store";
 import { formBody, jsonRequest } from "../helpers/leads";
+import { created, enableLotus, mockLotus, status } from "../helpers/lotus";
 
-// `after` needs a running Next.js request; here its callback is simply run at once.
+const scheduled = vi.hoisted(() => ({ tasks: [] as (() => unknown)[] }));
+
+// `after` needs a running Next.js request. Here its callbacks are kept, and run by the
+// test once the response is in hand, as Next.js does.
 vi.mock("next/server", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   after: (callback: () => unknown) => {
-    void callback();
+    scheduled.tasks.push(callback);
   },
 }));
+
+const runAfter = async () => {
+  for (const task of scheduled.tasks.splice(0)) {
+    await task();
+  }
+};
+
+afterEach(() => {
+  scheduled.tasks = [];
+  vi.unstubAllGlobals();
+});
 
 const URL = "http://localhost/api/contact/";
 const send = (body: unknown) => POST(jsonRequest(URL, body));
@@ -83,5 +98,69 @@ describe("POST /api/contact/", () => {
     expect(logged).not.toContain("ada@example.com");
     expect(logged).not.toContain("Ada Lovelace");
     expect(logged).not.toContain("design system");
+  });
+});
+
+describe("POST /api/contact/: forwarding to lotus", () => {
+  it("answers the visitor before anything is sent to lotus", async () => {
+    enableLotus();
+    const calls = mockLotus(() => created("lotus-7"));
+
+    const response = await send(formBody());
+
+    expect(await response.json()).toEqual({ ok: true });
+    expect(calls).toHaveLength(0);
+    expect((await getLeadStore().list())[0]).toMatchObject({ lotusStatus: "pending" });
+
+    await runAfter();
+
+    expect(calls).toHaveLength(1);
+    expect(JSON.parse(calls[0].body)).toMatchObject({
+      externalId: "site-1",
+      email: "ada@example.com",
+      need: "Design system",
+      timeline: "Dès que possible",
+      referrer: "linkedin.com",
+    });
+    expect((await getLeadStore().list())[0]).toMatchObject({
+      lotusStatus: "synced",
+      lotusLeadId: "lotus-7",
+    });
+  });
+
+  it("answers ok and keeps the lead pending when lotus is down", async () => {
+    enableLotus();
+    vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    mockLotus(() => status(503));
+
+    const response = await send(formBody());
+    await runAfter();
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ ok: true });
+    expect((await getLeadStore().list())[0]).toMatchObject({
+      lotusStatus: "pending",
+      lotusError: "http_503",
+    });
+  });
+
+  it("sends nothing while forwarding is off", async () => {
+    const calls = mockLotus(() => created());
+
+    await send(formBody());
+    await runAfter();
+
+    expect(calls).toHaveLength(0);
+  });
+
+  it("sends nothing for a bot or an invalid form", async () => {
+    enableLotus();
+    const calls = mockLotus(() => created());
+
+    await send(formBody({ website: "https://spam.example" }));
+    await send(formBody({ email: "nope" }));
+    await runAfter();
+
+    expect(calls).toHaveLength(0);
   });
 });

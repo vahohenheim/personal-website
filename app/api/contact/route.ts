@@ -1,8 +1,10 @@
 import { checkBotId } from "botid/server";
+import { after } from "next/server";
 import { MissingDatabaseUrlError } from "@/lib/db/client";
 import { getLeadStore } from "@/lib/leads/store";
 import { isLikelyBot, parseLead } from "@/lib/leads/validation";
-import { type ContactErrorCode } from "@/lib/models/lead";
+import { syncLead } from "@/lib/lotus/sync";
+import { type ContactErrorCode, type Lead } from "@/lib/models/lead";
 
 const fail = (error: ContactErrorCode, status: number) => Response.json({ error }, { status });
 
@@ -41,8 +43,10 @@ export async function POST(request: Request) {
     return fail(result.error, 400);
   }
 
+  let lead: Lead;
+
   try {
-    await getLeadStore().insert(result.value);
+    lead = await getLeadStore().insert(result.value);
   } catch (error) {
     if (error instanceof MissingDatabaseUrlError) {
       console.error("[contact] DATABASE_URL is missing: the lead was not stored.");
@@ -57,6 +61,10 @@ export async function POST(request: Request) {
 
     return fail("server_error", 500);
   }
+
+  // The lead is stored: the visitor gets the answer now. Forwarding it to lotus happens
+  // once the response is sent and can never change it (docs/features/lotus-sync.md).
+  after(() => syncLead(lead));
 
   return Response.json({ ok: true });
 }

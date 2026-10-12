@@ -40,9 +40,38 @@ export type LeadFollowUp = {
   followUpOn: string | null;
 };
 
+/**
+ * Where a lead stands with lotus. Stored in the database: never rename a value.
+ * `pending`: lotus has not confirmed yet. `synced`: lotus answered that it has the lead.
+ * `rejected`: lotus refused it for good, it is never sent again.
+ */
+export const LOTUS_STATUSES = ["pending", "synced", "rejected"] as const;
+export type LotusStatus = (typeof LOTUS_STATUSES)[number];
+
+/** What is known about the forwarding of a lead to lotus. */
+export type LeadSync = {
+  lotusStatus: LotusStatus;
+  /** Identifier lotus gave to the lead. */
+  lotusLeadId: string | null;
+  /** ISO 8601 date of the positive answer of lotus. */
+  lotusSyncedAt: string | null;
+  /** Code of the last failed attempt (`http_503`, `timeout`…). Never any lead content. */
+  lotusError: string | null;
+  lotusAttempts: number;
+  /** ISO 8601 date of the last attempt, whatever its result. */
+  lotusAttemptedAt: string | null;
+};
+
+/** Result of one attempt to forward a lead. */
+export type SyncOutcome =
+  | { status: "synced"; lotusLeadId: string | null; duplicate: boolean }
+  | { status: "rejected"; code: string }
+  | { status: "pending"; code: string };
+
 /** A lead as stored. */
 export type Lead = LeadInput &
-  LeadFollowUp & {
+  LeadFollowUp &
+  LeadSync & {
     id: number;
     /** ISO 8601 date. */
     createdAt: string;

@@ -52,11 +52,11 @@ branch is merged and deployed.**
 - [x] 0. Branch and this file.
 - [x] 1. Test tooling (Vitest, scripts, CI) and tests of the existing behaviour, green
       before any change: this is the regression net.
-- [ ] 2. Schema columns, `Lead` model, both stores (`insert` returns the lead, sync marks,
+- [x] 2. Schema columns, `Lead` model, both stores (`insert` returns the lead, sync marks,
       pending list). Tests.
-- [ ] 3. `lib/lotus/`: payload, signature (test vector), send with typed outcome, config
+- [x] 3. `lib/lotus/`: payload, signature (test vector), send with typed outcome, config
       and guard. Tests.
-- [ ] 4. Contact route forwards in `after()`; cron route `lotus-sync`; shared cron auth;
+- [x] 4. Contact route forwards in `after()`; cron route `lotus-sync`; shared cron auth;
       `vercel.json`; `.env.example`. Tests.
 - [ ] 5. Admin: sync status per lead, summary line, CSV export. Tests of the labels/state.
 - [ ] 6. Smoke test of the built site; end-to-end check with a local lotus or a stub.

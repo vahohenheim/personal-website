@@ -4,6 +4,10 @@
     {
       "path": "/api/cron/analytics-snapshot/",
       "schedule": "15 3 * * *"
+    },
+    {
+      "path": "/api/cron/lotus-sync/",
+      "schedule": "45 3 * * *"
     }
   ]
 }
