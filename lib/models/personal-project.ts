@@ -13,7 +13,9 @@ export enum PersonalProjectStatus {
 
 export enum PersonalProjectId {
   BRUT = "brut",
-  BLOOM = "bloom",
+  LOTUS = "lotus",
+  LYS = "lys",
+  IRIS = "iris",
   EDITORIALS = "editorials",
   NOTION_BLOG = "notion-blog",
   FINANCE = "finance",

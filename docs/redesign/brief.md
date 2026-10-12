@@ -157,7 +157,9 @@ Titre à gauche, lien mono « journal complet → » à droite (→ /resume). Li
 Grille `auto-fit minmax(min(300px,100%),1fr)`, gap 16 px, de `ProjectCard` :
 
 - `brut` · `● en ligne` — « Food truck BRUT à Tours : contenu éditable, newsletter, avis clients. » — `next.js`
-- `bloom` · `● en cours` — « Assistant personnel. » — `next.js`
+- `lotus` · `● en démarrage` — « Mon statut d’indépendant, automatisé : factures et devis, cotisations, échéances, leads et relances clients. » — `next.js · drizzle · neon`
+- `lys` · `● en démarrage` — « Automatisation de la gestion de mes finances personnelles. »
+- `iris` · `● en démarrage` — « Notes personnelles : organisation et prise de recul. »
 - `editorials` · `○ archivé` — « Monorepo pour sites éditoriaux, adaptateur Notion. » — `nx · next.js · notion`
 
 Sous la grille, en mono 13 px `--muted` : « + 2 archivés : notion-blog, finance » (liens). Reprends les URL existantes du repo.

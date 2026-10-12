@@ -11,7 +11,7 @@ related_code:
   - ../../locales/content/fr.ts
   - ../../locales/content/en.ts
   - ../../next.config.ts
-last_updated: 2026-10-11
+last_updated: 2026-10-12
 ---
 
 # Resume PDF
@@ -28,8 +28,8 @@ on deployment: regenerate them after any change to the resume.
 content as the resume (`resume` in `locales/content/`), for paper:
 
 - day mode, whatever the theme, on screen too;
-- 20 mm margins; a header with the 22 mm portrait, the wordmark, the title and a mono line,
-  closed by a full rule in the text colour;
+- 20 mm margins; a header with the 22 mm portrait, the wordmark, the title and a mono
+  line, with no rule under it;
 - two columns: 40 mm for the stack, education and languages; 120 mm for the changelog;
 - sizes in mm and pt. The charter's print scale is 28 pt for the title and 8.5 pt for
   mono; body text is 9.5 pt on 13 pt (the charter says 10 on 14) so that everything fits

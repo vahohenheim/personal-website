@@ -39,8 +39,11 @@ const fr: Dictionary = {
       {
         heading: "Éditeur",
         paragraphs: [
-          "Ce site est édité par Valentin Bourreau, à titre personnel.",
-          "Contact : contact@valentinbourreau.com.",
+          "Ce site est édité par Valentin Bourreau, entrepreneur individuel (EI), sous le nom commercial valentinbourreau.",
+          "SIREN\u00a0: 130\u00a0933\u00a0922. SIRET du siège\u00a0: 130\u00a0933\u00a0922\u00a000010. Code APE\u00a0: 62.02A, conseil en systèmes et logiciels informatiques.",
+          "Adresse\u00a0: 520 route de Voivres, 72210 Fillé, France.",
+          "Directeur de la publication\u00a0: Valentin Bourreau.",
+          "Contact\u00a0: contact@valentinbourreau.com.",
         ],
       },
       {

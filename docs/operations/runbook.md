@@ -10,7 +10,7 @@ related_code:
   - ../../.env.example
   - ../../AGENTS.md
   - ../../.gitignore
-last_updated: 2026-10-11
+last_updated: 2026-10-12
 ---
 
 # Runbook
@@ -133,10 +133,7 @@ goes away.
   `npm run build && npm run cv:pdf` and commit both files.
 - No post is published yet: the posts section does not exist on the live site
   ([posts.md](../features/posts.md)).
-- The legal notice still says the site is published "in a personal capacity". As a
-  freelancer, it probably needs the business identity (SIRET, address).
 - The footers carry a "mentions légales" link that the redesign brief did not specify.
-- The `bloom` personal project has no link: `github.com/vahohenheim/bloom` returns a 404.
 
 ## Troubleshooting
 

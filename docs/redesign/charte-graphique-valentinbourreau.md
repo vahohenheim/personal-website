@@ -112,7 +112,7 @@ Une seule famille : **Geist**, avec **Geist Mono** pour la structure. Les deux s
 - **A4 :** marges de 20 mm, texte sur une colonne de 170 mm, ou une colonne de 40 mm + 120 mm pour les documents type CV / proposition.
 - **Présentation 16:9 :** marges de 80 px sur 1 920 × 1 080, grille de 12 colonnes, gouttière de 24 px.
 - **Rayon :** 2 px partout (boutons, blocs, cartes, champs, tuiles). 6 px pour la photo. Pastilles de statut en cercle.
-- **Filets :** 1 px `--line`. Un filet plein `--text` uniquement pour séparer l'en-tête d'un document de son contenu.
+- **Filets :** 1 px `--line`.
 - **Pas d'ombre, pas de dégradé, pas de flou d'arrière-plan.**
 
 ## 7. Éléments graphiques
@@ -150,7 +150,7 @@ Portrait existant, en couleur naturelle, sans filtre. Ne pas l'utiliser en très
 ┌───────────────────────────────────────────────────────────┐
 │ valentinbourreau                          FACTURE         │
 │                                           n° 2026-001     │
-│ ───────────────────────────────────────────────────────── │  filet --text
+│ ───────────────────────────────────────────────────────── │  filet --line
 │ Émetteur (mono, méta)        Client (mono, méta)          │
 │ Valentin Bourreau — EI       [Raison sociale]             │
 │ [Adresse]                    [Adresse]                    │

@@ -44,7 +44,7 @@ export default async function ResumePrintPage() {
 
   return (
     <main className="resume-sheet">
-      <header className="flex items-start gap-[6mm] border-b border-text pb-[5mm]">
+      <header className="flex items-start gap-[6mm]">
         <Image
           src={AVATAR_PATH}
           alt=""
@@ -77,7 +77,7 @@ export default async function ResumePrintPage() {
         </div>
       </header>
 
-      <p className="pt-[4mm] text-[9.5pt] leading-[13pt] text-text2">{resume.summary}</p>
+      <p className="pt-[5mm] text-[9.5pt] leading-[13pt] text-text2">{resume.summary}</p>
 
       <div className="grid grid-cols-[40mm_120mm] gap-x-[10mm] pt-[5mm]">
         <aside className="flex flex-col gap-[5mm]">

@@ -107,7 +107,7 @@ export const home: HomeContent = {
     title: "projets",
     status: {
       online: "en ligne",
-      ongoing: "en cours",
+      starting: "en démarrage",
       archived: "archivé",
     },
     items: [
@@ -119,11 +119,23 @@ export const home: HomeContent = {
         stack: "next.js",
       },
       {
-        id: "bloom",
-        name: "bloom",
-        status: "ongoing",
-        text: "Assistant personnel.",
-        stack: "next.js",
+        id: "lotus",
+        name: "lotus",
+        status: "starting",
+        text: "Mon statut d’indépendant, automatisé\u00a0: factures et devis, cotisations, échéances, leads et relances clients.",
+        stack: "next.js · drizzle · neon",
+      },
+      {
+        id: "lys",
+        name: "lys",
+        status: "starting",
+        text: "Automatisation de la gestion de mes finances personnelles.",
+      },
+      {
+        id: "iris",
+        name: "iris",
+        status: "starting",
+        text: "Notes personnelles\u00a0: organisation et prise de recul.",
       },
       {
         id: "editorials",

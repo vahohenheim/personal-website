@@ -11,8 +11,16 @@ export const PERSONAL_PROJECTS: PersonalProject[] = [
     link: "https://www.mangezbrut.fr",
   },
   {
-    id: PersonalProjectId.BLOOM,
-    status: PersonalProjectStatus.ACTIVE,
+    id: PersonalProjectId.LOTUS,
+    status: PersonalProjectStatus.COMING_SOON,
+  },
+  {
+    id: PersonalProjectId.LYS,
+    status: PersonalProjectStatus.COMING_SOON,
+  },
+  {
+    id: PersonalProjectId.IRIS,
+    status: PersonalProjectStatus.COMING_SOON,
   },
   {
     id: PersonalProjectId.EDITORIALS,

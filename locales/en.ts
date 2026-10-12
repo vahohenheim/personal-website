@@ -38,7 +38,10 @@ const en = {
       {
         heading: "Publisher",
         paragraphs: [
-          "This website is published by Valentin Bourreau, in a personal capacity.",
+          "This website is published by Valentin Bourreau, sole proprietor (entrepreneur individuel, EI), trading as valentinbourreau.",
+          "SIREN: 130\u00a0933\u00a0922. SIRET of the registered office: 130\u00a0933\u00a0922\u00a000010. APE code: 62.02A, IT systems and software consulting.",
+          "Address: 520 route de Voivres, 72210 Fillé, France.",
+          "Publication director: Valentin Bourreau.",
           "Contact: contact@valentinbourreau.com.",
         ],
       },

@@ -13,7 +13,7 @@ related_code:
   - ../../lib/constants/pages.ts
   - ../../locales/content/fr.ts
   - ../../locales/content/en.ts
-last_updated: 2026-10-11
+last_updated: 2026-10-12
 ---
 
 # Pages
@@ -63,6 +63,10 @@ it. See [posts.md](posts.md).
 
 [app/[locale]/legal/page.tsx](../../app/[locale]/legal/page.tsx) renders the sections of
 `legal.sections` in the dictionaries. Both footers link to it.
+
+The publisher section carries the business identity of the sole proprietorship (trade
+name, SIREN, SIRET, APE code, address, publication director), copied from the INSEE
+notice of 2026-10-12. Update it in both languages if the registered office changes.
 
 It exists because French law requires a site to name at least its hosting provider, and
 the GDPR requires visitors to be told how their data is handled. Whenever a tool that

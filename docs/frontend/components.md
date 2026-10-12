@@ -17,7 +17,7 @@ related_code:
   - ../../components/project-card/project-card.tsx
   - ../../lib/models/content.ts
   - ../../lib/utils/cn.ts
-last_updated: 2026-10-11
+last_updated: 2026-10-12
 ---
 
 # Components
@@ -53,7 +53,7 @@ The blocks of the design (profile sheet, project card, changelog entry…) are b
 | `SectionComponent`, `SectionTitleComponent` | A block opened by a rule, and its mono title.                                                                                                          |
 | `ChangelogEntryComponent`                   | Date column, then title, company, optional roles, text, achievements and earlier positions.                                                            |
 | `AchievementListComponent`                  | List whose items open with a mono `+`.                                                                                                                 |
-| `ProjectCardComponent`                      | Name and status, description, stack.                                                                                                                   |
+| `ProjectCardComponent`                      | Name and status, description, stack if any.                                                                                                            |
 | `SiteFooterComponent`                       | Closing line of inner pages: copyright, legal link, `cd ~/`. The home page has its own footer, the contact section.                                    |
 | `JsonLdComponent`, `SkipLinkComponent`      | Structured data of a page; "skip to content" link.                                                                                                     |
 

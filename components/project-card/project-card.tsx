@@ -40,7 +40,7 @@ const ProjectCardComponent = ({ project, href, statusLabels }: ProjectCardCompon
           </CardAction>
         </CardHeader>
         <CardDescription>{project.text}</CardDescription>
-        <CardFooter>{project.stack}</CardFooter>
+        {project.stack && <CardFooter>{project.stack}</CardFooter>}
       </Card>
     </li>
   );
