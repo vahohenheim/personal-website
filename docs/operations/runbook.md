@@ -30,14 +30,16 @@ npm run dev
 Open `http://localhost:3000`. The root URL redirects to `/en/` or `/fr/` according to the
 browser language.
 
-| Command            | What it does                                                                                                               |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| `npm run dev`      | Development server (Turbopack)                                                                                             |
-| `npm run build`    | Production build                                                                                                           |
-| `npm run start`    | Serves the production build                                                                                                |
-| `npm run check`    | Types, lint and formatting ([code-quality.md](../development/code-quality.md))                                             |
-| `npm run cv:pdf`   | Prints the resume to `public/cv-fr.pdf` and `public/cv-en.pdf`, after a build ([resume-pdf.md](../features/resume-pdf.md)) |
-| `npm run db:setup` | Applies `db/schema.sql` to the database of `.env.local` ([neon.md](../database/neon.md))                                   |
+| Command              | What it does                                                                                                               |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`        | Development server (Turbopack)                                                                                             |
+| `npm run build`      | Production build                                                                                                           |
+| `npm run start`      | Serves the production build                                                                                                |
+| `npm run check`      | Types, lint and formatting ([code-quality.md](../development/code-quality.md))                                             |
+| `npm test`           | Unit tests and route handlers ([testing.md](../development/testing.md))                                                    |
+| `npm run test:smoke` | The built site called over HTTP, after a build                                                                             |
+| `npm run cv:pdf`     | Prints the resume to `public/cv-fr.pdf` and `public/cv-en.pdf`, after a build ([resume-pdf.md](../features/resume-pdf.md)) |
+| `npm run db:setup`   | Applies `db/schema.sql` to the database of `.env.local` ([neon.md](../database/neon.md))                                   |
 
 `next dev` generates `AGENTS.md`, which points coding agents to the Next.js documentation
 shipped in `node_modules/next/dist/docs/`. Do not edit it; commit it when it changes.
@@ -46,35 +48,70 @@ shipped in `node_modules/next/dist/docs/`. Do not edit it; commit it when it cha
 
 Listed with their role in [.env.example](../../.env.example). All are server-only.
 
-| Variable                                                                                   | Needed for                             | Without it                                                      |
-| ------------------------------------------------------------------------------------------ | -------------------------------------- | --------------------------------------------------------------- |
-| `DATABASE_URL`                                                                             | storing and reading leads              | development: memory; production: the form answers "unavailable" |
-| `DATABASE_URL_UNPOOLED`                                                                    | `npm run db:setup`                     | falls back to `DATABASE_URL`                                    |
-| `ADMIN_USER`, `ADMIN_PASSWORD`                                                             | `/admin`                               | `/admin` refuses everyone                                       |
-| `WEB_ANALYTICS_TOKEN` (and optionally `WEB_ANALYTICS_PROJECT_ID`, `WEB_ANALYTICS_TEAM_ID`) | the daily copy of the audience figures | the copy does nothing; the admin says it is inactive            |
-| `CRON_SECRET`                                                                              | the cron route                         | the route refuses Vercel, so nothing is copied                  |
+| Variable                                                                                   | Needed for                             | Without it                                                                      |
+| ------------------------------------------------------------------------------------------ | -------------------------------------- | ------------------------------------------------------------------------------- |
+| `DATABASE_URL`                                                                             | storing and reading leads              | development: memory; production: the form answers "unavailable"                 |
+| `DATABASE_URL_UNPOOLED`                                                                    | `npm run db:setup`                     | falls back to `DATABASE_URL`                                                    |
+| `ADMIN_USER`, `ADMIN_PASSWORD`                                                             | `/admin`                               | `/admin` refuses everyone                                                       |
+| `WEB_ANALYTICS_TOKEN` (and optionally `WEB_ANALYTICS_PROJECT_ID`, `WEB_ANALYTICS_TEAM_ID`) | the daily copy of the audience figures | the copy does nothing; the admin says it is inactive                            |
+| `CRON_SECRET`                                                                              | the cron route                         | the route refuses Vercel, so nothing is copied                                  |
+| `LOTUS_WEBHOOK_URL`, `LOTUS_WEBHOOK_SECRET`                                                | forwarding leads to lotus              | nothing is sent; leads stay `pending` and the admin says forwarding is inactive |
 
 `.env.local` holds the local values and is ignored by git. See
 [database/neon.md](../database/neon.md) for the database and
 [features/admin.md](../features/admin.md) for the credentials and
-[features/analytics.md](../features/analytics.md) for the audience figures. Vercel BotID must be
+[features/analytics.md](../features/analytics.md) for the audience figures and
+[features/lotus-sync.md](../features/lotus-sync.md) for lotus. Vercel BotID must be
 enabled on the project for the bot check of the contact form.
 
-## Scheduled job
+## Scheduled jobs
 
-[vercel.json](../../vercel.json) declares one cron: every day at 03:15 UTC, Vercel calls
-`/api/cron/analytics-snapshot/`, which copies the audience figures to Neon. Its runs are
-listed in the Vercel project (Settings, Cron Jobs), where it can also be run by hand.
+[vercel.json](../../vercel.json) declares two crons, both called by Vercel with
+`Authorization: Bearer <CRON_SECRET>`:
+
+| Time (UTC) | Route                           | What it does                                                                               |
+| ---------- | ------------------------------- | ------------------------------------------------------------------------------------------ |
+| 03:15      | `/api/cron/analytics-snapshot/` | copies the audience figures to Neon ([analytics.md](../features/analytics.md))             |
+| 03:45      | `/api/cron/lotus-sync/`         | sends again the leads lotus has not confirmed ([lotus-sync.md](../features/lotus-sync.md)) |
+
+Their runs are listed in the Vercel project (Settings, Cron Jobs), where each can also be
+run by hand.
 
 ## Continuous integration
 
 [.github/workflows/ci.yml](../../.github/workflows/ci.yml) runs on every push to `main` and
-on pull requests: `npm ci`, `npm run check`, `npm run build`, on the Node version of
+on pull requests: `npm ci`, `npm run check`, `npm test`, `npm run build`, `npm run test:smoke`, on the Node version of
 `.nvmrc`. It does not gate the deployment: Vercel builds on its own. A red run means the
 commit that is live fails a check; fix it in the next push.
 
 Without the GitHub CLI, the last runs are visible at
 `https://api.github.com/repos/vahohenheim/personal-website/actions/runs?per_page=3`.
+
+## Lotus
+
+Leads are forwarded to lotus, Valentin's private management app
+([features/lotus-sync.md](../features/lotus-sync.md)).
+
+- **Turning it on.** Set `LOTUS_WEBHOOK_URL` and `LOTUS_WEBHOOK_SECRET` in the Vercel
+  project (Production only: a preview must never reach the production lotus), with
+  `LEADS_WEBHOOK_SECRET` set to the same secret in lotus, then redeploy. The admin then
+  says "Transfert vers lotus actif".
+- **Rotating the secret.** Change the value in both projects and redeploy both. Leads
+  refused in between (`http_401`) stay `pending` and leave with the next daily run.
+- **A lead stays "en attente".** The code next to it is the last answer: `http_401` (the
+  secrets differ, or a clock is off by more than five minutes), `http_503` (lotus has no
+  secret), `http_404` (wrong URL), `timeout` or `network` (lotus down). Fix the cause; the
+  daily job (03:45 UTC) sends it again, or call the cron route by hand with the cron
+  secret.
+- **A lead is "refusé".** lotus refused the body (`http_400`, `http_413`): a defect of the
+  contract, never sent again by itself. Fix the cause (compare the limits of both sides),
+  deploy, then put the lead back in the queue in the Neon console:
+  `update leads set lotus_status = 'pending', lotus_error = null where id = <id>;`
+- **A lead is "non transmis · plus de 30 jours".** The daily job ignores it. Enter it in
+  lotus by hand, or widen `LOTUS_RETRY_DAYS` for one deployment (lotus keeps the original
+  date up to 90 days back).
+- **The daily job did not run.** Check `CRON_SECRET` and the Cron Jobs page of the Vercel
+  project: it lists `/api/cron/lotus-sync/` at 03:45 UTC.
 
 ## Node version
 
@@ -88,7 +125,7 @@ The Vercel project that serves `valentinbourreau.com` is connected to the `main`
 `vahohenheim/personal-website`. Each push to `main` triggers a production deployment, which
 takes about a minute.
 
-Before pushing: `npm run check` and `npm run build`.
+Before pushing: `npm run check`, `npm test`, `npm run build` and `npm run test:smoke`.
 
 After pushing, the commit gets a "Vercel" status on GitHub. Without the GitHub CLI:
 
@@ -129,6 +166,9 @@ goes away.
   warning there until Node is upgraded (`nvm install`).
 - Under `public/`, only `avatar.jpg` and `.well-known/security.txt` are used. The old logo
   and icon files may still be linked from outside the site, so check before deleting.
+- Forwarding leads to lotus is built but off in production until `LOTUS_WEBHOOK_URL` and
+  `LOTUS_WEBHOOK_SECRET` are set, and the legal page must mention it first: its wording
+  waits for Valentin's approval ([lotus-sync.md](../features/lotus-sync.md#state-and-limits)).
 - The resume PDFs are not rebuilt on deployment: after a change to the resume, run
   `npm run build && npm run cv:pdf` and commit both files.
 - No post is published yet: the posts section does not exist on the live site
@@ -154,3 +194,5 @@ goes away.
 | `npm run cv:pdf` says a file has 2 pages                                      | The resume got longer than one A4 page. Shorten the content or reduce a size in the print page ([resume-pdf.md](../features/resume-pdf.md)).                          |
 | A post does not show on the live site                                         | It is still a draft (`draft: true` in `lib/constants/posts.ts`), or it is not written in that language.                                                               |
 | The conversion counters stay at zero in production                            | The table `funnel_daily` is missing (`npm run db:setup`), or BotID blocks the requests: `/api/events/` must be listed in `initBotId`.                                 |
+| `npm run test:smoke` says the port is in use or that no build was found       | Something already listens on port 3219 or 3220, or `npm run build` was not run first.                                                                                 |
+| A lead shows "en attente" or "refusé" for lotus in the admin                  | See [Lotus](#lotus) above: the code next to it says why.                                                                                                              |

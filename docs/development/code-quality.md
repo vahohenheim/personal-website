@@ -8,15 +8,15 @@ related_code:
   - ../../.editorconfig
   - ../../tsconfig.json
   - ../../package.json
-last_updated: 2026-10-10
+last_updated: 2026-10-12
 ---
 
 # Code quality
 
 **Summary.** Three tools guard the code: TypeScript in strict mode, ESLint with type-aware
-rules, and Prettier. One command runs all three: `npm run check`. There are no automated
-tests; the type system carries most of the guarantees (dictionary keys, page registry,
-icon maps).
+rules, and Prettier. One command runs all three: `npm run check`. The test
+suite is described in [testing.md](testing.md); the type system carries the guarantees a
+test would repeat (dictionary keys, page registry, icon maps).
 
 ## Commands
 
@@ -29,7 +29,8 @@ icon maps).
 | `npm run format`       | Prettier on the whole repository             |
 | `npm run format:check` | Prettier, read-only                          |
 
-Before handing work back, `npm run check` and `npm run build` must both pass. The same two
+Before handing work back, `npm run check`, `npm test`, `npm run build` and
+`npm run test:smoke` must all pass. The same four
 commands run in CI on every push ([runbook](../operations/runbook.md#continuous-integration)).
 
 The `typegen` step matters: `LayoutProps`, `PageProps` and the exports of `next/root-params`

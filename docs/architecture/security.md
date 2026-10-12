@@ -4,7 +4,7 @@ description: Content Security Policy and security headers set on every route, an
 related_code:
   - ../../next.config.ts
   - ../../public/.well-known/security.txt
-last_updated: 2026-10-11
+last_updated: 2026-10-12
 ---
 
 # Security headers
@@ -57,6 +57,10 @@ The site now accepts input and has a private area. What protects them:
 - **Counters of the contact form:** `POST /api/events/` is public by nature. It is behind
   Vercel BotID, accepts only the event names of an allow-list, stores a date, a name and a
   number, and always answers `204`. See [conversion.md](../features/conversion.md).
+- **Leads sent to lotus:** an outgoing, server-side request only, signed with an HMAC of
+  the timestamp and the body, over HTTPS. The secret never reaches the browser. A build that
+  keeps leads in memory cannot reach a remote lotus. See
+  [lotus-sync.md](../features/lotus-sync.md).
 - **Admin:** HTTP Basic over HTTPS, closed by default, constant-time comparison, access
   re-checked in every page, action and route, `no-store` and `noindex`
   ([admin.md](../features/admin.md)).

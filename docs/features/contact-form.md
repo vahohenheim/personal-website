@@ -13,7 +13,7 @@ related_code:
   - ../../next.config.ts
   - ../../locales/fr.ts
   - ../../locales/en.ts
-last_updated: 2026-10-11
+last_updated: 2026-10-12
 ---
 
 # Contact form
@@ -32,10 +32,14 @@ flowchart LR
     A -->|BotID, honeypot, time trap| A
     A -->|insert| N[(Neon: leads)]
     A -->|ok or error code| D
+    A -.->|after the response| L[lotus<br/>signed webhook]
     D -->|toast on error| V
     D -->|confirmation, then home page| V
     T([Valentin]) -->|/admin, HTTP Basic| N
 ```
+
+Once the lead is stored, the route answers the visitor, then forwards the lead to lotus in
+`after()`: see [lotus-sync.md](lotus-sync.md). Nothing in that step can change the answer.
 
 ## The dialog
 
@@ -123,6 +127,9 @@ submission by a person in a normal browser has not been confirmed yet.
 - Every protected route is declared in `initBotId` and calls `checkBotId()`.
 - SQL goes through the `sql` template tag of the Neon driver, never through concatenation.
 - Never log a message, a name or an e-mail address.
+- The answer to the visitor is decided by the storage in Neon alone. Anything added after
+  it (forwarding, notification) goes in `after()` and never throws.
+- `insert` returns the stored lead: what follows needs its `id` and its date.
 - The values of `LEAD_NEEDS`, `LEAD_TIMELINES` and `LEAD_STATUSES` are stored: add one,
   never rename one.
 - Any change to what is collected updates the [legal page](pages.md) in both languages.

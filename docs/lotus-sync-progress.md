@@ -61,9 +61,9 @@ branch is merged and deployed.**
 - [x] 5. Admin: sync status per lead, summary line, CSV export. Tests of the labels/state.
 - [x] 6. Smoke test of the built site; end-to-end check with a local lotus or a stub.
 - [x] 7. Migration applied to Neon (`npm run db:setup`, additive only) and checked.
-- [ ] 8. Documentation: `docs/features/lotus-sync.md`, `docs/development/testing.md`,
+- [x] 8. Documentation: `docs/features/lotus-sync.md`, `docs/development/testing.md`,
       pages concerned, `CLAUDE.md`, `README.md`.
-- [ ] 9. Final `npm run check`, `npm test`, `npm run build`, smoke; report to Valentin
+- [x] 9. Final `npm run check`, `npm test`, `npm run build`, smoke; report to Valentin
       with the legal wording to approve and the Vercel variables to set.
 
 ## Notes while working
@@ -76,3 +76,12 @@ branch is merged and deployed.**
   and points to its own database, which is not mine to write test leads into. The end to
   end path is covered by a stand-in that applies the contract (`tests/smoke/lotus-stub.ts`),
   checked against `receiveLeadWebhook` in `../lotus/src/features/leads/core.ts`.
+
+## Left for Valentin (2026-10-12)
+
+- Approve the wording of the legal page (proposed in the chat), then it is applied in both
+  languages with `updatedAt` of `legal` bumped.
+- Review, then say when to merge and deploy. Nothing is pushed.
+- In Vercel (Production only): `LOTUS_WEBHOOK_URL`, `LOTUS_WEBHOOK_SECRET`; in lotus:
+  `LEADS_WEBHOOK_SECRET` with the same value. `CRON_SECRET` already exists.
+- Run the end-to-end check against the real lotus (docs/features/lotus-sync.md).

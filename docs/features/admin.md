@@ -16,7 +16,7 @@ related_code:
   - ../../lib/admin/guard.ts
   - ../../lib/admin/stats.ts
   - ../../proxy.ts
-last_updated: 2026-10-11
+last_updated: 2026-10-12
 ---
 
 # Admin area
@@ -59,12 +59,16 @@ They are environment variables, never written in the code or the docs.
    every day. Two buttons copy them on demand. See [analytics.md](analytics.md).
 4. **Conversion:** over the same period, the funnel from a visit to a message sent, and
    where the leads came from. See [conversion.md](conversion.md).
-5. **Table of leads** (shadcn `Table`): date, contact (with the origin), need, message, and
+5. **Table of leads** (shadcn `Table`): date, with under it whether lotus confirmed the
+   lead ([lotus-sync.md](lotus-sync.md#sync-status-of-a-lead)); contact (with the origin), need, message, and
    follow-up: status, amount, follow-up date (in the accent colour once it has come) and
    the start of the notes.
-6. **CSV export** (`/admin/export/`): every lead with its follow-up, `;` separated, UTF-8
+6. **CSV export** (`/admin/export/`): every lead with its follow-up and its lotus sync status, `;` separated, UTF-8
    with a byte order mark for Excel. Cells that start with `=`, `+`, `-` or `@` are
    neutralised.
+
+A line above the table says whether forwarding to lotus is active, and counts the leads
+per sync state.
 
 Figures are computed by [lib/admin/stats.ts](../../lib/admin/stats.ts), a pure function.
 

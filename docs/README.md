@@ -4,7 +4,7 @@ description: Index of the technical documentation of the personal website, with 
 related_code:
   - ../CLAUDE.md
   - ../README.md
-last_updated: 2026-10-11
+last_updated: 2026-10-12
 ---
 
 # Documentation
@@ -32,12 +32,14 @@ file in the `related_code` fields.
 | [features/contact-form.md](features/contact-form.md)                                           | The contact dialog for leads: steps, API contract, anti-spam, error toasts, what changes after sending.                                                         |
 | [features/admin.md](features/admin.md)                                                         | The `/admin` dashboard: access protection, credentials, leads (figures, charts, table, follow-up, export), conversion, audience figures, rules.                 |
 | [features/conversion.md](features/conversion.md)                                               | From a visit to a message sent: anonymous daily counters of the contact form, origin of each lead, the conversion section of the admin.                         |
+| [features/lotus-sync.md](features/lotus-sync.md)                                               | Leads forwarded to lotus through a signed webhook: contract, sync status of each lead, daily retry, guards, how to verify.                                      |
 | [features/analytics.md](features/analytics.md)                                                 | Audience figures: daily copy of Vercel Web Analytics to Neon to outlive the one-month retention, cron, variables, display in the admin.                         |
 | [database/neon.md](database/neon.md)                                                           | The Neon database: attachment to Vercel, connection strings, driver, local development without a database, setup.                                               |
 | [database/schema.md](database/schema.md)                                                       | Tables and columns, with the log of schema changes.                                                                                                             |
 | [frontend/components.md](frontend/components.md)                                               | Component conventions and the building blocks of the Changelog design.                                                                                          |
 | [frontend/styling.md](frontend/styling.md)                                                     | Eucalyptus tokens, Tailwind theme, light and dark mode, Geist and Geist Mono, type scale, global rules.                                                         |
 | [development/code-quality.md](development/code-quality.md)                                     | TypeScript, ESLint and Prettier setup, what the lint expects, the checks to run.                                                                                |
+| [development/testing.md](development/testing.md)                                               | The test suite (Vitest): unit, route and smoke layers, what the CI runs, how tests stay away from real data, how to add one.                                    |
 | [operations/runbook.md](operations/runbook.md)                                                 | Local setup, commands, continuous integration, Node version, deployment, dependency upgrades, troubleshooting.                                                  |
 | [audits/2026-10-10-full-audit.md](audits/2026-10-10-full-audit.md)                             | Audit of 2026-10-10: security, performance, accessibility, SEO, technical health and French legal obligations, with measurements, priorities and an action log. |
 | [redesign/charte-graphique-valentinbourreau.md](redesign/charte-graphique-valentinbourreau.md) | Design charter (in French): principles, logo, palette, typography, components. Authoritative for the look of the site.                                          |

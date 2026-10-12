@@ -14,7 +14,7 @@ related_code:
   - ../../components/admin/bars-chart.tsx
   - ../../db/schema.sql
   - ../../.env.example
-last_updated: 2026-10-11
+last_updated: 2026-10-12
 ---
 
 # Audience figures
@@ -62,7 +62,9 @@ Vercel dashboard.
 
 [vercel.json](../../vercel.json) schedules `GET /api/cron/analytics-snapshot/` every day at
 03:15 UTC. Vercel sends `Authorization: Bearer <CRON_SECRET>`; the route compares it in
-constant time and is closed without the variable. A new cron route follows the same rule.
+constant time and is closed without the variable. The check is `isCronAuthorized`
+([lib/cron/auth.ts](../../lib/cron/auth.ts)), shared with the
+[lotus retry](lotus-sync.md#the-daily-retry): a new cron route calls it first.
 
 ## Variables
 

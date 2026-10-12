@@ -5,9 +5,9 @@ resume with a one-page PDF, posts and a legal notice, in English and French. Liv
 
 Built with Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4 and shadcn/ui, on a design
 charter of its own ([docs/redesign/](docs/redesign/charte-graphique-valentinbourreau.md)).
-Pages are generated at build time. A contact form stores leads in a Neon database; a
-private admin area follows them up and shows the conversion funnel and the audience
-figures, copied from Vercel every day.
+Pages are generated at build time. A contact form stores leads in a Neon database and
+forwards them to a private management app; a private admin area follows them up and shows
+the conversion funnel and the audience figures, copied from Vercel every day.
 
 ## Getting started
 
@@ -27,37 +27,41 @@ credentials or a database.
 
 ## Scripts
 
-| Command            | What it does                               |
-| ------------------ | ------------------------------------------ |
-| `npm run dev`      | Development server                         |
-| `npm run build`    | Production build                           |
-| `npm run start`    | Serves the production build                |
-| `npm run check`    | Types, lint and formatting, in one command |
-| `npm run lint`     | ESLint with `--fix`                        |
-| `npm run format`   | Prettier on the whole repository           |
-| `npm run cv:pdf`   | Prints the resume PDFs, after a build      |
-| `npm run db:setup` | Applies the database schema                |
+| Command              | What it does                                   |
+| -------------------- | ---------------------------------------------- |
+| `npm run dev`        | Development server                             |
+| `npm run build`      | Production build                               |
+| `npm run start`      | Serves the production build                    |
+| `npm run check`      | Types, lint and formatting, in one command     |
+| `npm test`           | Unit tests and route handlers                  |
+| `npm run test:smoke` | The built site called over HTTP, after a build |
+| `npm run lint`       | ESLint with `--fix`                            |
+| `npm run format`     | Prettier on the whole repository               |
+| `npm run cv:pdf`     | Prints the resume PDFs, after a build          |
+| `npm run db:setup`   | Applies the database schema                    |
 
 ## Where things are
 
-| Folder                                                           | Content                                                          | Documentation                                                                                          |
-| ---------------------------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `app/`                                                           | Routing only: pages, layout, 404, error, sitemap, robots         | [features/pages.md](docs/features/pages.md), [architecture/overview.md](docs/architecture/overview.md) |
-| `components/`                                                    | Header, portrait, profile card, changelog entry, project card…   | [frontend/components.md](docs/frontend/components.md), [frontend/styling.md](docs/frontend/styling.md) |
-| `locales/content/`                                               | Texts of the home page and the resume, in French and English     | [content/resume-data.md](docs/content/resume-data.md)                                                  |
-| `lib/constants/`, `lib/models/`                                  | Resume data used by the structured data, content types           | [content/resume-data.md](docs/content/resume-data.md)                                                  |
-| `locales/`                                                       | Dictionaries: metadata, labels, legal texts                      | [architecture/i18n.md](docs/architecture/i18n.md)                                                      |
-| `lib/i18n/`, `proxy.ts`                                          | Locales, dictionaries, language redirect                         | [architecture/i18n.md](docs/architecture/i18n.md)                                                      |
-| `lib/helpers/`                                                   | Meta tags and structured data (JSON-LD)                          | [features/seo.md](docs/features/seo.md)                                                                |
-| `components/contact/`, `app/api/contact/`                        | Contact dialog for leads and its API                             | [features/contact-form.md](docs/features/contact-form.md)                                              |
-| `app/admin/`, `lib/admin/`                                       | Dashboard of leads, behind HTTP Basic                            | [features/admin.md](docs/features/admin.md)                                                            |
-| `db/`, `lib/db/`, `lib/leads/`                                   | Neon schema, client and lead storage                             | [database/neon.md](docs/database/neon.md)                                                              |
-| `lib/analytics/`, `app/api/cron/`, `vercel.json`                 | Daily copy of Vercel Web Analytics to Neon, shown in the admin   | [features/analytics.md](docs/features/analytics.md)                                                    |
-| `lib/funnel/`, `app/api/events/`                                 | Anonymous counters of the contact form and the conversion funnel | [features/conversion.md](docs/features/conversion.md)                                                  |
-| `content/posts/`, `lib/constants/posts.ts`, `mdx-components.tsx` | Posts written in MDX and their registry                          | [features/posts.md](docs/features/posts.md)                                                            |
-| `app/[locale]/resume/print/`, `scripts/`                         | The resume on one A4 page and the script that prints it          | [features/resume-pdf.md](docs/features/resume-pdf.md)                                                  |
-| `next.config.ts`                                                 | Security headers and CSP                                         | [architecture/security.md](docs/architecture/security.md)                                              |
-| `docs/`                                                          | Documentation                                                    | [docs/README.md](docs/README.md)                                                                       |
+| Folder                                                           | Content                                                               | Documentation                                                                                          |
+| ---------------------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `app/`                                                           | Routing only: pages, layout, 404, error, sitemap, robots              | [features/pages.md](docs/features/pages.md), [architecture/overview.md](docs/architecture/overview.md) |
+| `components/`                                                    | Header, portrait, profile card, changelog entry, project card…        | [frontend/components.md](docs/frontend/components.md), [frontend/styling.md](docs/frontend/styling.md) |
+| `locales/content/`                                               | Texts of the home page and the resume, in French and English          | [content/resume-data.md](docs/content/resume-data.md)                                                  |
+| `lib/constants/`, `lib/models/`                                  | Resume data used by the structured data, content types                | [content/resume-data.md](docs/content/resume-data.md)                                                  |
+| `locales/`                                                       | Dictionaries: metadata, labels, legal texts                           | [architecture/i18n.md](docs/architecture/i18n.md)                                                      |
+| `lib/i18n/`, `proxy.ts`                                          | Locales, dictionaries, language redirect                              | [architecture/i18n.md](docs/architecture/i18n.md)                                                      |
+| `lib/helpers/`                                                   | Meta tags and structured data (JSON-LD)                               | [features/seo.md](docs/features/seo.md)                                                                |
+| `components/contact/`, `app/api/contact/`                        | Contact dialog for leads and its API                                  | [features/contact-form.md](docs/features/contact-form.md)                                              |
+| `app/admin/`, `lib/admin/`                                       | Dashboard of leads, behind HTTP Basic                                 | [features/admin.md](docs/features/admin.md)                                                            |
+| `db/`, `lib/db/`, `lib/leads/`                                   | Neon schema, client and lead storage                                  | [database/neon.md](docs/database/neon.md)                                                              |
+| `lib/analytics/`, `app/api/cron/`, `vercel.json`                 | Daily copy of Vercel Web Analytics to Neon, shown in the admin        | [features/analytics.md](docs/features/analytics.md)                                                    |
+| `lib/funnel/`, `app/api/events/`                                 | Anonymous counters of the contact form and the conversion funnel      | [features/conversion.md](docs/features/conversion.md)                                                  |
+| `lib/lotus/`, `app/api/cron/lotus-sync/`                         | Leads forwarded to lotus through a signed webhook, with a daily retry | [features/lotus-sync.md](docs/features/lotus-sync.md)                                                  |
+| `tests/`, `vitest.config.ts`, `vitest.smoke.config.ts`           | Test suite: unit, route handlers, smoke tests of the built site       | [development/testing.md](docs/development/testing.md)                                                  |
+| `content/posts/`, `lib/constants/posts.ts`, `mdx-components.tsx` | Posts written in MDX and their registry                               | [features/posts.md](docs/features/posts.md)                                                            |
+| `app/[locale]/resume/print/`, `scripts/`                         | The resume on one A4 page and the script that prints it               | [features/resume-pdf.md](docs/features/resume-pdf.md)                                                  |
+| `next.config.ts`                                                 | Security headers and CSP                                              | [architecture/security.md](docs/architecture/security.md)                                              |
+| `docs/`                                                          | Documentation                                                         | [docs/README.md](docs/README.md)                                                                       |
 
 ## Changing the site
 
@@ -74,8 +78,8 @@ credentials or a database.
 - **The portrait**: replace [public/avatar.jpg](public/avatar.jpg) with another square image
   ([frontend/styling.md](docs/frontend/styling.md#portrait)).
 
-Before pushing, run `npm run check` and `npm run build`. A GitHub Actions workflow runs both
-on every push.
+Before pushing, run `npm run check`, `npm test`, `npm run build` and `npm run test:smoke`.
+A GitHub Actions workflow runs all four on every push.
 
 ## Deployment
 

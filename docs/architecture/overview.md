@@ -8,7 +8,7 @@ related_code:
   - ../../proxy.ts
   - ../../next.config.ts
   - ../../package.json
-last_updated: 2026-10-11
+last_updated: 2026-10-12
 ---
 
 # Architecture overview
@@ -18,8 +18,10 @@ Vercel. Its public pages (home, resume, legal notice, and posts written in MDX),
 and English, are generated at build time. Five things run on the server: `proxy.ts`
 (locale redirect and the gate of the admin area), `POST /api/contact/` (the contact form,
 stored in a Neon database), `POST /api/events/` (anonymous counters of the contact form),
-`/admin` (the dashboard of leads, conversion and audience figures) and a daily cron that
-copies the audience figures from Vercel to Neon.
+`/admin` (the dashboard of leads, conversion and audience figures) and two daily crons:
+one copies the audience figures from Vercel to Neon, the other sends again to lotus the
+leads it has not confirmed. Each lead is forwarded to lotus, Valentin's private management
+app, right after it is stored.
 
 ## The system at a glance
 
@@ -33,9 +35,11 @@ flowchart LR
     C --> DB[(Neon: leads, counters, audience)]
     V -->|steps of the dialog| E[POST /api/events/<br/>BotID, counters]
     E --> DB
+    C -.->|after the response, signed| LO[lotus]
     T([Valentin]) -->|/admin, HTTP Basic| ADM[Admin dashboard]
     ADM --> DB
     CRON[Vercel Cron, daily] -->|/api/cron/analytics-snapshot/| DB
+    CRON -->|/api/cron/lotus-sync/| LO
     S -->|page views| A[Vercel Analytics]
 ```
 
@@ -75,13 +79,15 @@ app/
   admin/                    Dashboard of leads: own root layout, French only
   api/contact/route.ts      Receives a lead from the contact dialog
   api/events/route.ts       Counts a step of the contact dialog
-  api/cron/                 Scheduled jobs: daily copy of the audience figures
+  api/cron/                 Scheduled jobs: copy of the audience figures, lotus retry
 components/                 One folder per component (header, avatar, breadcrumb,
                             profile-card, changelog-entry, project-card…)
   ui/                       shadcn/ui components, restyled for the charter
 lib/
   i18n/                     Locales, getLocale, getDictionary
   leads/                    Validation and storage of leads
+  lotus/                    Forwarding of leads to lotus: config, signed request, retry
+  cron/                     Authorization shared by the cron routes
   funnel/                   Counters of the contact dialog: tracking, storage, report
   analytics/                Vercel Web Analytics client, daily snapshot, storage, report
   db/                       Neon client
@@ -98,6 +104,7 @@ proxy.ts                    Locale redirect and gate of /admin
 instrumentation-client.ts   Routes protected by Vercel BotID
 db/                         schema.sql and its setup script
 scripts/                    cv-pdf.mjs: prints the resume PDFs
+tests/                      unit/, routes/, smoke/: the test suite (Vitest)
 vercel.json                 Cron schedule
 public/                     Portrait, resume PDFs, security.txt
 docs/                       This documentation; redesign/ holds the brief and the charter
@@ -124,6 +131,7 @@ folder (`../appear/appear`); anything further goes through the alias.
 
 - Pages and how to add one: [features/pages.md](../features/pages.md).
 - Posts: [features/posts.md](../features/posts.md). Resume PDF: [features/resume-pdf.md](../features/resume-pdf.md).
-- Conversion: [features/conversion.md](../features/conversion.md).
+- Conversion: [features/conversion.md](../features/conversion.md). Lotus: [features/lotus-sync.md](../features/lotus-sync.md).
+- Tests: [development/testing.md](../development/testing.md).
 - Where the content lives: [content/resume-data.md](../content/resume-data.md).
 - Headers and CSP: [security.md](security.md).
