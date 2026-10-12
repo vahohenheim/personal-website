@@ -50,7 +50,7 @@ branch is merged and deployed.**
 ## Steps
 
 - [x] 0. Branch and this file.
-- [ ] 1. Test tooling (Vitest, scripts, CI) and tests of the existing behaviour, green
+- [x] 1. Test tooling (Vitest, scripts, CI) and tests of the existing behaviour, green
       before any change: this is the regression net.
 - [ ] 2. Schema columns, `Lead` model, both stores (`insert` returns the lead, sync marks,
       pending list). Tests.

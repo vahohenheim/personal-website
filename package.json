@@ -16,7 +16,10 @@
     "format:check": "prettier --check .",
     "db:setup": "node --env-file=.env.local db/setup.mjs",
     "cv:pdf": "node scripts/cv-pdf.mjs",
-    "check": "npm run typecheck && npm run lint:check && npm run format:check"
+    "check": "npm run typecheck && npm run lint:check && npm run format:check",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:smoke": "vitest run --config vitest.smoke.config.ts"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
@@ -52,6 +55,7 @@
     "schema-dts": "^2.1.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.71.1"
+    "typescript-eslint": "^8.71.1",
+    "vitest": "^3.2.7"
   }
 }

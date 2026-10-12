@@ -24,4 +24,8 @@ jobs:
       - run: npm ci
       # Types, lint and formatting.
       - run: npm run check
+      # Unit tests and route handlers called in process.
+      - run: npm test
       - run: npm run build
+      # The built site, started with stores in memory and called over HTTP.
+      - run: npm run test:smoke
