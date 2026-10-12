@@ -35,13 +35,18 @@ import { type AnalyticsDimension } from "@/lib/analytics/vercel";
 import { isDatabaseConfigured } from "@/lib/db/client";
 import { loadFunnelReport } from "@/lib/funnel/report";
 import { getLeadStore } from "@/lib/leads/store";
+import { getLotusState } from "@/lib/lotus/config";
+import { countSyncDisplays, getSyncDisplay } from "@/lib/lotus/state";
 import { type Lead } from "@/lib/models/lead";
 import {
   breakdownLabel,
+  describeSync,
   FUNNEL_LABELS,
+  LOTUS_STATE_LABELS,
   NEED_LABELS,
   PERIOD_LABELS,
   STATUS_LABELS,
+  SYNC_LABELS,
   TIMELINE_LABELS,
 } from "./labels";
 
@@ -126,6 +131,8 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
 
   const { leads, error } = await loadLeads();
   const stats = computeLeadStats(leads, now);
+  const lotus = getLotusState();
+  const sync = countSyncDisplays(leads, now);
   const figures = [
     { label: "demandes reçues", value: stats.total, detail: "depuis le début" },
     {
@@ -452,6 +459,13 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
 
         <SectionComponent className="flex flex-col gap-6">
           <SectionTitleComponent>toutes les demandes</SectionTitleComponent>
+          <p className="max-w-[64ch] font-mono text-[13px] text-muted-foreground">
+            Transfert vers lotus {LOTUS_STATE_LABELS[lotus.status]}
+            {leads.length > 0 &&
+              ` ${(["synced", "pending", "rejected", "expired"] as const)
+                .map((state) => `${sync[state]} ${SYNC_LABELS[state]}`)
+                .join(" · ")}.`}
+          </p>
           {leads.length === 0 ? (
             <p className="text-text2">Aucune demande pour l’instant.</p>
           ) : (
@@ -470,8 +484,21 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                   <TableBody>
                     {leads.map((lead) => (
                       <TableRow key={lead.id}>
-                        <TableCell className="font-mono text-[12px] whitespace-nowrap text-muted-foreground">
-                          {dateFormat.format(new Date(lead.createdAt))}
+                        <TableCell className="min-w-[150px] font-mono text-[12px] whitespace-nowrap text-muted-foreground">
+                          <p>{dateFormat.format(new Date(lead.createdAt))}</p>
+                          {/* In the text colour when it needs a look: refused, or too old. */}
+                          <p
+                            className={
+                              ["rejected", "expired"].includes(getSyncDisplay(lead, now))
+                                ? "font-semibold whitespace-normal text-foreground"
+                                : "whitespace-normal"
+                            }
+                          >
+                            <span aria-hidden>
+                              {getSyncDisplay(lead, now) === "synced" ? "● " : "○ "}
+                            </span>
+                            lotus · {describeSync(lead, now)}
+                          </p>
                         </TableCell>
                         <TableCell className="min-w-[180px]">
                           <p className="font-semibold">{lead.name}</p>

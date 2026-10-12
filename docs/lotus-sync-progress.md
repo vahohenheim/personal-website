@@ -58,7 +58,7 @@ branch is merged and deployed.**
       and guard. Tests.
 - [x] 4. Contact route forwards in `after()`; cron route `lotus-sync`; shared cron auth;
       `vercel.json`; `.env.example`. Tests.
-- [ ] 5. Admin: sync status per lead, summary line, CSV export. Tests of the labels/state.
+- [x] 5. Admin: sync status per lead, summary line, CSV export. Tests of the labels/state.
 - [ ] 6. Smoke test of the built site; end-to-end check with a local lotus or a stub.
 - [ ] 7. Migration applied to Neon (`npm run db:setup`, additive only) and checked.
 - [ ] 8. Documentation: `docs/features/lotus-sync.md`, `docs/development/testing.md`,

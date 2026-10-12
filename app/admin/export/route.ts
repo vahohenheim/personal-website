@@ -34,6 +34,9 @@ export async function GET() {
       "langue",
       "message",
       "notes",
+      "lotus",
+      "lotus_id",
+      "lotus_erreur",
     ],
     ...leads.map((lead) => [
       lead.id,
@@ -50,6 +53,9 @@ export async function GET() {
       lead.locale,
       lead.message,
       lead.notes,
+      lead.lotusStatus,
+      lead.lotusLeadId,
+      lead.lotusError,
     ]),
   ];
   // The byte order mark makes Excel read the file as UTF-8.

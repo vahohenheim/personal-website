@@ -1,4 +1,7 @@
-import { type LeadNeed, type LeadStatus, type LeadTimeline } from "@/lib/models/lead";
+import { type LotusState } from "@/lib/lotus/config";
+import { getSyncDisplay, type SyncDisplay } from "@/lib/lotus/state";
+import { LOTUS_RETRY_DAYS } from "@/lib/lotus/sync";
+import { type Lead, type LeadNeed, type LeadStatus, type LeadTimeline } from "@/lib/models/lead";
 
 // The admin area is for Valentin only, so its texts are in French and live here rather
 // than in the dictionaries of the public site.
@@ -25,6 +28,59 @@ export const STATUS_LABELS: Record<LeadStatus, string> = {
   won: "gagné",
   lost: "perdu",
   closed: "sans suite",
+};
+
+/** Forwarding of a lead to lotus, as a word. */
+export const SYNC_LABELS: Record<SyncDisplay, string> = {
+  synced: "transmis",
+  pending: "en attente",
+  rejected: "refusé",
+  expired: "non transmis",
+};
+
+const shortDayFormat = new Intl.DateTimeFormat("fr-FR", {
+  day: "2-digit",
+  month: "2-digit",
+  timeZone: "Europe/Paris",
+});
+
+/**
+ * Forwarding of a lead to lotus, in a few words: the state, then what explains it (the
+ * day lotus confirmed, the code of the last failure and the number of attempts).
+ */
+export const describeSync = (lead: Lead, now: Date) => {
+  const display = getSyncDisplay(lead, now);
+  const label = SYNC_LABELS[display];
+  const attempts = `${lead.lotusAttempts} essai${lead.lotusAttempts > 1 ? "s" : ""}`;
+
+  if (display === "synced") {
+    return lead.lotusSyncedAt
+      ? `${label} le ${shortDayFormat.format(new Date(lead.lotusSyncedAt))}`
+      : label;
+  }
+
+  if (display === "expired") {
+    return `${label} · plus de ${LOTUS_RETRY_DAYS} jours`;
+  }
+
+  if (display === "rejected") {
+    return `${label} · ${lead.lotusError ?? "sans code"}`;
+  }
+
+  return lead.lotusAttempts > 0
+    ? `${label} · ${lead.lotusError ?? "sans code"} · ${attempts}`
+    : label;
+};
+
+/** Whether leads are being forwarded, and why not when they are not. */
+export const LOTUS_STATE_LABELS: Record<LotusState["status"], string> = {
+  active:
+    "actif : chaque demande est envoyée à lotus, puis renvoyée chaque nuit tant que lotus n’a pas confirmé.",
+  unconfigured:
+    "inactif : LOTUS_WEBHOOK_URL ou LOTUS_WEBHOOK_SECRET est absent. Rien n’est envoyé.",
+  invalid: "inactif : LOTUS_WEBHOOK_URL n’est pas une adresse HTTPS utilisable. Rien n’est envoyé.",
+  blocked:
+    "bloqué : les demandes sont en mémoire, leurs numéros repartent de 1 et se confondraient avec de vraies demandes dans lotus.",
 };
 
 export const FUNNEL_LABELS = {

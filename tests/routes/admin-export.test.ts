@@ -33,12 +33,18 @@ describe("GET /admin/export/", () => {
     await getLeadStore().insert(leadInput());
 
     const response = await GET();
-    const [header, row] = (await response.text()).replace("﻿", "").trim().split("\n");
+    const [header, row] = (await response.text())
+      .replace("﻿", "")
+      .trim()
+      .split("\n")
+      .map((line) => line.trim());
 
     expect(response.status).toBe(200);
     expect(response.headers.get("content-type")).toContain("text/csv");
     expect(header).toContain('"id";"date";"statut"');
     expect(row).toContain('"Ada Lovelace";"ada@example.com";"Analytical Engines"');
+    expect(header.endsWith('"notes";"lotus";"lotus_id";"lotus_erreur"')).toBe(true);
+    expect(row.endsWith('"pending";"";""')).toBe(true);
   });
 
   it("neutralises cells a spreadsheet would run as a formula", async () => {
