@@ -60,7 +60,7 @@ branch is merged and deployed.**
       `vercel.json`; `.env.example`. Tests.
 - [x] 5. Admin: sync status per lead, summary line, CSV export. Tests of the labels/state.
 - [x] 6. Smoke test of the built site; end-to-end check with a local lotus or a stub.
-- [ ] 7. Migration applied to Neon (`npm run db:setup`, additive only) and checked.
+- [x] 7. Migration applied to Neon (`npm run db:setup`, additive only) and checked.
 - [ ] 8. Documentation: `docs/features/lotus-sync.md`, `docs/development/testing.md`,
       pages concerned, `CLAUDE.md`, `README.md`.
 - [ ] 9. Final `npm run check`, `npm test`, `npm run build`, smoke; report to Valentin
@@ -68,6 +68,10 @@ branch is merged and deployed.**
 
 ## Notes while working
 
+- Migration applied to production Neon on 2026-10-12 (17 statements, additive). Checked:
+  the one existing lead kept, now `pending`; the queries of the version in production still
+  run; production admin and export still answer. That lead is less than 30 days old: the
+  first run of the cron will send it to lotus, as the prompt intends.
 - The real lotus was not run locally: `../lotus/.env.local` has no `LEADS_WEBHOOK_SECRET`
   and points to its own database, which is not mine to write test leads into. The end to
   end path is covered by a stand-in that applies the contract (`tests/smoke/lotus-stub.ts`),

@@ -484,7 +484,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                   <TableBody>
                     {leads.map((lead) => (
                       <TableRow key={lead.id}>
-                        <TableCell className="min-w-[150px] font-mono text-[12px] whitespace-nowrap text-muted-foreground">
+                        <TableCell className="min-w-[200px] font-mono text-[12px] whitespace-nowrap text-muted-foreground">
                           <p>{dateFormat.format(new Date(lead.createdAt))}</p>
                           {/* In the text colour when it needs a look: refused, or too old. */}
                           <p
