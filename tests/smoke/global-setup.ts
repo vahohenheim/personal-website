@@ -1,12 +1,15 @@
 import { type ChildProcess, spawn } from "node:child_process";
 import { existsSync } from "node:fs";
+import { type Server } from "node:http";
 import { setTimeout as sleep } from "node:timers/promises";
+import { startLotusStub } from "./lotus-stub";
 import { SMOKE } from "./settings";
 
 // Starts the built site once for the smoke tests, with stores in memory and credentials
 // that only exist here. Nothing real is reachable: the database URL is emptied.
 
 let server: ChildProcess | undefined;
+let lotus: Server | undefined;
 
 const isUp = async () => {
   try {
@@ -25,6 +28,8 @@ export async function setup() {
     throw new Error(`Port ${SMOKE.port} is already in use: stop what runs there first.`);
   }
 
+  lotus = await startLotusStub(SMOKE.lotusPort, SMOKE.lotusSecret);
+
   server = spawn("npx", ["next", "start", "-p", String(SMOKE.port)], {
     stdio: "ignore",
     env: {
@@ -39,8 +44,9 @@ export async function setup() {
       ADMIN_USER: SMOKE.adminUser,
       ADMIN_PASSWORD: SMOKE.adminPassword,
       CRON_SECRET: SMOKE.cronSecret,
-      LOTUS_WEBHOOK_URL: "",
-      LOTUS_WEBHOOK_SECRET: "",
+      // Leads are forwarded to a stand-in for lotus on this machine, never to the real one.
+      LOTUS_WEBHOOK_URL: `${SMOKE.lotusUrl}/api/webhooks/leads`,
+      LOTUS_WEBHOOK_SECRET: SMOKE.lotusSecret,
     },
   });
 
@@ -52,10 +58,11 @@ export async function setup() {
     await sleep(500);
   }
 
-  server.kill();
+  teardown();
   throw new Error("The built site did not start.");
 }
 
 export function teardown() {
   server?.kill();
+  lotus?.close();
 }

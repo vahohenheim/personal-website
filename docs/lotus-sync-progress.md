@@ -59,7 +59,7 @@ branch is merged and deployed.**
 - [x] 4. Contact route forwards in `after()`; cron route `lotus-sync`; shared cron auth;
       `vercel.json`; `.env.example`. Tests.
 - [x] 5. Admin: sync status per lead, summary line, CSV export. Tests of the labels/state.
-- [ ] 6. Smoke test of the built site; end-to-end check with a local lotus or a stub.
+- [x] 6. Smoke test of the built site; end-to-end check with a local lotus or a stub.
 - [ ] 7. Migration applied to Neon (`npm run db:setup`, additive only) and checked.
 - [ ] 8. Documentation: `docs/features/lotus-sync.md`, `docs/development/testing.md`,
       pages concerned, `CLAUDE.md`, `README.md`.
@@ -68,4 +68,7 @@ branch is merged and deployed.**
 
 ## Notes while working
 
-(none yet)
+- The real lotus was not run locally: `../lotus/.env.local` has no `LEADS_WEBHOOK_SECRET`
+  and points to its own database, which is not mine to write test leads into. The end to
+  end path is covered by a stand-in that applies the contract (`tests/smoke/lotus-stub.ts`),
+  checked against `receiveLeadWebhook` in `../lotus/src/features/leads/core.ts`.
