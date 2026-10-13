@@ -19,7 +19,7 @@ export const PAGES = {
   home: {
     path: "/",
     createdAt: "2024-07-12",
-    updatedAt: "2026-10-12",
+    updatedAt: "2026-10-13",
     priority: 1,
     changeFrequency: "monthly",
   },

@@ -15,11 +15,7 @@ export const PERSONAL_PROJECTS: PersonalProject[] = [
     status: PersonalProjectStatus.COMING_SOON,
   },
   {
-    id: PersonalProjectId.LYS,
-    status: PersonalProjectStatus.COMING_SOON,
-  },
-  {
-    id: PersonalProjectId.IRIS,
+    id: PersonalProjectId.PENSEE,
     status: PersonalProjectStatus.COMING_SOON,
   },
   {

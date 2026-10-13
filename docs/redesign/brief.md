@@ -158,11 +158,9 @@ Grille `auto-fit minmax(min(300px,100%),1fr)`, gap 16 px, de `ProjectCard` :
 
 - `brut` · `● en ligne` — « Food truck BRUT à Tours : contenu éditable, newsletter, avis clients. » — `next.js`
 - `lotus` · `● en démarrage` — « Mon statut d’indépendant, automatisé : factures et devis, cotisations, échéances, leads et relances clients. » — `next.js · drizzle · neon`
-- `lys` · `● en démarrage` — « Automatisation de la gestion de mes finances personnelles. »
-- `iris` · `● en démarrage` — « Notes personnelles : organisation et prise de recul. »
-- `editorials` · `○ archivé` — « Monorepo pour sites éditoriaux, adaptateur Notion. » — `nx · next.js · notion`
+- `pensee` · `● en démarrage` — « App mobile de notes quotidiennes, pensée pour écrire hors ligne : éditeur riche, synchronisation, recherche. Recul quotidien par IA. » — `expo · next.js · api claude`
 
-Sous la grille, en mono 13 px `--muted` : « + 2 archivés : notion-blog, finance » (liens). Reprends les URL existantes du repo.
+Sous la grille, en mono 13 px `--muted` : « + 3 archivés : editorials, notion-blog, finance » (liens). Reprends les URL existantes du repo.
 
 ### Footer (`id="contact"`)
 

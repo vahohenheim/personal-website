@@ -125,27 +125,19 @@ export const home: HomeContent = {
         stack: "next.js · drizzle · neon",
       },
       {
-        id: "lys",
-        name: "lys",
+        id: "pensee",
+        name: "pensee",
         status: "starting",
-        text: "Automating the management of my personal finances.",
+        text: "Mobile app for daily notes, built for writing offline: rich editor, sync, search. A nightly AI review.",
+        stack: "expo · next.js · claude api",
       },
-      {
-        id: "iris",
-        name: "iris",
-        status: "starting",
-        text: "Personal notes: organising and stepping back.",
-      },
+    ],
+    more: "+ 3 archived:",
+    moreItems: [
       {
         id: "editorials",
         name: "editorials",
-        status: "archived",
-        text: "Monorepo for editorial sites, Notion adapter.",
-        stack: "nx · next.js · notion",
       },
-    ],
-    more: "+ 2 archived:",
-    moreItems: [
       {
         id: "notion-blog",
         name: "notion-blog",
