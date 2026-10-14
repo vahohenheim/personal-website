@@ -257,7 +257,7 @@ const getProject = (project: PostProject): Thing =>
         ...(project.url && { url: project.url }),
       };
 
-/** The cover of a post, then its generated sharing image. */
+/** The cover of a post, then its generated sharing image, then the images of its body. */
 const getPostImages = (post: LocalizedPost): ImageObject[] => [
   ...(post.cover
     ? [
@@ -276,6 +276,12 @@ const getPostImages = (post: LocalizedPost): ImageObject[] => [
     width: `${SHARE_IMAGE_SIZE.width}`,
     height: `${SHARE_IMAGE_SIZE.height}`,
   },
+  ...(post.images ?? []).map((image): ImageObject => ({
+    "@type": "ImageObject",
+    url: `${SITE_URL}${image.src}`,
+    width: `${image.width}`,
+    height: `${image.height}`,
+  })),
 ];
 
 /** A post, written by the person the site is about. `summary` is the form used in lists. */

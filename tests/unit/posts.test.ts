@@ -239,6 +239,20 @@ describe("sitemap", () => {
     expect(sitemap().map(({ url }) => url)).toContain("https://www.valentinbourreau.com/fr/posts/");
   });
 
+  it("lists the images of the body after the cover", () => {
+    const entry = sitemap().find(
+      ({ url }) => url === "https://www.valentinbourreau.com/fr/posts/brut/",
+    );
+
+    expect(entry?.images).toEqual([
+      "https://www.valentinbourreau.com/posts/brut/accueil.webp",
+      "https://www.valentinbourreau.com/posts/brut/perf-scores-jour.webp",
+      "https://www.valentinbourreau.com/posts/brut/perf-lcp-jour.webp",
+      "https://www.valentinbourreau.com/posts/brut/perf-poids-jour.webp",
+      "https://www.valentinbourreau.com/posts/brut/perf-video-jour.webp",
+    ]);
+  });
+
   it("never lists a draft, the print page or the admin", () => {
     const urls = sitemap().map((entry) => entry.url);
 

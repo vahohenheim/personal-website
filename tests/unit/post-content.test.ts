@@ -103,6 +103,19 @@ describe("registry", () => {
     expect(folders.sort()).toEqual(POSTS.map((post) => post.slug).sort());
   });
 
+  it("points every listed image of the body to an existing image of the post", () => {
+    for (const post of POSTS) {
+      for (const image of post.images ?? []) {
+        expect(image.src.startsWith(`/posts/${post.slug}/`), image.src).toBe(true);
+        expect(existsSync(join("public", image.src)), image.src).toBe(true);
+        expect(webpSize(join("public", image.src)), image.src).toEqual({
+          width: image.width,
+          height: image.height,
+        });
+      }
+    }
+  });
+
   it("points every cover to an existing image of the post", () => {
     for (const post of POSTS.filter(({ cover }) => cover)) {
       expect(post.cover?.src.startsWith(`/posts/${post.slug}/`)).toBe(true);
