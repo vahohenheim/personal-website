@@ -317,6 +317,9 @@ const fr: Dictionary = {
     description:
       "La page que vous recherchez n’existe pas. Il se peut qu’elle ait été déplacée ou supprimée.",
     "back-to-homepage": "retour à la page d’accueil",
+    metadata: {
+      title: "Page introuvable | valentinbourreau",
+    },
   },
   error: {
     title: "Oups, une erreur est survenue !",
