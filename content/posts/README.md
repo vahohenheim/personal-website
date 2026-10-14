@@ -6,9 +6,9 @@ MDX uses are **not implemented**: implementing them, the registry entries, the r
 header, the home block and the structured data is the job of the follow-up session (see
 the brief published with this branch).
 
-> The texts are drafts prepared with Valentin on 2026-10-13/14. Rule of the repository:
-> nothing is published under his name that he did not write. Every entry is added with
-> `draft: true`; Valentin removes it after his own read.
+> The texts were prepared with Valentin and reviewed by him on 2026-10-14: the three
+> public articles are published without `draft`. They are written to stay true over time:
+> no project status, no "not yet", no plans. Keep it that way when editing them.
 
 ## Posts
 

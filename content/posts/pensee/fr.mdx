@@ -29,16 +29,16 @@
     ],
     ["en chiffres", "119 commits, ~34 000 lignes de TypeScript, ~800 tests, 10 ADR"],
   ]}
-  status="API en ligne, premier build iPhone en cours"
+  status="En ligne"
 />
 
 <Section n="01" label="contexte" title="Pourquoi un carnet de plus">
 
-Depuis 2024, j’écris mes notes dans Notion : quelques lignes, une heure, parfois trois fois par jour. Ça marche tant qu’on a du réseau et qu’on ne cherche pas à relire. Fin octobre 2026, je pars un an en Amérique latine. Réseau intermittent, fuseaux qui changent, repères qui bougent : exactement le moment où j’aurai le plus besoin d’écrire, et celui où Notion sera le moins fiable.
+Depuis 2024, j’écris mes notes dans Notion : quelques lignes, une heure, parfois trois fois par jour. Ça marche tant qu’on a du réseau et qu’on ne cherche pas à relire. Je préparais alors un an de voyage en Amérique latine : réseau intermittent, fuseaux qui changent, repères qui bougent. Exactement les conditions où l’on a le plus besoin d’écrire, et celles où Notion est le moins fiable.
 
 Je voulais deux choses. Écrire n’importe où, sans jamais attendre le réseau. Et prendre du recul : relire une semaine, un mois, une année, et voir par quels états je suis passé, sans tout relire à la main.
 
-pensee est née de là. Une app iPhone, un seul utilisateur, et un parti pris : tout s’écrit d’abord sur le téléphone, et une IA relit les notes une fois par semaine pour en tirer un bulletin. Le nom vient de la fleur, la pensee ; je l’écris pensee, sans accent, pour qu’il voyage.
+pensee est née de là. Une app iPhone, un seul utilisateur, et un parti pris : tout s’écrit d’abord sur le téléphone, et une IA relit les notes une fois par semaine pour en tirer un bulletin. Le nom vient de la fleur, la pensée ; je l’écris pensee, sans accent, pour qu’il voyage.
 
 ### Cinq principes, posés avant la première ligne de code
 
@@ -229,9 +229,9 @@ Je voulais garder mes notes lisibles dans Notion. L’API Notion tient environ t
 
 <Section n="05" label="ia" title="Le Recul : une IA qui relit un journal">
 
-C’est le cœur du projet, et la partie qui changera le plus. Chaque lundi à 5 h, heure locale du téléphone, un pipeline relit les notes de la semaine et écrit trois bulletins : la semaine écoulée, le mois, l’année. Le fuseau est envoyé à chaque synchro : le Recul me suivra de pays en pays.
+C’est le cœur du projet, et la partie qui changera le plus. Chaque lundi à 5 h, heure locale du téléphone, un pipeline relit les notes de la semaine et écrit trois bulletins : la semaine écoulée, le mois, l’année. Le fuseau est envoyé à chaque synchro : le Recul suit mes changements de fuseau.
 
-Au départ, il tournait chaque nuit. L’estimation, environ 0,30 $ par jour dont plus de la moitié pour réécrire le bulletin de l’année, m’a fait passer à une fois par semaine : de l’ordre de 0,35 $ la semaine. Ce sont des estimations, pas encore des mesures. Un bouton « Mettre à jour le recul » reste là pour un bulletin en milieu de semaine.
+Au départ, il tournait chaque nuit. L’estimation, environ 0,30 $ par jour dont plus de la moitié pour réécrire le bulletin de l’année, m’a fait passer à une fois par semaine : de l’ordre de 0,35 $ la semaine. Ce sont des estimations. Un bouton « Mettre à jour le recul » reste là pour un bulletin en milieu de semaine.
 
 </Section>
 
@@ -403,7 +403,7 @@ Sans Mac sous la main, les tests sont mes yeux. Vitest pour les paquets et l’A
 
 ### Mon rôle : essayer, rapporter, arbitrer
 
-Les outils accélèrent l’écriture du code ; les décisions restent les miennes. La cadence du Recul, son coût, ce que Notion doit recevoir, ce qui compte avant le départ. Et les retours d’essai, rapportés tels quels.
+Les outils accélèrent l’écriture du code ; les décisions restent les miennes. La cadence du Recul, son coût, ce que Notion doit recevoir, ce qui compte vraiment. Et les retours d’essai, rapportés tels quels.
 
 <Definitions
   stacked
@@ -412,18 +412,12 @@ Les outils accélèrent l’écriture du code ; les décisions restent les mien
       "« Je ne suis pas notifié, je ne sais pas combien de temps ça dure, je peux relancer le même. »",
       "La route de mise à jour répondait à la fin du run, jusqu’à cinq minutes, quand le téléphone abandonnait au bout de vingt secondes. Elle répond désormais tout de suite, refuse un doublon, et l’écran suit le run avec une horloge : « Mise à jour en cours · 1:07 ».",
     ],
-    [
-      "« Je ne peux pas encore créer le compte Apple Developer. »",
-      "Une variable de build retire les notifications, que seul un compte payant peut signer : l’app s’installe avec un Apple ID gratuit, pour sept jours, en attendant.",
-    ],
   ]}
 />
 
 </Section>
 
-<Section n="09" label="bilan" title="Ce qui reste, ce que j’en retiens">
-
-Beaucoup de choses n’ont encore jamais tourné sur un vrai téléphone : l’éditeur dans une vraie WebView sur une note de 3 000 mots, le chiffrement SQLCipher, la synchro en tâche de fond, la notification du lundi. Le journal de sessions le dit noir sur blanc, ligne par ligne. La priorité est un build installé avant le départ. Viendront ensuite le mode question de la recherche (poser une question à ses notes, réponse sourcée), les chapitres de vie, et des évaluations du Recul sur de vraies sorties.
+<Section n="09" label="bilan" title="Ce que j’en retiens">
 
 <PlusList>
   <Plus title="Une spec précise vaut mieux qu’une longue explication.">
