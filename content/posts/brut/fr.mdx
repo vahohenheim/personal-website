@@ -13,7 +13,7 @@
   rows={[
     ["client", "BRUT, « la bouchée française », food truck à Tours"],
     ["rôle", "Conception, développement, accompagnement du client."],
-    ["période", "20 sept. → 12 oct. 2026, au rythme des retours du client"],
+    ["période", "20 sept. → 14 oct. 2026, au rythme des retours du client"],
     [
       "stack",
       "Next.js 16, Tailwind v4, shadcn/ui · Neon · Vercel, BotID, Web Analytics · Brevo · Tiptap",
@@ -230,7 +230,115 @@ Les avis arrivent par un QR code collé sur le camion. La page qu’il ouvre n�
 
 </Section>
 
-<Section n="07" label="passation" title="Passer la main">
+<Section n="07" label="performances" title="Mesurer, puis alléger">
+
+Un site de food truck se consulte debout, sur un téléphone, avec la 4G qu’on trouve sur un parking. Je l’ai donc mesuré dans de mauvaises conditions : Lighthouse, un téléphone milieu de gamme émulé, une 4G lente simulée, trois passages par page en production, et la médiane. Puis j’ai allégé ce qui pesait, et mesuré de nouveau.
+
+</Section>
+
+<Stats
+  items={[
+    ["score mobile", "87 → 98"],
+    ["lcp accueil", "4,0 → 2,4 s"],
+    ["poids hors vidéo", "−44 %"],
+    ["images", "−55 %"],
+    ["ordinateur", "100 / 100"],
+  ]}
+/>
+
+<Diagram
+  src="/posts/brut/perf-scores"
+  width={1040}
+  height={600}
+  alt="Score de performance Lighthouse sur mobile, avant puis après : accueil 87 puis 98, /menu 92 puis 100, /avis 91 puis 100, /qr 92 puis 99. Sur ordinateur, 100 partout."
+  caption="Les quatre pages publiques, avant et après la version 1.1.0. Sur ordinateur, le score était déjà de 100 partout, et il l’est resté."
+/>
+
+<Section>
+
+Le point faible était le LCP, le temps d’affichage du plus grand élément visible : 4 secondes sur l’accueil, au-delà des 2,5 s que Google considère comme bonnes. Avec la version 1.1.0, les quatre pages passent sous la barre.
+
+</Section>
+
+<Diagram
+  src="/posts/brut/perf-lcp"
+  width={1040}
+  height={600}
+  alt="LCP mobile avant puis après : accueil 4,0 puis 2,4 s, /menu 3,3 puis 1,9 s, /avis 3,5 puis 1,8 s, /qr 3,3 puis 2,0 s. Les quatre pages passent sous le seuil de 2,5 s."
+  caption="LCP mobile, médiane de trois passages. Sur l’accueil, l’élément mesuré est le titre du haut de page."
+/>
+
+<Section>
+
+### Cinq changements, rien de visible
+
+<PlusList>
+  <Plus title="Des images en AVIF,">
+    avec le WebP en secours : la photo de La Bête passe de 210 à 83 Ko.
+  </Plus>
+  <Plus title="Une seule image d’attente pour la vidéo,">
+    dans une balise `picture` qui choisit le paysage ou le portrait, au lieu de deux images
+    préchargées.
+  </Plus>
+  <Plus title="Des logos à la bonne taille.">
+    Faute d’attribut `sizes`, ils partaient en 1 920 px de large pour 72 à 360 px affichés.
+  </Plus>
+  <Plus title="La vidéo après la page.">
+    Elle n’est posée qu’une fois la page chargée, et jamais en mode économie de données, en 2G, ni
+    quand le visiteur demande de réduire les animations.
+  </Plus>
+  <Plus title="La police italique n’est plus préchargée :">
+    le navigateur ne télécharge que ce qui s’affiche.
+  </Plus>
+</PlusList>
+
+</Section>
+
+<Diagram
+  src="/posts/brut/perf-poids"
+  width={1040}
+  height={600}
+  alt="Poids de l’accueil sur mobile hors vidéo : 1 557 Ko avant, 870 Ko après, soit −44 %. Images 989 puis 447 Ko, polices 292 puis 148 Ko, JavaScript 226 Ko inchangé."
+  caption="Hors vidéo, l’accueil passe de 1 557 à 870 Ko. Le JavaScript n’a pas bougé : tout le gain vient des images et des polices."
+/>
+
+<Diagram
+  src="/posts/brut/perf-video"
+  width={1040}
+  height={600}
+  alt="Requêtes réseau de l’accueil sur un passage de chaque version. Avant, la vidéo démarre à 0,37 s, pendant le chargement des images. Après, elle démarre à 2,39 s, une fois les images chargées."
+  caption="Un passage de chaque version, requêtes réseau observées. Avant, la vidéo de 10 Mo partait pendant le chargement des images ; avec la 1.1.0, elle attend la fin du chargement et ne dispute plus la bande passante à ce qui s’affiche."
+/>
+
+<Section>
+
+### Ce que j’ai essayé, puis écarté
+
+<PlusList>
+  <Plus title="La CSS dans le HTML.">
+    Un aller-retour réseau gagné, mais la CSS était recopiée dans la charge RSC : le HTML compressé
+    de l’accueil passait de 17 à 65 Ko.
+  </Plus>
+  <Plus title="La vidéo réencodée.">
+    10 Mo devenaient 4, au prix de blocs visibles sur les bulles de friture. Un réencodage se fait
+    depuis l’original 4K, pas depuis le fichier publié.
+  </Plus>
+  <Plus title="Une police allégée.">
+    Retirer l’axe de taille optique de Newsreader divisait la police par deux, mais changeait le
+    dessin des grands titres. Le choix typographique l’a emporté.
+  </Plus>
+</PlusList>
+
+<Callout label="méthode">
+  Lighthouse 13.5, trois passages par page en production, médiane retenue. Mobile : Moto G Power
+  émulé, 4G lente simulée, processeur ralenti quatre fois. Aucun décalage de mise en page (CLS 0),
+  un serveur qui répond en 5 à 16 ms grâce aux pages pré-rendues, accessibilité de 96 à 100, bonnes
+  pratiques et référencement à 100 sur les pages indexées.
+</Callout>
+
+</Section>
+
+<Section n="08" label="passation" title="Passer la main">
 
 Pour ce qui dépasse l’admin, j’ai préparé une passation à quelqu’un qui ne code pas. Un fichier de consignes pour un assistant de code : parler sans jargon, annoncer avant d’agir, une question à la fois, toujours proposer l’admin avant de toucher au code, et ne jamais mettre en ligne sans un « oui » explicite. Il suffit d’ouvrir le dossier et d’écrire « mets en ligne » ou « change le prix de la boîte de 5 ».
 
@@ -250,7 +358,7 @@ Derrière, le filet de sécurité : une documentation d’une page par sujet, u
   ]}
 />
 
-<Section n="08" label="bilan" title="Ce que j’en retiens">
+<Section n="09" label="bilan" title="Ce que j’en retiens">
 
 <PlusList>
   <Plus title="Montrer plutôt que décrire.">
@@ -266,6 +374,10 @@ Derrière, le filet de sécurité : une documentation d’une page par sujet, u
   </Plus>
   <Plus title="La documentation fait partie du livrable.">
     C’est elle qui rend le site autonome, bien plus que le code.
+  </Plus>
+  <Plus title="Mesurer avant d’optimiser.">
+    Trois passages, un téléphone lent simulé, et des pistes écartées quand le gain coûtait plus
+    qu’il ne rapportait.
   </Plus>
 </PlusList>
 
