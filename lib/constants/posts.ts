@@ -15,6 +15,12 @@ export const POSTS: Post[] = [
     publishedAt: "2026-10-14",
     updatedAt: "2026-10-14",
     cover: { src: "/posts/brut/accueil.webp", width: 1440, height: 900 },
+    images: [
+      { src: "/posts/brut/perf-scores-jour.webp", width: 2080, height: 1200 },
+      { src: "/posts/brut/perf-lcp-jour.webp", width: 2080, height: 1200 },
+      { src: "/posts/brut/perf-poids-jour.webp", width: 2080, height: 1200 },
+      { src: "/posts/brut/perf-video-jour.webp", width: 2080, height: 1200 },
+    ],
     project: {
       name: "BRUT",
       type: "WebSite",
@@ -27,7 +33,16 @@ export const POSTS: Post[] = [
         description:
           "Le site d’un food truck à Tours\u00a0: pages pré-rendues, contenu modifiable par le client, tableau de bord des avis, et une passation sans développeur.",
         lead: "Le site de BRUT, un food truck de bouchées à Tours\u00a0: dire où trouver le camion, donner faim, récolter des inscrits et des avis. Et surtout, un site que son fondateur modifie seul, sans développeur, même quand je suis à l’autre bout du monde.",
-        tags: ["next.js 16", "cache components", "shadcn/ui", "neon", "vercel botid", "brevo"],
+        tags: [
+          "next.js 16",
+          "cache components",
+          "shadcn/ui",
+          "neon",
+          "vercel botid",
+          "brevo",
+          "performance",
+          "lighthouse",
+        ],
         coverAlt:
           "Accueil du site de BRUT\u00a0: logo, accroche « C’est bon parce que c’est vrai » et bouton « Où on est cette semaine », sur l’image d’attente de la vidéo.",
       },

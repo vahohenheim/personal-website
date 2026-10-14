@@ -34,6 +34,9 @@ export type PostProject = {
  */
 export type PostVisibility = "public" | "protected";
 
+/** One same-origin image of a post, its size in real pixels. */
+export type PostImage = { src: string; width: number; height: number };
+
 export type Post = {
   /** Last segment of the URL, the same in every language. Never change it once published. */
   slug: string;
@@ -47,7 +50,12 @@ export type Post = {
    * One image, same-origin, in pixels: the `-jour` variant when the image comes as a pair.
    * Used by the structured data and the sitemap.
    */
-  cover?: { src: string; width: number; height: number };
+  cover?: PostImage;
+  /**
+   * Images of the body worth listing, after the cover, in the structured data and the
+   * sitemap. Same form as the cover: the `-jour` file of a pair, in pixels.
+   */
+  images?: PostImage[];
   project?: PostProject;
   /** A post may exist in one language only. Its body is in lib/constants/post-bodies.ts. */
   versions: Partial<Record<Locale, PostVersion>>;

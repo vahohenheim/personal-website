@@ -16,7 +16,7 @@ const getLanguages = (locales: readonly Locale[], getUrl: (locale: Locale) => st
  * One entry per page and per locale, then one per post and per language it is written in.
  * Each entry lists every language version of the page: this is what search engines expect
  * for `hreflang` declared in a sitemap. Drafts and protected posts are left out; a post
- * lists its cover image.
+ * lists its cover image, then the images of its body named in the registry.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = PAGE_IDS.flatMap((page) => {
@@ -43,14 +43,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       (locale) => getPostUrl(post.slug, locale),
     );
 
-    return versions.map((version) => ({
-      url: getPostUrl(version.slug, version.locale),
-      lastModified: version.updatedAt,
-      changeFrequency: "yearly" as const,
-      priority: 0.5,
-      alternates: { languages },
-      ...(version.cover && { images: [`${SITE_URL}${version.cover.src}`] }),
-    }));
+    return versions.map((version) => {
+      const images = [version.cover, ...(version.images ?? [])].flatMap((image) =>
+        image ? [`${SITE_URL}${image.src}`] : [],
+      );
+
+      return {
+        url: getPostUrl(version.slug, version.locale),
+        lastModified: version.updatedAt,
+        changeFrequency: "yearly" as const,
+        priority: 0.5,
+        alternates: { languages },
+        ...(images.length > 0 && { images }),
+      };
+    });
   });
 
   return [...pages, ...posts];

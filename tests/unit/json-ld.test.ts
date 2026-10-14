@@ -136,6 +136,24 @@ describe("graph of a post", () => {
       url: "https://www.mangezbrut.fr",
     });
   });
+
+  it("lists the images of the body after the cover and the sharing image", () => {
+    const brut = getPost("brut", "fr");
+    const image = brut && byType(getPostJsonLd(brut), "BlogPosting")?.image;
+
+    expect(image).toEqual([
+      expect.objectContaining({ url: "https://www.valentinbourreau.com/posts/brut/accueil.webp" }),
+      expect.objectContaining({
+        url: "https://www.valentinbourreau.com/fr/posts/brut/opengraph-image/",
+      }),
+      ...[
+        "https://www.valentinbourreau.com/posts/brut/perf-scores-jour.webp",
+        "https://www.valentinbourreau.com/posts/brut/perf-lcp-jour.webp",
+        "https://www.valentinbourreau.com/posts/brut/perf-poids-jour.webp",
+        "https://www.valentinbourreau.com/posts/brut/perf-video-jour.webp",
+      ].map((url) => ({ "@type": "ImageObject", url, width: "2080", height: "1200" })),
+    ]);
+  });
 });
 
 describe("graphs of the list and of the home page", () => {
