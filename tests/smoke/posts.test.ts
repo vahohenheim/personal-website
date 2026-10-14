@@ -60,6 +60,22 @@ describe("posts", () => {
     },
   );
 
+  it("serves the performance section of the BRUT post with its four visuals", async () => {
+    const html = await (await get("/fr/posts/brut/")).text();
+
+    expect(html).toContain('id="mesurer-puis-alleger"');
+    expect(html).toContain('href="#mesurer-puis-alleger"');
+
+    for (const name of ["scores", "lcp", "poids", "video"]) {
+      for (const mode of ["jour", "nuit"]) {
+        const src = `/posts/brut/perf-${name}-${mode}.webp`;
+
+        expect(html, src).toContain(`src="${src}"`);
+        expect((await get(src)).status, src).toBe(200);
+      }
+    }
+  });
+
   it("serves the sharing image of each post", async () => {
     for (const slug of PUBLIC_POSTS) {
       const response = await get(`/fr/posts/${slug}/opengraph-image/`);
