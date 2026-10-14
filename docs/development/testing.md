@@ -126,6 +126,9 @@ seconds (`page.clock.install`) instead of waiting.
 - **`next/headers`** is mocked where a guard reads the request headers (CSV export).
 - **`NextRequest` outside a server** does not know `trailingSlash`: the route test of the
   proxy tolerates a missing final slash, and the smoke test checks the real redirect.
+- **A language without posts** is no longer a fact of the content: `withFrenchOnlyPosts`
+  ([tests/helpers/posts.ts](../../tests/helpers/posts.ts)) runs a test on a registry where
+  every post exists in French only, then puts the real one back.
 - **Drafts** are visible when `NODE_ENV` is `development` or `VERCEL_ENV` is `preview`; tests switch both with
   `vi.stubEnv`.
 - Smoke tests share one server and one memory: they use unique e-mail addresses and never

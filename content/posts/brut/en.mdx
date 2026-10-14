@@ -1,0 +1,377 @@
+{/* English translation of fr.mdx, prepared with Valentin on 2026-10-14. Same components and images as the French version. */}
+
+<Shot
+  src="/posts/brut/accueil.webp"
+  width={1440}
+  height={900}
+  variant="hero"
+  alt="BRUT home page: logo, the tagline “C’est bon parce que c’est vrai” (it’s good because it’s real) and a “Où on est cette semaine” (where we are this week) button, over the video poster image."
+  caption="The top of the home page, on its poster image: a full-screen video takes over as soon as it can play."
+/>
+
+<ProjectSheet
+  rows={[
+    ["client", "BRUT, “la bouchée française”, a food truck in Tours, France"],
+    ["role", "Design, development, support for the client."],
+    ["period", "Sept 20 → Oct 14, 2026, at the pace of the client’s feedback"],
+    [
+      "stack",
+      "Next.js 16, Tailwind v4, shadcn/ui · Neon · Vercel, BotID, Web Analytics · Brevo · Tiptap",
+    ],
+    ["in numbers", "47 commits, ~14,000 lines of TypeScript, 137 tests, 19 pages of documentation"],
+  ]}
+  status="Live"
+  link={["mangezbrut.fr", "https://www.mangezbrut.fr"]}
+/>
+
+<Section n="01" label="context" title="One truck, five addresses">
+
+BRUT sells fried bites, crispy outside and melting inside, three recipes and a single sauce, from a truck that parks in a different spot around Tours every week. A customer’s first question is not “what is it?”, it is “where are you this week?”.
+
+The brief came down to four verbs: tell people where to find the truck, make them hungry, collect sign-ups to announce the dates, collect reviews. One constraint shaped everything: I was leaving to spend a year abroad. The founder had to be able to change a date, a price or a photo without me, and without breaking anything.
+
+</Section>
+
+<Section n="02" label="product" title="What the visitor sees">
+
+A home page that reads from top to bottom like a visit to the truck: a video, the ritual (grab, dip, bite), the three recipes, the menu, the locations, the newsletter, the contact. Three versions of this page were built side by side so the client could choose; the third one won.
+
+</Section>
+
+<Shot
+  src="/posts/brut/recettes.webp"
+  width={1440}
+  height={1350}
+  alt="The ritual in three numbered steps, then the three recipes and the sauce, each with its close-up photo."
+  caption="The ritual and the recipes. On hover, or on tap on a phone, each photo shows the inside of the bite."
+/>
+
+<Section>
+
+### Locations, without an interactive map
+
+The first version used a Leaflet map. It was replaced by an illustrated map of the Tours area, a plain image, with numbered dots: lighter, better looking, and easier to read for five points. Each dot opens a bubble with the period, the place and the opening hours.
+
+Dates are entered with a start and an end: past locations disappear on their own, without anyone having to remove them. And “Get there” does not choose for the visitor: it offers Google Maps, Apple Maps, or copying the address.
+
+</Section>
+
+<Shot
+  src="/posts/brut/emplacements.webp"
+  width={1440}
+  height={1070}
+  alt="“Où nous trouver” (where to find us) section: illustrated map of the Tours area with five numbered dots, and the list of dates with place, hours and a “Y aller” (get there) link."
+  caption="“Five dates, seven weeks, one truck.” Each number in the list matches a dot on the map."
+/>
+
+<Section>
+
+The `/menu` page reuses the design of the truck’s printed menu, so that online you find exactly what you read at the counter.
+
+</Section>
+
+<Shot
+  src="/posts/brut/carte.webp"
+  width={1440}
+  height={1330}
+  alt="The /menu page: the three recipes in their colours, the set menus and the drinks, laid out like the truck’s printed menu."
+  caption="The online menu. Every price can be changed in the admin."
+/>
+
+<Section n="03" label="architecture" title="The architecture">
+
+A showcase site, but one whose entire content lives in a database. The equation to solve: pages as fast as a static site, and editable like a CMS, without paying for a CMS.
+
+</Section>
+
+<Diagram
+  src="/posts/brut/schema-architecture"
+  width={1040}
+  height={600}
+  alt="Architecture of the BRUT site: the visitor gets pre-rendered pages from the content cache, with no database query. Forms go through API routes protected by BotID and write to Neon, then to Brevo. The founder edits the content in /admin; “Publish” renews the cache. A nightly job resyncs Brevo."
+  caption="The visitor never touches the database: they get pre-rendered pages. Only forms write, and only a publish renews the cache."
+/>
+
+<Section>
+
+The centrepiece is a single read function, marked `"use cache"` and tagged `site-content` thanks to the Cache Components of Next.js 16. Public pages are pre-rendered with its result and served from the CDN. The admin’s “Publish” button invalidates that tag: the next visit reads the database again, then everyone gets the new version. The sitemap and the structured data follow the same cycle.
+
+If the database cannot be reached, the site shows the default values written in the code and tries again a few minutes later. It never goes down because Neon has a hiccup.
+
+</Section>
+
+<Section n="04" label="admin" title="An admin built for the truck">
+
+The admin is half of the project, and the half the founder uses every week. It comes down to two screens: a dashboard to see how things are going, and content editing to change what visitors see. It uses the site’s visual identity, so that he feels at home rather than in a back office.
+
+### The dashboard: everything at a glance
+
+At the top, four figures with their thirty-day trend: newsletter sign-ups, messages received, customer reviews, average rating. Below, the activity day by day, the three forms stacked; clicking a figure isolates its curve. All the calculations are done by the database, one query per block: nothing is counted again in the browser.
+
+</Section>
+
+<Shot
+  src="/posts/brut/admin-tableau.webp"
+  width={1440}
+  height={900}
+  alt="Admin dashboard: four key figures with their thirty-day trend, then a stacked bar chart of the activity per day."
+  caption="The top of the dashboard. The data in these screenshots is fictional: the real admin stays private."
+/>
+
+<Section>
+
+### What the reviews say
+
+Reviews from the QR code do not end up in a spreadsheet nobody reads again. The dashboard reads them for him: distribution of ratings, share of customers who would come back, price, waiting time and welcome on a single chart, rating of each recipe, most cited locations. One sentence points out the current weak spot, “Point to watch: the price”, so he does not have to look for it.
+
+</Section>
+
+<Shot
+  src="/posts/brut/admin-avis.webp"
+  width={1440}
+  height={900}
+  alt="Review analysis: distribution of ratings, share of customers who would come back, ratings on price, waiting time and welcome, rating per recipe and per location."
+  caption="The review analysis: ratings, returns, experience, products and locations. The charts are those of shadcn/ui, recoloured to the BRUT identity."
+/>
+
+<Section>
+
+Further down, where sign-ups come from and why people send messages, the site’s traffic read from Vercel Web Analytics, then the detail line by line: sign-ups, messages and reviews in tabs, with add, edit, delete and export to CSV or Excel. A button resyncs the newsletter with Brevo on demand.
+
+### Editing the content: one schema, forms
+
+Every text, price, date and photo path is described once, in a schema. That schema generates the seventeen sections of the form, validates the input on the server and types the content the components read. Each field carries help written for the founder, not for a developer: “The location disappears from the site the next day.” Adding a field is one line of schema and a default value; the form follows.
+
+</Section>
+
+<Shots caption="Two of the seventeen sections: the home banner, with its editor limited to bold, and the locations, which can be reordered. The “Publier sur le site” (publish to the site) button stays visible at the top of the screen.">
+  <Shot
+    src="/posts/brut/admin-contenu.webp"
+    width={1440}
+    height={900}
+    alt="Content editing, home banner section: text fields and an editor limited to bold, with the “Publier sur le site” (publish to the site) button at the top."
+  />
+  <Shot
+    src="/posts/brut/admin-dates.webp"
+    width={1440}
+    height={900}
+    alt="Content editing, locations section: each date with start, end, place, address and hours, reorderable."
+  />
+</Shots>
+
+<Section>
+
+<PlusList>
+  <Plus title="Saving is not publishing.">
+    The founder prepares several sections, reviews them, and only puts them online when he wants to.
+    A line at the top of the screen always says whether the site shows the latest version.
+  </Plus>
+  <Plus title="Bold, and nothing else.">
+    Taglines such as “C’est bon parce que c’est vrai.” go through a Tiptap editor limited to bold,
+    stored as text, never as HTML. There is no way to break the layout.
+  </Plus>
+  <Plus title="Protected twice.">
+    A password at the door, then a check in every page and every action: never rely on the front
+    door alone. Pages kept out of search engines, never cached, no subscriber data in the logs.
+  </Plus>
+</PlusList>
+
+</Section>
+
+<Section n="05" label="forms" title="Sign-ups, reviews, messages">
+
+Three forms, a single path. Every submission goes through Vercel BotID, an invisible honeypot field and a minimum filling time, then is written to Neon before anything else. Sign-ups are then copied to Brevo, after the visitor has their answer; unsubscriptions come back through a webhook, and a nightly job resyncs everything. There is only one list of subscribers, wherever people sign up.
+
+Reviews come in through a QR code stuck on the truck. The page it opens is neither in the navigation nor in search engines: two minutes, a rating, the recipes tasted. The button to Google reviews is shown to everyone, whatever the rating: Google requires it, and it is more honest.
+
+</Section>
+
+<Screens caption="The QR code page and the review page, on a phone. Reviews and messages are also sent to the truck by email, with a line in its spreadsheet.">
+  <Screen
+    src="/posts/brut/qr.webp"
+    alt="The /qr page on a phone: links to the site, the review page, the newsletter and Instagram."
+  />
+  <Screen
+    src="/posts/brut/avis.webp"
+    alt="The /avis page on a phone: star rating, recipes tasted and a button to Google reviews."
+  />
+</Screens>
+
+<Section n="06" label="finishing" title="The details that matter">
+
+<PlusList>
+  <Plus title="A video that really starts.">
+    Two encodings (HEVC for Retina screens, H.264 as a fallback), a version turned a quarter turn
+    for phones in portrait, a blurred poster image. And an iOS bug tracked down: a video element
+    without a source in the server render made the native play button appear.
+  </Plus>
+  <Plus title="Photos prepared by hand.">
+    1,600 px wide for dense screens, sRGB profile, mozjpeg compression: a 254 MB source video became
+    about fifteen megabytes.
+  </Plus>
+  <Plus title="Functions in Frankfurt,">
+    next to the database, rather than in the United States by default.
+  </Plus>
+  <Plus title="Two audits before calling it “done”.">
+    Performance and security first (a critical vulnerability fixed by a Next.js update, security
+    headers), then a regulatory audit: a complete privacy policy, a consumer mediator, the service
+    providers named.
+  </Plus>
+  <Plus title="Local SEO.">
+    Structured data for a food establishment and its menu, generated from the content, and a sitemap
+    dated from the last publish.
+  </Plus>
+</PlusList>
+
+</Section>
+
+<Section n="07" label="performance" title="Measure, then lighten">
+
+A food truck’s site is read standing up, on a phone, with the kind of 4G you get in a car park. So I measured it in bad conditions: Lighthouse, an emulated mid-range phone, simulated slow 4G, three runs per page in production, and the median. Then I lightened what was heavy, and measured again.
+
+</Section>
+
+<Stats
+  items={[
+    ["mobile score", "87 → 98"],
+    ["home lcp", "4.0 → 2.4 s"],
+    ["weight without video", "−44%"],
+    ["images", "−55%"],
+    ["desktop", "100 / 100"],
+  ]}
+/>
+
+<Diagram
+  src="/posts/brut/perf-scores"
+  width={1040}
+  height={600}
+  alt="Lighthouse performance score on mobile, before then after: home 87 then 98, /menu 92 then 100, /avis 91 then 100, /qr 92 then 99. On desktop, 100 everywhere."
+  caption="The four public pages, before and after version 1.1.0. On desktop, the score was already 100 everywhere, and it stayed there."
+/>
+
+<Section>
+
+The weak spot was the LCP, the time it takes to display the largest visible element: 4 seconds on the home page, above the 2.5 s Google considers good. With version 1.1.0, all four pages get under the bar.
+
+</Section>
+
+<Diagram
+  src="/posts/brut/perf-lcp"
+  width={1040}
+  height={600}
+  alt="Mobile LCP before then after: home 4.0 then 2.4 s, /menu 3.3 then 1.9 s, /avis 3.5 then 1.8 s, /qr 3.3 then 2.0 s. All four pages get under the 2.5 s threshold."
+  caption="Mobile LCP, median of three runs. On the home page, the element measured is the title at the top of the page."
+/>
+
+<Section>
+
+### Five changes, nothing visible
+
+<PlusList>
+  <Plus title="Images in AVIF,">
+    with WebP as a fallback: the photo of La Bête goes from 210 to 83 KB.
+  </Plus>
+  <Plus title="A single poster image for the video,">
+    in a `picture` element that picks landscape or portrait, instead of two preloaded images.
+  </Plus>
+  <Plus title="Logos at the right size.">
+    Without a `sizes` attribute, they were sent 1,920 px wide for 72 to 360 px displayed.
+  </Plus>
+  <Plus title="The video after the page.">
+    It is only added once the page has loaded, and never in data saver mode, on 2G, or when the
+    visitor asks for reduced motion.
+  </Plus>
+  <Plus title="The italic font is no longer preloaded:">
+    the browser only downloads what is displayed.
+  </Plus>
+</PlusList>
+
+</Section>
+
+<Diagram
+  src="/posts/brut/perf-poids"
+  width={1040}
+  height={600}
+  alt="Weight of the home page on mobile without the video: 1,557 KB before, 870 KB after, that is −44%. Images 989 then 447 KB, fonts 292 then 148 KB, JavaScript 226 KB unchanged."
+  caption="Without the video, the home page goes from 1,557 to 870 KB. The JavaScript did not move: the whole gain comes from images and fonts."
+/>
+
+<Diagram
+  src="/posts/brut/perf-video"
+  width={1040}
+  height={600}
+  alt="Network requests of the home page on one run of each version. Before, the video starts at 0.37 s, while the images are loading. After, it starts at 2.39 s, once the images have loaded."
+  caption="One run of each version, network requests observed. Before, the 10 MB video started while the images were loading; with 1.1.0, it waits for the load to finish and no longer competes for bandwidth with what is on screen."
+/>
+
+<Section>
+
+### What I tried, then dropped
+
+<PlusList>
+  <Plus title="CSS inlined in the HTML.">
+    One network round trip saved, but the CSS was copied into the RSC payload: the compressed HTML
+    of the home page went from 17 to 65 KB.
+  </Plus>
+  <Plus title="A re-encoded video.">
+    10 MB became 4, at the cost of visible blocks on the frying bubbles. A re-encode is done from
+    the 4K original, not from the published file.
+  </Plus>
+  <Plus title="A lighter font.">
+    Removing the optical size axis of Newsreader halved the font, but changed the drawing of the
+    large titles. The typographic choice won.
+  </Plus>
+</PlusList>
+
+<Callout label="method">
+  Lighthouse 13.5, three runs per page in production, median kept. Mobile: emulated Moto G Power,
+  simulated slow 4G, CPU slowed down four times. No layout shift (CLS 0), a server that answers in 5
+  to 16 ms thanks to pre-rendered pages, accessibility from 96 to 100, best practices and SEO at 100
+  on the indexed pages.
+</Callout>
+
+</Section>
+
+<Section n="08" label="handover" title="Handing over">
+
+For what goes beyond the admin, I prepared a handover to someone who does not code. A file of instructions for a coding assistant: speak without jargon, announce before acting, one question at a time, always suggest the admin before touching the code, and never put anything online without an explicit “yes”. All it takes is to open the folder and write “put it online” or “change the price of the box of 5”.
+
+Behind it, the safety net: documentation with one page per topic, a log where each request fits on one line, and 137 tests (unit tests, then journeys on desktop and phone) run on every push, plus smoke tests on the live site after each production release.
+
+<PullQuote>My goal: making my clients autonomous.</PullQuote>
+
+</Section>
+
+<Stats
+  items={[
+    ["duration", "3 weeks"],
+    ["commits", "47"],
+    ["lines of ts", "~14,000"],
+    ["tests", "137"],
+    ["doc pages", "19"],
+  ]}
+/>
+
+<Section n="09" label="takeaways" title="What I take away">
+
+<PlusList>
+  <Plus title="Show rather than describe.">
+    Three versions online side by side settled in a day what a meeting would not have settled.
+  </Plus>
+  <Plus title="The simplest often wins.">
+    An image instead of an interactive map, bold instead of a rich text editor.
+  </Plus>
+  <Plus title="The client’s feedback is the roadmap.">
+    The log holds dozens of them, each recorded on one line with the files it touched.
+  </Plus>
+  <Plus title="Documentation is part of the deliverable.">
+    It is what makes the site autonomous, much more than the code.
+  </Plus>
+  <Plus title="Measure before optimising.">
+    Three runs, a simulated slow phone, and leads dropped when the gain cost more than it brought.
+  </Plus>
+</PlusList>
+
+Photos, video and map: their authors, credited on the BRUT site.
+
+</Section>

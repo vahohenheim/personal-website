@@ -9,7 +9,12 @@ const PROTECTED = "headless-commerce";
 const COOKIE = `post_access_${PROTECTED}`;
 
 // Sentences of the protected post that must never leave the server without the cookie.
-const SECRET_SENTENCES = ["Sortir d’un monolithe", "Gravitee, une passerelle devant l’ERP"];
+const SECRET_SENTENCES = [
+  "Sortir d’un monolithe",
+  "Gravitee, une passerelle devant l’ERP",
+  "Moving off a monolith",
+  "Gravitee, a gateway in front of the ERP",
+];
 
 /** Every JSON-LD graph of a page, parsed. */
 const readJsonLd = (html: string) =>
@@ -36,29 +41,32 @@ const unlock = (password: string) =>
   });
 
 describe("posts", () => {
-  it.each(["/fr/posts/", ...PUBLIC_POSTS.map((slug) => `/fr/posts/${slug}/`)])(
-    "serves %s with parseable structured data and images that load",
-    async (path) => {
-      const response = await get(path);
-      const html = await response.text();
+  it.each(
+    ["fr", "en"].flatMap((locale) => [
+      `/${locale}/posts/`,
+      ...PUBLIC_POSTS.map((slug) => `/${locale}/posts/${slug}/`),
+    ]),
+  )("serves %s with parseable structured data and images that load", async (path) => {
+    const response = await get(path);
+    const html = await response.text();
 
-      expect(response.status).toBe(200);
-      expect(html.match(/<h1[\s>]/g)).toHaveLength(1);
+    expect(response.status).toBe(200);
+    expect(html.match(/<h1[\s>]/g)).toHaveLength(1);
 
-      const graphs = readJsonLd(html);
+    const graphs = readJsonLd(html);
 
-      expect(graphs).toHaveLength(1);
-      expect(graphs[0]["@graph"].length).toBeGreaterThan(0);
+    expect(graphs).toHaveLength(1);
+    expect(graphs[0]["@graph"].length).toBeGreaterThan(0);
 
-      const images = [...html.matchAll(/<img[^>]+src="(\/posts\/[^"]+)"/g)].map((m) => m[1]);
+    const images = [...html.matchAll(/<img[^>]+src="(\/posts\/[^"]+)"/g)].map((m) => m[1]);
 
-      expect(images.length > 0).toBe(path !== "/fr/posts/");
+    // The lists have no image; every post has some.
+    expect(images.length > 0).toBe(!path.endsWith("/posts/"));
 
-      for (const src of new Set(images)) {
-        expect((await get(src)).status, src).toBe(200);
-      }
-    },
-  );
+    for (const src of new Set(images)) {
+      expect((await get(src)).status, src).toBe(200);
+    }
+  });
 
   it("serves the performance section of the BRUT post with its four visuals", async () => {
     const html = await (await get("/fr/posts/brut/")).text();
@@ -85,29 +93,33 @@ describe("posts", () => {
     }
   });
 
-  it("lists the posts on the home page, in the feed and in the sitemap, never the protected one", async () => {
-    const home = await (await get("/fr/")).text();
-    const list = await (await get("/fr/posts/")).text();
-    const feed = await (await get("/fr/posts/feed.xml")).text();
-    const sitemap = await (await get("/sitemap.xml")).text();
+  it.each([
+    ["fr", "lire l’article"],
+    ["en", "read the post"],
+  ])(
+    "lists the %s posts on the home page, in the feed and in the sitemap, never the protected one",
+    async (locale, readPost) => {
+      const home = await (await get(`/${locale}/`)).text();
+      const list = await (await get(`/${locale}/posts/`)).text();
+      const feed = await (await get(`/${locale}/posts/feed.xml`)).text();
+      const sitemap = await (await get("/sitemap.xml")).text();
 
-    for (const slug of PUBLIC_POSTS) {
-      expect(home).toContain(`href="/fr/posts/${slug}/"`);
-      expect(feed).toContain(`/fr/posts/${slug}/`);
-      expect(sitemap).toContain(`/fr/posts/${slug}/`);
-    }
+      for (const slug of PUBLIC_POSTS) {
+        expect(home).toContain(`href="/${locale}/posts/${slug}/"`);
+        expect(feed).toContain(`/${locale}/posts/${slug}/`);
+        expect(sitemap).toContain(`/${locale}/posts/${slug}/`);
+      }
 
-    expect(home).toContain("lire l’article");
-    expect(feed).toContain("<category>expo</category>");
-    expect(sitemap).toContain("<image:loc>https://www.valentinbourreau.com/posts/pensee/");
+      expect(home).toContain(`href="/${locale}/posts/"`);
+      expect(home).toContain(readPost);
+      expect(feed).toContain("<category>expo</category>");
+      expect(sitemap).toContain("<image:loc>https://www.valentinbourreau.com/posts/pensee/");
 
-    for (const text of [home, list, feed, sitemap]) {
-      expect(text).not.toContain(PROTECTED);
-    }
-
-    expect((await get("/en/")).status).toBe(200);
-    expect(await (await get("/en/")).text()).not.toContain('href="/en/posts/"');
-  });
+      for (const text of [home, list, feed, sitemap]) {
+        expect(text).not.toContain(PROTECTED);
+      }
+    },
+  );
 });
 
 describe("protected post", () => {
@@ -123,6 +135,7 @@ describe("protected post", () => {
     }
 
     expect(body).not.toContain("Refondre un e-commerce");
+    expect(body).not.toContain("Rebuilding an e-commerce site");
     expect(response.headers.get("x-robots-tag")).toBe("noindex, nofollow");
 
     return body;
@@ -135,6 +148,11 @@ describe("protected post", () => {
     expect(await expectLocked(html)).toContain("Article protégé");
     await expectLocked(await get(page, { rsc: "1" }));
     await expectLocked(await get(page, { rsc: "1", "next-router-prefetch": "1" }));
+
+    const english = `/en/posts/${PROTECTED}/`;
+
+    expect(await expectLocked(await get(english))).toContain("Protected post");
+    await expectLocked(await get(english, { rsc: "1" }));
   });
 
   it("keeps its images and its sharing image closed", async () => {

@@ -50,3 +50,16 @@ test("opens with the right password, and stays open", async ({ page, context }) 
     0,
   );
 });
+
+test("opens in English with the same password", async ({ page }) => {
+  await page.goto("/en/posts/headless-commerce/");
+
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Protected post");
+  await page.waitForTimeout(1100);
+  await page.getByLabel("password").fill(E2E.postsPassword);
+  await page.getByRole("button", { name: "Read the post" }).click();
+
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "Rebuilding an e-commerce site",
+  );
+});
