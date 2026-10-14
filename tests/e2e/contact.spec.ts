@@ -115,8 +115,11 @@ test.describe("a person", () => {
     await expect(page.getByRole("dialog").getByText("étape 1 / 3")).toBeVisible();
 
     // The lead reached the stand-in for lotus, after the visitor got the answer.
+    // Forwarded after the response (`after()`): it may take a moment when the suite is busy.
     await expect
-      .poll(async () => (await lotusReceived()).some((lead) => lead.email === email))
+      .poll(async () => (await lotusReceived()).some((lead) => lead.email === email), {
+        timeout: 15_000,
+      })
       .toBe(true);
   });
 

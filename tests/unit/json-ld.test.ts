@@ -4,6 +4,7 @@ import { POSTS } from "@/lib/constants/posts";
 import { getPageGraph, getPostJsonLd } from "@/lib/helpers/json-ld";
 import { getPost, getPosts, getPostLocales } from "@/lib/helpers/posts";
 import { LOCALES } from "@/lib/i18n/config";
+import { withFrenchOnlyPosts } from "../helpers/posts";
 
 type Node = Record<string, unknown>;
 
@@ -173,7 +174,12 @@ describe("graphs of the list and of the home page", () => {
     expect(byType(getPageGraph("home", "fr"), "ProfilePage")?.hasPart).toEqual({
       "@id": "https://www.valentinbourreau.com/fr/posts/#blog",
     });
-    expect(byType(getPageGraph("home", "en"), "ProfilePage")?.hasPart).toBeUndefined();
+    expect(byType(getPageGraph("home", "en"), "ProfilePage")?.hasPart).toEqual({
+      "@id": "https://www.valentinbourreau.com/en/posts/#blog",
+    });
+    withFrenchOnlyPosts(() => {
+      expect(byType(getPageGraph("home", "en"), "ProfilePage")?.hasPart).toBeUndefined();
+    });
     expect(JSON.stringify(getPageGraph("home", "fr"))).not.toContain("BlogPosting");
   });
 });

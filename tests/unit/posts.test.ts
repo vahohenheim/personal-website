@@ -20,6 +20,7 @@ import {
   toIsoDuration,
 } from "@/lib/helpers/posts";
 import { LOCALES } from "@/lib/i18n/config";
+import { withFrenchOnlyPosts } from "../helpers/posts";
 
 const drafts = POSTS.filter((post) => post.draft);
 const protectedPosts = POSTS.filter((post) => post.visibility === "protected");
@@ -101,7 +102,10 @@ describe("posts", () => {
   it("finds the post of a project card", () => {
     expect(getPostForProject("pensee", "fr")?.slug).toBe("pensee");
     expect(getPostForProject("editorials", "fr")).toBeUndefined();
-    expect(getPostForProject("pensee", "en")).toBeUndefined();
+    expect(getPostForProject("pensee", "en")?.locale).toBe("en");
+    withFrenchOnlyPosts(() => {
+      expect(getPostForProject("pensee", "en")).toBeUndefined();
+    });
   });
 
   it("formats dates as days", () => {
@@ -113,12 +117,19 @@ describe("posts", () => {
     vi.stubEnv("NODE_ENV", "production");
 
     const fallbacks = getLanguageFallbacks("fr", "en");
-    const expected = getPostsLocales().includes("en") ? "/en/posts/" : "/en/";
 
-    expect(fallbacks.post).toBe(expected);
-    expect(fallbacks.otherPosts).not.toContain("/en/posts/pensee/");
+    expect(fallbacks.post).toBe("/en/posts/");
+    expect(fallbacks.otherPosts).toContain("/en/posts/pensee/");
     // Nothing the header sends to the browser names a protected post.
     expect(JSON.stringify(fallbacks)).not.toContain("headless-commerce");
+
+    withFrenchOnlyPosts(() => {
+      const frenchOnly = getLanguageFallbacks("fr", "en");
+
+      expect(getPostsLocales()).not.toContain("en");
+      expect(frenchOnly.post).toBe("/en/");
+      expect(frenchOnly.otherPosts).not.toContain("/en/posts/pensee/");
+    });
   });
 });
 
@@ -271,7 +282,10 @@ describe("sitemap", () => {
 describe("home page block", () => {
   it("shows the three latest listed posts, and nothing in a language without any", () => {
     expect(getHomePosts("fr").map(({ slug }) => slug)).toEqual(["brut", "lotus", "pensee"]);
-    expect(getHomePosts("en")).toEqual([]);
+    expect(getHomePosts("en").map(({ slug }) => slug)).toEqual(["brut", "lotus", "pensee"]);
+    withFrenchOnlyPosts(() => {
+      expect(getHomePosts("en")).toEqual([]);
+    });
   });
 
   it("disappears when no post is published", () => {

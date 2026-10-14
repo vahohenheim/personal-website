@@ -123,3 +123,53 @@ test.describe("post", () => {
     expect(response.headers()["content-type"]).toContain("image/png");
   });
 });
+
+test.describe("in English", () => {
+  test("lists the translated posts, most recent first", async ({ page }) => {
+    await page.goto("/en/posts/");
+
+    await expect(page.getByRole("heading", { level: 2 })).toHaveText([
+      /^BRUT, the website/,
+      /^lotus, the app/,
+      /^pensee, an offline notebook/,
+    ]);
+    await expect(page.getByText(/min read/)).toHaveCount(3);
+  });
+
+  test("shows a translated post with its own summary and anchors", async ({ page }) => {
+    await page.goto("/en/posts/brut/");
+
+    await expect(page.locator("html")).toHaveAttribute("lang", "en");
+    await expect(page.locator("main time").first()).toHaveText("Oct 14, 2026");
+
+    const summary = page.getByRole("navigation", { name: "contents" });
+
+    await expect(summary.getByRole("link")).toHaveCount(9);
+    await summary.getByRole("link", { name: "Measure, then lighten" }).click();
+    await expect(page).toHaveURL(/#measure-then-lighten$/);
+    await expect(
+      page.getByRole("heading", { level: 2, name: "Measure, then lighten" }),
+    ).toBeInViewport();
+  });
+
+  test("uses the same images as the French post", async ({ page }) => {
+    const sources = async (path: string) => {
+      await page.goto(path);
+
+      return page
+        .locator("main img")
+        .evaluateAll((images) => images.map((image) => image.getAttribute("src")));
+    };
+
+    for (const slug of ["brut", "lotus", "pensee"]) {
+      expect(await sources(`/en/posts/${slug}/`)).toEqual(await sources(`/fr/posts/${slug}/`));
+    }
+  });
+
+  test("links each project card to the English post", async ({ page }) => {
+    await page.goto("/en/");
+    await page.getByRole("link", { name: /read the post · pensee/ }).click();
+
+    await expect(page).toHaveURL("/en/posts/pensee/");
+  });
+});

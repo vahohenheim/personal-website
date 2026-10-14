@@ -45,11 +45,15 @@ test.describe("header", () => {
     await expect(page).toHaveURL(/#main$/);
   });
 
-  test("has no posts link in a language without posts", async ({ page }) => {
+  test("leads to the posts in English too", async ({ page }) => {
     await page.goto("/en/");
+    await page
+      .getByRole("navigation", { name: "Main menu" })
+      .getByRole("link", { name: "posts" })
+      .click();
 
-    await expect(page.getByRole("navigation", { name: "Main menu" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "posts" })).toHaveCount(0);
+    await expect(page).toHaveURL("/en/posts/");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Posts");
   });
 });
 
@@ -74,11 +78,17 @@ test.describe("language", () => {
     await expect(page).toHaveURL("/en/");
   });
 
-  test("goes from a French-only post to the English home page", async ({ page }) => {
+  test("goes from a post to its translation, and back", async ({ page }) => {
     await page.goto("/fr/posts/brut/");
     await page.getByRole("link", { name: "fr · en, English version" }).click();
 
-    await expect(page).toHaveURL("/en/");
+    await expect(page).toHaveURL("/en/posts/brut/");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+      /^BRUT, the website of a truck/,
+    );
+
+    await page.getByRole("link", { name: "fr · en, Version française" }).click();
+    await expect(page).toHaveURL("/fr/posts/brut/");
   });
 
   test.describe("for a browser in English", () => {

@@ -13,6 +13,10 @@ export const PUBLIC_PAGES = [
   "/fr/posts/brut/",
   "/fr/posts/lotus/",
   "/fr/posts/pensee/",
+  "/en/posts/",
+  "/en/posts/brut/",
+  "/en/posts/lotus/",
+  "/en/posts/pensee/",
 ] as const;
 
 /** WCAG 2.2 A and AA, as checked by axe on the page as it is now. */
