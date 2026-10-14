@@ -14,8 +14,12 @@ type HeaderNavProps = {
   /** Name of the language link, written in the other language. */
   otherLocaleLabel: string;
   menuLabel: string;
-  /** Pages without a version in the other language, and where to send the reader instead. */
-  languageFallbacks: Record<string, string>;
+  /**
+   * Where the language link goes from a page without a version in the other language:
+   * `paths` lists such pages, and any post whose path is not in `otherPosts` (the posts
+   * listed in the other language) goes to `post`. Protected posts are never named here.
+   */
+  languageFallbacks: { paths: Record<string, string>; post: string; otherPosts: string[] };
 };
 
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
@@ -37,8 +41,13 @@ const HeaderNavComponent = ({
   languageFallbacks,
 }: HeaderNavProps) => {
   const pathname = usePathname();
+  const translated = pathname.replace(`/${locale}`, `/${otherLocale}`);
+  const isPost = new RegExp(`^/${locale}/posts/[^/]+/$`).test(pathname);
   const otherLocalePath =
-    languageFallbacks[pathname] ?? pathname.replace(`/${locale}`, `/${otherLocale}`);
+    languageFallbacks.paths[pathname] ??
+    (isPost && !languageFallbacks.otherPosts.includes(translated)
+      ? languageFallbacks.post
+      : translated);
 
   return (
     <nav aria-label={menuLabel}>

@@ -45,10 +45,13 @@ export const isLikelyBot = ({
   website,
   startedAt,
   now,
+  minFillTimeMs = MIN_FILL_TIME_MS,
 }: {
   website: unknown;
   startedAt: unknown;
   now: number;
+  /** Shorter for a one-field form, such as the password of a protected post. */
+  minFillTimeMs?: number;
 }) => {
   if (typeof website === "string" && website.trim() !== "") {
     return true;
@@ -60,7 +63,7 @@ export const isLikelyBot = ({
 
   const elapsed = now - startedAt;
 
-  return elapsed < MIN_FILL_TIME_MS || elapsed > MAX_FILL_TIME_MS;
+  return elapsed < minFillTimeMs || elapsed > MAX_FILL_TIME_MS;
 };
 
 /** Validates what the form sent. Unknown fields are ignored. */

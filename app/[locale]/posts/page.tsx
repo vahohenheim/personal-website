@@ -3,11 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import BreadcrumbComponent from "@/components/breadcrumb/breadcrumb";
 import JsonLdComponent from "@/components/json-ld/json-ld";
+import PostTagsComponent from "@/components/post-tags/post-tags";
 import SiteFooterComponent from "@/components/site-footer/site-footer";
 import { Badge } from "@/components/ui/badge";
 import { getPostsMetadata } from "@/lib/helpers/metadata";
-import { getFeedPath, getPostPath, getPosts } from "@/lib/helpers/posts";
+import { formatPostDate, getFeedPath, getPostPath, getPosts } from "@/lib/helpers/posts";
 import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
+import { getPostOutline } from "@/lib/posts/source";
 
 export const generateMetadata = (): Promise<Metadata> => getPostsMetadata();
 
@@ -48,12 +50,15 @@ export default async function PostsPage() {
               key={post.slug}
               className="flex flex-wrap gap-x-8 gap-y-2 border-t border-line py-6"
             >
-              <time
-                dateTime={post.publishedAt}
-                className="flex-[0_0_160px] font-mono text-[13px] leading-[1.9] text-muted"
-              >
-                {post.publishedAt.replaceAll("-", ".")}
-              </time>
+              <div className="flex flex-[0_0_160px] flex-col gap-1 font-mono text-[13px] leading-[1.9] text-muted">
+                <time dateTime={post.publishedAt}>{formatPostDate(post.publishedAt, locale)}</time>
+                <span className="text-[12px]">
+                  {posts.readingTime.replace(
+                    "{minutes}",
+                    `${getPostOutline(post.slug, locale).minutes}`,
+                  )}
+                </span>
+              </div>
               <div className="flex min-w-[min(100%,280px)] flex-1 flex-col gap-3">
                 <h2 className="text-[21px] leading-[1.3] font-semibold tracking-[-0.01em]">
                   <Link
@@ -69,6 +74,7 @@ export default async function PostsPage() {
                   </Badge>
                 )}
                 <p className="max-w-[64ch] text-text2">{post.description}</p>
+                <PostTagsComponent tags={post.tags} label={posts.tags} />
               </div>
             </li>
           ))}

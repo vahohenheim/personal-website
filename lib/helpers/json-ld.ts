@@ -5,6 +5,7 @@ import type {
   EducationalOccupationalCredential,
   EducationalOrganization,
   Graph,
+  ImageObject,
   ItemList,
   Organization,
   Person,
@@ -23,16 +24,27 @@ import { AVATAR_SIZE, AVATAR_URL, SITE_NAME, SITE_URL } from "@/lib/constants/si
 import { SKILLS } from "@/lib/constants/skills";
 import { SOCIAL_NETWORKS } from "@/lib/constants/social-network";
 import { getPageTexts, getPageUrl } from "@/lib/helpers/metadata";
-import { getPosts, getPostUrl } from "@/lib/helpers/posts";
+import { getPostImageUrl, getPosts, getPostUrl, toIsoDuration } from "@/lib/helpers/posts";
 import { type Locale } from "@/lib/i18n/config";
-import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
+import { getLocale } from "@/lib/i18n/dictionaries";
 import { type Company } from "@/lib/models/company";
 import { type Experience } from "@/lib/models/experience";
-import { type LocalizedPost } from "@/lib/models/post";
+import { type LocalizedPost, type PostProject } from "@/lib/models/post";
 import { type School } from "@/lib/models/school";
-import { type Dictionary } from "@/locales/en";
+import { getPostOutline } from "@/lib/posts/source";
+import en, { type Dictionary } from "@/locales/en";
+import fr from "@/locales/fr";
 
 type Context = { locale: Locale; dictionary: Dictionary };
+
+// Read directly rather than through the request, so that the graph of any page in any
+// language can be built, and tested, outside a request.
+const DICTIONARIES: Record<Locale, Dictionary> = { en, fr };
+
+const getContext = (locale: Locale): Context => ({ locale, dictionary: DICTIONARIES[locale] });
+
+/** Size of the generated sharing images (opengraph-image.tsx). */
+const SHARE_IMAGE_SIZE = { width: 1200, height: 630 };
 
 // Every page describes the same person and the same site: nodes are linked by these ids.
 const PERSON_ID = `${SITE_URL}/#person`;
@@ -162,6 +174,9 @@ const getWebPage = (
     isPartOf: { "@id": WEBSITE_ID },
     dateCreated: PAGES[page].createdAt,
     dateModified: PAGES[page].updatedAt,
+    // The home page lists the latest posts: the blog is part of it, described on its own page.
+    ...(page === "home" &&
+      getPosts(locale).length > 0 && { hasPart: { "@id": getBlogId(locale) } }),
     ...(type === "ProfilePage"
       ? {
           mainEntity: { "@id": PERSON_ID },
@@ -228,9 +243,64 @@ const getPersonalProjects = ({ locale, dictionary }: Context): ItemList => {
   };
 };
 
+const getBlogId = (locale: Locale) => `${getPageUrl("posts", locale)}#blog`;
+
+/** What a post is about: an application or a website of the project list. */
+const getProject = (project: PostProject): Thing =>
+  project.type === "WebSite"
+    ? { "@type": "WebSite", name: project.name, ...(project.url && { url: project.url }) }
+    : {
+        "@type": project.type,
+        name: project.name,
+        ...(project.applicationCategory && { applicationCategory: project.applicationCategory }),
+        ...(project.operatingSystem && { operatingSystem: project.operatingSystem }),
+        ...(project.url && { url: project.url }),
+      };
+
+/** The cover of a post, then its generated sharing image. */
+const getPostImages = (post: LocalizedPost): ImageObject[] => [
+  ...(post.cover
+    ? [
+        {
+          "@type": "ImageObject" as const,
+          url: `${SITE_URL}${post.cover.src}`,
+          width: `${post.cover.width}`,
+          height: `${post.cover.height}`,
+          ...(post.coverAlt && { caption: post.coverAlt }),
+        },
+      ]
+    : []),
+  {
+    "@type": "ImageObject",
+    url: getPostImageUrl(post.slug, post.locale),
+    width: `${SHARE_IMAGE_SIZE.width}`,
+    height: `${SHARE_IMAGE_SIZE.height}`,
+  },
+];
+
 /** A post, written by the person the site is about. `summary` is the form used in lists. */
-const getBlogPosting = (post: LocalizedPost, detail: "summary" | "full"): BlogPosting => {
+const getBlogPosting = (
+  post: LocalizedPost,
+  detail: "summary" | "full",
+  { dictionary }: Context,
+): BlogPosting => {
   const url = getPostUrl(post.slug, post.locale);
+
+  if (detail === "summary") {
+    return {
+      "@type": "BlogPosting",
+      "@id": `${url}#post`,
+      url,
+      headline: post.title,
+      description: post.description,
+      datePublished: post.publishedAt,
+      dateModified: post.updatedAt,
+      inLanguage: post.locale,
+      author: { "@id": PERSON_ID },
+    };
+  }
+
+  const { words, minutes } = getPostOutline(post.slug, post.locale);
 
   return {
     "@type": "BlogPosting",
@@ -238,29 +308,39 @@ const getBlogPosting = (post: LocalizedPost, detail: "summary" | "full"): BlogPo
     url,
     headline: post.title,
     description: post.description,
+    abstract: post.lead,
     datePublished: post.publishedAt,
     dateModified: post.updatedAt,
     inLanguage: post.locale,
     author: { "@id": PERSON_ID },
-    ...(detail === "full" && {
-      publisher: { "@id": PERSON_ID },
-      image: AVATAR_URL,
-      mainEntityOfPage: { "@id": `${url}#webpage` },
-      isPartOf: { "@id": `${getPageUrl("posts", post.locale)}#blog` },
-    }),
+    publisher: { "@id": PERSON_ID },
+    mainEntityOfPage: { "@id": `${url}#webpage` },
+    isPartOf: { "@id": getBlogId(post.locale) },
+    image: getPostImages(post),
+    articleSection: dictionary.posts.section,
+    keywords: post.tags.join(", "),
+    wordCount: words,
+    timeRequired: toIsoDuration(minutes),
+    ...(post.project && { about: getProject(post.project) }),
   };
 };
 
 /** The list of posts of one language. */
-const getBlog = ({ locale, dictionary }: Context): Blog => ({
-  "@type": "Blog",
-  "@id": `${getPageUrl("posts", locale)}#blog`,
-  name: dictionary.posts.title,
-  description: dictionary.posts.metadata.description,
-  inLanguage: locale,
-  author: { "@id": PERSON_ID },
-  blogPost: getPosts(locale).map((post) => getBlogPosting(post, "summary")),
-});
+const getBlog = (context: Context): Blog => {
+  const { locale, dictionary } = context;
+
+  return {
+    "@type": "Blog",
+    "@id": getBlogId(locale),
+    url: getPageUrl("posts", locale),
+    name: dictionary.posts.title,
+    description: dictionary.posts.metadata.description,
+    inLanguage: locale,
+    author: { "@id": PERSON_ID },
+    publisher: { "@id": PERSON_ID },
+    blogPost: getPosts(locale).map((post) => getBlogPosting(post, "summary", context)),
+  };
+};
 
 /**
  * Structured data of each page. The record is keyed by `PageId`, so adding a page
@@ -279,7 +359,7 @@ const PAGE_GRAPHS: Record<PageId, (context: Context) => Thing[]> = {
     getBreadcrumb("resume", context.dictionary.header.menu.resume, context),
   ],
   posts: (context) => [
-    getWebPage("posts", "WebPage", context),
+    { ...getWebPage("posts", "WebPage", context), "@type": "CollectionPage" },
     getBlog(context),
     getBreadcrumb("posts", context.dictionary.posts.title, context),
   ],
@@ -289,19 +369,23 @@ const PAGE_GRAPHS: Record<PageId, (context: Context) => Thing[]> = {
   ],
 };
 
+/** The graph of a page in one language. */
+export const getPageGraph = (page: PageId, locale: Locale): Graph => ({
+  "@context": "https://schema.org",
+  "@graph": PAGE_GRAPHS[page](getContext(locale)),
+});
+
 /** The JSON-LD document of a page, in the language of the current request. */
-export const getPageJsonLd = async (page: PageId): Promise<Graph> => {
-  const context: Context = { locale: await getLocale(), dictionary: await getDictionary() };
+export const getPageJsonLd = async (page: PageId): Promise<Graph> =>
+  getPageGraph(page, await getLocale());
 
-  return {
-    "@context": "https://schema.org",
-    "@graph": PAGE_GRAPHS[page](context),
-  };
-};
-
-/** The JSON-LD document of a post: the page, the post and the trail down to it. */
-export const getPostJsonLd = async (post: LocalizedPost): Promise<Graph> => {
-  const dictionary = await getDictionary();
+/**
+ * The JSON-LD document of a post: the page, the post and the trail down to it. The same
+ * for every post, so posts are not listed in `PAGES` one by one.
+ */
+export const getPostJsonLd = (post: LocalizedPost): Graph => {
+  const context = getContext(post.locale);
+  const { dictionary } = context;
   const url = getPostUrl(post.slug, post.locale);
   const trail = [
     { name: dictionary.breadcrumb.home, item: getPageUrl("home", post.locale) },
@@ -318,6 +402,10 @@ export const getPostJsonLd = async (post: LocalizedPost): Promise<Graph> => {
     isPartOf: { "@id": WEBSITE_ID },
     datePublished: post.publishedAt,
     dateModified: post.updatedAt,
+    author: { "@id": PERSON_ID },
+    mainEntity: { "@id": `${url}#post` },
+    ...(post.cover && { primaryImageOfPage: getPostImages(post)[0] }),
+    // schema.org defines the trail on the page, not on the post.
     breadcrumb: { "@id": `${url}#breadcrumb` },
   };
   const breadcrumb: BreadcrumbList = {
@@ -332,6 +420,6 @@ export const getPostJsonLd = async (post: LocalizedPost): Promise<Graph> => {
 
   return {
     "@context": "https://schema.org",
-    "@graph": [webPage, getBlogPosting(post, "full"), breadcrumb],
+    "@graph": [webPage, getBlogPosting(post, "full", context), breadcrumb],
   };
 };

@@ -1,8 +1,9 @@
-import dayjs from "dayjs";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import JsonLdComponent from "@/components/json-ld/json-ld";
+import PostTagsComponent from "@/components/post-tags/post-tags";
+import PostTocComponent from "@/components/post-toc/post-toc";
 import SiteFooterComponent from "@/components/site-footer/site-footer";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -13,14 +14,21 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { POST_BODIES } from "@/lib/constants/post-bodies";
 import { POSTS } from "@/lib/constants/posts";
 import { getPostMetadata } from "@/lib/helpers/metadata";
-import { getPost, getPostsPath } from "@/lib/helpers/posts";
+import {
+  formatPostDate,
+  getNextPost,
+  getPost,
+  getPostPath,
+  getPostsPath,
+} from "@/lib/helpers/posts";
 import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
-// Registers the French month names used below.
-import "dayjs/locale/fr";
+import { getPostOutline } from "@/lib/posts/source";
 
 // Only the posts of the registry exist: any other slug is a 404, never rendered on demand.
+// Every post is built ahead of time, protected ones included: proxy.ts guards those.
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -39,14 +47,16 @@ export default async function PostPage({ params }: PageProps<"/[locale]/posts/[s
   const locale = await getLocale();
   const { posts, a11y } = await getDictionary();
   const post = getPost((await params).slug, locale);
+  const load = post && POST_BODIES[post.slug]?.[locale];
 
   // A draft in production, or a post that is not written in this language.
-  if (!post) {
+  if (!post || !load) {
     notFound();
   }
 
-  const { default: Content } = await post.load();
-  const format = (date: string) => dayjs(date).locale(locale).format("D MMMM YYYY");
+  const { default: Content } = await load();
+  const { minutes, toc } = getPostOutline(post.slug, locale);
+  const next = getNextPost(post.slug, locale);
 
   return (
     <>
@@ -59,13 +69,7 @@ export default async function PostPage({ params }: PageProps<"/[locale]/posts/[s
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link href={`/${locale}/`}>~/valentin-bourreau</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href={getPostsPath(locale)}>{posts.breadcrumb}</Link>
+                <Link href={getPostsPath(locale)}>~/{posts.breadcrumb}</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
@@ -74,36 +78,59 @@ export default async function PostPage({ params }: PageProps<"/[locale]/posts/[s
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h1 className="max-w-[22ch] text-[clamp(32px,4.4vw,48px)] leading-[1.05] font-semibold tracking-[-0.03em]">
+        <h1 className="max-w-[24ch] text-[clamp(32px,4.4vw,48px)] leading-[1.08] font-semibold tracking-[-0.03em] text-balance">
           {post.title}
         </h1>
-        <ul className="flex list-none flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[13px] text-muted">
-          <li>
-            <time dateTime={post.publishedAt}>
-              {posts.published.replace("{date}", format(post.publishedAt))}
-            </time>
-          </li>
+        <p className="max-w-[64ch] text-[clamp(18px,1.6vw,20px)] leading-[1.5] text-text2">
+          {post.lead}
+        </p>
+        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[13px] text-muted">
+          <time dateTime={post.publishedAt}>{formatPostDate(post.publishedAt, locale)}</time>
+          <span aria-hidden>·</span>
+          <span>{posts.readingTime.replace("{minutes}", `${minutes}`)}</span>
           {post.updatedAt !== post.publishedAt && (
-            <li>
+            <>
+              <span aria-hidden>·</span>
               <time dateTime={post.updatedAt}>
-                {posts.updated.replace("{date}", format(post.updatedAt))}
+                {posts.updated.replace("{date}", formatPostDate(post.updatedAt, locale))}
               </time>
-            </li>
+            </>
           )}
           {post.draft && (
-            <li>
-              <Badge variant="secondary">{posts.draft}</Badge>
-            </li>
+            <Badge variant="secondary" className="ml-2">
+              {posts.draft}
+            </Badge>
           )}
-        </ul>
-        <article className="mt-4 flex max-w-[68ch] flex-col gap-5 border-t border-line pt-8">
-          <Content />
-        </article>
-        <p className="mt-4 font-mono text-[13px]">
+        </p>
+        <PostTagsComponent tags={post.tags} label={posts.tags} />
+
+        <div className="mt-6 flex flex-col gap-10 border-t border-line pt-10 lg:grid lg:grid-cols-[minmax(0,1fr)_200px] lg:gap-14">
+          {toc.length > 0 && (
+            <aside className="lg:sticky lg:top-8 lg:order-2 lg:self-start">
+              <PostTocComponent title={posts.toc} entries={toc} />
+            </aside>
+          )}
+          <article className="flex min-w-0 flex-col gap-5 lg:order-1">
+            <Content />
+          </article>
+        </div>
+
+        <div className="mt-10 flex flex-col gap-4 border-t border-line pt-8 font-mono text-[13px]">
+          {next && (
+            <Link
+              href={getPostPath(next.slug, locale)}
+              className="flex flex-col gap-1 no-underline hover:text-accent"
+            >
+              <span className="text-muted">{posts.next}</span>
+              <span className="font-sans text-[19px] leading-[1.3] font-semibold tracking-[-0.01em]">
+                {next.title}
+              </span>
+            </Link>
+          )}
           <Link href={getPostsPath(locale)} className="text-muted no-underline hover:text-accent">
             {posts.back}
           </Link>
-        </p>
+        </div>
       </main>
       <SiteFooterComponent />
     </>

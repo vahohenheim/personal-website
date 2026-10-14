@@ -1,6 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { ADMIN_REALM, isAdminAuthorized, isAdminConfigured } from "@/lib/admin/auth";
+import { getProtectedSlugs } from "@/lib/helpers/posts";
 import { DEFAULT_LOCALE, hasLocale, LOCALE_COOKIE, LOCALES, type Locale } from "@/lib/i18n/config";
+import { getAccessCookieName, isAccessConfigured, isAccessTokenValid } from "@/lib/posts/access";
 
 /** Picks the locale from the saved choice, then from the browser languages. */
 const resolveLocale = (request: NextRequest): Locale => {
@@ -49,11 +51,87 @@ const guardAdmin = (request: NextRequest) => {
   return response;
 };
 
+/** Headers of every answer about a protected post: never cached, never indexed. */
+const PROTECTED_HEADERS = {
+  "Cache-Control": "private, no-store",
+  "X-Robots-Tag": "noindex, nofollow",
+};
+
+/**
+ * A request about a protected post: its page (`/<locale>/posts/<slug>/`, HTML or RSC),
+ * anything below it (its sharing image), or one of its images (`/posts/<slug>/…`).
+ */
+const findProtectedPost = (pathname: string) => {
+  const match = /^\/(?:([a-z]{2})\/)?posts\/([a-z0-9-]+)(\/.*|\..*)?$/.exec(pathname);
+
+  if (!match || !getProtectedSlugs().includes(match[2])) {
+    return null;
+  }
+
+  // Optional groups are undefined when they did not match.
+  const prefix = match[1] as string | undefined;
+  const slug = match[2];
+  const rest = (match[3] as string | undefined) ?? "";
+
+  if (prefix !== undefined && !hasLocale(prefix)) {
+    return null;
+  }
+
+  const locale = prefix;
+  // The page itself: with or without its final slash, or its RSC variant.
+  const isPage = locale !== undefined && (rest === "" || rest === "/" || rest.startsWith("."));
+
+  return { slug, locale, isPage };
+};
+
+/**
+ * Gate of the protected posts. With a valid cookie for this post, the request goes on to
+ * the pre-rendered page (the proxy runs before the cache and before `public/`). Without
+ * one, the page is replaced by the password form and anything else answers 404: nothing
+ * of the post leaves the server. Closed while the variables are missing.
+ */
+const guardProtectedPost = (
+  request: NextRequest,
+  { slug, locale, isPage }: { slug: string; locale?: Locale; isPage: boolean },
+) => {
+  const token = request.cookies.get(getAccessCookieName(slug))?.value;
+
+  if (isAccessTokenValid(slug, token)) {
+    const response = NextResponse.next();
+
+    for (const [key, value] of Object.entries(PROTECTED_HEADERS)) {
+      response.headers.set(key, value);
+    }
+
+    return response;
+  }
+
+  if (!isPage || !locale) {
+    return new NextResponse("Not found.", { status: 404, headers: PROTECTED_HEADERS });
+  }
+
+  // Unknown under the locale: the translated 404 page answers.
+  const target = isAccessConfigured() ? `/${locale}/unlock/${slug}/` : `/${locale}/not-found/`;
+  const response = NextResponse.rewrite(new URL(target, request.url));
+
+  for (const [key, value] of Object.entries(PROTECTED_HEADERS)) {
+    response.headers.set(key, value);
+  }
+
+  return response;
+};
+
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname === "/admin" || pathname.startsWith("/admin/")) {
     return guardAdmin(request);
+  }
+
+  const protectedPost = findProtectedPost(pathname);
+
+  if (protectedPost) {
+    return guardProtectedPost(request, protectedPost);
   }
 
   const hasLocalePrefix = LOCALES.some(
@@ -78,5 +156,10 @@ export const config = {
     // locale (those pages are served by the CDN without running this function). The
     // matcher must be a literal: keep the locales in line with LOCALES.
     "/((?!api|_next|admin|apple-icon(?:/|$)|149e9513-01fa-4fb0-aad4-566afd725d1b|en(?:/|$)|fr(?:/|$)|.*\\..*).*)",
+    // Protected posts (`visibility: "protected"` in lib/constants/posts.ts): the page in
+    // every locale, what lies below it, and its images. One pair of lines per post; a test
+    // checks that every protected post is listed. Literal, like the line above.
+    "/:locale(en|fr)/posts/headless-commerce:rest(.*)",
+    "/posts/headless-commerce/:path*",
   ],
 };

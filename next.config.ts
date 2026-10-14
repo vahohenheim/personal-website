@@ -21,6 +21,10 @@ const cspHeader = `
 const nextConfig: NextConfig = {
   trailingSlash: true,
   images: {
+    // The optimizer reads files of public/ without going through proxy.ts: it may only
+    // touch the portrait, never the images of a protected post. Post images are served
+    // as prepared (WebP at 2x), unoptimized. See docs/features/posts.md.
+    localPatterns: [{ pathname: "/avatar.jpg", search: "" }],
     dangerouslyAllowSVG: true,
     contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
