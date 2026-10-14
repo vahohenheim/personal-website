@@ -55,7 +55,8 @@ set once, in `SITE_URL` ([site.ts](../../lib/constants/site.ts)).
 
 Posts are added after the pages: one entry per published public post and per language it
 is written in, with only those languages as alternates, `lastModified` set to the post's
-`updatedAt`, and its cover as an image entry (`<image:loc>`, absolute URL). The list of
+`updatedAt`, and its cover then the body images named in the registry (`images`) as
+image entries (`<image:loc>`, absolute URLs). The list of
 posts is listed only in the languages that have a published post. Drafts and protected
 posts never appear, not even on a preview deployment. Each language also has an RSS
 feed, `/[locale]/posts/feed.xml`, declared by the pages of the posts section: the lead
@@ -121,7 +122,8 @@ A full `BlogPosting` (`getPostJsonLd(post)`, the same function for every post, s
 are not listed in `PAGES` one by one) carries `headline`, `description`, `abstract` (the
 lead), both dates, `inLanguage`, `author` and `publisher` (the person's `@id`),
 `mainEntityOfPage`, `isPartOf` (the blog), `image` (the cover as an `ImageObject` with
-its size and caption, then the 1200 × 630 sharing image), `articleSection` (« Projets » /
+its size and caption, then the 1200 × 630 sharing image, then the body images named in
+the registry with their size), `articleSection` (« Projets » /
 "Projects"), `keywords` (the tags), `wordCount` and `timeRequired` (`PT10M`), both
 computed from the MDX source at build time, and `about`: the project as a
 `MobileApplication` or `WebApplication` (with `applicationCategory` and
