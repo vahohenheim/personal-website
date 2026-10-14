@@ -1,0 +1,376 @@
+{/* Article draft prepared with Valentin on 2026-10-14. Components: see content/posts/README.md. */}
+
+<Shot
+  src="/posts/lotus/ecran-tableau"
+  width={1280}
+  height={900}
+  variant="hero"
+  alt="Tableau de bord de lotus : chiffre d’affaires encaissé, reste à encaisser, montant à mettre de côté pour l’URSSAF, tâches du moment et derniers prospects."
+  caption="Le tableau de bord, un lundi de mars 2027. Clients, montants et prospects sont ceux du jeu de démonstration : tous fictifs."
+/>
+
+<ProjectSheet
+  rows={[
+    [
+      "rôle",
+      "Produit, règles métier, specs, design, arbitrages. Le code est écrit par Claude Code.",
+    ],
+    ["période", "Octobre 2026 · construit en deux jours, 11–12 oct."],
+    ["plateforme", "Web, installable sur téléphone, un seul utilisateur"],
+    [
+      "stack",
+      "Next.js 16, Tailwind v4, shadcn/ui · Drizzle, Neon · Better Auth · Vercel Blob, Resend, react-pdf · API Claude",
+    ],
+    [
+      "en chiffres",
+      "42 commits, ~25 000 lignes de TypeScript, 306 tests unitaires, 84 parcours de bout en bout, 47 décisions notées",
+    ],
+  ]}
+  status="Onze phases sur douze écrites, premier déploiement à faire"
+/>
+
+<Section n="01" label="contexte" title="Un outil plutôt que cinq">
+
+En octobre 2026, je quitte mon poste de lead front-end et je deviens ingénieur front-end freelance, en micro-entreprise. Au même moment, je pars un an en Amérique latine. Il me fallait un endroit unique pour savoir où j’en suis, utilisable depuis un ordinateur comme depuis un téléphone, avec du réseau ou presque pas.
+
+Ce que je voulais tenir : le chiffre d’affaires encaissé et ce qu’il reste sous les plafonds, les cotisations à mettre de côté, les échéances URSSAF et fiscales rappelées dans mon agenda, des factures propres faites à partir de ce que j’ai réellement livré, les prospects arrivés par le formulaire de mon site, un lien suivi avec mes clients, et mes documents au même endroit.
+
+### Quatre principes
+
+<PlusList>
+  <Plus title="Calculer plutôt que saisir.">
+    Le livre des recettes vient des paiements, les cotisations du livre des recettes, les échéances
+    de mon statut, les tâches de règles.
+  </Plus>
+  <Plus title="Proposer, ne pas décider.">
+    Relances, montants à déclarer, suggestions aux clients : l’app prépare, je valide.
+  </Plus>
+  <Plus title="Le chiffre exact, la règle visible.">
+    Chaque montant calculé montre sa base et son taux.
+  </Plus>
+  <Plus title="Sobriété.">
+    Ma charte, sans exception : une police, un accent, pas de rouge. Une alerte s’écrit en gras.
+  </Plus>
+</PlusList>
+
+<Callout label="à savoir">
+  Je ne suis pas comptable, et lotus ne remplace pas un conseil. Les taux et les seuils qu’il
+  applique sont datés, sourcés, et les points incertains restent modifiables dans l’interface.
+</Callout>
+
+</Section>
+
+<Section n="02" label="produit" title="Ce que fait l’app">
+
+Sept écrans, une barre latérale qui devient un tiroir sur téléphone, un mode jour et un mode nuit.
+
+<Definitions
+  items={[
+    [
+      "tableau de bord",
+      "Chiffre d’affaires encaissé, ce qui reste à encaisser, ce qu’il faut mettre de côté pour l’URSSAF, les tâches du moment, les derniers prospects.",
+    ],
+    [
+      "comptabilité",
+      "Livre des recettes, plafond du régime micro, franchise de TVA, cotisations détaillées ligne par ligne, exports CSV et PDF, archive annuelle.",
+    ],
+    [
+      "échéances",
+      "Calendrier du mois, déclarations à venir, tâches, synchronisation avec Google Calendar.",
+    ],
+    [
+      "clients",
+      "Fiche, prestations à facturer, abonnements de maintenance, historique des e-mails, suggestions du mois.",
+    ],
+    [
+      "factures",
+      "Générateur à partir des prestations, aperçu fidèle au PDF, envoi, paiements, relances, avoirs et devis.",
+    ],
+    [
+      "leads",
+      "Les demandes du formulaire de mon site, en pipeline, jusqu’à la conversion en client.",
+    ],
+    [
+      "documents",
+      "Présentations, propositions, audits, contrats et PDF générés, rangés et partageables par lien qui expire.",
+    ],
+  ]}
+/>
+
+</Section>
+
+<Shot
+  src="/posts/lotus/ecran-facture"
+  width={1280}
+  height={900}
+  alt="Générateur de facture : les prestations à facturer à gauche, l’aperçu du PDF à droite, l’effet du montant sur les plafonds en dessous."
+  caption="Le générateur de facture : les prestations à facturer à gauche, l’aperçu exact du PDF à droite, l’effet du montant sur les plafonds en dessous."
+/>
+
+<Shots caption="La comptabilité et le pipeline des prospects. Sur téléphone, la barre latérale devient un tiroir.">
+  <Shot
+    src="/posts/lotus/ecran-comptabilite"
+    width={1280}
+    height={900}
+    alt="Écran Comptabilité : livre des recettes, jauge du plafond du régime micro, franchise de TVA et cotisations détaillées."
+  />
+  <Shot
+    src="/posts/lotus/ecran-leads"
+    width={1280}
+    height={900}
+    alt="Écran Leads : les demandes du formulaire du site, rangées par étape jusqu’à la conversion en client."
+  />
+</Shots>
+
+<Section n="03" label="architecture" title="L’architecture">
+
+Le principe « calculer plutôt que saisir » dessine toute l’app. Je ne saisis presque qu’une chose à la main : la date et le montant d’un encaissement. Le reste en découle.
+
+</Section>
+
+<Diagram
+  src="/posts/lotus/schema-flux"
+  width={1040}
+  height={600}
+  alt="Flux de données de lotus : le formulaire du site envoie un webhook signé qui crée un lead ; le lead devient un client ; ses prestations sont facturées ; le paiement, seule saisie à la main, alimente le livre des recettes, d’où sont calculés les cotisations et seuils, puis les obligations URSSAF envoyées vers l’agenda."
+  caption="Du formulaire de mon site jusqu’à l’agenda. Chaque étape est dérivée de la précédente : rien n’est recopié à la main."
+/>
+
+<Section>
+
+### Une app Next.js, un dossier par fonctionnalité
+
+Server Components par défaut, Server Actions pour écrire. Chaque fonctionnalité a son dossier : les lectures, les actions, leurs schémas Zod, ses composants. Chaque action suit le même chemin : session vérifiée, entrée validée, transaction si plusieurs tables sont touchées, journal d’audit pour tout ce qui est comptable, résultat typé.
+
+```text
+src/
+├─ app/(app)/        écrans protégés : /, /comptabilite, /factures…
+├─ app/api/          webhook des leads, crons, pdf, ics, exports
+├─ features/         clients, invoices, accounting, obligations,
+│                    calendar, leads, nurturing, documents…
+├─ lib/fiscal/       taux et seuils datés, cotisations, échéances
+├─ components/ui/    shadcn/ui, retouché selon ma charte
+└─ components/pdf/   factures, devis, livre des recettes
+```
+
+<DecisionTable
+  columns={["sujet", "retenu", "pourquoi"]}
+  rows={[
+    [
+      "Base",
+      "Neon en production, PGlite partout ailleurs",
+      "Un vrai Postgres compilé en WebAssembly : le développement, les tests et la CI tournent sans Docker ni compte Neon, avec le même code.",
+    ],
+    [
+      "Connexion",
+      "Better Auth, Google, un seul compte",
+      "Pas d’inscription publique ; le même compte Google donne accès à l’agenda.",
+    ],
+    [
+      "Interface",
+      "shadcn/ui, thème réécrit",
+      "Des composants accessibles dont je possède le code, ramenés à ma charte : rayon 2 px, aucune ombre, des glyphes plutôt que des icônes.",
+    ],
+    [
+      "Fichiers",
+      "Vercel Blob en mode privé",
+      "Aucune adresse de fichier n’atteint le navigateur ; tout passe par une route qui vérifie la session.",
+    ],
+    [
+      "Tâches de fond",
+      "Trois crons : jour, semaine, mois",
+      "Chaque étape est rejouable sans doublon, grâce à une clé de déduplication par élément.",
+    ],
+  ]}
+/>
+
+</Section>
+
+<Section n="04" label="factures" title="Facturer sans se tromper">
+
+Une facture est un document légal : un numéro qui se suit sans trou, des mentions obligatoires, des montants qui ne bougent plus une fois envoyés. C’est la partie où une erreur coûte le plus, et celle où le code est le plus strict.
+
+</Section>
+
+<Diagram
+  src="/posts/lotus/schema-facture"
+  width={1040}
+  height={440}
+  alt="Vie d’une facture : brouillon modifiable, émise avec un numéro et tout figé, envoyée en PDF par e-mail, payée et inscrite au livre des recettes. Échéance passée : en retard, relances à J+1, J+15 et J+30. Une erreur se corrige par un avoir."
+  caption="La vie d’une facture. Une fois émise, elle ne se modifie plus : une erreur se corrige par un avoir."
+/>
+
+<Section>
+
+<PlusList>
+  <Plus title="L’argent en centimes entiers.">
+    Jamais de nombre à virgule flottante. Arrondi au centime, demi vers le haut, ligne par ligne.
+  </Plus>
+  <Plus title="Un numéro sans trou ni doublon.">
+    Attribué à l’émission, dans une transaction qui verrouille le compteur de l’année. Un test lance
+    deux émissions simultanées et vérifie qu’elles reçoivent deux numéros consécutifs.
+  </Plus>
+  <Plus title="Tout est figé à l’émission.">
+    Mon identité, celle du client, mes coordonnées bancaires et les mentions légales sont copiées
+    dans la facture : changer d’adresse demain ne réécrit pas les factures d’hier.
+  </Plus>
+  <Plus title="Ce que je vois est ce que reçoit le client.">
+    Un seul modèle d’affichage produit toutes les chaînes ; l’aperçu HTML et le PDF ne font que les
+    placer.
+  </Plus>
+  <Plus title="Les relances sont des tâches.">
+    À J+1, J+15 et J+30 après l’échéance, une tâche « Relancer » apparaît, et se ferme seule quand
+    la facture est soldée.
+  </Plus>
+</PlusList>
+
+<Callout label="détail · l’espace fine">
+  La micro-typographie française veut une espace fine insécable dans « 1 200,00 € ». Geist n’a pas
+  ce glyphe : dans les PDF, elle est remplacée par une espace insécable ordinaire. Le genre de
+  détail qu’on ne découvre qu’en imprimant.
+</Callout>
+
+</Section>
+
+<Section n="05" label="échéances" title="L’URSSAF dans mon agenda">
+
+La règle de travail la plus importante du projet tient en une ligne : ne jamais deviner une règle fiscale. Les taux et les seuils vivent dans un seul fichier, chacun avec sa date de validité, et sont testés. Une année non couverte réutilise la dernière version connue et l’écrit : « taux 2026 · à confirmer pour 2027 ».
+
+<PullQuote>Ne jamais deviner une règle fiscale.</PullQuote>
+
+Chaque nuit, un cron génère les obligations des quinze prochains mois à partir de mes paramètres : déclarations URSSAF trimestrielles, impôt sur le revenu, CFE. Le montant estimé d’une déclaration est recalculé depuis le livre des recettes tant qu’elle n’est pas faite. Une obligation déclarée ne bouge plus.
+
+<Callout label="exemple · la première déclaration">
+  Elle ne suit pas le rythme des suivantes. Pour une activité démarrée le 15 octobre 2026, la spec
+  calcule une première période jusqu’au 31 mars 2027, à déclarer avant le 30 avril. Les deux dates
+  restent modifiables : c’est l’URSSAF qui a le dernier mot.
+</Callout>
+
+Ces échéances, les dates limites des factures et mes tâches datées partent dans un agenda « lotus » de mon Google Calendar, avec la portée la plus étroite possible : l’app ne voit que l’agenda qu’elle a créé. Un flux ICS à jeton, régénérable, fait la même chose pour n’importe quel autre agenda.
+
+Côté plafonds, le générateur de facture montre l’effet du montant avant que je l’émette : part du plafond du régime micro, et alerte si la facture ferait dépasser le seuil de franchise de TVA.
+
+</Section>
+
+<Shot
+  src="/posts/lotus/ecran-echeances"
+  width={1280}
+  height={900}
+  alt="Écran Échéances : calendrier du mois, obligations du statut avec leur montant estimé, état de la synchronisation avec Google Calendar."
+  caption="L’écran Échéances : le mois, les obligations du statut avec leur montant estimé, l’état de la synchronisation."
+/>
+
+<Section n="06" label="leads" title="Du formulaire au client fidèle">
+
+Le formulaire de contact de mon site et lotus sont deux applications distinctes. Le contrat entre elles est écrit une fois, dans un document qui fait foi pour les deux dépôts. La règle de départ : un prospect n’est jamais perdu parce que lotus est indisponible.
+
+</Section>
+
+<Diagram
+  src="/posts/lotus/schema-leads"
+  width={1040}
+  height={520}
+  alt="Webhook des leads : le site enregistre la demande et répond au visiteur, puis envoie une requête signée à lotus ; sans confirmation, il réessaie le lendemain. lotus vérifie la signature et l’horodatage, déduplique, crée le lead et une tâche."
+  caption="Le site répond au visiteur sans attendre lotus, garde le lead, puis le transmet par une requête signée. Sans confirmation, il réessaie le lendemain."
+/>
+
+<Section>
+
+La requête est signée en HMAC SHA-256 sur l’horodatage et le corps exact ; lotus refuse un écart de plus de cinq minutes, compare la signature à temps constant et ne dit jamais pourquoi il refuse. Un identifiant fourni par le site sert de clé d’idempotence : un renvoi ne crée jamais de doublon. Le lead arrive avec une tâche « Répondre à… ».
+
+### Puis, une fois par mois, le nurturing
+
+Le 1er du mois, lotus passe les sites de mes clients dans PageSpeed Insights. Trente règles transforment les résultats en suggestions chiffrées à mon taux journalier : optimiser les images, mettre à jour un framework, corriger un parcours au clavier. L’API Claude rédige l’e-mail du mois à partir de ces suggestions. J’en retire, j’en ajoute, je relis, j’envoie.
+
+Ne sortent de l’app que la société, l’adresse du site, le secteur, la stack et les résultats du scan : ni nom de contact, ni e-mail. Une suggestion acceptée devient une prestation, qui deviendra une ligne de facture. La boucle est fermée.
+
+</Section>
+
+<Screens caption="Sur téléphone, jour et nuit : la même app, la barre latérale repliée dans un tiroir.">
+  <Screen
+    src="/posts/lotus/ecran-mobile"
+    alt="lotus sur téléphone en mode jour : tableau de bord en une colonne."
+  />
+  <Screen src="/posts/lotus/ecran-mobile" mode="nuit" alt="lotus sur téléphone en mode nuit." />
+</Screens>
+
+<Section n="07" label="sécurité" title="Une app privée sur Internet">
+
+Coordonnées bancaires, chiffre d’affaires, données de prospects : une app pour une seule personne, mais exposée au monde.
+
+<PlusList>
+  <Plus title="Une surface publique listée, exhaustive.">
+    Connexion, pages légales, webhook signé, crons à secret, flux ICS à jeton, liens de partage.
+    Tout le reste exige une session vérifiée côté serveur, et un test le contrôle module par module.
+  </Plus>
+  <Plus title="Des liens de partage qui ne racontent rien.">
+    Jeton de 32 octets dont seule l’empreinte est stockée ; expiré, révoqué ou inconnu, la réponse
+    est la même : « Ce lien a expiré. »
+  </Plus>
+  <Plus title="Invisible des moteurs de recherche.">
+    En-têtes stricts sur toutes les routes, et rien d’indexable.
+  </Plus>
+  <Plus title="Une sauvegarde par mois.">
+    Deux ans conservés, en plus de la restauration à un instant donné de Neon.
+  </Plus>
+</PlusList>
+
+Un compromis est assumé et écrit : la politique de sécurité du contenu n’utilise pas de nonce, parce qu’un nonce force le rendu dynamique de chaque page et casse le prérendu partiel de Next.js 16. Le reste de la politique est strict.
+
+</Section>
+
+<Section n="08" label="méthode" title="Construit en douze phases">
+
+lotus est le premier projet que j’ai mené de cette façon, juste avant pensée. Un dossier de spécification complet d’abord : vision, architecture, modèle de données, règles métier de la micro-entreprise, charte appliquée à shadcn/ui, douze fonctionnalités avec leurs critères d’acceptation, un schéma Drizzle et des règles fiscales de référence, et les maquettes des écrans. Puis Claude Code, phase par phase.
+
+Chaque phase se termine par un build, un lint et des tests verts, et un commit. Deux fichiers tiennent la mémoire du projet : l’état d’avancement, pour reprendre après une coupure, et un journal de décisions, où chaque écart à la spec est noté avec sa raison. Il en compte quarante-sept.
+
+</Section>
+
+<Stats
+  items={[
+    ["durée", "2 jours"],
+    ["commits", "42"],
+    ["lignes de ts", "~25 000"],
+    ["tests", "390"],
+    ["décisions", "47"],
+  ]}
+/>
+
+<Section>
+
+Les tests tournent sur PGlite, sans service réel : Vitest pour les règles métier (cotisations, plafonds, numérotation, échéances), Playwright pour les parcours, et axe pour l’accessibilité, en mode jour comme en mode nuit. Une connexion simulée, réservée aux tests, évite de passer par Google.
+
+</Section>
+
+<Shot
+  src="/posts/lotus/ecran-clients"
+  width={1280}
+  height={900}
+  alt="Écran Clients : liste des clients avec leurs prestations à facturer et leurs abonnements de maintenance."
+  caption="La liste des clients, tirée du jeu de démonstration qui sert aussi aux tests."
+/>
+
+<Section n="09" label="bilan" title="Ce qui reste, ce que j’en retiens">
+
+Le code des onze premières phases est écrit et testé, mais rien n’a encore parlé aux vrais services : Google Calendar, l’envoi direct vers le Blob, PageSpeed, l’API Claude et Resend n’ont été éprouvés qu’avec des réponses simulées. Le premier déploiement dira le reste, avec un passage au clavier écran par écran et un Lighthouse sur le vrai domaine.
+
+La douzième phase attend une décision de ma part : au 1er septembre 2027, une micro-entreprise devra émettre ses factures électroniques par une plateforme agréée. Le modèle de données est prêt (adresses structurées, nouvelles mentions) ; le choix de la plateforme dira s’il faut produire un Factur-X ou appeler son API.
+
+<PlusList>
+  <Plus title="Une règle fiscale ne se devine pas.">
+    Elle se date, se teste, et reste modifiable quand elle est incertaine.
+  </Plus>
+  <Plus title="Calculer plutôt que saisir">
+    supprime une classe entière d’erreurs : celles de recopie.
+  </Plus>
+  <Plus title="Un journal de décisions vaut une revue de code.">
+    Quarante-sept écarts expliqués, c’est ce qui me permet de faire confiance au résultat sans
+    relire chaque ligne.
+  </Plus>
+  <Plus title="Deux apps qui se parlent par un contrat écrit.">
+    Le site et lotus évoluent chacun de leur côté, sans jamais se casser l’un l’autre.
+  </Plus>
+</PlusList>
+
+</Section>
