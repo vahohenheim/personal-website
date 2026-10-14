@@ -10,7 +10,7 @@ related_code:
   - ../../.env.example
   - ../../AGENTS.md
   - ../../.gitignore
-last_updated: 2026-10-12
+last_updated: 2026-10-14
 ---
 
 # Runbook
@@ -48,14 +48,15 @@ shipped in `node_modules/next/dist/docs/`. Do not edit it; commit it when it cha
 
 Listed with their role in [.env.example](../../.env.example). All are server-only.
 
-| Variable                                                                                   | Needed for                             | Without it                                                                      |
-| ------------------------------------------------------------------------------------------ | -------------------------------------- | ------------------------------------------------------------------------------- |
-| `DATABASE_URL`                                                                             | storing and reading leads              | development: memory; production: the form answers "unavailable"                 |
-| `DATABASE_URL_UNPOOLED`                                                                    | `npm run db:setup`                     | falls back to `DATABASE_URL`                                                    |
-| `ADMIN_USER`, `ADMIN_PASSWORD`                                                             | `/admin`                               | `/admin` refuses everyone                                                       |
-| `WEB_ANALYTICS_TOKEN` (and optionally `WEB_ANALYTICS_PROJECT_ID`, `WEB_ANALYTICS_TEAM_ID`) | the daily copy of the audience figures | the copy does nothing; the admin says it is inactive                            |
-| `CRON_SECRET`                                                                              | the cron route                         | the route refuses Vercel, so nothing is copied                                  |
-| `LOTUS_WEBHOOK_URL`, `LOTUS_WEBHOOK_SECRET`                                                | forwarding leads to lotus              | nothing is sent; leads stay `pending` and the admin says forwarding is inactive |
+| Variable                                                                                   | Needed for                                   | Without it                                                                      |
+| ------------------------------------------------------------------------------------------ | -------------------------------------------- | ------------------------------------------------------------------------------- |
+| `DATABASE_URL`                                                                             | storing and reading leads                    | development: memory; production: the form answers "unavailable"                 |
+| `DATABASE_URL_UNPOOLED`                                                                    | `npm run db:setup`                           | falls back to `DATABASE_URL`                                                    |
+| `ADMIN_USER`, `ADMIN_PASSWORD`                                                             | `/admin`                                     | `/admin` refuses everyone                                                       |
+| `WEB_ANALYTICS_TOKEN` (and optionally `WEB_ANALYTICS_PROJECT_ID`, `WEB_ANALYTICS_TEAM_ID`) | the daily copy of the audience figures       | the copy does nothing; the admin says it is inactive                            |
+| `CRON_SECRET`                                                                              | the cron route                               | the route refuses Vercel, so nothing is copied                                  |
+| `LOTUS_WEBHOOK_URL`, `LOTUS_WEBHOOK_SECRET`                                                | forwarding leads to lotus                    | nothing is sent; leads stay `pending` and the admin says forwarding is inactive |
+| `PROTECTED_POSTS_PASSWORD`, `PROTECTED_POSTS_SECRET`                                       | protected posts (password, cookie signature) | protected posts stay closed (404); public posts are not affected                |
 
 `.env.local` holds the local values and is ignored by git. See
 [database/neon.md](../database/neon.md) for the database and
@@ -136,6 +137,41 @@ curl -s https://api.github.com/repos/vahohenheim/personal-website/commits/<sha>/
 `state: success` with "Deployment has completed" means the new version is live. The
 apex domain redirects to `www.valentinbourreau.com`.
 
+## Versions and releases
+
+The version of the site lives in `package.json` (and `package-lock.json`) and follows
+[semver](https://semver.org):
+
+| Change                                               | Bump  | Example                          |
+| ---------------------------------------------------- | ----- | -------------------------------- |
+| A redesign, or a break (URLs, stored data, contract) | major | the Changelog redesign (`2.0.0`) |
+| A feature                                            | minor | the posts section (`2.5.0`)      |
+| A fix, a content change, a docs or dependency change | patch | renaming a project (`2.4.1`)     |
+
+Every change bumps the version in the same change (`npm version <major|minor|patch>
+--no-git-tag-version`). Once it is on `main`, the merge commit (or the last commit of a
+direct push) gets an annotated tag `v<version>`, pushed to GitHub, and a GitHub release
+whose notes say what changed for a visitor and for Valentin:
+
+```sh
+git tag -a v2.5.0 -m "v2.5.0: posts section" && git push origin v2.5.0
+gh release create v2.5.0 --title "v2.5.0 · posts section" --notes-file notes.md
+```
+
+Earlier milestones were tagged afterwards, on the commit that was live at the time:
+
+| Tag      | Date       | What                                                                    |
+| -------- | ---------- | ----------------------------------------------------------------------- |
+| `v1.0.0` | 2025-09-28 | First site                                                              |
+| `v1.1.0` | 2026-10-10 | Next.js 16, restructured project, audit fixes, structured data, sitemap |
+| `v2.0.0` | 2026-10-11 | Redesign on the Changelog direction, shadcn/ui restyled                 |
+| `v2.1.0` | 2026-10-11 | Contact form for leads, admin area, Neon                                |
+| `v2.2.0` | 2026-10-11 | Audience figures copied from Vercel Web Analytics                       |
+| `v2.3.0` | 2026-10-11 | Lead follow-up, conversion counters, resume PDF, posts infrastructure   |
+| `v2.4.0` | 2026-10-12 | Business identity, leads forwarded to lotus, test suite and CI          |
+| `v2.4.1` | 2026-10-13 | Projects: pensee, lys removed, editorials archived                      |
+| `v2.5.0` | 2026-10-14 | Posts section: three project articles and a protected one               |
+
 ## Dependencies
 
 State on 2026-10-10: every package is on its latest version, with two exceptions imposed
@@ -164,35 +200,35 @@ goes away.
   browser). No fixed release exists yet.
 - The machine used on 2026-10-10 still runs Node 20.15.1: `npm install` prints an engine
   warning there until Node is upgraded (`nvm install`).
-- Under `public/`, only `avatar.jpg` and `.well-known/security.txt` are used. The old logo
+- Under `public/`, only `avatar.jpg`, `posts/` and `.well-known/security.txt` are used. The old logo
   and icon files may still be linked from outside the site, so check before deleting.
 - Forwarding leads to lotus is built but off in production until `LOTUS_WEBHOOK_URL` and
   `LOTUS_WEBHOOK_SECRET` are set, and the legal page must mention it first: its wording
   waits for Valentin's approval ([lotus-sync.md](../features/lotus-sync.md#state-and-limits)).
 - The resume PDFs are not rebuilt on deployment: after a change to the resume, run
   `npm run build && npm run cv:pdf` and commit both files.
-- No post is published yet: the posts section does not exist on the live site
-  ([posts.md](../features/posts.md)).
 - The footers carry a "mentions légales" link that the redesign brief did not specify.
 
 ## Troubleshooting
 
-| Symptom                                                                       | Cause and fix                                                                                                                                                         |
-| ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A push to `main` does not deploy                                              | The Vercel project is not connected to this repository, or was connected after the push. Check Settings → Git in Vercel, then push again (an empty commit is enough). |
-| `tsc` cannot find `next/root-params`, `LayoutProps` or `PageProps`            | Generated types are missing. Run `npm run typecheck`, which calls `next typegen` first.                                                                               |
-| Next.js warns about the workspace root or picks the wrong one                 | A stray lockfile exists higher up the tree. `turbopack.root` in `next.config.ts` pins the root to the repository.                                                     |
-| An image or a script from another site does not load                          | Blocked by the CSP. See [security.md](../architecture/security.md).                                                                                                   |
-| A new text shows in one language only, or the build fails on a dictionary key | The key is missing in one of the two locale files. See [i18n.md](../architecture/i18n.md#dictionaries).                                                               |
-| The contact form shows "momentanément indisponible"                           | `DATABASE_URL` is missing in that environment, or the schema was never applied. See [database/neon.md](../database/neon.md).                                          |
-| `/admin` asks for a password again and again                                  | `ADMIN_USER` or `ADMIN_PASSWORD` is missing or different in that environment (the server logs say when one is missing).                                               |
-| The admin says "la copie quotidienne est inactive"                            | `WEB_ANALYTICS_TOKEN` is missing in that environment.                                                                                                                 |
-| "Actualiser" answers that Vercel or the database did not reply                | The token is wrong or expired, the project or team id does not match, or the tables were never created (`npm run db:setup`). The server logs give the HTTP status.    |
-| The history has a hole of several days                                        | The cron did not run (check `CRON_SECRET` and the Cron Jobs page). "Importer 30 jours" refills what Vercel still has.                                                 |
-| The contact form answers 500 on a host that is not Vercel                     | BotID only runs on Vercel; the route skips it elsewhere. Check that the `VERCEL` variable is not set by hand.                                                         |
-| The duration of the current job looks out of date                             | It is computed at build time. Redeploy.                                                                                                                               |
-| `npm run cv:pdf` says a file has 2 pages                                      | The resume got longer than one A4 page. Shorten the content or reduce a size in the print page ([resume-pdf.md](../features/resume-pdf.md)).                          |
-| A post does not show on the live site                                         | It is still a draft (`draft: true` in `lib/constants/posts.ts`), or it is not written in that language.                                                               |
-| The conversion counters stay at zero in production                            | The table `funnel_daily` is missing (`npm run db:setup`), or BotID blocks the requests: `/api/events/` must be listed in `initBotId`.                                 |
-| `npm run test:smoke` says the port is in use or that no build was found       | Something already listens on port 3219 or 3220, or `npm run build` was not run first.                                                                                 |
-| A lead shows "en attente" or "refusé" for lotus in the admin                  | See [Lotus](#lotus) above: the code next to it says why.                                                                                                              |
+| Symptom                                                                       | Cause and fix                                                                                                                                                                                  |
+| ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A push to `main` does not deploy                                              | The Vercel project is not connected to this repository, or was connected after the push. Check Settings → Git in Vercel, then push again (an empty commit is enough).                          |
+| `tsc` cannot find `next/root-params`, `LayoutProps` or `PageProps`            | Generated types are missing. Run `npm run typecheck`, which calls `next typegen` first.                                                                                                        |
+| Next.js warns about the workspace root or picks the wrong one                 | A stray lockfile exists higher up the tree. `turbopack.root` in `next.config.ts` pins the root to the repository.                                                                              |
+| An image or a script from another site does not load                          | Blocked by the CSP. See [security.md](../architecture/security.md).                                                                                                                            |
+| A new text shows in one language only, or the build fails on a dictionary key | The key is missing in one of the two locale files. See [i18n.md](../architecture/i18n.md#dictionaries).                                                                                        |
+| The contact form shows "momentanément indisponible"                           | `DATABASE_URL` is missing in that environment, or the schema was never applied. See [database/neon.md](../database/neon.md).                                                                   |
+| `/admin` asks for a password again and again                                  | `ADMIN_USER` or `ADMIN_PASSWORD` is missing or different in that environment (the server logs say when one is missing).                                                                        |
+| The admin says "la copie quotidienne est inactive"                            | `WEB_ANALYTICS_TOKEN` is missing in that environment.                                                                                                                                          |
+| "Actualiser" answers that Vercel or the database did not reply                | The token is wrong or expired, the project or team id does not match, or the tables were never created (`npm run db:setup`). The server logs give the HTTP status.                             |
+| The history has a hole of several days                                        | The cron did not run (check `CRON_SECRET` and the Cron Jobs page). "Importer 30 jours" refills what Vercel still has.                                                                          |
+| The contact form answers 500 on a host that is not Vercel                     | BotID only runs on Vercel; the route skips it elsewhere. Check that the `VERCEL` variable is not set by hand.                                                                                  |
+| The duration of the current job looks out of date                             | It is computed at build time. Redeploy.                                                                                                                                                        |
+| `npm run cv:pdf` says a file has 2 pages                                      | The resume got longer than one A4 page. Shorten the content or reduce a size in the print page ([resume-pdf.md](../features/resume-pdf.md)).                                                   |
+| A post does not show on the live site                                         | It is still a draft (`draft: true` in `lib/constants/posts.ts`), it is protected (`visibility: "protected"`), or it is not written in that language. A draft does show on preview deployments. |
+| A protected post answers 404, or the password is always refused               | `PROTECTED_POSTS_PASSWORD` or `PROTECTED_POSTS_SECRET` is missing in that environment (the server logs say so), or the password differs. Changing the secret closes every opened post.         |
+| A protected post shows the password form again after the right password       | The browser refused the `Secure` cookie (plain HTTP outside `localhost`), or the post is missing from the `matcher` of `proxy.ts` (a test checks it).                                          |
+| The conversion counters stay at zero in production                            | The table `funnel_daily` is missing (`npm run db:setup`), or BotID blocks the requests: `/api/events/` must be listed in `initBotId`.                                                          |
+| `npm run test:smoke` says the port is in use or that no build was found       | Something already listens on port 3219 or 3220, or `npm run build` was not run first.                                                                                                          |
+| A lead shows "en attente" or "refusé" for lotus in the admin                  | See [Lotus](#lotus) above: the code next to it says why.                                                                                                                                       |

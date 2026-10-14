@@ -5,6 +5,7 @@ import BreadcrumbComponent from "@/components/breadcrumb/breadcrumb";
 import ChangelogEntryComponent from "@/components/changelog-entry/changelog-entry";
 import ContactTriggerComponent from "@/components/contact/contact-trigger";
 import JsonLdComponent from "@/components/json-ld/json-ld";
+import PostListItemComponent from "@/components/post-list-item/post-list-item";
 import ProfileCardComponent from "@/components/profile-card/profile-card";
 import ProjectCardComponent from "@/components/project-card/project-card";
 import SectionComponent, { SectionTitleComponent } from "@/components/section/section";
@@ -16,16 +17,31 @@ import { PROJECT_LINKS } from "@/lib/constants/project-links";
 import { SITE_NAME } from "@/lib/constants/site";
 import { SOCIAL_NETWORKS } from "@/lib/constants/social-network";
 import { getPageMetadata } from "@/lib/helpers/metadata";
+import {
+  formatPostDate,
+  getPostForProject,
+  getHomePosts,
+  getPostPath,
+  getPostsPath,
+} from "@/lib/helpers/posts";
 import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
 
 export const generateMetadata = (): Promise<Metadata> => getPageMetadata("home");
 
 // Order of the footer links, as words rather than icons.
+
 const FOOTER_NETWORKS = ["GitHub", "LinkedIn", "Dribbble", "Behance"];
 
 export default async function HomePage() {
   const locale = await getLocale();
-  const { home, a11y, footer, contact } = await getDictionary();
+  const { home, a11y, footer, contact, posts } = await getDictionary();
+  const latestPosts = getHomePosts(locale);
+  // The "read the post" link of a project card, when a post about the project is listed.
+  const getProjectPost = (id: string) => {
+    const post = getPostForProject(id, locale);
+
+    return post && { href: getPostPath(post.slug, locale), label: posts.readPost };
+  };
   const networks = FOOTER_NETWORKS.flatMap(
     (label) => SOCIAL_NETWORKS.find((network) => network.label === label) ?? [],
   );
@@ -96,6 +112,30 @@ export default async function HomePage() {
           </ol>
         </SectionComponent>
 
+        {/* Only once a post is published in this language. */}
+        {latestPosts.length > 0 && (
+          <SectionComponent id="posts" className="flex flex-col gap-6">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+              <SectionTitleComponent>{posts.home.title}</SectionTitleComponent>
+              <Link href={getPostsPath(locale)} className="font-mono text-[13px]">
+                {posts.home.all}
+              </Link>
+            </div>
+            <ol className="list-none">
+              {latestPosts.map((post) => (
+                <PostListItemComponent
+                  key={post.slug}
+                  href={getPostPath(post.slug, locale)}
+                  date={formatPostDate(post.publishedAt, locale)}
+                  dateTime={post.publishedAt}
+                  title={post.title}
+                  description={post.description}
+                />
+              ))}
+            </ol>
+          </SectionComponent>
+        )}
+
         <SectionComponent id="projects" className="flex flex-col gap-6">
           <SectionTitleComponent>{home.projects.title}</SectionTitleComponent>
           <ul className="grid list-none grid-cols-[repeat(auto-fit,minmax(min(300px,100%),1fr))] gap-4">
@@ -105,6 +145,7 @@ export default async function HomePage() {
                 project={project}
                 href={PROJECT_LINKS[project.id]}
                 statusLabels={home.projects.status}
+                post={getProjectPost(project.id)}
               />
             ))}
           </ul>

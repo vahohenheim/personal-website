@@ -2,6 +2,12 @@
 title: Tests
 description: The test suite of the site: what each layer covers, how to run it, what the CI runs on every push, and how to add a test.
 related_code:
+  - ../../tests/unit/posts.test.ts
+  - ../../tests/unit/post-content.test.ts
+  - ../../tests/unit/json-ld.test.ts
+  - ../../tests/unit/post-access.test.ts
+  - ../../tests/routes/posts-unlock.test.ts
+  - ../../tests/smoke/posts.test.ts
   - ../../vitest.config.ts
   - ../../vitest.smoke.config.ts
   - ../../tests/helpers/setup.ts
@@ -15,7 +21,7 @@ related_code:
   - ../../tests/smoke/lotus-stub.ts
   - ../../.github/workflows/ci.yml
   - ../../package.json
-last_updated: 2026-10-12
+last_updated: 2026-10-14
 ---
 
 # Tests
@@ -39,11 +45,11 @@ Before handing work back: `npm run check`, `npm test`, `npm run build`,
 
 ## The three layers
 
-| Layer  | Folder          | How                                                      | Covers                                                                                                                                                                                                            |
-| ------ | --------------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Unit   | `tests/unit/`   | functions imported directly                              | form validation, figures of the admin, admin credentials, lead and funnel stores, posts and sitemap, dictionaries, labels, the lotus payload, signature, answers and retry rules                                  |
-| Routes | `tests/routes/` | the `POST`/`GET` of a route file called with a `Request` | contact form, form counters, both cron routes, CSV export, `proxy.ts` (language redirect, admin gate)                                                                                                             |
-| Smoke  | `tests/smoke/`  | `next start` on port 3219, called with `fetch`           | every public page in both languages (status, language, one `h1`, canonical, JSON-LD), redirects, 404, security headers, sitemap, PDFs, drafts, the admin gate, and a lead from the form to the admin and to lotus |
+| Layer  | Folder          | How                                                      | Covers                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| ------ | --------------- | -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Unit   | `tests/unit/`   | functions imported directly                              | form validation, figures of the admin, admin credentials, lead and funnel stores, posts (drafts by environment, order, next post, home block, protected posts, summary, reading time, image pairs) and sitemap, content of the MDX files (components, images, sizes, loaders), the JSON-LD of every page and post in every language, access tokens of protected posts, dictionaries, labels, the lotus payload, signature, answers and retry rules |
+| Routes | `tests/routes/` | the `POST`/`GET` of a route file called with a `Request` | contact form, form counters, unlock of a protected post, both cron routes, CSV export, `proxy.ts` (language redirect, admin gate, gate of protected posts and its `matcher`)                                                                                                                                                                                                                                                                       |
+| Smoke  | `tests/smoke/`  | `next start` on port 3219, called with `fetch`           | every public page in both languages (status, language, one `h1`, canonical, JSON-LD), redirects, 404, security headers, sitemap, PDFs, drafts, the list and each post (JSON-LD, images, sharing images), home, feed and sitemap, the protected post over HTTP (HTML, RSC, images, optimizer, cookies) and `.next/static`, the admin gate, and a lead from the form to the admin and to lotus                                                       |
 
 What is deliberately tested as a guard against regressions:
 
@@ -53,18 +59,23 @@ What is deliberately tested as a guard against regressions:
   characters.
 - **No personal data in logs**: tests read what was logged and look for the name, the
   address and the message.
-- **Closed by default**: the admin and the cron routes are tested without their
-  variables, with wrong ones, then with the right ones.
+- **Closed by default**: the admin, the cron routes and protected posts are tested
+  without their variables, with wrong ones, then with the right ones.
+- **Protected posts leak nothing**: without a valid cookie, no sentence of the post in
+  the HTML, the RSC answer, its images, the image optimizer or `.next/static`; every
+  protected post is in the `matcher` of `proxy.ts`.
+- **Content matches the code**: every component an MDX file uses is registered, every
+  image it names exists (both variants of a pair) with the declared proportions.
 
 ## How tests stay away from real data
 
 - [tests/helpers/setup.ts](../../tests/helpers/setup.ts) runs before each unit and route
-  test: it sets `LEADS_MEMORY_STORE=1`, empties `DATABASE_URL`, the admin credentials, the
-  cron secret and the lotus variables, and clears the in-memory stores. A test turns on
+  test: it sets `LEADS_MEMORY_STORE=1`, empties `DATABASE_URL`, `VERCEL_ENV`, the admin
+  credentials, the cron secret, the lotus variables and the protected posts variables, and clears the in-memory stores. A test turns on
   what it needs with `vi.stubEnv`; the environment is restored after each test.
 - The smoke setup ([global-setup.ts](../../tests/smoke/global-setup.ts)) starts the site
   with the same empty variables (a variable already set wins over `.env.local`), its own
-  admin credentials and cron secret, and a stand-in for lotus on port 3220.
+  admin credentials, cron secret and protected posts password and secret, and a stand-in for lotus on port 3220.
 - `fetch` is never left free in unit tests: lotus is `mockLotus`
   ([tests/helpers/lotus.ts](../../tests/helpers/lotus.ts)).
 
@@ -78,7 +89,7 @@ What is deliberately tested as a guard against regressions:
 - **`next/headers`** is mocked where a guard reads the request headers (CSV export).
 - **`NextRequest` outside a server** does not know `trailingSlash`: the route test of the
   proxy tolerates a missing final slash, and the smoke test checks the real redirect.
-- **Drafts** are hidden when `NODE_ENV` is not `development`; tests switch it with
+- **Drafts** are visible when `NODE_ENV` is `development` or `VERCEL_ENV` is `preview`; tests switch both with
   `vi.stubEnv`.
 - Smoke tests share one server and one memory: they use unique e-mail addresses and never
   assume the store is empty.
@@ -96,8 +107,9 @@ A new feature comes with its tests, in the same change.
 
 ## State and limits
 
-- No browser test: the contact dialog, the theme and the layout are not exercised by the
-  suite. They are checked by hand (and were, with headless Chrome, when built).
+- No browser test: the contact dialog, the password form, the theme and the layout are
+  not exercised by the suite. They are checked by hand (the posts section was, with
+  Playwright at 375 and 1280 px in both modes, when built).
 - The Neon store is not run by the tests (no database in CI): its SQL is checked by hand
   against the database when it changes. The memory store follows the same contract and is
   what the tests exercise.

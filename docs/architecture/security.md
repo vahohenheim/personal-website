@@ -2,9 +2,11 @@
 title: Security headers
 description: Content Security Policy and security headers set on every route, and what they imply for images, fonts and third-party services.
 related_code:
+  - ../../lib/posts/access.ts
+  - ../../app/api/posts/unlock/route.ts
   - ../../next.config.ts
   - ../../public/.well-known/security.txt
-last_updated: 2026-10-12
+last_updated: 2026-10-14
 ---
 
 # Security headers
@@ -46,6 +48,9 @@ service therefore starts with a change to the policy.
   origin is blocked until the policy allows it. Open the policy explicitly, document it
   here and record it in the request log.
 - **SVG.** `images.dangerouslyAllowSVG` is on, with a sandboxed policy for optimised images.
+- **Image optimizer.** `images.localPatterns` limits it to the portrait. It reads
+  `public/` without going through `proxy.ts`, so it must never reach the images of a
+  protected post; post images are served unoptimized.
 
 ## Contact form and admin
 
@@ -68,6 +73,12 @@ The site now accepts input and has a private area. What protects them:
   sends (`CRON_SECRET`), compared in constant time, and is closed without it. The Vercel
   token it uses stays on the server and is never logged
   ([analytics.md](../features/analytics.md)).
+- **Protected posts:** the page, its sharing image and its images are gated by
+  `proxy.ts`, which runs before the cache and `public/`. Access is a cookie
+  (`HttpOnly; Secure; SameSite=Lax`, 30 days) signed with an HMAC of the slug and the
+  expiry; the password is compared in constant time; closed without its two variables;
+  one neutral refusal; nothing logged. Not in place: a rate limit beyond BotID. See
+  [posts.md](../features/posts.md#protected-posts).
 - **CSP:** unchanged. BotID is loaded through same-origin rewrites added by `withBotId`,
   and the form posts to the site's own origin.
 

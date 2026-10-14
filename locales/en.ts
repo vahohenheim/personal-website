@@ -74,7 +74,7 @@ const en = {
       {
         heading: "Cookies and local storage",
         paragraphs: [
-          "The site keeps in your browser, and only when you act: the language you chose (a cookie named NEXT_LOCALE, kept for one year), the light or dark theme (local storage) and, after you send the form, the date it was sent (local storage), to confirm that your message has gone. None of this is used to track you or needs consent.",
+          "The site keeps in your browser, and only when you act: the language you chose (a cookie named NEXT_LOCALE, kept for one year), the light or dark theme (local storage) and, after you send the form, the date it was sent (local storage), to confirm that your message has gone. A post protected by a password sets, once the right password is entered, a cookie named post_access_ followed by the name of the post, kept for 30 days: it only proves that this browser may read that post, and is strictly necessary to open it. None of this is used to track you or needs consent.",
         ],
       },
       {
@@ -161,16 +161,43 @@ const en = {
   posts: {
     title: "Posts",
     breadcrumb: "posts",
-    lead: "Retrospectives and notes on front-end architecture, design systems and quality.",
+    lead: "My projects told end to end, and notes on front-end architecture, design systems and quality.",
     feed: "rss feed →",
     draft: "draft",
     published: "Published on {date}",
     updated: "Updated on {date}",
     back: "← all posts",
+    readingTime: "{minutes}\u00a0min read",
+    toc: "contents",
+    tags: "Keywords",
+    next: "next post →",
+    section: "Projects",
+    readPost: "read the post",
+    home: {
+      title: "posts",
+      all: "all posts →",
+    },
+    unlock: {
+      title: "Protected post",
+      text: "This post is not public. Enter the password you were given to read it.",
+      password: "password",
+      submit: "Read the post",
+      sending: "Checking…",
+      shareLabel: "protected post",
+      metadata: {
+        title: "Protected post | valentinbourreau",
+        description: "A post readable with a password only.",
+      },
+      errors: {
+        refused: "This password does not open the post.",
+        invalid_body: "The form could not be read. Reload the page and try again.",
+        network: "Cannot connect. Check your network and try again.",
+      },
+    },
     metadata: {
       title: "Posts · front-end architecture, design systems, quality | valentinbourreau",
       description:
-        "Retrospectives and notes by Valentin Bourreau, senior front-end engineer: front-end architecture, design systems, quality and team leadership.",
+        "Projects and notes by Valentin Bourreau, senior front-end engineer: front-end architecture, design systems, quality and team leadership.",
     },
   },
   home: content.home,

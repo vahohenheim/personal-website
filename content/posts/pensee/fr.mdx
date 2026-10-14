@@ -1,0 +1,438 @@
+{/* Article draft prepared with Valentin on 2026-10-14. Components: see content/posts/README.md. */}
+
+<Screens
+  variant="hero"
+  caption="Notes, éditeur, Recul de la semaine. Toutes les notes montrées ici sont inventées."
+>
+  <Screen
+    src="/posts/pensee/ecran-notes"
+    alt="Écran Notes : carte du bulletin de la semaine, puis les notes du dimanche 11 et du samedi 10 octobre, l’heure en avant."
+  />
+  <Screen
+    src="/posts/pensee/ecran-editeur"
+    alt="Écran Éditeur : une note avec un titre, une liste et une citation, le menu « / » ouvert et la barre de mise en forme au-dessus du clavier."
+  />
+  <Screen
+    src="/posts/pensee/ecran-recul"
+    alt="Écran Recul de la semaine 41 : en bref, où tu en es, et l’humeur estimée par jour, en hausse depuis le 10."
+  />
+</Screens>
+
+<ProjectSheet
+  rows={[
+    ["rôle", "Produit, specs, design, développement"],
+    ["période", "Octobre 2026 · deux jours de construction, 12–13 oct."],
+    ["plateforme", "iPhone uniquement, un seul utilisateur"],
+    [
+      "stack",
+      "Expo SDK 57, Tiptap, expo-sqlite + Drizzle · Next.js 16, Neon, Better Auth · API Claude",
+    ],
+    ["en chiffres", "119 commits, ~34 000 lignes de TypeScript, ~800 tests, 10 ADR"],
+  ]}
+  status="En ligne"
+/>
+
+<Section n="01" label="contexte" title="Pourquoi un carnet de plus">
+
+Depuis 2024, j’écris mes notes dans Notion : quelques lignes, une heure, parfois trois fois par jour. Ça marche tant qu’on a du réseau et qu’on ne cherche pas à relire. Je préparais alors un an de voyage en Amérique latine : réseau intermittent, fuseaux qui changent, repères qui bougent. Exactement les conditions où l’on a le plus besoin d’écrire, et celles où Notion est le moins fiable.
+
+Je voulais deux choses. Écrire n’importe où, sans jamais attendre le réseau. Et prendre du recul : relire une semaine, un mois, une année, et voir par quels états je suis passé, sans tout relire à la main.
+
+pensee est née de là. Une app iPhone, un seul utilisateur, et un parti pris : tout s’écrit d’abord sur le téléphone, et une IA relit les notes une fois par semaine pour en tirer un bulletin. Le nom vient de la fleur, la pensée ; je l’écris pensee, sans accent, pour qu’il voyage.
+
+### Cinq principes, posés avant la première ligne de code
+
+<PlusList>
+  <Plus title="L’écriture d’abord.">
+    Rien ne ralentit la frappe : pas de spinner, pas de saut de curseur, pas de modale de synchro.
+  </Plus>
+  <Plus title="Hors ligne par défaut.">
+    Le téléphone est la source de vérité. Le serveur est une sauvegarde et un moteur d’analyse.
+  </Plus>
+  <Plus title="Un recul honnête.">
+    L’IA lit, elle ne diagnostique pas. Elle cite ses sources, dit « estimé », et ne fabrique ni
+    chiffre ni citation.
+  </Plus>
+  <Plus title="Intime, donc protégé.">
+    Base chiffrée, Face ID, une note exclue de l’analyse en un geste.
+  </Plus>
+  <Plus title="Fait pour évoluer.">
+    Le Recul changera souvent. L’architecture doit rendre ces changements locaux, testables et
+    réversibles.
+  </Plus>
+</PlusList>
+
+</Section>
+
+<Section n="02" label="produit" title="Ce que fait l’app">
+
+Une note, c’est un texte riche, un jour, une heure, et éventuellement une ville. Quatre écrans portent l’essentiel.
+
+<Definitions
+  items={[
+    [
+      "notes",
+      "Les notes par jour, l’heure en avant, chaque carte coupée à trois lignes pour en voir plusieurs d’un coup d’œil. En haut, la carte du dernier bulletin, et une ligne d’état : « hors ligne · 2 notes en attente ».",
+    ],
+    [
+      "éditeur",
+      "Façon Notion : titres, listes, cases à cocher, citations, menu « / » et barre de mise en forme au-dessus du clavier. Le jour et l’heure se changent d’un geste, la ville vient du GPS, hors ligne.",
+    ],
+    [
+      "recul",
+      "Le bulletin de la semaine, du mois et de l’année : en bref, humeur estimée, moments d’écriture, phases, ce qui revient, un extrait à relire.",
+    ],
+    [
+      "synchro",
+      "Ce qui est parti, ce qui attend, les conflits éventuels, et un réglage « uniquement en wi-fi » pour les forfaits de voyage.",
+    ],
+  ]}
+/>
+
+S’y ajoutent une recherche plein texte qui marche hors ligne (SQLite FTS5, mots surlignés, filtres par période et par lieu), des réglages, l’export de toutes les notes en Markdown, et l’import de mon historique Notion.
+
+<Callout label="détail · le jour bascule à 4 h">
+  Une note écrite à 0 h 44 appartient à la veille : l’app l’affiche dans « nuit du 11 ». Un journal
+  se lit en journées vécues, pas en journées civiles. Cette règle vit dans un paquet partagé, avec
+  la semaine ISO, les mois et les saisons, et elle est la même sur le téléphone et sur le serveur.
+</Callout>
+
+</Section>
+
+<Screens caption="Les notes en mode nuit, et l’écran de synchro hors ligne. Jour et nuit sont traités à parité, avec les mêmes rôles de couleur.">
+  <Screen src="/posts/pensee/ecran-notes" mode="nuit" alt="Écran Notes en mode nuit." />
+  <Screen
+    src="/posts/pensee/ecran-synchro"
+    alt="Écran Synchronisation hors ligne : état, rythme d’envoi, destinations, file d’attente et conflits."
+  />
+</Screens>
+
+<Section n="03" label="architecture" title="L’architecture">
+
+Deux applications, un langage. Une app Expo sur le téléphone, une API Next.js sur Vercel, et entre les deux un contrat de synchro écrit une seule fois, en schémas Zod partagés. Le téléphone ne parle qu’à l’API ; l’API parle à Postgres, à l’API Claude et à Notion.
+
+</Section>
+
+<Diagram
+  src="/posts/pensee/schema-architecture"
+  width={1040}
+  height={600}
+  alt="Architecture de pensee : sur l’iPhone, l’éditeur écrit dans SQLite chiffrée, le moteur de synchro pousse et tire les notes vers l’API Next.js sur Vercel, qui range les notes dans Postgres, rédige le Recul avec l’API Claude sur déclenchement horaire de GitHub Actions, et copie chaque jour vers Notion."
+  caption="Le téléphone écrit en local et pousse ses changements ; l’API les range, les copie vers Notion et les relit chaque semaine. Les bulletins reviennent par le même pull que les notes."
+/>
+
+<Section>
+
+### Un monorepo, cinq paquets
+
+pnpm et Turborepo, TypeScript strict partout. Les paquets internes exportent directement leurs sources : Next les compile, Metro et Vitest les lisent tels quels, sans étape de build.
+
+```text
+pensee/
+├─ apps/
+│  ├─ mobile/    Expo, Expo Router, SQLite chiffrée, éditeur Tiptap
+│  └─ api/       Next.js (route handlers), Postgres Neon, Better Auth
+├─ packages/
+│  ├─ core/      types, schémas Zod, dates, saisons, Markdown
+│  ├─ recul/     pipeline IA, prompts versionnés, validateurs
+│  └─ e2e/       le code du téléphone contre les vraies routes
+└─ docs/         14 specs, 10 décisions d’architecture
+```
+
+### Les choix, et ce qu’ils ont écarté
+
+Chaque choix structurant a son ADR, un court fichier qui dit le contexte, la décision, les alternatives et leurs conséquences. En voici l’essentiel.
+
+</Section>
+
+<DecisionTable
+  columns={["sujet", "retenu", "écarté", "pourquoi"]}
+  rows={[
+    [
+      "App",
+      "Expo (React Native)",
+      "PWA, Swift",
+      "iOS peut purger le stockage d’une PWA. Swift demande un Mac pour chaque build.",
+    ],
+    [
+      "Données",
+      "SQLite, outbox maison",
+      "PowerSync, Replicache, CRDT",
+      "Un seul utilisateur : un protocole simple et testable suffit.",
+    ],
+    [
+      "Éditeur",
+      "Tiptap dans une WebView",
+      "Éditeurs 100 % natifs",
+      "Un vrai rendu riche, et un éditeur réutilisable tel quel sur le web.",
+    ],
+    [
+      "Serveur",
+      "Next.js sur Vercel, Neon",
+      "Supabase",
+      "Le même outillage que mes autres projets.",
+    ],
+    [
+      "Planification",
+      "Tick horaire par GitHub Actions",
+      "Vercel Cron",
+      "Sur le plan Hobby, un cron Vercel ne tourne qu’une fois par jour. Le bulletin, lui, suit mon fuseau.",
+    ],
+    [
+      "Connexion",
+      "Code par e-mail, jeton porteur, liste fermée",
+      "Mot de passe, OAuth",
+      "Un journal pour une personne : personne d’autre ne doit pouvoir ouvrir de compte.",
+    ],
+  ]}
+/>
+
+<Section>
+
+Deux décisions plus discrètes m’ont plu. Pas de bibliothèque de dates : `Intl.DateTimeFormat` et une arithmétique de jours en UTC, le même code dans Hermes et dans Node. Et la base mobile passe par une interface de quatre méthodes, branchée sur expo-sqlite dans l’app et sur `node:sqlite` dans les tests : le vrai SQL, recherche FTS5 comprise, tourne en CI sans simulateur.
+
+</Section>
+
+<Section n="04" label="local-first" title="Écrire sans réseau">
+
+Le téléphone écrit toujours en local d’abord. L’éditeur tourne dans une WebView ; 300 ms après la dernière frappe, il renvoie au natif le document et sa version Markdown. La note est enregistrée dans SQLite, et dans la même transaction, une opération est posée dans une _outbox_.
+
+Cette outbox est coalescée : elle garde une seule opération en attente par note, sa dernière version complète. Écrire cinq minutes d’affilée ne crée pas soixante envois, mais un seul à la fois. Le rythme d’envoi est un debounce avec plafond : 2 s après la dernière frappe, et au plus tard 5 s après la première modification non envoyée.
+
+</Section>
+
+<Diagram
+  src="/posts/pensee/schema-synchro"
+  width={1040}
+  height={360}
+  alt="Chronologie d’envoi : frappes à 0, 0,8, 1,9, 3,5 et 5,6 secondes ; un premier envoi part à 5 secondes, plafond atteint ; un second à 7,6 secondes, après 2 secondes de silence."
+  caption="Tant que j’écris sans m’arrêter, le plafond de 5 s force un envoi ; dès que je m’arrête 2 s, la fin part. Un seul envoi en vol à la fois."
+/>
+
+<Section>
+
+Hors ligne, le planificateur ne tente rien et ne journalise aucune erreur : l’outbox grossit, c’est normal. Tout repart au retour du réseau, au retour au premier plan, et dans la tâche de fond qu’iOS veut bien accorder.
+
+### Un protocole à deux routes
+
+`push` envoie les opérations, chacune avec un identifiant pour l’idempotence et la révision serveur sur laquelle elle s’appuie. Si cette révision est la bonne, le serveur accepte et incrémente. Sinon, il n’écrase rien et renvoie sa version. `pull` rapporte tout ce qui a changé depuis un curseur, bulletins compris, sauf sur la note ouverte : ses changements attendent qu’on la ferme.
+
+En cas de conflit, les deux versions sont gardées et le choix m’est proposé à la fermeture de la note, jamais pendant la frappe : garder la mienne, l’autre, ou les deux. Pas de CRDT, volontairement.
+
+> Dans un journal intime, une fusion silencieuse est pire qu’une question.
+
+### Notion, en copie lisible
+
+Je voulais garder mes notes lisibles dans Notion. L’API Notion tient environ trois requêtes par seconde : pas question de la suivre au rythme de la frappe. Le serveur met chaque jour modifié en file, 60 s après la dernière modification, puis réécrit la page de ce jour en entier. Une empreinte du contenu évite d’envoyer une page identique, et une page ne peut jamais être dupliquée. Le sens est unique : pensee vers Notion, jamais l’inverse.
+
+</Section>
+
+<Section n="05" label="ia" title="Le Recul : une IA qui relit un journal">
+
+C’est le cœur du projet, et la partie qui changera le plus. Chaque lundi à 5 h, heure locale du téléphone, un pipeline relit les notes de la semaine et écrit trois bulletins : la semaine écoulée, le mois, l’année. Le fuseau est envoyé à chaque synchro : le Recul suit mes changements de fuseau.
+
+Au départ, il tournait chaque nuit. L’estimation, environ 0,30 $ par jour dont plus de la moitié pour réécrire le bulletin de l’année, m’a fait passer à une fois par semaine : de l’ordre de 0,35 $ la semaine. Ce sont des estimations. Un bouton « Mettre à jour le recul » reste là pour un bulletin en milieu de semaine.
+
+</Section>
+
+<PullQuote>Les chiffres viennent du code, les mots viennent du modèle.</PullQuote>
+
+<Diagram
+  src="/posts/pensee/schema-recul"
+  width={1040}
+  height={600}
+  alt="Pipeline du Recul : les notes non exclues sont annotées par Haiku, résumées par jour puis par semaine et par mois avec Sonnet ; les statistiques sont calculées par le code ; la rédaction des bulletins passe par des validateurs, qui renvoient une fois au modèle en cas de refus, puis le bulletin publié descend vers le téléphone."
+  caption="Le modèle ne relit jamais une année de notes brutes : chaque échelle s’appuie sur la précédente. Les statistiques sont calculées par le code, et rien n’est publié sans passer les validateurs."
+/>
+
+<Section>
+
+### Construire par étages
+
+Chaque note est d’abord annotée par Haiku : humeur estimée entre −1 et 1, sujets, activités, passages sensibles. Sonnet résume ensuite chaque jour, puis les semaines et les mois. Les bulletins sont rédigés à partir de ces résumés, des statistiques et du contexte (lieu, saison), Opus se chargeant de l’année. Chaque étage est stocké et versionné ; une empreinte des entrées évite de rappeler le modèle quand rien n’a changé.
+
+### Des règles vérifiées par le code
+
+<PlusList>
+  <Plus title="Les chiffres viennent du code.">
+    Comptes, moyennes, tendances sont calculés en TypeScript. Un validateur refuse tout nombre écrit
+    par le modèle qui n’existe pas dans les statistiques fournies.
+  </Plus>
+  <Plus title="Les tendances sont détectées, pas inventées.">
+    Des détecteurs purs (bascule d’humeur, volume, moment de la journée, sujets) proposent des
+    candidats ; le modèle choisit et formule, il n’en crée pas.
+  </Plus>
+  <Plus title="Chaque affirmation est sourcée.">
+    Phases et motifs portent les identifiants de leurs notes, vérifiés : existantes, dans la
+    période, non exclues.
+  </Plus>
+  <Plus title="Les citations sont exactes.">
+    Un extrait entre guillemets doit être une sous-chaîne de la note, sinon il est refusé.
+  </Plus>
+  <Plus title="Lire, pas diagnostiquer.">
+    Pas de vocabulaire clinique, pas de conseil non demandé. L’humeur est « estimée, lue dans les
+    mots ». Les passages sensibles comptent dans les chiffres mais ne sont jamais cités.
+  </Plus>
+  <Plus title="Un trou reste un trou.">
+    Trop peu de notes ? Le bloc le dit, plutôt que de remplir.
+  </Plus>
+</PlusList>
+
+Si une sortie échoue aux validateurs, le modèle a droit à un seul nouvel essai, avec la liste de ses erreurs. Au second échec, on garde la version précédente du bulletin, ou à défaut les seuls blocs calculés. Les sorties sont structurées (schéma JSON imposé par l’API), la partie fixe du prompt est mise en cache, et chaque prompt porte sa version.
+
+### Un bulletin, c’est une liste de blocs
+
+Chaque bloc a un type et une version. Les uns sont calculés (humeur, moments d’écriture, sujets), les autres rédigés (en bref, phases, motifs, à relire). La mise en page par échelle est une configuration à part : on réordonne ou on masque un bloc sans toucher au prompt.
+
+```json
+{
+  "scale": "week",
+  "periodKey": "2026-W41",
+  "pipelineVersion": "recul@1.0.0",
+  "blocks": [
+    { "type": "summary", "v": 1 },
+    { "type": "mood_chart", "v": 1 },
+    { "type": "phases", "v": 1 }
+  ]
+}
+```
+
+L’app ignore proprement un type qu’elle ne connaît pas, et un bloc générique en Markdown permet d’essayer une idée sans nouvelle version de l’app. Un dernier bloc ne passe jamais par le modèle : si une note exprime une détresse forte, le bulletin affiche un message sobre et des ressources d’aide du pays où je suis.
+
+<Callout label="retour d’essai · « juste le compte des notes »">
+  Mes premiers bulletins réels n’affichaient que des chiffres. Le repli sur les blocs calculés
+  faisait son travail, mais en silence : ni l’écran ni les journaux ne disaient pourquoi le texte
+  manquait. Chaque bulletin porte maintenant ses raisons, une ligne sous le bulletin faite de noms
+  de champs et de codes, jamais d’un mot de note. Un repli silencieux est un bug d’expérience.
+</Callout>
+
+</Section>
+
+<Section n="06" label="import" title="Deux ans de Notion à rapatrier">
+
+Un carnet qui prend du recul sans mon historique n’aurait pas eu grand-chose à relire. Mes notes depuis 2024 vivent dans des sous-pages Notion, une par année ou par période, et elles devaient entrer dans pensee comme si elles y avaient été écrites : datées, rattachées à leur jour, synchronisées, puis analysées.
+
+Le parseur lit les blocs de l’API Notion, pas un export Markdown : le gras y est fiable, et c’est lui qui marque souvent l’heure. Il a fallu composer avec deux époques d’écriture.
+
+<Definitions
+  items={[
+    [
+      "2024–2025",
+      "Jours en anglais (« Tuesday 31 December »), heure seule dans un paragraphe en gras, heures souvent décroissantes, des bilans mensuels glissés entre deux jours.",
+    ],
+    [
+      "2026",
+      "Jours en français, heure en tête de paragraphe (« 10h24 : »), parfois avec une étiquette, heures croissantes.",
+    ],
+  ]}
+/>
+
+Les titres de jour ne portent presque jamais l’année : elle se déduit du titre de la sous-page, « 2024 » ou « janvier 2026 → octobre 2026 ». Quand un titre donne le jour de la semaine, il sert de contrôle ; s’il ne colle pas, l’app signale une anomalie et propose la date la plus proche qui correspond. Le parseur tolère une faute de frappe par mot : « Thuesday » reste un mardi. Les anomalies se tranchent dans l’app, une par une, avant que rien ne soit écrit.
+
+La lecture avance par tranches de quatre minutes au plus, chacune dans une requête ordinaire. Chaque lot de cent blocs est enregistré dans la même transaction que le curseur Notion de sa page : une coupure ne perd que le lot en cours. Un bail garantit un seul lecteur, et le tick horaire continue l’import quand l’app est fermée.
+
+L’analyse de cet historique ne passe pas par le run du lundi. Je la lance à la main, par lots de 50, 200 ou 1 000 notes envoyés à l’API Message Batches de Claude, deux fois moins chère : le coût estimé s’affiche avant l’envoi, le coût réel après.
+
+</Section>
+
+<Section n="07" label="vie privée" title="Intime, donc protégé">
+
+Chaque décision technique se juge à une question : qu’arrive-t-il si ce téléphone est perdu, si ce serveur fuit, si ce journal d’erreurs est lu ?
+
+<PlusList>
+  <Plus title="Base chiffrée sur l’appareil">
+    avec SQLCipher. La clé, 32 octets aléatoires, reste dans le trousseau iOS, jamais copiée dans
+    iCloud ni sur un autre appareil.
+  </Plus>
+  <Plus title="Face ID">
+    à l’ouverture et après cinq minutes en arrière-plan, aperçu masqué dans le sélecteur d’apps.
+  </Plus>
+  <Plus title="Journaux sans contenu.">
+    Identifiants, compteurs, durées, codes d’erreur. Un test vérifie que le logger retire tout champ
+    de texte.
+  </Plus>
+  <Plus title="Chaque route filtrée par utilisateur.">
+    Un test lit les fichiers de routes et échoue si l’une d’elles oublie le garde.
+  </Plus>
+  <Plus title="Une note exclue en un appui long">
+    n’est plus jamais envoyée au modèle. Les notifications restent génériques, le lieu est arrondi à
+    un kilomètre.
+  </Plus>
+  <Plus title="Aucune vraie note dans le repo.">
+    Les tests tournent sur des semaines inventées, écrites pour couvrir les cas difficiles.
+  </Plus>
+</PlusList>
+
+Le compromis est assumé : pas de chiffrement de bout en bout. Un serveur aveugle ne pourrait pas faire tourner le Recul. Pour un outil à un seul utilisateur, un serveur de confiance suffit ; si l’app s’ouvrait à d’autres, ce serait la première décision à rouvrir.
+
+</Section>
+
+<Section n="08" label="méthode" title="Construire depuis un téléphone">
+
+Je voulais pouvoir mener ce projet sans ordinateur : un éditeur de code sur mon téléphone, GitHub pour le code, Vercel et EAS pour construire dans le cloud. Ça a imposé une méthode.
+
+D’abord les specs, avant la moindre ligne de code. Quatorze documents : vision, architecture, modèle de données, éditeur, synchro, Recul, design system, écrans, sécurité, tests, déploiement, feuille de route en dix jalons, import. Les maquettes ensuite, neuf écrans en jour et en nuit, dessinés avec ma charte. Puis deux fichiers qui font tout tenir : les règles de travail, et `PROGRESS.md`, le point de reprise.
+
+Chaque session de travail part de `PROGRESS.md` et de la tâche qu’il désigne, et finit par la mise à jour du journal : ce qui a été fait, les commandes de vérification et leur résultat, ce qui n’a _pas_ été vérifié, et une seule prochaine tâche, assez précise pour être reprise à froid.
+
+</Section>
+
+<Diagram
+  src="/posts/pensee/schema-methode"
+  width={1040}
+  height={480}
+  alt="Boucle de travail : specs et maquettes, puis PROGRESS.md qui donne la prochaine tâche, une session de développement, la CI, le déploiement, l’essai et les retours depuis le téléphone, qui mettent à jour les specs."
+  caption="La boucle de travail. Quand le code doit s’écarter des specs, la spec est mise à jour d’abord, avec un ADR si la décision est structurante."
+/>
+
+<Stats
+  items={[
+    ["durée", "2 jours"],
+    ["commits", "119"],
+    ["lignes de ts", "~34 000"],
+    ["tests", "~800"],
+    ["adr", "10"],
+  ]}
+/>
+
+<Section>
+
+### Des tests qui remplacent le simulateur
+
+Sans Mac sous la main, les tests sont mes yeux. Vitest pour les paquets et l’API (Postgres en mémoire avec PGlite), Jest pour l’app, un paquet de bout en bout qui fait tourner le vrai code du téléphone contre les vraies routes de l’API, et neuf parcours Maestro pour les écrans. Un test vérifie même que chaque bouton a un libellé et une cible d’au moins 44 pt : il a trouvé un interrupteur natif de 31 pt.
+
+### Mon rôle : essayer, rapporter, arbitrer
+
+Les outils accélèrent l’écriture du code ; les décisions restent les miennes. La cadence du Recul, son coût, ce que Notion doit recevoir, ce qui compte vraiment. Et les retours d’essai, rapportés tels quels.
+
+<Definitions
+  stacked
+  items={[
+    [
+      "« Je ne suis pas notifié, je ne sais pas combien de temps ça dure, je peux relancer le même. »",
+      "La route de mise à jour répondait à la fin du run, jusqu’à cinq minutes, quand le téléphone abandonnait au bout de vingt secondes. Elle répond désormais tout de suite, refuse un doublon, et l’écran suit le run avec une horloge : « Mise à jour en cours · 1:07 ».",
+    ],
+  ]}
+/>
+
+</Section>
+
+<Section n="09" label="bilan" title="Ce que j’en retiens">
+
+<PlusList>
+  <Plus title="Une spec précise vaut mieux qu’une longue explication.">
+    Elle se relit, se corrige, et sert de contrat à chaque session.
+  </Plus>
+  <Plus title="Écrire ce qui n’est pas vérifié.">
+    C’est la ligne la plus utile du journal : elle dit où regarder au premier essai.
+  </Plus>
+  <Plus title="Séparer les chiffres et les mots rend une IA vérifiable.">
+    Le modèle rédige, le code compte et contrôle.
+  </Plus>
+  <Plus title="Le métier se déplace vers l’arbitrage.">
+    Choisir, trancher entre coût, confort et confiance : le rôle de pont que j’aime tenir entre les
+    services, tenu cette fois entre le produit et sa technique.
+  </Plus>
+</PlusList>
+
+</Section>

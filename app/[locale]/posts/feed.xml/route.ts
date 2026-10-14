@@ -1,5 +1,5 @@
 import { SITE_NAME, SITE_URL } from "@/lib/constants/site";
-import { getFeedPath, getPosts, getPostsPath, getPostUrl } from "@/lib/helpers/posts";
+import { getFeedPath, getIndexablePosts, getPostsPath, getPostUrl } from "@/lib/helpers/posts";
 import { hasLocale, LOCALES } from "@/lib/i18n/config";
 import en from "@/locales/en";
 import fr from "@/locales/fr";
@@ -23,7 +23,8 @@ const escape = (text: string) =>
 /** RSS feed of the posts of one language. */
 export async function GET(_request: Request, { params }: RouteContext<"/[locale]/posts/feed.xml">) {
   const { locale } = await params;
-  const posts = hasLocale(locale) ? getPosts(locale) : [];
+  // Never a draft nor a protected post, even on a preview deployment.
+  const posts = hasLocale(locale) ? getIndexablePosts(locale) : [];
 
   if (!hasLocale(locale) || posts.length === 0) {
     return new Response("Not found", { status: 404 });
@@ -38,7 +39,12 @@ export async function GET(_request: Request, { params }: RouteContext<"/[locale]
       <link>${getPostUrl(post.slug, locale)}</link>
       <guid isPermaLink="true">${getPostUrl(post.slug, locale)}</guid>
       <pubDate>${new Date(post.publishedAt).toUTCString()}</pubDate>
-      <description>${escape(post.description)}</description>
+      <description>${escape(post.lead)}</description>${post.tags
+        .map(
+          (tag) => `
+      <category>${escape(tag)}</category>`,
+        )
+        .join("")}
     </item>`,
     )
     .join("");

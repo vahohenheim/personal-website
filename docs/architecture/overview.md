@@ -8,7 +8,7 @@ related_code:
   - ../../proxy.ts
   - ../../next.config.ts
   - ../../package.json
-last_updated: 2026-10-12
+last_updated: 2026-10-14
 ---
 
 # Architecture overview
@@ -16,7 +16,7 @@ last_updated: 2026-10-12
 **Summary.** The site is a Next.js 16 application (App Router, Turbopack) deployed on
 Vercel. Its public pages (home, resume, legal notice, and posts written in MDX), each in French
 and English, are generated at build time. Five things run on the server: `proxy.ts`
-(locale redirect and the gate of the admin area), `POST /api/contact/` (the contact form,
+(locale redirect, the gate of the admin area and of protected posts), `POST /api/contact/` (the contact form,
 stored in a Neon database), `POST /api/events/` (anonymous counters of the contact form),
 `/admin` (the dashboard of leads, conversion and audience figures) and two daily crons:
 one copies the audience figures from Vercel to Neon, the other sends again to lotus the
@@ -74,14 +74,16 @@ app/
     [...rest]/page.tsx      Catch-all that sends unknown URLs to not-found.tsx
     resume/page.tsx         Resume
     resume/print/page.tsx   The resume on one A4 sheet, printed to public/cv-<locale>.pdf
-    posts/                  List of posts, a post ([slug]), RSS feed (feed.xml)
+    posts/                  List of posts, a post and its sharing image ([slug]), RSS feed (feed.xml)
+    unlock/[slug]/page.tsx  Password form of a protected post, shown by proxy.ts at its URL
     legal/page.tsx          Legal notice and privacy
   admin/                    Dashboard of leads: own root layout, French only
   api/contact/route.ts      Receives a lead from the contact dialog
   api/events/route.ts       Counts a step of the contact dialog
+  api/posts/unlock/route.ts Exchanges the password of a protected post for a signed cookie
   api/cron/                 Scheduled jobs: copy of the audience figures, lotus retry
 components/                 One folder per component (header, avatar, breadcrumb,
-                            profile-card, changelog-entry, project-card…)
+                            profile-card, changelog-entry, project-card, post-*…)
   ui/                       shadcn/ui components, restyled for the charter
 lib/
   i18n/                     Locales, getLocale, getDictionary
@@ -92,15 +94,17 @@ lib/
   analytics/                Vercel Web Analytics client, daily snapshot, storage, report
   db/                       Neon client
   admin/                    Authentication, guard and figures of the admin
+  posts/                    MDX source reading (reading time, summary), access to protected posts
   models/                   Types: page contents (content.ts) and resume data
   constants/                Site data used by the structured data, page registry
   helpers/                  metadata.ts, json-ld.ts, posts.ts, og-fonts.ts
   utils/                    cn.ts
 content/posts/              Posts: <slug>/<locale>.mdx
-mdx-components.tsx          How the elements of a post are drawn
+public/posts/               Images of the posts: <slug>/<name>[-jour|-nuit].webp
+mdx-components.tsx          The MDX components of a post and how its elements are drawn
 locales/                    en.ts, fr.ts: dictionaries
   content/                  en.ts, fr.ts: texts of the home page and the resume
-proxy.ts                    Locale redirect and gate of /admin
+proxy.ts                    Locale redirect, gate of /admin and of protected posts
 instrumentation-client.ts   Routes protected by Vercel BotID
 db/                         schema.sql and its setup script
 scripts/                    cv-pdf.mjs: prints the resume PDFs

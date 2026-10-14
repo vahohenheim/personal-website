@@ -13,7 +13,7 @@ related_code:
   - ../../lib/constants/pages.ts
   - ../../locales/content/fr.ts
   - ../../locales/content/en.ts
-last_updated: 2026-10-12
+last_updated: 2026-10-14
 ---
 
 # Pages
@@ -59,6 +59,18 @@ A list and one page per post, written in MDX. The list is declared in `PAGES`; p
 declared in their own registry. Both only exist in a language once a post is published in
 it. See [posts.md](posts.md).
 
+- **List:** per post, the date and reading time in mono, the title as a link, the
+  description and the tags.
+- **Post:** trail `~/articles/<slug>`, title, lead, a mono line with the date and the
+  reading time, tags; the summary in a sticky right column on wide screens (above the
+  body on phones); the body; a link to the next post and one back to the list.
+- **Home page block:** "articles", between the changelog and the projects: the three
+  latest posts, in the grammar of the changelog, and "tous les articles →". Absent in a
+  language without a listed post.
+- **Project cards:** "lire l’article →" when a listed post is about the project.
+- **Password page** (`/[locale]/unlock/<slug>/`): shown by `proxy.ts` at the URL of a
+  protected post until the password is given; `noindex`, never linked.
+
 ## Legal notice and privacy: `/[locale]/legal/`
 
 [app/[locale]/legal/page.tsx](../../app/[locale]/legal/page.tsx) renders the sections of
@@ -84,8 +96,10 @@ bump `updatedAt` for `legal` in `PAGES`.
 ## Header and footers
 
 The header is rendered by the root layout. Its links are `cv` (the resume), `projets` and
-`contact` (the two anchors of the home page), `articles` once a post is published in the
-language, the language link and the theme button.
+`contact` (the two anchors of the home page), `articles` once a public post is published
+in the language, the language link and the theme button. From a post that has no version
+in the other language (or a protected post), the language link goes to the list of the
+other language, or its home page.
 Each page renders its own footer: the home page ends with its contact section, the other
 pages with `SiteFooterComponent`.
 

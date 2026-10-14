@@ -75,7 +75,7 @@ const fr: Dictionary = {
       {
         heading: "Cookies et stockage local",
         paragraphs: [
-          "Le site conserve dans votre navigateur, et seulement quand vous agissez\u00a0: la langue choisie (un cookie nommé NEXT_LOCALE, conservé un an), le thème clair ou sombre (stockage local) et, après l’envoi du formulaire, la date de cet envoi (stockage local), pour vous confirmer que votre message est parti. Rien de cela ne sert à vous suivre ni ne nécessite de consentement.",
+          "Le site conserve dans votre navigateur, et seulement quand vous agissez\u00a0: la langue choisie (un cookie nommé NEXT_LOCALE, conservé un an), le thème clair ou sombre (stockage local) et, après l’envoi du formulaire, la date de cet envoi (stockage local), pour vous confirmer que votre message est parti. Un article protégé par un mot de passe dépose, une fois le bon mot de passe saisi, un cookie nommé post_access_ suivi du nom de l’article, conservé 30\u00a0jours\u00a0: il prouve seulement que ce navigateur peut lire cet article, et il est strictement nécessaire pour l’ouvrir. Rien de cela ne sert à vous suivre ni ne nécessite de consentement.",
         ],
       },
       {
@@ -163,16 +163,43 @@ const fr: Dictionary = {
   posts: {
     title: "Articles",
     breadcrumb: "articles",
-    lead: "Rétrospectives et notes sur l’architecture front-end, les design systems et la qualité.",
+    lead: "Mes projets racontés de bout en bout, et des notes sur l’architecture front-end, les design systems et la qualité.",
     feed: "flux rss →",
     draft: "brouillon",
     published: "Publié le {date}",
     updated: "Mis à jour le {date}",
     back: "← tous les articles",
+    readingTime: "{minutes}\u00a0min de lecture",
+    toc: "sommaire",
+    tags: "Mots-clés",
+    next: "article suivant →",
+    section: "Projets",
+    readPost: "lire l’article",
+    home: {
+      title: "articles",
+      all: "tous les articles →",
+    },
+    unlock: {
+      title: "Article protégé",
+      text: "Cet article n’est pas public. Saisissez le mot de passe qui vous a été communiqué pour le lire.",
+      password: "mot de passe",
+      submit: "Lire l’article",
+      sending: "Vérification…",
+      shareLabel: "article protégé",
+      metadata: {
+        title: "Article protégé | valentinbourreau",
+        description: "Un article lisible avec un mot de passe seulement.",
+      },
+      errors: {
+        refused: "Ce mot de passe n’ouvre pas l’article.",
+        invalid_body: "Le formulaire n’a pas pu être lu. Rechargez la page et réessayez.",
+        network: "Connexion impossible. Vérifiez votre réseau et réessayez.",
+      },
+    },
     metadata: {
       title: "Articles · architecture front-end, design systems, qualité | valentinbourreau",
       description:
-        "Rétrospectives et notes de Valentin Bourreau, ingénieur front-end senior\u00a0: architecture front-end, design systems, qualité et lead technique.",
+        "Projets et notes de Valentin Bourreau, ingénieur front-end senior\u00a0: architecture front-end, design systems, qualité et lead technique.",
     },
   },
   home: content.home,

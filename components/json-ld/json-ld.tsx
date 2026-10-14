@@ -6,8 +6,7 @@ type JsonLdComponentProps = { page: PageId } | { post: LocalizedPost };
 
 /** Structured data of a page or of a post. Render it once, at the top of the page component. */
 const JsonLdComponent = async (props: JsonLdComponentProps) => {
-  const jsonLd =
-    "post" in props ? await getPostJsonLd(props.post) : await getPageJsonLd(props.page);
+  const jsonLd = "post" in props ? getPostJsonLd(props.post) : await getPageJsonLd(props.page);
 
   return (
     <script

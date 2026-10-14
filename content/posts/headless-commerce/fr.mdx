@@ -1,0 +1,334 @@
+{/* Article prepared with Valentin on 2026-10-14, anonymised. Protected: see content/posts/README.md. */}
+
+<Diagram
+  variant="hero"
+  src="/posts/headless-commerce/schema-architecture"
+  width={1040}
+  height={600}
+  alt="Architecture du front : le navigateur passe par Cloudflare (WAF, CDN), puis par l’application Next.js sur Vercel, qui assemble côté serveur quatre sources : le back e-commerce et le CMS en GraphQL, Algolia pour la recherche, et une passerelle Gravitee devant l’ERP. Le CMS rappelle le front par webhook à chaque publication."
+  caption="Un front qui ne possède aucune donnée : il assemble, côté serveur, ce que lui donnent quatre services. Aucun jeton ni aucune clé ne quitte le serveur."
+/>
+
+<ProjectSheet
+  rows={[
+    [
+      "contexte",
+      "Refonte d’un e-commerce B2B international, dans une équipe produit d’une dizaine de personnes",
+    ],
+    [
+      "rôle",
+      "Ingénieur front-end pendant six mois, puis lead tech front-end pendant un an et demi",
+    ],
+    [
+      "périmètre",
+      "Une base de code pour six vitrines : plusieurs pays, un site export, un site revendeurs",
+    ],
+    [
+      "stack",
+      "Next.js 16, React 19, TypeScript · GraphQL, urql, gql.tada · Contentful · Algolia · Gravitee · Vercel, Cloudflare",
+    ],
+    ["en chiffres", "~70 pages, ~1 100 composants, ~40 types de contenu, 17 locales"],
+  ]}
+  status="En ligne"
+/>
+
+<Section n="01" label="contexte" title="Sortir d’un monolithe">
+
+L’entreprise vendait à des professionnels, dans plusieurs pays, depuis un e-commerce monolithique : le même back gérait le catalogue, les prix, les commandes, et rendait aussi les pages. Chaque évolution de vitrine passait par lui, chaque pic de trafic aussi.
+
+La refonte a séparé les deux. Le back e-commerce garde le métier et l’expose en GraphQL ; un front Next.js, déployé à part, rend les pages. J’y suis arrivé comme ingénieur front-end, puis j’ai tenu le lead technique du front pendant un an et demi, dans une équipe produit d’une dizaine de personnes : produit, design, back, front et recette.
+
+### Une base de code, six vitrines
+
+Une seule application sert six vitrines B2B : plusieurs pays, un site export et un site revendeurs, avec dix-sept locales de routage. C’est le domaine qui choisit la vitrine : le proxy lit l’hôte, charge la configuration du site (catalogue, prix, moyens de paiement, consentement) et la garde pour toute la requête.
+
+<Callout label="règle de la maison · la locale n’est pas le magasin">
+  Dix-sept locales, neuf fichiers de traduction et six configurations ne se recoupent pas. La locale
+  ne choisit que la langue ; tout ce qui est commercial se branche sur la configuration du site,
+  jamais sur la locale.
+</Callout>
+
+</Section>
+
+<Section n="02" label="architecture" title="Un front, quatre sources">
+
+Le front ne possède aucune donnée. Les Server Components assemblent, côté serveur, le back e-commerce en GraphQL pour presque tout (catalogue, panier, checkout, comptes et entreprises B2B, commandes, offres de prix), le CMS en GraphQL pour le contenu éditorial, Algolia pour la recherche, et une passerelle d’API devant l’ERP pour les factures. Cloudflare filtre devant, Vercel exécute, dans une seule région proche des backs.
+
+La session tient dans un cookie chiffré, sans store côté serveur : jeton client du back, magasin, permissions. Les en-têtes d’authentification ne sont construits que sur le serveur, et chaque appel dit s’il exige une session, l’accepte ou s’en passe.
+
+### Mettre en cache des données, pas des pages
+
+Prix, stocks et visibilité dépendent du client connecté : presque toutes les pages sont rendues à la demande. Ce qui est mis en cache, ce sont les appels. Chaque service déclare son tag ; une Server Action qui modifie une donnée invalide le sien avec `updateTag`, et trois routes protégées purgent par cible, dont celle qu’appelle le webhook de publication du CMS. Une page d’administration interne déclenche ces purges sur tous les domaines à la fois.
+
+Le piège tient en une ligne : un cache par défaut est dangereux pour des données de session. Chaque lecture mise en cache dit donc ce qui la fait varier, groupe de clients ou magasin compris.
+
+### Un proxy composé en oignon
+
+Sept middlewares s’enchaînent dans `proxy.ts` : accès protégé des environnements de recette, redirection d’authentification, réécriture des routes d’API, résolution du site par le domaine, redirections des anciennes URL, maintenance, langues. La maintenance se pilote sans déploiement : un drapeau par domaine dans Edge Config sert une page 503. L’ordre compte, et il est documenté.
+
+### La recherche, côté serveur
+
+Algolia est interrogé uniquement depuis le serveur, avec un index par magasin plutôt que par langue. La configuration des facettes vient du back e-commerce, l’état de la recherche vit dans l’URL, et le cache des résultats intègre ce qui les fait varier, comme le groupe de clients. Le catalogue personnalisé à télécharger s’appuie sur les mêmes recherches.
+
+</Section>
+
+<Section n="03" label="graphql" title="Des types GraphQL sans génération de code">
+
+Deux schémas GraphQL, celui du back e-commerce et celui du CMS, et pas d’étape de codegen, pas de dossier `generated/`. Les types sont inférés par TypeScript, directement depuis les chaînes de requête, avec gql.tada.
+
+</Section>
+
+<Diagram
+  src="/posts/headless-commerce/schema-types"
+  width={1040}
+  height={440}
+  alt="Chaîne de typage : un script d’introspection interroge l’endpoint GraphQL et écrit schema.json, versionné ; le plugin TypeScript en tire graphql-env.d.ts ; un loader par schéma type les requêtes écrites dans le code ; chaque fragment est converti en type métier. La CI casse si une requête ne correspond plus au schéma versionné."
+  caption="Du schéma au type métier. L’introspection se relance à la main quand le back change ; tout le reste est vérifié par le compilateur, dans l’éditeur et en CI."
+/>
+
+<Section>
+
+### L’introspection, à la main
+
+Un script par backend envoie la requête d’introspection complète à l’endpoint et écrit `schema.json`, versionné avec le code. On le relance quand le back annonce un changement de schéma : la mise à jour du schéma devient un commit, relu comme le reste.
+
+### Un plugin TypeScript pour deux schémas
+
+Les deux schémas sont déclarés dans le même plugin du `tsconfig.json`. Le plugin (GraphQLSP) écrit à côté de chaque schéma un fichier de types d’introspection, et donne l’autocomplétion et les erreurs dans l’éditeur, requête par requête.
+
+```jsonc
+"plugins": [
+  { "name": "next" },
+  {
+    "name": "gql.tada/ts-plugin",
+    "schemas": [
+      { "name": "commerce",
+        "schema": "./src/lib/commerce/graphql/schema.json",
+        "tadaOutputLocation": "./src/lib/commerce/graphql/graphql-env.d.ts" },
+      { "name": "cms",
+        "schema": "./src/lib/cms/graphql/schema.json",
+        "tadaOutputLocation": "./src/lib/cms/graphql/graphql-env.d.ts" }
+    ]
+  }
+]
+```
+
+Un loader par schéma lie ensuite ces types à une fonction de requête : `commerceGql` d’un côté, son équivalent pour le CMS de l’autre.
+
+```ts
+// src/lib/commerce/graphql/loader.ts (un par schéma)
+import { initGraphQLTada } from "gql.tada";
+import type { introspection } from "./graphql-env.js";
+
+export const commerceGql = initGraphQLTada<{ introspection: introspection }>();
+```
+
+### Le fragment comme frontière
+
+Les requêtes s’écrivent dans les services, à côté du code qui les lit, et les fragments sont colocalisés. Le masquage des fragments est systématique : chaque fragment a sa fonction `parse` qui le démasque, convertit `null` en `undefined` et rend un type métier propre. Les composants ne voient jamais la forme brute de l’API ; si le back renomme un champ, une seule fonction change.
+
+```ts
+export const MoneyFragment = commerceGql(`
+  fragment Money on Money { currency value }
+`);
+
+export function parseMoney(data: FragmentOf<typeof MoneyFragment>) {
+  const money = readFragment(MoneyFragment, data);
+  return {
+    currency: nullsToUndefined(money.currency),
+    value: nullsToUndefined(money.value),
+  };
+}
+```
+
+<Callout label="compromis · le schéma versionné">
+  La CI (`tsc --noEmit`) garantit que chaque requête correspond au schéma versionné, pas au schéma
+  déployé. Si le back change sans prévenir, rien ne le détecte avant l’exécution. Un contrôle
+  planifié qui compare l’introspection en ligne au fichier versionné est la pièce que j’aurais
+  ajoutée ensuite.
+</Callout>
+
+### Trois sources, trois façons d’échouer
+
+Un client GraphQL générique sert les deux backends, chacun avec sa stratégie d’endpoint et d’en-têtes. La politique d’erreur, elle, diffère volontairement selon ce que la page peut supporter.
+
+</Section>
+
+<DecisionTable
+  columns={["source", "en cas d’erreur", "pourquoi"]}
+  rows={[
+    [
+      "Back e-commerce",
+      "Erreur typée, interceptée par l’appelant ; une erreur d’autorisation invalide la session",
+      "Un panier ou un prix faux est pire qu’une erreur affichée.",
+    ],
+    [
+      "CMS",
+      "Contenu vide, jamais une erreur 500",
+      "Une bannière manquante ne doit pas faire tomber une page produit.",
+    ],
+    [
+      "Passerelle ERP",
+      "Seuls des codes HTTP listés sont interceptés, puis un état vide",
+      "Tout ce qui n’est pas prévu remonte et se voit.",
+    ],
+  ]}
+/>
+
+<Section>
+
+Chaque appel est chronométré sous le nom de son opération, et les journaux suivent un format que le pipeline de logs du back sait lire. Nommer ses opérations GraphQL n’est pas une coquetterie : c’est ce qui rend une trace lisible.
+
+</Section>
+
+<Section n="04" label="cms" title="Contentful, pour que le marketing publie seul">
+
+Le marketing devait pouvoir composer une page sans ticket. Une page est une collection de blocs : texte, appel à l’action, carrousel, vidéo, grilles, bento, onglets d’images, frise, citation, cartes, logos, bannières d’information, modale. S’y ajoutent les pages de marque et d’engagement, les articles, les certifications. Une quarantaine de types de contenu en tout, chacun avec son fragment GraphQL, et des contenus filtrés par groupe de clients et par vitrine grâce aux tags du CMS.
+
+### Du bloc au composant
+
+La fonction `parse` de chaque fragment pose un discriminant sur le bloc. Un dispatcher le cherche ensuite dans trois registres chargés à la demande : les composants serveur, les composants client (rendus sous `Suspense`), et les blocs composites qui font leur propre requête. Un type inconnu affiche un repli, jamais une erreur : le CMS peut avoir une longueur d’avance sur le front.
+
+</Section>
+
+<Diagram
+  src="/posts/headless-commerce/schema-cms"
+  width={1040}
+  height={440}
+  alt="Cycle de publication : le marketing compose une page de blocs dans Contentful, la prévisualise en brouillon dans le site, puis publie ; le webhook appelle une route de purge protégée, qui invalide le tag du type de contenu ; la lecture GraphQL suivante récupère la nouvelle version, et le dispatcher rend chaque bloc avec son composant."
+  caption="Publier sans ticket : un webhook par publication, un tag par type de contenu, et seule la partie concernée du cache repart à zéro."
+/>
+
+<Section>
+
+### Prévisualiser, puis publier
+
+Le brouillon passe par le Draft Mode de Next.js, activé par une route protégée, et la prévisualisation en direct s’affiche dans l’iframe du CMS. Ce qui a demandé le plus d’ajustements : le cookie de prévisualisation et la politique de sécurité du contenu, pour que le site accepte d’être affiché dans l’outil du marketing. À la publication, le webhook appelle la route de purge avec le type de contenu ; un type non prévu répond 404 plutôt que de tout vider.
+
+</Section>
+
+<Section n="05" label="erp" title="Gravitee, une passerelle devant l’ERP">
+
+Les factures, les reliquats de commande et les PDF de facture viennent de l’ERP, exposé par une passerelle Gravitee. Pendant la migration de l’ERP, une vitrine lisait déjà ses factures dans l’ERP par la passerelle, les autres encore dans le back e-commerce.
+
+<PlusList>
+  <Plus title="Client credentials, côté serveur seulement.">
+    Le jeton OAuth identifie l’application ; le client est désigné par son numéro ERP, lu dans la
+    session. Aucun appel ne part du navigateur.
+  </Plus>
+  <Plus title="Un jeton par requête.">
+    Le jeton est mémoïsé avec `cache()` de React : tous les services d’un même rendu partagent un
+    seul appel au serveur d’autorisation.
+  </Plus>
+  <Plus title="Un contexte injecté.">
+    `withGravitee(fn)` fournit la configuration validée, l’identifiant client et un client déjà
+    authentifié. Un service ne manipule jamais un secret.
+  </Plus>
+  <Plus title="Des erreurs choisies.">
+    Le client n’intercepte que la liste de codes HTTP qu’on lui donne ; pour ceux-là, l’interface
+    affiche un état vide. Le reste remonte.
+  </Plus>
+</PlusList>
+
+### Migrer site par site
+
+Les pages n’appellent ni la passerelle ni le back e-commerce : elles appellent un module domaine, factures ou reliquats, qui choisit la source selon la configuration du site et harmonise les vocabulaires, les types de documents n’ayant pas les mêmes noms d’un back à l’autre. Basculer une vitrine sur l’ERP, c’est changer sa configuration, pas ses pages.
+
+</Section>
+
+<PullQuote>Une migration se fait derrière une interface, pas dans les pages.</PullQuote>
+
+<Section n="06" label="infra" title="Cloudflare devant, Vercel derrière">
+
+<PlusList>
+  <Plus title="Un WAF que le front doit satisfaire.">
+    Les Server Actions sont de simples POST sur l’URL de la page. Pour les laisser passer le
+    pare-feu sans les ouvrir à tous les robots, le navigateur ajoute un en-tête attendu par une
+    règle du WAF. C’est un filtre contre les robots, assumé comme tel, pas une authentification.
+  </Plus>
+  <Plus title="Des traces de bout en bout.">
+    OpenTelemetry propage le contexte de trace jusqu’au back e-commerce. Sur une page produit lente,
+    la trace a montré que le temps partait dans l’appel au back, pas dans le rendu : le bon endroit
+    où chercher.
+  </Plus>
+  <Plus title="Des images servies par le DAM.">
+    Un loader `next/image` traduit largeur, hauteur et qualité en paramètres du service d’images, en
+    WebP par défaut.
+  </Plus>
+  <Plus title="Des PDF générés côté serveur.">
+    Fiches techniques et catalogues personnalisés, stockés dans Vercel Blob, limités en débit et
+    purgés chaque nuit.
+  </Plus>
+  <Plus title="Des exports pour les acheteurs.">
+    Commandes, panier, factures et offres de prix en CSV ou en Excel.
+  </Plus>
+</PlusList>
+
+</Section>
+
+<Section n="07" label="lead" title="Le rôle de lead front-end">
+
+Pendant un an et demi, le code n’a été qu’une partie du travail. Le reste tient en une idée : rendre l’équipe autonome sur le front, et rendre le front lisible pour le reste de l’équipe.
+
+<PlusList>
+  <Plus title="Des pratiques communes.">
+    Guidelines techniques, revue de code, conventions de commit, lint strict, et un guide interne
+    avec ses encadrés « piège » et « pattern » pour que chaque règle ait sa raison.
+  </Plus>
+  <Plus title="Une mise en production lisible.">
+    GitFlow outillé, version et changelog générés au merge, environnements de recette, review apps
+    éphémères, une porte de décision avant chaque mise en production et un chemin de hotfix
+    documenté.
+  </Plus>
+  <Plus title="Recruter et faire monter.">
+    Recrutement, onboarding, et un développeur accompagné jusqu’à devenir le relais du front.
+  </Plus>
+  <Plus title="Faire le pont.">
+    Entre produit, design, marketing et back : défendre les contraintes de chacun, et trouver le
+    compromis qui les fait cohabiter, surtout sur les choix de design.
+  </Plus>
+  <Plus title="Porter les sujets transverses.">
+    Montées de version majeures de Next.js préparées par un guide, analyse des coûts d’hébergement,
+    diagnostic du cache, règles du WAF, observabilité, paiement, étude d’un centre de notifications.
+  </Plus>
+  <Plus title="Transmettre.">
+    Avant de partir, une passation écrite : ce que je tenais (CMS, hébergement, passerelle, mises en
+    production), à qui, et comment.
+  </Plus>
+</PlusList>
+
+</Section>
+
+<Stats
+  items={[
+    ["durée", "2 ans"],
+    ["dont lead", "1 an ½"],
+    ["vitrines", "6"],
+    ["locales", "17"],
+    ["types de contenu", "~40"],
+  ]}
+/>
+
+<Section n="08" label="bilan" title="Ce que j’en retiens">
+
+<PlusList>
+  <Plus title="Inférer plutôt que générer.">
+    Moins d’outillage, des types toujours alignés sur les requêtes ; en échange, le schéma de
+    référence est à surveiller.
+  </Plus>
+  <Plus title="Une frontière par source.">
+    Fragments convertis, module domaine, politique d’erreur propre à chaque backend : une source
+    peut changer sans que les pages le sachent.
+  </Plus>
+  <Plus title="Mettre en cache des données, pas des pages,">
+    dès que le client est connecté. Et dire, pour chaque lecture, ce qui la fait varier.
+  </Plus>
+  <Plus title="Le lead, c’est surtout de l’écrit.">
+    Guidelines, documentation, processus de mise en production, passation : ce qui reste quand on
+    n’est plus dans la pièce.
+  </Plus>
+</PlusList>
+
+Article anonymisé : ni l’entreprise, ni ses clients, ni ses chiffres d’affaires n’y figurent.
+
+</Section>

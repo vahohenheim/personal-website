@@ -44,6 +44,8 @@ export async function setup() {
       ADMIN_USER: SMOKE.adminUser,
       ADMIN_PASSWORD: SMOKE.adminPassword,
       CRON_SECRET: SMOKE.cronSecret,
+      PROTECTED_POSTS_PASSWORD: SMOKE.postsPassword,
+      PROTECTED_POSTS_SECRET: SMOKE.postsSecret,
       // Leads are forwarded to a stand-in for lotus on this machine, never to the real one.
       LOTUS_WEBHOOK_URL: `${SMOKE.lotusUrl}/api/webhooks/leads`,
       LOTUS_WEBHOOK_SECRET: SMOKE.lotusSecret,

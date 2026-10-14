@@ -1,0 +1,274 @@
+{/* Article draft prepared with Valentin on 2026-10-14. Components: see content/posts/README.md. Screenshots of the public site; admin screenshots use fictional data only. */}
+
+<Shot
+  src="/posts/brut/accueil.webp"
+  width={1440}
+  height={900}
+  variant="hero"
+  alt="Accueil du site de BRUT : logo, accroche « C’est bon parce que c’est vrai » et bouton « Où on est cette semaine », sur l’image d’attente de la vidéo."
+  caption="Le haut de l’accueil, sur son image d’attente : une vidéo plein écran prend le relais dès qu’elle peut jouer."
+/>
+
+<ProjectSheet
+  rows={[
+    ["client", "BRUT, « la bouchée française », food truck à Tours"],
+    ["rôle", "Conception, développement, accompagnement du client."],
+    ["période", "20 sept. → 12 oct. 2026, au rythme des retours du client"],
+    [
+      "stack",
+      "Next.js 16, Tailwind v4, shadcn/ui · Neon · Vercel, BotID, Web Analytics · Brevo · Tiptap",
+    ],
+    [
+      "en chiffres",
+      "47 commits, ~14 000 lignes de TypeScript, 137 tests, 19 pages de documentation",
+    ],
+  ]}
+  status="En ligne"
+  link={["mangezbrut.fr", "https://www.mangezbrut.fr"]}
+/>
+
+<Section n="01" label="contexte" title="Un camion, cinq adresses">
+
+BRUT vend des bouchées frites, croustillantes dehors et fondantes dedans, trois recettes et une seule sauce, depuis un camion qui s’installe chaque semaine à un endroit différent de l’agglomération de Tours. La première question d’un client n’est pas « c’est quoi ? », c’est « vous êtes où cette semaine ? ».
+
+Le brief tenait en quatre verbes : dire où trouver le camion, donner faim, récolter des inscrits pour annoncer les dates, récolter des avis. Une contrainte a tout organisé : je partais un an à l’étranger. Le fondateur devait pouvoir changer une date, un prix ou une photo sans moi, et sans rien casser.
+
+</Section>
+
+<Section n="02" label="produit" title="Ce que voit le visiteur">
+
+Une page d’accueil qui se lit de haut en bas comme une visite au camion : une vidéo, le rituel (prends, trempe, croque), les trois recettes, la carte, les emplacements, la newsletter, le contact. Trois versions de cette page ont été montées côte à côte pour que le client choisisse ; la troisième a gagné.
+
+</Section>
+
+<Shot
+  src="/posts/brut/recettes.webp"
+  width={1440}
+  height={1350}
+  alt="Le rituel en trois étapes numérotées, puis les trois recettes et la sauce, chacune avec sa photo en gros plan."
+  caption="Le rituel et les recettes. Au survol, ou au toucher sur téléphone, chaque photo montre l’intérieur de la bouchée."
+/>
+
+<Section>
+
+### Les emplacements, sans carte interactive
+
+La première version utilisait une carte Leaflet. Elle a été remplacée par un plan illustré de l’agglomération, une simple image, avec des pastilles numérotées : plus léger, plus beau, et plus lisible pour cinq points. Chaque pastille ouvre une bulle avec la période, le lieu et les horaires.
+
+Les dates sont saisies avec un début et une fin : les emplacements passés disparaissent seuls, sans que personne n’ait à les retirer. Et « Y aller » ne choisit pas à la place du visiteur : il propose Google Maps, Plans, ou de copier l’adresse.
+
+</Section>
+
+<Shot
+  src="/posts/brut/emplacements.webp"
+  width={1440}
+  height={1070}
+  alt="Section « Où nous trouver » : plan illustré de l’agglomération de Tours avec cinq pastilles numérotées, et la liste des dates avec lieu, horaires et lien « Y aller »."
+  caption="« Cinq dates, sept semaines, un camion. » Chaque numéro de la liste répond à une pastille du plan."
+/>
+
+<Section>
+
+La page `/menu` reprend le visuel de la carte imprimée du camion, pour qu’on y retrouve en ligne exactement ce qu’on lit au comptoir.
+
+</Section>
+
+<Shot
+  src="/posts/brut/carte.webp"
+  width={1440}
+  height={1330}
+  alt="Page /menu : les trois recettes avec leur couleur, les formules et les boissons, présentées comme la carte imprimée du camion."
+  caption="La carte en ligne. Chaque prix se modifie dans l’admin."
+/>
+
+<Section n="03" label="architecture" title="L’architecture">
+
+Un site vitrine, mais dont tout le contenu vit en base. L’équation à résoudre : des pages aussi rapides qu’un site statique, et modifiables comme un CMS, sans payer un CMS.
+
+</Section>
+
+<Diagram
+  src="/posts/brut/schema-architecture"
+  width={1040}
+  height={600}
+  alt="Architecture du site BRUT : le visiteur reçoit des pages pré-rendues depuis le cache du contenu, sans requête en base. Les formulaires passent par des routes d’API protégées par BotID et écrivent dans Neon, puis vers Brevo. Le fondateur modifie le contenu dans /admin ; « Publier » renouvelle le cache. Une tâche de nuit resynchronise Brevo."
+  caption="Le visiteur ne touche jamais la base : il reçoit des pages pré-rendues. Seuls les formulaires écrivent, et seule une publication renouvelle le cache."
+/>
+
+<Section>
+
+La pièce centrale est une seule fonction de lecture, marquée `"use cache"` et étiquetée `site-content` grâce aux Cache Components de Next.js 16. Les pages publiques sont pré-rendues avec son résultat et servies depuis le CDN. Le bouton « Publier » de l’admin invalide cette étiquette : la visite suivante relit la base, puis tout le monde reçoit la nouvelle version. Le sitemap et les données structurées suivent le même cycle.
+
+Si la base est injoignable, le site affiche les valeurs par défaut écrites dans le code et réessaie quelques minutes plus tard. Il ne tombe jamais en panne parce que Neon tousse.
+
+</Section>
+
+<Section n="04" label="admin" title="Une admin pensée pour le camion">
+
+L’admin est la moitié du projet, et celle que le fondateur utilise chaque semaine. Elle tient en deux écrans : un tableau de bord pour savoir comment ça va, et l’édition du contenu pour changer ce que voient les visiteurs. Elle reprend la charte du site, pour qu’il s’y sente chez lui plutôt que dans un back-office.
+
+### Le tableau de bord : tout, en un coup d’œil
+
+En haut, quatre chiffres avec leur tendance sur trente jours : inscrits à la newsletter, messages reçus, avis clients, note moyenne. Dessous, l’activité jour par jour, les trois formulaires empilés ; un clic sur un chiffre isole sa courbe. Tous les calculs sont faits par la base, en une requête par bloc : rien n’est recompté dans le navigateur.
+
+</Section>
+
+<Shot
+  src="/posts/brut/admin-tableau.webp"
+  width={1440}
+  height={900}
+  alt="Tableau de bord de l’admin : quatre chiffres clés avec leur tendance sur trente jours, puis un graphique en barres empilées de l’activité par jour."
+  caption="Le haut du tableau de bord. Les données de ces captures sont fictives : la vraie admin reste privée."
+/>
+
+<Section>
+
+### Ce que disent les avis
+
+Les avis du QR code ne finissent pas dans un tableur qu’on ne relit jamais. Le tableau de bord les lit pour lui : répartition des notes, part de clients qui reviendraient, prix, attente et accueil sur un même graphique, note de chaque recette, emplacements les plus cités. Une phrase repère le point faible du moment, « Point à surveiller : le prix », pour qu’il n’ait pas à le chercher.
+
+</Section>
+
+<Shot
+  src="/posts/brut/admin-avis.webp"
+  width={1440}
+  height={900}
+  alt="Analyse des avis : répartition des notes, part de clients qui reviendraient, notes sur le prix, l’attente et l’accueil, note par recette et par emplacement."
+  caption="L’analyse des avis : notes, retour, expérience, produits et emplacements. Les graphiques sont ceux de shadcn/ui, recolorés à la charte BRUT."
+/>
+
+<Section>
+
+Plus bas, la provenance des inscrits et les motifs des messages, la fréquentation du site lue dans Vercel Web Analytics, puis le détail ligne par ligne : inscrits, messages et avis en onglets, avec ajout, modification, suppression et export CSV ou Excel. Un bouton resynchronise la newsletter avec Brevo à la demande.
+
+### L’édition du contenu : un schéma, des formulaires
+
+Tous les textes, prix, dates et chemins de photos sont décrits une seule fois, dans un schéma. Ce schéma génère les dix-sept sections du formulaire, valide la saisie côté serveur et type le contenu que lisent les composants. Chaque champ porte une aide écrite pour le fondateur, pas pour un développeur : « L’emplacement disparaît du site le lendemain. » Ajouter un champ, c’est une ligne de schéma et une valeur par défaut ; le formulaire suit.
+
+</Section>
+
+<Shots caption="Deux des dix-sept sections : le bandeau d’accueil, avec son éditeur limité au gras, et les emplacements, réordonnables. Le bouton « Publier sur le site » reste visible en haut de l’écran.">
+  <Shot
+    src="/posts/brut/admin-contenu.webp"
+    width={1440}
+    height={900}
+    alt="Édition du contenu, section du bandeau d’accueil : champs texte et éditeur limité au gras, bouton « Publier sur le site » en haut."
+  />
+  <Shot
+    src="/posts/brut/admin-dates.webp"
+    width={1440}
+    height={900}
+    alt="Édition du contenu, section des emplacements : chaque date avec début, fin, lieu, adresse et horaires, réordonnable."
+  />
+</Shots>
+
+<Section>
+
+<PlusList>
+  <Plus title="Enregistrer n’est pas publier.">
+    Le fondateur prépare plusieurs sections, les relit, et ne met en ligne qu’au moment voulu. Une
+    ligne en haut de l’écran dit toujours si le site affiche la dernière version.
+  </Plus>
+  <Plus title="Du gras, et rien d’autre.">
+    Les accroches comme « C’est bon parce que c’est vrai. » passent par un éditeur Tiptap limité au
+    gras, stocké en texte, jamais en HTML. Impossible de casser la mise en page.
+  </Plus>
+  <Plus title="Protégée deux fois.">
+    Un mot de passe à l’entrée, puis une vérification dans chaque page et chaque action : on ne
+    compte jamais sur la seule porte d’entrée. Pages hors des moteurs, jamais mises en cache, aucune
+    donnée d’inscrit dans les journaux.
+  </Plus>
+</PlusList>
+
+</Section>
+
+<Section n="05" label="formulaires" title="Inscrits, avis, messages">
+
+Trois formulaires, un seul chemin. Chaque envoi passe par Vercel BotID, un champ piège invisible et un délai minimal de remplissage, puis s’écrit dans Neon avant toute autre chose. Les inscrits sont ensuite recopiés dans Brevo, après la réponse au visiteur ; les désinscriptions reviennent par webhook, et une tâche de nuit resynchronise le tout. Une seule liste d’inscrits existe, où qu’on s’inscrive.
+
+Les avis arrivent par un QR code collé sur le camion. La page qu’il ouvre n’est ni dans la navigation ni dans les moteurs de recherche : deux minutes, une note, les recettes goûtées. Le bouton vers les avis Google s’affiche pour tout le monde, quelle que soit la note : c’est une exigence de Google, et c’est plus honnête.
+
+</Section>
+
+<Screens caption="La page du QR code et la page d’avis, sur téléphone. Avis et messages partent aussi par mail au camion, avec une ligne dans son tableur.">
+  <Screen
+    src="/posts/brut/qr.webp"
+    alt="Page /qr sur téléphone : liens vers le site, la page d’avis, la newsletter et Instagram."
+  />
+  <Screen
+    src="/posts/brut/avis.webp"
+    alt="Page /avis sur téléphone : note en étoiles, recettes goûtées et bouton vers les avis Google."
+  />
+</Screens>
+
+<Section n="06" label="finitions" title="Les détails qui comptent">
+
+<PlusList>
+  <Plus title="Une vidéo qui démarre vraiment.">
+    Deux encodages (HEVC pour les écrans Retina, H.264 en secours), une version tournée d’un quart
+    de tour pour les téléphones en portrait, une image d’attente floutée. Et un bug iOS débusqué :
+    un élément vidéo sans source dans le rendu serveur faisait apparaître le bouton de lecture
+    natif.
+  </Plus>
+  <Plus title="Des photos préparées à la main.">
+    1 600 px de large pour les écrans denses, profil sRGB, compression mozjpeg : une vidéo source de
+    254 Mo est devenue une quinzaine de mégaoctets.
+  </Plus>
+  <Plus title="Les fonctions à Francfort,">
+    à côté de la base, plutôt qu’aux États-Unis par défaut.
+  </Plus>
+  <Plus title="Deux audits avant de dire « fini ».">
+    Performance et sécurité d’abord (une faille critique corrigée par une mise à jour de Next.js,
+    des en-têtes de sécurité), puis un audit réglementaire : politique de confidentialité complète,
+    médiateur de la consommation, prestataires nommés.
+  </Plus>
+  <Plus title="Un référencement local.">
+    Données structurées d’établissement de restauration et de carte, générées depuis le contenu, et
+    un sitemap daté de la dernière publication.
+  </Plus>
+</PlusList>
+
+</Section>
+
+<Section n="07" label="passation" title="Passer la main">
+
+Pour ce qui dépasse l’admin, j’ai préparé une passation à quelqu’un qui ne code pas. Un fichier de consignes pour un assistant de code : parler sans jargon, annoncer avant d’agir, une question à la fois, toujours proposer l’admin avant de toucher au code, et ne jamais mettre en ligne sans un « oui » explicite. Il suffit d’ouvrir le dossier et d’écrire « mets en ligne » ou « change le prix de la boîte de 5 ».
+
+Derrière, le filet de sécurité : une documentation d’une page par sujet, un journal où chaque demande tient sur une ligne, et 137 tests (unitaires, puis parcours sur ordinateur et téléphone) relancés à chaque push, plus des tests de fumée sur le site en ligne après chaque mise en production.
+
+<PullQuote>Mon objectif : rendre mes clients autonomes.</PullQuote>
+
+</Section>
+
+<Stats
+  items={[
+    ["durée", "3 semaines"],
+    ["commits", "47"],
+    ["lignes de ts", "~14 000"],
+    ["tests", "137"],
+    ["pages de doc", "19"],
+  ]}
+/>
+
+<Section n="08" label="bilan" title="Ce que j’en retiens">
+
+<PlusList>
+  <Plus title="Montrer plutôt que décrire.">
+    Trois versions en ligne côte à côte ont tranché en une journée ce qu’une réunion n’aurait pas
+    tranché.
+  </Plus>
+  <Plus title="Le plus simple gagne souvent.">
+    Une image à la place d’une carte interactive, du gras à la place d’un éditeur riche.
+  </Plus>
+  <Plus title="Les retours du client sont la roadmap.">
+    Le journal en compte des dizaines, chacun consigné sur une ligne avec les fichiers qu’il a
+    touchés.
+  </Plus>
+  <Plus title="La documentation fait partie du livrable.">
+    C’est elle qui rend le site autonome, bien plus que le code.
+  </Plus>
+</PlusList>
+
+Photos, vidéo et plan : leurs auteurs, crédités sur le site de BRUT.
+
+</Section>

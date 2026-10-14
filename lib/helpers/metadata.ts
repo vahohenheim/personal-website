@@ -3,10 +3,11 @@ import { PAGES, type PageId } from "@/lib/constants/pages";
 import { SITE_NAME, SITE_URL } from "@/lib/constants/site";
 import {
   getFeedPath,
+  getIndexablePostsLocales,
   getPostLocales,
   getPostPath,
-  getPostsLocales,
   getPostsPath,
+  isProtected,
 } from "@/lib/helpers/posts";
 import { DEFAULT_LOCALE, type Locale, LOCALES, OPEN_GRAPH_LOCALES } from "@/lib/i18n/config";
 import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
@@ -67,17 +68,29 @@ const getAlternates = (locale: Locale, paths: Partial<Record<Locale, string>>) =
   types: { "application/rss+xml": getFeedPath(locale) },
 });
 
-/** Meta tags of the list of posts: its alternates are the languages that have posts. */
+/**
+ * Meta tags of the list of posts: its alternates are the languages that have a published
+ * post. A list that only shows drafts (on a preview deployment) is not indexed.
+ */
 export const getPostsMetadata = async (): Promise<Metadata> => {
   const locale = await getLocale();
+  const indexed = getIndexablePostsLocales();
   const paths = Object.fromEntries(
-    getPostsLocales().map((available) => [available, getPostsPath(available)]),
+    indexed.map((available) => [available, getPostsPath(available)]),
   );
 
-  return { ...(await getPageMetadata("posts")), alternates: getAlternates(locale, paths) };
+  return {
+    ...(await getPageMetadata("posts")),
+    alternates: getAlternates(locale, paths),
+    ...(!indexed.includes(locale) && { robots: { index: false, follow: false } }),
+  };
 };
 
-/** Meta tags of a post: its alternates are the languages it is written in. */
+/**
+ * Meta tags of a post: its alternates are the languages it is written in. A draft (seen
+ * in development or on a preview) and a protected post are never indexed; proxy.ts also
+ * sends `X-Robots-Tag` for a protected one.
+ */
 export const getPostMetadata = (post: LocalizedPost): Metadata => {
   const paths = Object.fromEntries(
     getPostLocales(post.slug).map((available) => [available, getPostPath(post.slug, available)]),
@@ -88,16 +101,18 @@ export const getPostMetadata = (post: LocalizedPost): Metadata => {
     title: `${post.title} | valentinbourreau`,
     description: post.description,
     alternates: getAlternates(post.locale, paths),
-    // A draft is only reachable in development; this is one more safeguard.
-    ...(post.draft && { robots: { index: false, follow: false } }),
+    ...((post.draft === true || isProtected(post)) && { robots: { index: false, follow: false } }),
     twitter: { card: "summary_large_image" },
     openGraph: {
       type: "article",
       url: getPostPath(post.slug, post.locale),
       siteName: SITE_NAME,
       locale: OPEN_GRAPH_LOCALES[post.locale],
+      title: post.title,
+      description: post.description,
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt,
+      tags: post.tags,
       authors: [SITE_NAME],
     },
   };

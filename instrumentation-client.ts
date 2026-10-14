@@ -6,5 +6,6 @@ initBotId({
   protect: [
     { path: "/api/contact/", method: "POST" },
     { path: "/api/events/", method: "POST" },
+    { path: "/api/posts/unlock/", method: "POST" },
   ],
 });
