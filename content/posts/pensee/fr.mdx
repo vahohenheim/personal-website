@@ -20,7 +20,7 @@
 
 <ProjectSheet
   rows={[
-    ["rôle", "Produit, specs, design, arbitrages. Le code est écrit par Claude Code."],
+    ["rôle", "Produit, specs, design, développement"],
     ["période", "Octobre 2026 · deux jours de construction, 12–13 oct."],
     ["plateforme", "iPhone uniquement, un seul utilisateur"],
     [
@@ -38,7 +38,7 @@ Depuis 2024, j’écris mes notes dans Notion : quelques lignes, une heure, par
 
 Je voulais deux choses. Écrire n’importe où, sans jamais attendre le réseau. Et prendre du recul : relire une semaine, un mois, une année, et voir par quels états je suis passé, sans tout relire à la main.
 
-pensée est née de là. Une app iPhone, un seul utilisateur, et un parti pris : tout s’écrit d’abord sur le téléphone, et une IA relit les notes une fois par semaine pour en tirer un bulletin. Le nom vient de la fleur ; le logo et le code l’écrivent `pensee`, sans accent.
+pensee est née de là. Une app iPhone, un seul utilisateur, et un parti pris : tout s’écrit d’abord sur le téléphone, et une IA relit les notes une fois par semaine pour en tirer un bulletin. Le nom vient de la fleur, la pensee ; je l’écris pensee, sans accent, pour qu’il voyage.
 
 ### Cinq principes, posés avant la première ligne de code
 
@@ -117,7 +117,7 @@ Deux applications, un langage. Une app Expo sur le téléphone, une API Next.js 
   src="/posts/pensee/schema-architecture"
   width={1040}
   height={600}
-  alt="Architecture de pensée : sur l’iPhone, l’éditeur écrit dans SQLite chiffrée, le moteur de synchro pousse et tire les notes vers l’API Next.js sur Vercel, qui range les notes dans Postgres, rédige le Recul avec l’API Claude sur déclenchement horaire de GitHub Actions, et copie chaque jour vers Notion."
+  alt="Architecture de pensee : sur l’iPhone, l’éditeur écrit dans SQLite chiffrée, le moteur de synchro pousse et tire les notes vers l’API Next.js sur Vercel, qui range les notes dans Postgres, rédige le Recul avec l’API Claude sur déclenchement horaire de GitHub Actions, et copie chaque jour vers Notion."
   caption="Le téléphone écrit en local et pousse ses changements ; l’API les range, les copie vers Notion et les relit chaque semaine. Les bulletins reviennent par le même pull que les notes."
 />
 
@@ -223,7 +223,7 @@ En cas de conflit, les deux versions sont gardées et le choix m’est proposé 
 
 ### Notion, en copie lisible
 
-Je voulais garder mes notes lisibles dans Notion. L’API Notion tient environ trois requêtes par seconde : pas question de la suivre au rythme de la frappe. Le serveur met chaque jour modifié en file, 60 s après la dernière modification, puis réécrit la page de ce jour en entier. Une empreinte du contenu évite d’envoyer une page identique, et une page ne peut jamais être dupliquée. Le sens est unique : pensée vers Notion, jamais l’inverse.
+Je voulais garder mes notes lisibles dans Notion. L’API Notion tient environ trois requêtes par seconde : pas question de la suivre au rythme de la frappe. Le serveur met chaque jour modifié en file, 60 s après la dernière modification, puis réécrit la page de ce jour en entier. Une empreinte du contenu évite d’envoyer une page identique, et une page ne peut jamais être dupliquée. Le sens est unique : pensee vers Notion, jamais l’inverse.
 
 </Section>
 
@@ -310,7 +310,7 @@ L’app ignore proprement un type qu’elle ne connaît pas, et un bloc généri
 
 <Section n="06" label="import" title="Deux ans de Notion à rapatrier">
 
-Un carnet qui prend du recul sans mon historique n’aurait pas eu grand-chose à relire. Mes notes depuis 2024 vivent dans des sous-pages Notion, une par année ou par période, et elles devaient entrer dans pensée comme si elles y avaient été écrites : datées, rattachées à leur jour, synchronisées, puis analysées.
+Un carnet qui prend du recul sans mon historique n’aurait pas eu grand-chose à relire. Mes notes depuis 2024 vivent dans des sous-pages Notion, une par année ou par période, et elles devaient entrer dans pensee comme si elles y avaient été écrites : datées, rattachées à leur jour, synchronisées, puis analysées.
 
 Le parseur lit les blocs de l’API Notion, pas un export Markdown : le gras y est fiable, et c’est lui qui marque souvent l’heure. Il a fallu composer avec deux époques d’écriture.
 
@@ -369,11 +369,11 @@ Le compromis est assumé : pas de chiffrement de bout en bout. Un serveur aveug
 
 <Section n="08" label="méthode" title="Construire depuis un téléphone">
 
-Je voulais pouvoir mener ce projet sans ordinateur : Claude sur mon téléphone, GitHub pour le code, Vercel et EAS pour construire dans le cloud. Ça a imposé une méthode.
+Je voulais pouvoir mener ce projet sans ordinateur : un éditeur de code sur mon téléphone, GitHub pour le code, Vercel et EAS pour construire dans le cloud. Ça a imposé une méthode.
 
-D’abord les specs, avant la moindre ligne de code. Quatorze documents : vision, architecture, modèle de données, éditeur, synchro, Recul, design system, écrans, sécurité, tests, déploiement, feuille de route en dix jalons, import. Les maquettes ensuite, neuf écrans en jour et en nuit, dessinés avec ma charte. Puis deux fichiers qui font tout tenir : `CLAUDE.md`, les règles de travail, et `PROGRESS.md`, le point de reprise.
+D’abord les specs, avant la moindre ligne de code. Quatorze documents : vision, architecture, modèle de données, éditeur, synchro, Recul, design system, écrans, sécurité, tests, déploiement, feuille de route en dix jalons, import. Les maquettes ensuite, neuf écrans en jour et en nuit, dessinés avec ma charte. Puis deux fichiers qui font tout tenir : les règles de travail, et `PROGRESS.md`, le point de reprise.
 
-Chaque session commence par la même phrase : « Lis CLAUDE.md puis PROGRESS.md, et attaque la prochaine tâche. » Et finit par la mise à jour du journal : ce qui a été fait, les commandes de vérification et leur résultat, ce qui n’a _pas_ été vérifié, et une seule prochaine tâche, assez précise pour être reprise à froid.
+Chaque session de travail part de `PROGRESS.md` et de la tâche qu’il désigne, et finit par la mise à jour du journal : ce qui a été fait, les commandes de vérification et leur résultat, ce qui n’a _pas_ été vérifié, et une seule prochaine tâche, assez précise pour être reprise à froid.
 
 </Section>
 
@@ -381,7 +381,7 @@ Chaque session commence par la même phrase : « Lis CLAUDE.md puis PROGRESS.m
   src="/posts/pensee/schema-methode"
   width={1040}
   height={480}
-  alt="Boucle de travail : specs et maquettes, puis PROGRESS.md qui donne la prochaine tâche, une session Claude Code, la CI, le déploiement, l’essai et les retours depuis le téléphone, qui mettent à jour les specs."
+  alt="Boucle de travail : specs et maquettes, puis PROGRESS.md qui donne la prochaine tâche, une session de développement, la CI, le déploiement, l’essai et les retours depuis le téléphone, qui mettent à jour les specs."
   caption="La boucle de travail. Quand le code doit s’écarter des specs, la spec est mise à jour d’abord, avec un ADR si la décision est structurante."
 />
 
@@ -403,7 +403,7 @@ Sans Mac sous la main, les tests sont mes yeux. Vitest pour les paquets et l’A
 
 ### Mon rôle : essayer, rapporter, arbitrer
 
-Le code s’écrit seul ; les décisions, non. La cadence du Recul, son coût, ce que Notion doit recevoir, ce qui compte avant le départ. Et les retours d’essai, rapportés tels quels.
+Les outils accélèrent l’écriture du code ; les décisions restent les miennes. La cadence du Recul, son coût, ce que Notion doit recevoir, ce qui compte avant le départ. Et les retours d’essai, rapportés tels quels.
 
 <Definitions
   stacked
@@ -426,7 +426,7 @@ Le code s’écrit seul ; les décisions, non. La cadence du Recul, son coût, 
 Beaucoup de choses n’ont encore jamais tourné sur un vrai téléphone : l’éditeur dans une vraie WebView sur une note de 3 000 mots, le chiffrement SQLCipher, la synchro en tâche de fond, la notification du lundi. Le journal de sessions le dit noir sur blanc, ligne par ligne. La priorité est un build installé avant le départ. Viendront ensuite le mode question de la recherche (poser une question à ses notes, réponse sourcée), les chapitres de vie, et des évaluations du Recul sur de vraies sorties.
 
 <PlusList>
-  <Plus title="Une spec précise vaut mieux qu’un long prompt.">
+  <Plus title="Une spec précise vaut mieux qu’une longue explication.">
     Elle se relit, se corrige, et sert de contrat à chaque session.
   </Plus>
   <Plus title="Écrire ce qui n’est pas vérifié.">
@@ -437,7 +437,7 @@ Beaucoup de choses n’ont encore jamais tourné sur un vrai téléphone : l’
   </Plus>
   <Plus title="Le métier se déplace vers l’arbitrage.">
     Choisir, trancher entre coût, confort et confiance : le rôle de pont que j’aime tenir entre les
-    services, tenu cette fois entre moi et l’outil.
+    services, tenu cette fois entre le produit et sa technique.
   </Plus>
 </PlusList>
 

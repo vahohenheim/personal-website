@@ -11,10 +11,7 @@
 
 <ProjectSheet
   rows={[
-    [
-      "rôle",
-      "Produit, règles métier, specs, design, arbitrages. Le code est écrit par Claude Code.",
-    ],
+    ["rôle", "Produit, règles métier, specs, design, développement."],
     ["période", "Octobre 2026 · construit en deux jours, 11–12 oct."],
     ["plateforme", "Web, installable sur téléphone, un seul utilisateur"],
     [
@@ -321,7 +318,7 @@ Un compromis est assumé et écrit : la politique de sécurité du contenu n’
 
 <Section n="08" label="méthode" title="Construit en douze phases">
 
-lotus est le premier projet que j’ai mené de cette façon, juste avant pensée. Un dossier de spécification complet d’abord : vision, architecture, modèle de données, règles métier de la micro-entreprise, charte appliquée à shadcn/ui, douze fonctionnalités avec leurs critères d’acceptation, un schéma Drizzle et des règles fiscales de référence, et les maquettes des écrans. Puis Claude Code, phase par phase.
+lotus est le premier projet que j’ai mené de cette façon, juste avant pensee. Un dossier de spécification complet d’abord : vision, architecture, modèle de données, règles métier de la micro-entreprise, charte appliquée à shadcn/ui, douze fonctionnalités avec leurs critères d’acceptation, un schéma Drizzle et des règles fiscales de référence, et les maquettes des écrans. Puis le développement, phase par phase.
 
 Chaque phase se termine par un build, un lint et des tests verts, et un commit. Deux fichiers tiennent la mémoire du projet : l’état d’avancement, pour reprendre après une coupure, et un journal de décisions, où chaque écart à la spec est noté avec sa raison. Il en compte quarante-sept.
 
@@ -365,8 +362,8 @@ La douzième phase attend une décision de ma part : au 1er septembre 2027, une
     supprime une classe entière d’erreurs : celles de recopie.
   </Plus>
   <Plus title="Un journal de décisions vaut une revue de code.">
-    Quarante-sept écarts expliqués, c’est ce qui me permet de faire confiance au résultat sans
-    relire chaque ligne.
+    Quarante-sept écarts expliqués, c’est ce qui permet de revenir sur un choix des mois plus tard
+    sans le refaire.
   </Plus>
   <Plus title="Deux apps qui se parlent par un contrat écrit.">
     Le site et lotus évoluent chacun de leur côté, sans jamais se casser l’un l’autre.

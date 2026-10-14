@@ -14,7 +14,7 @@ the brief published with this branch).
 
 | Slug     | Title (fr)                                                    | Dates      | Images                 |
 | -------- | ------------------------------------------------------------- | ---------- | ---------------------- |
-| `pensee` | pensée, un carnet hors ligne qui prend du recul               | 2026-10-13 | `public/posts/pensee/` |
+| `pensee` | pensee, un carnet hors ligne qui prend du recul               | 2026-10-13 | `public/posts/pensee/` |
 | `lotus`  | lotus, l’app qui gère ma micro-entreprise                     | 2026-10-14 | `public/posts/lotus/`  |
 | `brut`   | BRUT, le site d’un camion qui change d’adresse chaque semaine | 2026-10-14 | `public/posts/brut/`   |
 
