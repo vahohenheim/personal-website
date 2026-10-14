@@ -58,7 +58,9 @@ credentials or a database.
 | `lib/funnel/`, `app/api/events/`                                 | Anonymous counters of the contact form and the conversion funnel      | [features/conversion.md](docs/features/conversion.md)                                                  |
 | `lib/lotus/`, `app/api/cron/lotus-sync/`                         | Leads forwarded to lotus through a signed webhook, with a daily retry | [features/lotus-sync.md](docs/features/lotus-sync.md)                                                  |
 | `tests/`, `vitest.config.ts`, `vitest.smoke.config.ts`           | Test suite: unit, route handlers, smoke tests of the built site       | [development/testing.md](docs/development/testing.md)                                                  |
-| `content/posts/`, `lib/constants/posts.ts`, `mdx-components.tsx` | Posts written in MDX and their registry                               | [features/posts.md](docs/features/posts.md)                                                            |
+| `content/posts/`, `lib/constants/posts.ts`, `mdx-components.tsx` | Posts written in MDX, their registry and their MDX components         |
+| `public/posts/`                                                  | Images of the posts, WebP at 2x, day and night pairs                  | [features/posts.md](docs/features/posts.md#images)                                                     |
+| `lib/posts/`, `app/api/posts/unlock/`, `app/[locale]/unlock/`    | Reading time and summary; password-protected posts                    | [features/posts.md](docs/features/posts.md)                                                            |
 | `app/[locale]/resume/print/`, `scripts/`                         | The resume on one A4 page and the script that prints it               | [features/resume-pdf.md](docs/features/resume-pdf.md)                                                  |
 | `next.config.ts`                                                 | Security headers and CSP                                              | [architecture/security.md](docs/architecture/security.md)                                              |
 | `docs/`                                                          | Documentation                                                         | [docs/README.md](docs/README.md)                                                                       |
@@ -71,8 +73,10 @@ credentials or a database.
   [content/resume-data.md](docs/content/resume-data.md).
 - **The resume**: after changing its texts, run `npm run build && npm run cv:pdf` and commit
   the two PDFs ([features/resume-pdf.md](docs/features/resume-pdf.md)).
-- **A post**: write `content/posts/<slug>/<locale>.mdx` and add it to
-  [lib/constants/posts.ts](lib/constants/posts.ts) ([features/posts.md](docs/features/posts.md)).
+- **A post**: write `content/posts/<slug>/<locale>.mdx`, put its images in
+  `public/posts/<slug>/`, add it to [lib/constants/posts.ts](lib/constants/posts.ts) and
+  its loader to [lib/constants/post-bodies.ts](lib/constants/post-bodies.ts). Drafts show
+  on preview deployments. Checklist in [features/posts.md](docs/features/posts.md#checklist-publishing-a-post).
 - **A new page**: follow the checklist in [features/pages.md](docs/features/pages.md#adding-a-page).
   It includes the meta tags and the structured data.
 - **The portrait**: replace [public/avatar.jpg](public/avatar.jpg) with another square image
