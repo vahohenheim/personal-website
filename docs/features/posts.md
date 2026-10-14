@@ -167,7 +167,7 @@ no shadow). Props are exactly these; a test fails when an MDX file uses a name t
 | `<Plus>`          | `title`; children                                               | One item: the title in bold, then the text on the same line.                                                                                                                            |
 | `<Definitions>`   | `items: [term, text][]`, `stacked?`                             | A definition list, the term in mono on the left (above when `stacked`).                                                                                                                 |
 | `<Callout>`       | `label`; children                                               | A boxed aside on the surface colour, with a mono label.                                                                                                                                 |
-| `<DecisionTable>` | `columns: string[]`, `rows: string[][]`                         | A table that scrolls on its own on phones; the page never does.                                                                                                                         |
+| `<DecisionTable>` | `columns: string[]`, `rows: string[][]`                         | A table that scrolls on its own on phones, reachable with the keyboard; the page never does.                                                                                            |
 | `<PullQuote>`     | children                                                        | A large quote with an accent rule.                                                                                                                                                      |
 | `<Stats>`         | `items: [label, value][]`                                       | A row of figures, mono labels. A value never wraps; the cells wrap (two per row at 375 px), a last short row fills the width, values align at the bottom.                               |
 
@@ -240,6 +240,8 @@ Behaviour worth knowing:
 
 - Leave a blank line after an opening tag and before a closing one when the content is
   Markdown (`<Section>`): MDX then parses it as paragraphs.
+- Code blocks and decision tables scroll sideways on their own; they take the keyboard
+  focus (`tabIndex={0}`) so that they can be scrolled without a mouse.
 - Text keeps a 68-character column; figures, tables and code may be wider, up to the
   width of the article column. At 375 px nothing makes the page scroll sideways.
 - Only `variant="hero"` images load eagerly with `fetchpriority="high"`; every other image

@@ -71,8 +71,11 @@ const components: MDXComponents = {
       {...props}
     />
   ),
+  // May scroll sideways on phones: reachable with the keyboard, then with the arrows.
   pre: (props) => (
     <pre
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a region that scrolls must be reachable with the keyboard (WCAG 2.1.1)
+      tabIndex={0}
       className="overflow-x-auto rounded border border-line bg-surface p-5 font-mono text-[13px] leading-[1.6] text-text [&>code]:bg-transparent [&>code]:p-0"
       {...props}
     />
