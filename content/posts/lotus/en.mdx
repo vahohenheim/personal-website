@@ -1,0 +1,362 @@
+{/* English translation of fr.mdx, prepared with Valentin on 2026-10-14. Same components and images as the French version. */}
+
+<Shot
+  src="/posts/lotus/ecran-tableau"
+  width={1280}
+  height={900}
+  variant="hero"
+  alt="lotus dashboard: revenue collected, amount still to collect, amount to set aside for URSSAF, current tasks and latest leads."
+  caption="The dashboard. Clients, amounts and leads come from the demo data set: all fictional."
+/>
+
+<ProjectSheet
+  rows={[
+    ["role", "Product, business rules, specs, design, development."],
+    ["period", "October 2026 · built in two days, Oct 11–12"],
+    ["platform", "Web, installable on a phone, a single user"],
+    [
+      "stack",
+      "Next.js 16, Tailwind v4, shadcn/ui · Drizzle, Neon · Better Auth · Vercel Blob, Resend, react-pdf · Claude API",
+    ],
+    [
+      "in numbers",
+      "42 commits, ~25,000 lines of TypeScript, 306 unit tests, 84 end-to-end journeys, 47 recorded decisions",
+    ],
+  ]}
+  status="Live"
+/>
+
+<Section n="01" label="context" title="One tool instead of five">
+
+In October 2026, I left my position as front-end lead to become a freelance front-end engineer, as a French micro-entrepreneur, just as I was leaving for a year in Latin America. I needed a single place to know where I stand, usable from a computer as well as from a phone, with a network or barely any.
+
+What I wanted to keep track of: the revenue collected and what is left under the ceilings, the contributions to set aside, the URSSAF (French social security) and tax deadlines reminded in my calendar, clean invoices made from what I actually delivered, the leads that came through the form on my site, regular contact with my clients, and my documents in one place.
+
+### Four principles
+
+<PlusList>
+  <Plus title="Compute rather than type.">
+    The revenue ledger comes from payments, contributions from the ledger, deadlines from my status,
+    tasks from rules.
+  </Plus>
+  <Plus title="Suggest, do not decide.">
+    Reminders, amounts to declare, suggestions to clients: the app prepares, I approve.
+  </Plus>
+  <Plus title="The exact figure, the rule in sight.">
+    Every computed amount shows its base and its rate.
+  </Plus>
+  <Plus title="Restraint.">
+    My visual identity, without exception: one font, one accent, no red. An alert is written in
+    bold.
+  </Plus>
+</PlusList>
+
+<Callout label="good to know">
+  I am not an accountant, and lotus does not replace advice. The rates and thresholds it applies are
+  dated and sourced, and the uncertain points remain editable in the interface.
+</Callout>
+
+</Section>
+
+<Section n="02" label="product" title="What the app does">
+
+Seven screens, a sidebar that becomes a drawer on a phone, a day mode and a night mode.
+
+<Definitions
+  items={[
+    [
+      "dashboard",
+      "Revenue collected, what is still to collect, what to set aside for URSSAF, the current tasks, the latest leads.",
+    ],
+    [
+      "accounting",
+      "Revenue ledger, micro-enterprise ceiling, VAT exemption, contributions detailed line by line, CSV and PDF exports, yearly archive.",
+    ],
+    [
+      "deadlines",
+      "Calendar of the month, upcoming declarations, tasks, sync with Google Calendar.",
+    ],
+    [
+      "clients",
+      "Client record, services to invoice, maintenance subscriptions, email history, suggestions of the month.",
+    ],
+    [
+      "invoices",
+      "Generator based on services, a preview faithful to the PDF, sending, payments, reminders, credit notes and quotes.",
+    ],
+    ["leads", "Requests from the form on my site, in a pipeline, up to conversion into a client."],
+    [
+      "documents",
+      "Presentations, proposals, audits, contracts and generated PDFs, filed and shareable through a link that expires.",
+    ],
+  ]}
+/>
+
+</Section>
+
+<Shot
+  src="/posts/lotus/ecran-facture"
+  width={1280}
+  height={900}
+  alt="Invoice generator: the services to invoice on the left, the PDF preview on the right, the effect of the amount on the ceilings below."
+  caption="The invoice generator: the services to invoice on the left, the exact PDF preview on the right, the effect of the amount on the ceilings below."
+/>
+
+<Shots caption="Accounting and the lead pipeline. On a phone, the sidebar becomes a drawer.">
+  <Shot
+    src="/posts/lotus/ecran-comptabilite"
+    width={1280}
+    height={900}
+    alt="Accounting screen: revenue ledger, gauge of the micro-enterprise ceiling, VAT exemption and detailed contributions."
+  />
+  <Shot
+    src="/posts/lotus/ecran-leads"
+    width={1280}
+    height={900}
+    alt="Leads screen: requests from the site’s form, sorted by stage up to conversion into a client."
+  />
+</Shots>
+
+<Section n="03" label="architecture" title="The architecture">
+
+The “compute rather than type” principle shapes the whole app. There is almost only one thing I type by hand: the date and the amount of a payment received. Everything else follows from it.
+
+</Section>
+
+<Diagram
+  src="/posts/lotus/schema-flux"
+  width={1040}
+  height={600}
+  alt="Data flow of lotus: the site’s form sends a signed webhook that creates a lead; the lead becomes a client; their services are invoiced; the payment, the only manual input, feeds the revenue ledger, from which contributions and thresholds are computed, then the URSSAF obligations sent to the calendar."
+  caption="From the form on my site to the calendar. Each step is derived from the previous one: nothing is copied by hand."
+/>
+
+<Section>
+
+### A Next.js app, one folder per feature
+
+Server Components by default, Server Actions to write. Each feature has its folder: the reads, the actions, their Zod schemas, its components. Every action follows the same path: session checked, input validated, a transaction when several tables are touched, an audit log for everything related to accounting, a typed result.
+
+```text
+src/
+├─ app/(app)/        protected screens: /, /comptabilite, /factures…
+├─ app/api/          leads webhook, crons, pdf, ics, exports
+├─ features/         clients, invoices, accounting, obligations,
+│                    calendar, leads, nurturing, documents…
+├─ lib/fiscal/       dated rates and thresholds, contributions, deadlines
+├─ components/ui/    shadcn/ui, adjusted to my visual identity
+└─ components/pdf/   invoices, quotes, revenue ledger
+```
+
+<DecisionTable
+  columns={["topic", "chosen", "why"]}
+  rows={[
+    [
+      "Database",
+      "Neon in production, PGlite everywhere else",
+      "A real Postgres compiled to WebAssembly: development, tests and CI run without Docker or a Neon account, with the same code.",
+    ],
+    [
+      "Sign-in",
+      "Better Auth, Google, a single account",
+      "No public sign-up; the same Google account gives access to the calendar.",
+    ],
+    [
+      "Interface",
+      "shadcn/ui, theme rewritten",
+      "Accessible components whose code I own, brought back to my visual identity: 2 px radius, no shadow, glyphs rather than icons.",
+    ],
+    [
+      "Files",
+      "Vercel Blob in private mode",
+      "No file address ever reaches the browser; everything goes through a route that checks the session.",
+    ],
+    [
+      "Background jobs",
+      "Three crons: daily, weekly, monthly",
+      "Each step can be replayed without duplicates, thanks to a deduplication key per item.",
+    ],
+  ]}
+/>
+
+</Section>
+
+<Section n="04" label="invoices" title="Invoicing without mistakes">
+
+An invoice is a legal document: a number that follows on without gaps, mandatory mentions, amounts that no longer move once sent. It is the part where a mistake costs the most, and the one where the code is the strictest.
+
+</Section>
+
+<Diagram
+  src="/posts/lotus/schema-facture"
+  width={1040}
+  height={440}
+  alt="Life of an invoice: an editable draft, issued with a number and everything frozen, sent as a PDF by email, paid and recorded in the revenue ledger. Past the due date: overdue, reminders at D+1, D+15 and D+30. A mistake is corrected with a credit note."
+  caption="The life of an invoice. Once issued, it can no longer be edited: a mistake is corrected with a credit note."
+/>
+
+<Section>
+
+<PlusList>
+  <Plus title="Money in whole cents.">
+    Never a floating-point number. Rounded to the cent, half up, line by line.
+  </Plus>
+  <Plus title="A number without gaps or duplicates.">
+    Assigned when the invoice is issued, in a transaction that locks the counter of the year. A test
+    starts two issues at the same time and checks that they get two consecutive numbers.
+  </Plus>
+  <Plus title="Everything is frozen when issued.">
+    My identity, the client’s, my bank details and the legal mentions are copied into the invoice:
+    changing address tomorrow does not rewrite yesterday’s invoices.
+  </Plus>
+  <Plus title="What I see is what the client gets.">
+    A single display model produces every string; the HTML preview and the PDF only lay them out.
+  </Plus>
+  <Plus title="Reminders are tasks.">
+    At D+1, D+15 and D+30 after the due date, a “Send a reminder” task appears, and closes on its
+    own when the invoice is paid.
+  </Plus>
+</PlusList>
+
+<Callout label="detail · the thin space">
+  French micro-typography calls for a narrow no-break space in “1 200,00 €”. Geist does not have
+  that glyph: in the PDFs, it is replaced by an ordinary no-break space. The kind of detail you only
+  find out when printing.
+</Callout>
+
+</Section>
+
+<Section n="05" label="deadlines" title="URSSAF in my calendar">
+
+The most important working rule of the project fits on one line: never guess a tax rule. Rates and thresholds live in a single file, each with its validity date, and are tested. A year that is not covered reuses the latest known version and says so: “2026 rate · to be confirmed for 2027”.
+
+<PullQuote>Never guess a tax rule.</PullQuote>
+
+Every night, a cron generates the obligations of the next fifteen months from my settings: quarterly URSSAF declarations, income tax, CFE (the French business property tax). The estimated amount of a declaration is computed again from the revenue ledger as long as it has not been filed. An obligation once declared no longer moves.
+
+<Callout label="example · the first declaration">
+  It does not follow the rhythm of the next ones. For an activity started on October 15, 2026, the
+  spec computes a first period up to March 31, 2027, to be declared before April 30. Both dates
+  remain editable: URSSAF has the last word.
+</Callout>
+
+These deadlines, the due dates of invoices and my dated tasks go to a “lotus” calendar in my Google Calendar, with the narrowest possible scope: the app only sees the calendar it created. A token-based ICS feed, which can be regenerated, does the same for any other calendar.
+
+On the ceilings side, the invoice generator shows the effect of the amount before I issue it: share of the micro-enterprise ceiling, and an alert if the invoice would push revenue over the VAT exemption threshold.
+
+</Section>
+
+<Shot
+  src="/posts/lotus/ecran-echeances"
+  width={1280}
+  height={900}
+  alt="Deadlines screen: calendar of the month, obligations of the status with their estimated amount, state of the sync with Google Calendar."
+  caption="The Deadlines screen: the month, the obligations of the status with their estimated amount, the state of the sync."
+/>
+
+<Section n="06" label="leads" title="From the form to a loyal client">
+
+The contact form of my site and lotus are two separate applications. The contract between them is written once, in a document that is authoritative for both repositories. The starting rule: a lead is never lost because lotus is unavailable.
+
+</Section>
+
+<Diagram
+  src="/posts/lotus/schema-leads"
+  width={1040}
+  height={520}
+  alt="Leads webhook: the site stores the request and answers the visitor, then sends a signed request to lotus; without confirmation, it tries again the next day. lotus checks the signature and the timestamp, deduplicates, creates the lead and a task."
+  caption="The site answers the visitor without waiting for lotus, keeps the lead, then forwards it through a signed request. Without confirmation, it tries again the next day."
+/>
+
+<Section>
+
+The request is signed with HMAC SHA-256 over the timestamp and the exact body; lotus refuses a gap of more than five minutes, compares the signature in constant time and never says why it refuses. An identifier provided by the site serves as an idempotency key: sending again never creates a duplicate. The lead arrives with a “Reply to…” task.
+
+### Then, once a month, nurturing
+
+On the 1st of the month, lotus runs my clients’ sites through PageSpeed Insights. Thirty rules turn the results into suggestions priced at my daily rate: optimise the images, update a framework, fix a keyboard journey. The Claude API writes the email of the month from those suggestions. I remove some, add some, proofread, send.
+
+Only the company, the site address, the industry, the stack and the scan results leave the app: no contact name, no email. An accepted suggestion becomes a service, which will become an invoice line. The loop is closed.
+
+</Section>
+
+<Screens caption="On a phone, day and night: the same app, the sidebar folded into a drawer.">
+  <Screen
+    src="/posts/lotus/ecran-mobile"
+    alt="lotus on a phone in day mode: dashboard in one column."
+  />
+  <Screen src="/posts/lotus/ecran-mobile" mode="nuit" alt="lotus on a phone in night mode." />
+</Screens>
+
+<Section n="07" label="security" title="A private app on the Internet">
+
+Bank details, revenue, lead data: an app for a single person, but exposed to the world.
+
+<PlusList>
+  <Plus title="A public surface that is listed, in full.">
+    Sign-in, legal pages, signed webhook, crons behind a secret, token-based ICS feed, share links.
+    Everything else requires a session checked on the server, and a test checks it module by module.
+  </Plus>
+  <Plus title="Share links that give nothing away.">
+    A 32-byte token of which only the hash is stored; expired, revoked or unknown, the answer is the
+    same: “This link has expired.”
+  </Plus>
+  <Plus title="Invisible to search engines.">
+    Strict headers on every route, and nothing indexable.
+  </Plus>
+  <Plus title="One backup a month.">Two years kept, on top of Neon’s point-in-time restore.</Plus>
+</PlusList>
+
+One trade-off is accepted and written down: the content security policy does not use a nonce, because a nonce forces dynamic rendering of every page and breaks the partial prerendering of Next.js 16. The rest of the policy is strict.
+
+</Section>
+
+<Section n="08" label="method" title="Built in twelve phases">
+
+lotus is the first project I ran this way, just before pensee. A complete specification first: vision, architecture, data model, business rules of the micro-enterprise, the visual identity applied to shadcn/ui, twelve features with their acceptance criteria, a Drizzle schema and reference tax rules, and the screen mock-ups. Then development, phase by phase.
+
+Each phase ends with a build, a lint and green tests, and a commit. Two files hold the project’s memory: the progress status, to pick up again after a break, and a decision log, where every gap from the spec is recorded with its reason. It holds forty-seven of them.
+
+</Section>
+
+<Stats
+  items={[
+    ["duration", "2 days"],
+    ["commits", "42"],
+    ["lines of ts", "~25,000"],
+    ["tests", "390"],
+    ["decisions", "47"],
+  ]}
+/>
+
+<Section>
+
+The tests run on PGlite, without any real service: Vitest for the business rules (contributions, ceilings, numbering, deadlines), Playwright for the journeys, and axe for accessibility, in day mode as well as night mode. A simulated sign-in, reserved for tests, avoids going through Google.
+
+</Section>
+
+<Shot
+  src="/posts/lotus/ecran-clients"
+  width={1280}
+  height={900}
+  alt="Clients screen: list of clients with their services to invoice and their maintenance subscriptions."
+  caption="The list of clients, taken from the demo data set that the tests use too."
+/>
+
+<Section n="09" label="takeaways" title="What I take away">
+
+<PlusList>
+  <Plus title="A tax rule is not guessed.">
+    It is dated, tested, and stays editable when it is uncertain.
+  </Plus>
+  <Plus title="Computing rather than typing">removes a whole class of errors: copying errors.</Plus>
+  <Plus title="A decision log is worth a code review.">
+    Forty-seven gaps explained is what makes it possible to revisit a choice months later without
+    redoing it.
+  </Plus>
+  <Plus title="Two apps that talk through a written contract.">
+    The site and lotus each evolve on their own, without ever breaking each other.
+  </Plus>
+</PlusList>
+
+</Section>

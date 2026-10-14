@@ -46,6 +46,24 @@ export const POSTS: Post[] = [
         coverAlt:
           "Accueil du site de BRUT\u00a0: logo, accroche « C’est bon parce que c’est vrai » et bouton « Où on est cette semaine », sur l’image d’attente de la vidéo.",
       },
+      en: {
+        title: "BRUT, the website of a truck that changes address every week",
+        description:
+          "The website of a food truck in Tours, France: pre-rendered pages, content the client edits himself, a reviews dashboard, and a handover with no developer.",
+        lead: "The website of BRUT, a food truck selling bites in Tours, France: tell people where to find the truck, make them hungry, collect sign-ups and reviews. Above all, a site its founder edits on his own, without a developer, even when I am on the other side of the world.",
+        tags: [
+          "next.js 16",
+          "cache components",
+          "shadcn/ui",
+          "neon",
+          "vercel botid",
+          "brevo",
+          "performance",
+          "lighthouse",
+        ],
+        coverAlt:
+          "BRUT home page: logo, the tagline “C’est bon parce que c’est vrai” (it’s good because it’s real) and a “where we are this week” button, over the video poster image.",
+      },
     },
   },
   {
@@ -76,6 +94,23 @@ export const POSTS: Post[] = [
         ],
         coverAlt:
           "Tableau de bord de lotus\u00a0: chiffre d’affaires encaissé, reste à encaisser, montant à mettre de côté pour l’URSSAF, tâches du moment et derniers prospects.",
+      },
+      en: {
+        title: "lotus, the app that runs my one-person business",
+        description:
+          "Accounting, French social security deadlines in Google Calendar, invoices and leads: the web app that runs my freelance business, and how it is built.",
+        lead: "Accounting, social security deadlines in my calendar, invoices, clients, leads from my website: a single tool, cut out for a freelancer leaving to work abroad for a year. What it computes, and how it is built.",
+        tags: [
+          "next.js 16",
+          "server actions",
+          "shadcn/ui",
+          "drizzle",
+          "neon",
+          "vercel blob",
+          "google calendar",
+        ],
+        coverAlt:
+          "lotus dashboard: revenue collected, amount still to collect, amount to set aside for social security, current tasks and latest leads.",
       },
     },
   },
@@ -109,6 +144,24 @@ export const POSTS: Post[] = [
         coverAlt:
           "Architecture du front\u00a0: le navigateur passe par Cloudflare (WAF, CDN), puis par l’application Next.js sur Vercel, qui assemble côté serveur quatre sources\u00a0: le back e-commerce et le CMS en GraphQL, Algolia pour la recherche, et une passerelle Gravitee devant l’ERP. Le CMS rappelle le front par webhook à chaque publication.",
       },
+      en: {
+        title: "Rebuilding an e-commerce site as headless, on the front end and in the team",
+        description:
+          "Next.js, GraphQL with inferred types, a headless CMS, an API gateway: the architecture of a rebuilt B2B e-commerce site, and my role as front-end lead.",
+        lead: "A monolithic B2B e-commerce platform cut in two: a back end that keeps the business logic and exposes it in GraphQL, a Next.js front end that renders six storefronts. How that front end is built, and what I did there as tech lead for a year and a half.",
+        tags: [
+          "next.js 16",
+          "graphql",
+          "gql.tada",
+          "contentful",
+          "gravitee",
+          "algolia",
+          "cloudflare",
+          "tech lead",
+        ],
+        coverAlt:
+          "Front-end architecture: the browser goes through Cloudflare (WAF, CDN), then through the Next.js application on Vercel, which assembles four sources on the server: the e-commerce back end and the CMS in GraphQL, Algolia for search, and a Gravitee gateway in front of the ERP. The CMS calls the front end back through a webhook on every publish.",
+      },
     },
   },
   {
@@ -140,6 +193,23 @@ export const POSTS: Post[] = [
         ],
         coverAlt:
           "Architecture de pensee\u00a0: sur l’iPhone, l’éditeur écrit dans SQLite chiffrée, le moteur de synchro pousse et tire les notes vers l’API Next.js sur Vercel, qui range les notes dans Postgres, rédige le Recul avec l’API Claude sur déclenchement horaire de GitHub Actions, et copie chaque jour vers Notion.",
+      },
+      en: {
+        title: "pensee, an offline notebook that steps back",
+        description:
+          "An iPhone app to write notes without a network, and an AI that rereads them every week: product, local-first architecture, the digest pipeline.",
+        lead: "An iPhone app to write my notes of the day without a network, synced in the background, and reread every week by an AI that draws a digest from them. How I designed it, how it works, and how I built it in two days, from my phone.",
+        tags: [
+          "expo",
+          "react native",
+          "next.js",
+          "sqlite",
+          "postgres",
+          "claude api",
+          "local-first",
+        ],
+        coverAlt:
+          "Architecture of pensee: on the iPhone, the editor writes to an encrypted SQLite, the sync engine pushes and pulls notes to and from the Next.js API on Vercel, which stores the notes in Postgres, writes the weekly digest with the Claude API on an hourly GitHub Actions trigger, and copies to Notion every day.",
       },
     },
   },
