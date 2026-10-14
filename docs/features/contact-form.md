@@ -13,7 +13,7 @@ related_code:
   - ../../next.config.ts
   - ../../locales/fr.ts
   - ../../locales/en.ts
-last_updated: 2026-10-12
+last_updated: 2026-10-14
 ---
 
 # Contact form
@@ -56,6 +56,8 @@ JavaScript.
 | 3. Contact | name, e-mail, company (optional)    | a name, a valid e-mail        |
 | Success    | recap of the request                | —                             |
 
+Closing the dialog gives the focus back to the link or button that opened it (Radix only
+does so for its own trigger, and this dialog is opened from links anywhere on the page).
 Closing the dialog after a success sends the visitor to the home page. From then on the
 contact buttons are replaced by a confirmation line ("Message envoyé…") with a link to
 write again. This is remembered in `localStorage` (`contact-sent-at`), read through

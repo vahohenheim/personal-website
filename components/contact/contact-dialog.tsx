@@ -121,6 +121,9 @@ const ContactDialogProvider = ({ locale, email, texts, children }: ContactDialog
   const [isSending, setIsSending] = useState(false);
   // When the dialog was opened: the server refuses forms filled in faster than a person can.
   const startedAt = useRef(0);
+  // What opened the dialog: Radix only gives focus back to its own trigger, and this dialog
+  // is opened from links anywhere on the page.
+  const opener = useRef<HTMLElement | null>(null);
 
   // Where the visitor came from is noted on arrival, before any navigation inside the site.
   useEffect(() => {
@@ -129,6 +132,7 @@ const ContactDialogProvider = ({ locale, email, texts, children }: ContactDialog
 
   const open = useCallback(() => {
     trackFunnel("contact_open");
+    opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     startedAt.current = Date.now();
     setStep(0);
     setFields(EMPTY);
@@ -228,7 +232,15 @@ const ContactDialogProvider = ({ locale, email, texts, children }: ContactDialog
           }
         }}
       >
-        <DialogContent closeLabel={texts.close}>
+        <DialogContent
+          closeLabel={texts.close}
+          onCloseAutoFocus={(event) => {
+            if (opener.current?.isConnected) {
+              event.preventDefault();
+              opener.current.focus();
+            }
+          }}
+        >
           {step === SUCCESS ? (
             <>
               <DialogHeader>
