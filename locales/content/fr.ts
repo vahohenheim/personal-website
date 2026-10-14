@@ -107,7 +107,6 @@ export const home: HomeContent = {
     title: "projets",
     status: {
       online: "en ligne",
-      starting: "en démarrage",
       archived: "archivé",
     },
     items: [
@@ -121,15 +120,15 @@ export const home: HomeContent = {
       {
         id: "lotus",
         name: "lotus",
-        status: "starting",
+        status: "online",
         text: "Mon statut d’indépendant, automatisé\u00a0: factures et devis, cotisations, échéances, leads et relances clients.",
         stack: "next.js · drizzle · neon",
       },
       {
         id: "pensee",
         name: "pensee",
-        status: "starting",
-        text: "App mobile de notes quotidiennes, pensée pour écrire hors ligne\u00a0: éditeur riche, synchronisation, recherche. Recul quotidien par IA.",
+        status: "online",
+        text: "App mobile de notes quotidiennes, pensée pour écrire hors ligne\u00a0: éditeur riche, synchronisation, recherche. Recul hebdomadaire par IA.",
         stack: "expo · next.js · api claude",
       },
     ],

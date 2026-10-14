@@ -23,7 +23,7 @@ export type ChangelogEntry = {
   earlier?: { label: string; years: string }[];
 };
 
-export type ProjectStatus = "online" | "starting" | "archived";
+export type ProjectStatus = "online" | "archived";
 
 export type ProjectContent = {
   /** Identifier used to find the project URL. */

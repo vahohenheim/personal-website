@@ -27,7 +27,7 @@
       "stack",
       "Expo SDK 57, Tiptap, expo-sqlite + Drizzle · Next.js 16, Neon, Better Auth · API Claude",
     ],
-    ["en chiffres", "119 commits, ~34 000 lignes de TypeScript, ~800 tests, 10 ADR"],
+    ["en chiffres", "119 commits, ~34 000 lignes de TypeScript, ~800 tests, 10 ADR"],
   ]}
   status="En ligne"
 />
@@ -72,7 +72,7 @@ Une note, c’est un texte riche, un jour, une heure, et éventuellement une vil
   items={[
     [
       "notes",
-      "Les notes par jour, l’heure en avant, chaque carte coupée à trois lignes pour en voir plusieurs d’un coup d’œil. En haut, la carte du dernier bulletin, et une ligne d’état : « hors ligne · 2 notes en attente ».",
+      "Les notes par jour, l’heure en avant, chaque carte coupée à trois lignes pour en voir plusieurs d’un coup d’œil. En haut, la carte du dernier bulletin, et une ligne d’état : « hors ligne · 2 notes en attente ».",
     ],
     [
       "éditeur",
@@ -91,8 +91,8 @@ Une note, c’est un texte riche, un jour, une heure, et éventuellement une vil
 
 S’y ajoutent une recherche plein texte qui marche hors ligne (SQLite FTS5, mots surlignés, filtres par période et par lieu), des réglages, l’export de toutes les notes en Markdown, et l’import de mon historique Notion.
 
-<Callout label="détail · le jour bascule à 4 h">
-  Une note écrite à 0 h 44 appartient à la veille : l’app l’affiche dans « nuit du 11 ». Un journal
+<Callout label="détail · le jour bascule à 4 h">
+  Une note écrite à 0 h 44 appartient à la veille : l’app l’affiche dans « nuit du 11 ». Un journal
   se lit en journées vécues, pas en journées civiles. Cette règle vit dans un paquet partagé, avec
   la semaine ISO, les mois et les saisons, et elle est la même sur le téléphone et sur le serveur.
 </Callout>
@@ -163,7 +163,7 @@ Chaque choix structurant a son ADR, un court fichier qui dit le contexte, la dé
     [
       "Éditeur",
       "Tiptap dans une WebView",
-      "Éditeurs 100 % natifs",
+      "Éditeurs 100 % natifs",
       "Un vrai rendu riche, et un éditeur réutilisable tel quel sur le web.",
     ],
     [
@@ -195,9 +195,9 @@ Deux décisions plus discrètes m’ont plu. Pas de bibliothèque de dates : `I
 
 <Section n="04" label="local-first" title="Écrire sans réseau">
 
-Le téléphone écrit toujours en local d’abord. L’éditeur tourne dans une WebView ; 300 ms après la dernière frappe, il renvoie au natif le document et sa version Markdown. La note est enregistrée dans SQLite, et dans la même transaction, une opération est posée dans une _outbox_.
+Le téléphone écrit toujours en local d’abord. L’éditeur tourne dans une WebView ; 300 ms après la dernière frappe, il renvoie au natif le document et sa version Markdown. La note est enregistrée dans SQLite, et dans la même transaction, une opération est posée dans une _outbox_.
 
-Cette outbox est coalescée : elle garde une seule opération en attente par note, sa dernière version complète. Écrire cinq minutes d’affilée ne crée pas soixante envois, mais un seul à la fois. Le rythme d’envoi est un debounce avec plafond : 2 s après la dernière frappe, et au plus tard 5 s après la première modification non envoyée.
+Cette outbox est coalescée : elle garde une seule opération en attente par note, sa dernière version complète. Écrire cinq minutes d’affilée ne crée pas soixante envois, mais un seul à la fois. Le rythme d’envoi est un debounce avec plafond : 2 s après la dernière frappe, et au plus tard 5 s après la première modification non envoyée.
 
 </Section>
 
@@ -205,8 +205,8 @@ Cette outbox est coalescée : elle garde une seule opération en attente par no
   src="/posts/pensee/schema-synchro"
   width={1040}
   height={360}
-  alt="Chronologie d’envoi : frappes à 0, 0,8, 1,9, 3,5 et 5,6 secondes ; un premier envoi part à 5 secondes, plafond atteint ; un second à 7,6 secondes, après 2 secondes de silence."
-  caption="Tant que j’écris sans m’arrêter, le plafond de 5 s force un envoi ; dès que je m’arrête 2 s, la fin part. Un seul envoi en vol à la fois."
+  alt="Chronologie d’envoi : frappes à 0, 0,8, 1,9, 3,5 et 5,6 secondes ; un premier envoi part à 5 secondes, plafond atteint ; un second à 7,6 secondes, après 2 secondes de silence."
+  caption="Tant que j’écris sans m’arrêter, le plafond de 5 s force un envoi ; dès que je m’arrête 2 s, la fin part. Un seul envoi en vol à la fois."
 />
 
 <Section>
@@ -223,15 +223,15 @@ En cas de conflit, les deux versions sont gardées et le choix m’est proposé 
 
 ### Notion, en copie lisible
 
-Je voulais garder mes notes lisibles dans Notion. L’API Notion tient environ trois requêtes par seconde : pas question de la suivre au rythme de la frappe. Le serveur met chaque jour modifié en file, 60 s après la dernière modification, puis réécrit la page de ce jour en entier. Une empreinte du contenu évite d’envoyer une page identique, et une page ne peut jamais être dupliquée. Le sens est unique : pensee vers Notion, jamais l’inverse.
+Je voulais garder mes notes lisibles dans Notion. L’API Notion tient environ trois requêtes par seconde : pas question de la suivre au rythme de la frappe. Le serveur met chaque jour modifié en file, 60 s après la dernière modification, puis réécrit la page de ce jour en entier. Une empreinte du contenu évite d’envoyer une page identique, et une page ne peut jamais être dupliquée. Le sens est unique : pensee vers Notion, jamais l’inverse.
 
 </Section>
 
 <Section n="05" label="ia" title="Le Recul : une IA qui relit un journal">
 
-C’est le cœur du projet, et la partie qui changera le plus. Chaque lundi à 5 h, heure locale du téléphone, un pipeline relit les notes de la semaine et écrit trois bulletins : la semaine écoulée, le mois, l’année. Le fuseau est envoyé à chaque synchro : le Recul suit mes changements de fuseau.
+C’est le cœur du projet, et la partie qui changera le plus. Chaque lundi à 5 h, heure locale du téléphone, un pipeline relit les notes de la semaine et écrit trois bulletins : la semaine écoulée, le mois, l’année. Le fuseau est envoyé à chaque synchro : le Recul suit mes changements de fuseau.
 
-Au départ, il tournait chaque nuit. L’estimation, environ 0,30 $ par jour dont plus de la moitié pour réécrire le bulletin de l’année, m’a fait passer à une fois par semaine : de l’ordre de 0,35 $ la semaine. Ce sont des estimations. Un bouton « Mettre à jour le recul » reste là pour un bulletin en milieu de semaine.
+Au départ, il tournait chaque nuit. L’estimation, environ 0,30 $ par jour dont plus de la moitié pour réécrire le bulletin de l’année, m’a fait passer à une fois par semaine : de l’ordre de 0,35 $ la semaine. Ce sont des estimations. Un bouton « Mettre à jour le recul » reste là pour un bulletin en milieu de semaine.
 
 </Section>
 
@@ -331,7 +331,7 @@ Les titres de jour ne portent presque jamais l’année : elle se déduit du ti
 
 La lecture avance par tranches de quatre minutes au plus, chacune dans une requête ordinaire. Chaque lot de cent blocs est enregistré dans la même transaction que le curseur Notion de sa page : une coupure ne perd que le lot en cours. Un bail garantit un seul lecteur, et le tick horaire continue l’import quand l’app est fermée.
 
-L’analyse de cet historique ne passe pas par le run du lundi. Je la lance à la main, par lots de 50, 200 ou 1 000 notes envoyés à l’API Message Batches de Claude, deux fois moins chère : le coût estimé s’affiche avant l’envoi, le coût réel après.
+L’analyse de cet historique ne passe pas par le run du lundi. Je la lance à la main, par lots de 50, 200 ou 1 000 notes envoyés à l’API Message Batches de Claude, deux fois moins chère : le coût estimé s’affiche avant l’envoi, le coût réel après.
 
 </Section>
 
@@ -341,7 +341,7 @@ Chaque décision technique se juge à une question : qu’arrive-t-il si ce té
 
 <PlusList>
   <Plus title="Base chiffrée sur l’appareil">
-    avec SQLCipher. La clé, 32 octets aléatoires, reste dans le trousseau iOS, jamais copiée dans
+    avec SQLCipher. La clé, 32 octets aléatoires, reste dans le trousseau iOS, jamais copiée dans
     iCloud ni sur un autre appareil.
   </Plus>
   <Plus title="Face ID">
@@ -387,7 +387,7 @@ Chaque session de travail part de `PROGRESS.md` et de la tâche qu’il désigne
 
 <Stats
   items={[
-    ["durée", "2 jours"],
+    ["durée", "2 jours"],
     ["commits", "119"],
     ["lignes de ts", "~34 000"],
     ["tests", "~800"],
@@ -399,7 +399,7 @@ Chaque session de travail part de `PROGRESS.md` et de la tâche qu’il désigne
 
 ### Des tests qui remplacent le simulateur
 
-Sans Mac sous la main, les tests sont mes yeux. Vitest pour les paquets et l’API (Postgres en mémoire avec PGlite), Jest pour l’app, un paquet de bout en bout qui fait tourner le vrai code du téléphone contre les vraies routes de l’API, et neuf parcours Maestro pour les écrans. Un test vérifie même que chaque bouton a un libellé et une cible d’au moins 44 pt : il a trouvé un interrupteur natif de 31 pt.
+Sans Mac sous la main, les tests sont mes yeux. Vitest pour les paquets et l’API (Postgres en mémoire avec PGlite), Jest pour l’app, un paquet de bout en bout qui fait tourner le vrai code du téléphone contre les vraies routes de l’API, et neuf parcours Maestro pour les écrans. Un test vérifie même que chaque bouton a un libellé et une cible d’au moins 44 pt : il a trouvé un interrupteur natif de 31 pt.
 
 ### Mon rôle : essayer, rapporter, arbitrer
 

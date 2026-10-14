@@ -15,7 +15,7 @@ related_code:
   - ../../lib/constants/project-links.ts
   - ../../lib/constants/skills.ts
   - ../../lib/constants/site.ts
-last_updated: 2026-10-12
+last_updated: 2026-10-14
 ---
 
 # Content and resume data
@@ -77,7 +77,7 @@ Every experience has an end date: there is no current employer while freelance, 
 - **A project:** add it to `home.projects.items` (or `moreItems`) in both languages, and
   its URL to `PERSONAL_PROJECTS` under the same `id`. A project without a URL shows its
   name as plain text.
-  Its status is `online`, `starting` or `archived`; `stack` is left out while the project
+  Its status is `online` or `archived`; `stack` is left out while the project
   has none settled.
 - **The profile sheet or the stack:** edit the rows in both languages; keep `SKILLS` in
   line.

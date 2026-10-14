@@ -163,7 +163,7 @@ const fr: Dictionary = {
   posts: {
     title: "Articles",
     breadcrumb: "articles",
-    lead: "Rétrospectives et notes sur l’architecture front-end, les design systems et la qualité.",
+    lead: "Mes projets racontés de bout en bout, et des notes sur l’architecture front-end, les design systems et la qualité.",
     feed: "flux rss →",
     draft: "brouillon",
     published: "Publié le {date}",
@@ -199,7 +199,7 @@ const fr: Dictionary = {
     metadata: {
       title: "Articles · architecture front-end, design systems, qualité | valentinbourreau",
       description:
-        "Rétrospectives et notes de Valentin Bourreau, ingénieur front-end senior\u00a0: architecture front-end, design systems, qualité et lead technique.",
+        "Projets et notes de Valentin Bourreau, ingénieur front-end senior\u00a0: architecture front-end, design systems, qualité et lead technique.",
     },
   },
   home: content.home,

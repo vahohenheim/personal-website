@@ -137,6 +137,41 @@ curl -s https://api.github.com/repos/vahohenheim/personal-website/commits/<sha>/
 `state: success` with "Deployment has completed" means the new version is live. The
 apex domain redirects to `www.valentinbourreau.com`.
 
+## Versions and releases
+
+The version of the site lives in `package.json` (and `package-lock.json`) and follows
+[semver](https://semver.org):
+
+| Change                                               | Bump  | Example                          |
+| ---------------------------------------------------- | ----- | -------------------------------- |
+| A redesign, or a break (URLs, stored data, contract) | major | the Changelog redesign (`2.0.0`) |
+| A feature                                            | minor | the posts section (`2.5.0`)      |
+| A fix, a content change, a docs or dependency change | patch | renaming a project (`2.4.1`)     |
+
+Every change bumps the version in the same change (`npm version <major|minor|patch>
+--no-git-tag-version`). Once it is on `main`, the merge commit (or the last commit of a
+direct push) gets an annotated tag `v<version>`, pushed to GitHub, and a GitHub release
+whose notes say what changed for a visitor and for Valentin:
+
+```sh
+git tag -a v2.5.0 -m "v2.5.0: posts section" && git push origin v2.5.0
+gh release create v2.5.0 --title "v2.5.0 · posts section" --notes-file notes.md
+```
+
+Earlier milestones were tagged afterwards, on the commit that was live at the time:
+
+| Tag      | Date       | What                                                                    |
+| -------- | ---------- | ----------------------------------------------------------------------- |
+| `v1.0.0` | 2025-09-28 | First site                                                              |
+| `v1.1.0` | 2026-10-10 | Next.js 16, restructured project, audit fixes, structured data, sitemap |
+| `v2.0.0` | 2026-10-11 | Redesign on the Changelog direction, shadcn/ui restyled                 |
+| `v2.1.0` | 2026-10-11 | Contact form for leads, admin area, Neon                                |
+| `v2.2.0` | 2026-10-11 | Audience figures copied from Vercel Web Analytics                       |
+| `v2.3.0` | 2026-10-11 | Lead follow-up, conversion counters, resume PDF, posts infrastructure   |
+| `v2.4.0` | 2026-10-12 | Business identity, leads forwarded to lotus, test suite and CI          |
+| `v2.4.1` | 2026-10-13 | Projects: pensee, lys removed, editorials archived                      |
+| `v2.5.0` | 2026-10-14 | Posts section: three project articles and a protected one               |
+
 ## Dependencies
 
 State on 2026-10-10: every package is on its latest version, with two exceptions imposed

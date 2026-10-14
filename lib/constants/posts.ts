@@ -80,7 +80,7 @@ export const POSTS: Post[] = [
         title: "Refondre un e-commerce en headless, côté front et côté équipe",
         description:
           "Next.js, GraphQL et types inférés, CMS headless, passerelle d’API\u00a0: l’architecture d’un e-commerce B2B refondu, et mon rôle de lead front-end.",
-        lead: "Next.js, GraphQL et types inférés, CMS headless, passerelle d’API\u00a0: l’architecture d’un e-commerce B2B refondu, et mon rôle de lead front-end.",
+        lead: "Un e-commerce B2B monolithique coupé en deux\u00a0: un back qui garde le métier et l’expose en GraphQL, un front Next.js qui rend six vitrines. Comment ce front est construit, et ce que j’y ai fait comme lead technique pendant un an et demi.",
         tags: [
           "next.js 16",
           "graphql",

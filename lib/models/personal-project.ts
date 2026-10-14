@@ -5,7 +5,6 @@ export type PersonalProject = {
 };
 
 export enum PersonalProjectStatus {
-  COMING_SOON = "coming_soon",
   ACTIVE = "active",
   ARCHIVED = "archived",
   COMPLETED = "completed",

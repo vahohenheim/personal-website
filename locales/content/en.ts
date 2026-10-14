@@ -106,7 +106,6 @@ export const home: HomeContent = {
     title: "projects",
     status: {
       online: "online",
-      starting: "starting",
       archived: "archived",
     },
     items: [
@@ -120,15 +119,15 @@ export const home: HomeContent = {
       {
         id: "lotus",
         name: "lotus",
-        status: "starting",
+        status: "online",
         text: "My freelance status, automated: invoices and quotes, social contributions, deadlines, leads and client follow-ups.",
         stack: "next.js · drizzle · neon",
       },
       {
         id: "pensee",
         name: "pensee",
-        status: "starting",
-        text: "Mobile app for daily notes, built for writing offline: rich editor, sync, search. A nightly AI review.",
+        status: "online",
+        text: "Mobile app for daily notes, built for writing offline: rich editor, sync, search. A weekly AI review.",
         stack: "expo · next.js · claude api",
       },
     ],

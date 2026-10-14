@@ -12,11 +12,11 @@ export const PERSONAL_PROJECTS: PersonalProject[] = [
   },
   {
     id: PersonalProjectId.LOTUS,
-    status: PersonalProjectStatus.COMING_SOON,
+    status: PersonalProjectStatus.ACTIVE,
   },
   {
     id: PersonalProjectId.PENSEE,
-    status: PersonalProjectStatus.COMING_SOON,
+    status: PersonalProjectStatus.ACTIVE,
   },
   {
     id: PersonalProjectId.EDITORIALS,
