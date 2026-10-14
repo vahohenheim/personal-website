@@ -19,6 +19,8 @@ related_code:
   - ../../tests/smoke/
   - ../../tests/smoke/global-setup.ts
   - ../../tests/smoke/lotus-stub.ts
+  - ../../tests/e2e/
+  - ../../playwright.config.ts
   - ../../.github/workflows/ci.yml
   - ../../package.json
 last_updated: 2026-10-14
@@ -26,9 +28,10 @@ last_updated: 2026-10-14
 
 # Tests
 
-**Summary.** The site is tested with [Vitest](https://vitest.dev) in three layers: unit
+**Summary.** The site is tested in four layers: with [Vitest](https://vitest.dev), unit
 tests of the pure modules, route handlers called in process, and smoke tests that start
-the built site and call it over HTTP. No test reaches a real database or a real service:
+the built site and call it over HTTP; with [Playwright](https://playwright.dev), end-to-end
+tests that drive the built site in Chromium, on a desktop and on a 375 px phone. No test reaches a real database or a real service:
 stores are the in-memory ones and lotus is a stand-in. The CI runs everything on every
 push to `main` and on every pull request.
 
@@ -39,9 +42,15 @@ push to `main` and on every pull request.
 | `npm test`           | unit tests and route handlers (`tests/unit/`, `tests/routes/`) | nothing         |
 | `npm run test:watch` | the same, re-run on change                                     | nothing         |
 | `npm run test:smoke` | the built site over HTTP (`tests/smoke/`)                      | `npm run build` |
+| `npm run test:e2e`   | the built site in a browser (`tests/e2e/`)                     | `npm run build` |
 
 Before handing work back: `npm run check`, `npm test`, `npm run build`,
-`npm run test:smoke`. The CI runs the same four, in that order.
+`npm run test:smoke`, `npm run test:e2e`. The CI runs the same five, in that order.
+
+The first time on a machine, `npx playwright install chromium` downloads the browser. Useful
+options: `npm run test:e2e -- --project=phone`, `-- contact` (one spec), `-- --ui` (step
+through a test), `-- --repeat-each=3` (look for a flaky test). A failure leaves a
+screenshot and a trace in `test-results/` (`npx playwright show-trace <file>`).
 
 ## The three layers
 
@@ -50,6 +59,7 @@ Before handing work back: `npm run check`, `npm test`, `npm run build`,
 | Unit   | `tests/unit/`   | functions imported directly                              | form validation, figures of the admin, admin credentials, lead and funnel stores, posts (drafts by environment, order, next post, home block, protected posts, summary, reading time, image pairs) and sitemap, content of the MDX files (components, images, sizes, loaders), the JSON-LD of every page and post in every language, access tokens of protected posts, dictionaries, labels, the lotus payload, signature, answers and retry rules |
 | Routes | `tests/routes/` | the `POST`/`GET` of a route file called with a `Request` | contact form, form counters, unlock of a protected post, both cron routes, CSV export, `proxy.ts` (language redirect, admin gate, gate of protected posts and its `matcher`)                                                                                                                                                                                                                                                                       |
 | Smoke  | `tests/smoke/`  | `next start` on port 3219, called with `fetch`           | every public page in both languages (status, language, one `h1`, canonical, JSON-LD), redirects, 404, security headers, sitemap, PDFs, drafts, the list and each post (JSON-LD, images, sharing images), home, feed and sitemap, the protected post over HTTP (HTML, RSC, images, optimizer, cookies) and `.next/static`, the admin gate, and a lead from the form to the admin and to lotus                                                       |
+| E2E    | `tests/e2e/`    | `next start` on port 3221, Chromium, desktop and 375 px  | what only a browser shows: the contact dialog, the password form, the theme, the language switch, the keyboard, accessibility (axe) and the layout of every page; see the table below                                                                                                                                                                                                                                                              |
 
 What is deliberately tested as a guard against regressions:
 
@@ -66,6 +76,33 @@ What is deliberately tested as a guard against regressions:
   protected post is in the `matcher` of `proxy.ts`.
 - **Content matches the code**: every component an MDX file uses is registered, every
   image it names exists (both variants of a pair) with the declared proportions.
+
+## End-to-end coverage
+
+Every spec runs twice: `desktop` (1280 × 800) and `phone` (375 × 812, touch). The server is
+the production build with in-memory stores, its own admin credentials and protected-post
+secrets, and the stand-in for lotus on port 3222
+([playwright.config.ts](../../playwright.config.ts), [global-setup.ts](../../tests/e2e/global-setup.ts)).
+
+| Feature        | Spec                                                             | What a visitor or the admin does, and what is checked                                                                                                                                                                                                                                                                                        |
+| -------------- | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Accessibility  | [accessibility.spec.ts](../../tests/e2e/accessibility.spec.ts)   | every public page, the 404, the password page and each step of the contact dialog pass axe (WCAG 2.2 A and AA), in day and night mode; no page scrolls sideways                                                                                                                                                                              |
+| Navigation     | [navigation.spec.ts](../../tests/e2e/navigation.spec.ts)         | header links and `aria-current`, the menu on a phone, the skip link, no posts link in a language without posts, the 404 (status, title, way home) in both languages, the legal page from the footer, external links in a new tab                                                                                                             |
+| Language       | [navigation.spec.ts](../../tests/e2e/navigation.spec.ts)         | the switch keeps the page, sets `lang` and the cookie, and the root then follows it; a French-only post falls back to the English home; the root follows the browser language                                                                                                                                                                |
+| Theme          | [theme.spec.ts](../../tests/e2e/theme.spec.ts)                   | system preference first, the toggle, the choice kept across pages and reloads, the class set before React runs (no flash), night images in night mode                                                                                                                                                                                        |
+| Home           | [home.spec.ts](../../tests/e2e/home.spec.ts)                     | sections, the portrait preloaded, the three latest posts, project cards to their post and their site, links to the resume, English texts                                                                                                                                                                                                     |
+| Contact form   | [contact.spec.ts](../../tests/e2e/contact.spec.ts)               | the three steps with every validation toast, going back keeps the answers, the confirmation and its recap, the home page then and after a reload, "new message", the lead at lotus; Escape, focus trap and focus given back; a network failure and a server refusal; a form sent too fast looks sent but is never stored; the English dialog |
+| Posts          | [posts.spec.ts](../../tests/e2e/posts.spec.ts)                   | the list (order, reading time, tags, feed, no protected post), a post (dates, summary, anchors from the summary and from a shared link, every image loaded with its alt, `Stats` figures on one line), the next post, the sharing image                                                                                                      |
+| Protected post | [protected-post.spec.ts](../../tests/e2e/protected-post.spec.ts) | the form shows nothing of the post, a wrong password gives a toast, the right one opens the post and keeps it open (cookie flags, `noindex`, images)                                                                                                                                                                                         |
+| Resume         | [resume.spec.ts](../../tests/e2e/resume.spec.ts)                 | content and breadcrumb, both PDFs downloadable, the print page on one A4 page and `noindex`                                                                                                                                                                                                                                                  |
+| Admin          | [admin.spec.ts](../../tests/e2e/admin.spec.ts)                   | closed without credentials; the dashboard; a new lead with its details; follow-up (status, amount, date, notes) saved and kept; deletion only after confirmation; CSV export; the period of the audience; the toast without the Vercel token                                                                                                 |
+
+Rules for a new spec: find elements by role, label or visible text, as a person would, never
+by class; give data a unique value (`Date.now()` and the project name), since both projects
+share one server and one memory; never wait a fixed time where a web-first assertion
+(`toBeVisible`, `expect.poll`) can wait for the state. The contact form refuses, silently,
+what is sent less than 3 seconds after opening: the specs set the browser clock back 10
+seconds (`page.clock.install`) instead of waiting.
 
 ## How tests stay away from real data
 
@@ -107,9 +144,9 @@ A new feature comes with its tests, in the same change.
 
 ## State and limits
 
-- No browser test: the contact dialog, the password form, the theme and the layout are
-  not exercised by the suite. They are checked by hand (the posts section was, with
-  Playwright at 375 and 1280 px in both modes, when built).
+- The end-to-end tests run Chromium only: Safari and Firefox are checked by hand. Axe finds
+  about half of what an accessibility audit would; reading order, wording and screen reader
+  output still need a person.
 - The Neon store is not run by the tests (no database in CI): its SQL is checked by hand
   against the database when it changes. The memory store follows the same contract and is
   what the tests exercise.

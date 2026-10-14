@@ -81,8 +81,9 @@ run by hand.
 ## Continuous integration
 
 [.github/workflows/ci.yml](../../.github/workflows/ci.yml) runs on every push to `main` and
-on pull requests: `npm ci`, `npm run check`, `npm test`, `npm run build`, `npm run test:smoke`, on the Node version of
-`.nvmrc`. It does not gate the deployment: Vercel builds on its own. A red run means the
+on pull requests: `npm ci`, `npm run check`, `npm test`, `npm run build`, `npm run test:smoke`, then
+Chromium and `npm run test:e2e`, on the Node version of `.nvmrc`. When the end-to-end tests
+fail, the Playwright report and traces are attached to the run as an artifact. It does not gate the deployment: Vercel builds on its own. A red run means the
 commit that is live fails a check; fix it in the next push.
 
 Without the GitHub CLI, the last runs are visible at
