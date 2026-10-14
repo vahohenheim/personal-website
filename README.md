@@ -35,6 +35,7 @@ credentials or a database.
 | `npm run check`      | Types, lint and formatting, in one command     |
 | `npm test`           | Unit tests and route handlers                  |
 | `npm run test:smoke` | The built site called over HTTP, after a build |
+| `npm run test:e2e`   | The built site in a browser, after a build     |
 | `npm run lint`       | ESLint with `--fix`                            |
 | `npm run format`     | Prettier on the whole repository               |
 | `npm run cv:pdf`     | Prints the resume PDFs, after a build          |
@@ -82,8 +83,8 @@ credentials or a database.
 - **The portrait**: replace [public/avatar.jpg](public/avatar.jpg) with another square image
   ([frontend/styling.md](docs/frontend/styling.md#portrait)).
 
-Before pushing, run `npm run check`, `npm test`, `npm run build` and `npm run test:smoke`.
-A GitHub Actions workflow runs all four on every push.
+Before pushing, run `npm run check`, `npm test`, `npm run build`, `npm run test:smoke` and
+`npm run test:e2e`. A GitHub Actions workflow runs all five on every push.
 
 ## Deployment
 

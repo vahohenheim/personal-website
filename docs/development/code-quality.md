@@ -8,7 +8,7 @@ related_code:
   - ../../.editorconfig
   - ../../tsconfig.json
   - ../../package.json
-last_updated: 2026-10-12
+last_updated: 2026-10-14
 ---
 
 # Code quality
@@ -29,8 +29,8 @@ test would repeat (dictionary keys, page registry, icon maps).
 | `npm run format`       | Prettier on the whole repository             |
 | `npm run format:check` | Prettier, read-only                          |
 
-Before handing work back, `npm run check`, `npm test`, `npm run build` and
-`npm run test:smoke` must all pass. The same four
+Before handing work back, `npm run check`, `npm test`, `npm run build`,
+`npm run test:smoke` and `npm run test:e2e` must all pass. The same five
 commands run in CI on every push ([runbook](../operations/runbook.md#continuous-integration)).
 
 The `typegen` step matters: `LayoutProps`, `PageProps` and the exports of `next/root-params`
