@@ -138,7 +138,9 @@ a closing tag, such as a `<Plus>` item, counts as prose. Post pages are pre-rend
 
 Rules:
 
-- A post may exist in one language only. Its `hreflang` alternates, the sitemap and the
+- Every published post exists in French and in English (translated with Valentin, same
+  images: the screenshots and diagrams stay in French, their alt texts and captions are
+  translated). A post may still exist in one language only. Its `hreflang` alternates, the sitemap and the
   header language link follow: from a post without a translation, the language link goes
   to the list of the other language, or its home page when that list is empty.
 - French posts follow the French typography of the charter (`’`, non-breaking spaces).
