@@ -314,6 +314,9 @@ const en = {
     title: "Oops, page not found!",
     description: "The page you’re looking for doesn’t exist. It might have been moved or deleted.",
     "back-to-homepage": "back to homepage",
+    metadata: {
+      title: "Page not found | valentinbourreau",
+    },
   },
   error: {
     title: "Oops, an error occurred!",

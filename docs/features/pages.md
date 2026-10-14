@@ -89,7 +89,8 @@ bump `updatedAt` for `legal` in `PAGES`.
 
 - **404.** An unknown URL under a locale reaches `[...rest]/page.tsx`, which calls
   `notFound()`: Next.js renders `not-found.tsx` inside the layout, in the right language,
-  with a 404 status.
+  with a 404 status. Its `<title>` comes from the `generateMetadata` of `[...rest]/page.tsx`
+  (`not-found.metadata.title` in the dictionaries): `not-found.tsx` cannot set it there.
 - **Error.** `error.tsx` is a Client Component. It gets its texts from a context set by
   the root layout, and offers "try again" and a link home.
 
