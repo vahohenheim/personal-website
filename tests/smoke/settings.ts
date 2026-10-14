@@ -10,6 +10,8 @@ export const SMOKE = {
   lotusPort: 3220,
   lotusUrl: "http://localhost:3220",
   lotusSecret: "smoke-lotus-secret",
+  postsPassword: "smoke-posts-password",
+  postsSecret: "smoke-posts-secret",
 } as const;
 
 export const adminAuthorization = `Basic ${Buffer.from(

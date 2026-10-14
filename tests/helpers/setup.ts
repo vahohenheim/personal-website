@@ -7,6 +7,9 @@ beforeEach(() => {
   vi.stubEnv("LEADS_MEMORY_STORE", "1");
   vi.stubEnv("DATABASE_URL", "");
   vi.stubEnv("VERCEL", "");
+  vi.stubEnv("VERCEL_ENV", "");
+  vi.stubEnv("PROTECTED_POSTS_PASSWORD", "");
+  vi.stubEnv("PROTECTED_POSTS_SECRET", "");
   vi.stubEnv("ADMIN_USER", "");
   vi.stubEnv("ADMIN_PASSWORD", "");
   vi.stubEnv("CRON_SECRET", "");

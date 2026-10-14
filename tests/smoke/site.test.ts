@@ -108,6 +108,7 @@ describe("files and feeds", () => {
 
   it("does not publish drafts", async () => {
     expect((await get("/fr/posts/example-draft/")).status).toBe(404);
+    expect(await (await get("/fr/posts/feed.xml")).text()).not.toContain("example-draft");
   });
 });
 
