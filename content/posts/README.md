@@ -12,14 +12,20 @@ the brief published with this branch).
 
 ## Posts
 
-| Slug     | Title (fr)                                                    | Dates      | Images                 |
-| -------- | ------------------------------------------------------------- | ---------- | ---------------------- |
-| `pensee` | pensee, un carnet hors ligne qui prend du recul               | 2026-10-13 | `public/posts/pensee/` |
-| `lotus`  | lotus, l’app qui gère ma micro-entreprise                     | 2026-10-14 | `public/posts/lotus/`  |
-| `brut`   | BRUT, le site d’un camion qui change d’adresse chaque semaine | 2026-10-14 | `public/posts/brut/`   |
+| Slug                | Title (fr)                                                    | Dates      | Images                            |
+| ------------------- | ------------------------------------------------------------- | ---------- | --------------------------------- |
+| `pensee`            | pensee, un carnet hors ligne qui prend du recul               | 2026-10-13 | `public/posts/pensee/`            |
+| `lotus`             | lotus, l’app qui gère ma micro-entreprise                     | 2026-10-14 | `public/posts/lotus/`             |
+| `brut`              | BRUT, le site d’un camion qui change d’adresse chaque semaine | 2026-10-14 | `public/posts/brut/`              |
+| `headless-commerce` | Refondre un e-commerce en headless, côté front et côté équipe | 2026-10-14 | `public/posts/headless-commerce/` |
 
 French only for now. Suggested descriptions (under 155 characters) and leads are in the
 brief. All data in the screenshots is fictional (demo seeds, invented notes, example.com).
+
+`headless-commerce` is **protected**: published, but listed nowhere and readable only with a
+password (see the brief). It describes a past position and is anonymised: no company,
+client, person, host name or business figure. Keep it that way; its images are diagrams
+only, and they are served behind the same gate as the page.
 
 ## Images
 
@@ -43,7 +49,7 @@ no shadow, French typography). Props are exactly those below.
 | `<Screen>`        | `src`, `alt`, `mode?: "nuit"`                                   | One phone screen. `mode="nuit"` forces the night image whatever the theme (to show both modes side by side).                                                                               |
 | `<Shot>`          | `src`, `alt`, `width`, `height`, `caption?`, `variant?: "hero"` | One large screenshot in a 1 px frame, with a caption.                                                                                                                                      |
 | `<Shots>`         | `caption`; children: `<Shot>`                                   | Two shots side by side on wide screens, stacked below 768 px, one shared caption.                                                                                                          |
-| `<Diagram>`       | `src`, `alt`, `width`, `height`, `caption`                      | A diagram (always a jour/nuit pair). The `alt` describes the whole diagram.                                                                                                                |
+| `<Diagram>`       | `src`, `alt`, `width`, `height`, `caption`, `variant?: "hero"`  | A diagram (always a jour/nuit pair). The `alt` describes the whole diagram; `hero` places it first, loaded eagerly.                                                                        |
 | `<ProjectSheet>`  | `rows: [label, value][]`, `status`, `link?: [label, href]`      | The "fiche projet" box: mono labels, values, a status line with the accent dot.                                                                                                            |
 | `<Section>`       | `n?`, `label?`, `title?`; children                              | With props: a numbered section (`01 · contexte`) whose `title` is the `h2` (and an anchor for the summary). Without props: continuation of the previous section after a full-width figure. |
 | `<PlusList>`      | children: `<Plus>`                                              | A list whose bullet is the `+` glyph.                                                                                                                                                      |
