@@ -1,0 +1,79 @@
+name: Release
+
+# Tags every new version of package.json and publishes its GitHub release, once it is on
+# main. The tag is annotated and sits on the commit that last changed package.json on the
+# first-parent history of main: the merge commit of the pull request that bumped the
+# version. Notes come from docs/releases/v<version>.md (first line: the title). Nothing
+# happens when the tag already exists. See docs/operations/runbook.md#versions-and-releases.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read the version
+        id: version
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          tag="v${version}"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+          if git ls-remote --exit-code --tags origin "refs/tags/${tag}" > /dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "${tag} already exists: nothing to do."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Tag the version
+        if: steps.version.outputs.exists == 'false'
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          notes="docs/releases/${TAG}.md"
+          title=""
+          if [ -f "$notes" ]; then
+            title="$(head -n 1 "$notes")"
+          fi
+          message="${TAG}"
+          if [ -n "$title" ]; then
+            message="${TAG}: ${title}"
+          fi
+          # The merge commit (or last direct commit) that brought this version to main.
+          target="$(git log -1 --first-parent --format=%H -- package.json)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" -m "$message" "$target"
+          git push origin "refs/tags/${TAG}"
+          echo "Tagged ${TAG} on ${target}: ${message}"
+
+      - name: Publish the release
+        if: steps.version.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          notes="docs/releases/${TAG}.md"
+          if [ -f "$notes" ]; then
+            title="$(head -n 1 "$notes")"
+            # The notes are the file without its title line and the blank lines after it.
+            tail -n +2 "$notes" | sed '/./,$!d' > "$RUNNER_TEMP/notes.md"
+            gh release create "$TAG" --verify-tag --title "${TAG} · ${title}" --notes-file "$RUNNER_TEMP/notes.md"
+          else
+            gh release create "$TAG" --verify-tag --title "$TAG" --generate-notes
+          fi
