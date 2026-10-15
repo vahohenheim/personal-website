@@ -32,6 +32,7 @@ export const getPageTexts = (page: PageId, dictionary: Dictionary) =>
     resume: dictionary.resume.metadata,
     posts: dictionary.posts.metadata,
     legal: dictionary.legal.metadata,
+    cgv: dictionary.cgv.metadata,
   })[page];
 
 /** Translated meta tags of a page, with its canonical URL and language alternates. */

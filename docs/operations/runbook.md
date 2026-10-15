@@ -10,7 +10,7 @@ related_code:
   - ../../.env.example
   - ../../AGENTS.md
   - ../../.gitignore
-last_updated: 2026-10-14
+last_updated: 2026-10-15
 ---
 
 # Runbook
@@ -30,16 +30,17 @@ npm run dev
 Open `http://localhost:3000`. The root URL redirects to `/en/` or `/fr/` according to the
 browser language.
 
-| Command              | What it does                                                                                                               |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `npm run dev`        | Development server (Turbopack)                                                                                             |
-| `npm run build`      | Production build                                                                                                           |
-| `npm run start`      | Serves the production build                                                                                                |
-| `npm run check`      | Types, lint and formatting ([code-quality.md](../development/code-quality.md))                                             |
-| `npm test`           | Unit tests and route handlers ([testing.md](../development/testing.md))                                                    |
-| `npm run test:smoke` | The built site called over HTTP, after a build                                                                             |
-| `npm run cv:pdf`     | Prints the resume to `public/cv-fr.pdf` and `public/cv-en.pdf`, after a build ([resume-pdf.md](../features/resume-pdf.md)) |
-| `npm run db:setup`   | Applies `db/schema.sql` to the database of `.env.local` ([neon.md](../database/neon.md))                                   |
+| Command                 | What it does                                                                                                                                                    |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`           | Development server (Turbopack)                                                                                                                                  |
+| `npm run build`         | Production build                                                                                                                                                |
+| `npm run start`         | Serves the production build                                                                                                                                     |
+| `npm run check`         | Types, lint and formatting ([code-quality.md](../development/code-quality.md))                                                                                  |
+| `npm test`              | Unit tests and route handlers ([testing.md](../development/testing.md))                                                                                         |
+| `npm run test:smoke`    | The built site called over HTTP, after a build                                                                                                                  |
+| `npm run cv:pdf`        | Prints the resume to `public/cv-fr.pdf` and `public/cv-en.pdf`, after a build ([resume-pdf.md](../features/resume-pdf.md))                                      |
+| `npm run cgv:pdf -- en` | Prints the English terms to `public/cgv/cgp-<version>-en.pdf`, never over an existing file ([legal-pages.md](../features/legal-pages.md#the-pdfs-of-the-terms)) |
+| `npm run db:setup`      | Applies `db/schema.sql` to the database of `.env.local` ([neon.md](../database/neon.md))                                                                        |
 
 `next dev` generates `AGENTS.md`, which points coding agents to the Next.js documentation
 shipped in `node_modules/next/dist/docs/`. Do not edit it; commit it when it changes.
@@ -209,6 +210,10 @@ goes away.
 - The resume PDFs are not rebuilt on deployment: after a change to the resume, run
   `npm run build && npm run cv:pdf` and commit both files.
 - The footers carry a "mentions légales" link that the redesign brief did not specify.
+- `TODO(e-invoicing)`: the legal notice withholds, in both languages, the sentence about the
+  approved e-invoicing platform until Valentin has chosen the tool; it waits as a comment in
+  `locales/legal/notice.*.ts`. Put it back with the platform's name, then remove the test
+  guard ([legal-pages.md](../features/legal-pages.md#open-items)).
 
 ## Troubleshooting
 

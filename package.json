@@ -1,6 +1,6 @@
 {
   "name": "personal-website",
-  "version": "2.6.2",
+  "version": "2.8.0",
   "private": true,
   "engines": {
     "node": ">=22"
@@ -16,6 +16,7 @@
     "format:check": "prettier --check .",
     "db:setup": "node --env-file=.env.local db/setup.mjs",
     "cv:pdf": "node scripts/cv-pdf.mjs",
+    "cgv:pdf": "node scripts/cgv-pdf.mjs",
     "check": "npm run typecheck && npm run lint:check && npm run format:check",
     "test": "vitest run",
     "test:watch": "vitest",

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { adminAuthorization, get, post, SMOKE } from "./settings";
 
 const LOCALES = ["fr", "en"];
-const PAGES = ["/", "/resume/", "/legal/"];
+const PAGES = ["/", "/resume/", "/legal/", "/cgv/"];
 
 /** Path a redirect points to, whether the header is absolute or relative. */
 const target = (response: Response) =>
@@ -97,6 +97,43 @@ describe("files and feeds", () => {
 
     expect(old.status).toBe(308);
     expect(target(old)).toBe("/cv-fr.pdf");
+  });
+
+  it("serves the PDF of the terms in each language, linked from the terms", async () => {
+    for (const [locale, pdf] of [
+      ["fr", "/cgv/cgp-1.0.pdf"],
+      ["en", "/cgv/cgp-1.0-en.pdf"],
+    ]) {
+      const response = await get(pdf);
+
+      expect(response.status, pdf).toBe(200);
+      expect(response.headers.get("content-type")).toContain("application/pdf");
+      expect(await (await get(`/${locale}/cgv/`)).text()).toContain(`href="${pdf}"`);
+    }
+  });
+
+  it("lists the terms in the sitemap and links them from every footer", async () => {
+    const sitemap = await (await get("/sitemap.xml")).text();
+
+    expect(sitemap).toContain("<loc>https://www.valentinbourreau.com/fr/cgv/</loc>");
+    expect(sitemap).toContain("<loc>https://www.valentinbourreau.com/en/cgv/</loc>");
+
+    for (const path of ["/fr/", "/en/", "/fr/resume/", "/en/legal/"]) {
+      const html = await (await get(path)).text();
+
+      expect(html, path).toContain(`href="/${path.slice(1, 3)}/cgv/"`);
+      expect(html, path).toContain(`href="/${path.slice(1, 3)}/legal/"`);
+    }
+  });
+
+  it("shows the English terms on the English page, under the prevailing-language notice", async () => {
+    const html = await (await get("/en/cgv/")).text();
+
+    expect(html).toContain('<html lang="en"');
+    expect(html).not.toContain('<article lang="fr"');
+    expect(html).toContain("the French version prevails");
+    expect(html).toContain("Purpose and scope");
+    expect(html).not.toContain("Objet et champ d’application");
   });
 
   it("keeps the print page of the resume out of search engines", async () => {

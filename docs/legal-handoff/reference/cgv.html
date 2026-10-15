@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conditions générales de prestation — valentinbourreau</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.vb{--bg:#F7F9F9;--surface:#EEF1F0;--line:#DCE2E0;--muted:#646C6A;--text2:#393F3E;--text:#141818;--accent:#3D6A60;--on-accent:#FFFFFF;color-scheme:light}
+.vb[data-theme=nuit]{--bg:#0E1111;--surface:#151918;--line:#272D2C;--muted:#8F9896;--text2:#BEC5C3;--text:#E8ECEB;--accent:#9EC4BA;--on-accent:#0E1111;color-scheme:dark}
+.vb a{color:var(--text);text-decoration-color:var(--line);text-underline-offset:3px}
+.vb a:hover{color:var(--accent);text-decoration-color:var(--accent)}
+.vb :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.vb .anc{opacity:0;text-decoration:none;color:var(--muted);font-family:'Geist Mono',monospace;font-weight:400}
+.vb h2:hover .anc,.vb .anc:focus-visible{opacity:1}
+.vb li::marker{color:var(--muted)}
+.vb dd{min-width:0;overflow-wrap:anywhere}
+.vb summary{cursor:pointer;list-style:none}
+.vb summary::-webkit-details-marker{display:none}
+
+.vb{--pad:clamp(20px,4vw,48px);--intro-pad:64px 0 48px;--h1:60px;--kv-cols:140px minmax(0,1fr);--num-col:48px}
+.only-mobile{display:none}
+.only-desktop{display:contents}
+@media (max-width:767px){
+  .vb{--pad:16px;--intro-pad:32px 0 28px;--h1:36px;--kv-cols:96px minmax(0,1fr);--num-col:32px}
+  .only-mobile{display:block}
+  .only-desktop{display:none}
+}
+html{scroll-padding-top:24px}
+.vb [data-toc-link][aria-current="true"],.vb [data-toc-link][aria-current="true"] span{color:var(--accent)!important;font-weight:500}
+@media print{.vb{--bg:#FFFFFF}.only-desktop,.only-mobile,#theme-toggle{display:none!important}}
+</style>
+</head>
+<body>
+<div class="vb" data-theme="jour" style="background: var(--bg); color: var(--text); font-family: 'Geist', system-ui, sans-serif; font-size: 16px; line-height: 1.6">
+<div style="max-width: 1120px; margin: 0 auto; padding: 0 var(--pad); display: flex; flex-direction: column">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; padding: 24px 0">
+<a href="#" style="text-decoration: none; font-size: 18px; font-weight: 700; letter-spacing: -0.02em">valentinbourreau</a>
+<nav aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px">
+<a href="#" style="text-decoration: none">cv</a>
+<a href="#" style="text-decoration: none">projets</a>
+<a href="#" style="text-decoration: none">contact</a>
+<a href="#" lang="en" aria-label="Switch to English" style="text-decoration: none; color: var(--muted)">fr · en</a>
+<button type="button" id="theme-toggle" aria-label="Passer en mode jour ou nuit" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: transparent; color: var(--text); border: 1px solid var(--line); border-radius: 2px; cursor: pointer; padding: 0">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor" stroke="none"></path></svg>
+</button>
+</nav>
+</header>
+
+<section style="padding: var(--intro-pad); display: flex; flex-direction: column; gap: 20px; border-bottom: 1px solid var(--line)">
+<p style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)"><a href="#" style="color: var(--muted); text-decoration: none">~/valentin-bourreau</a> / cgv</p>
+<h1 style="margin: 0; font-size: var(--h1); line-height: 1.02; font-weight: 600; letter-spacing: -0.04em">Conditions générales de prestation</h1>
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 24px; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px">
+<p style="margin: 0; color: var(--muted)">version 1.0 · en vigueur au 15 octobre 2026</p>
+<a href="#">télécharger en PDF</a>
+</div>
+<dl style="margin: 8px 0 0; max-width: 720px; background: var(--surface); border: 1px solid var(--line); border-radius: 2px; padding: 20px; display: grid; grid-template-columns: var(--kv-cols); gap: 6px 16px; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.6">
+<dt style="color: var(--muted)">prestataire</dt><dd style="margin: 0">Valentin Bourreau, entrepreneur individuel (EI)</dd>
+<dt style="color: var(--muted)">nom commercial</dt><dd style="margin: 0">valentinbourreau</dd>
+<dt style="color: var(--muted)">siren</dt><dd style="margin: 0">130&#8239;933&#8239;922</dd>
+<dt style="color: var(--muted)">siret</dt><dd style="margin: 0">130&#8239;933&#8239;922&#8239;00010</dd>
+<dt style="color: var(--muted)">code ape</dt><dd style="margin: 0">62.02A</dd>
+<dt style="color: var(--muted)">adresse</dt><dd style="margin: 0">520 route de Voivres, 72210 Fillé, France</dd>
+<dt style="color: var(--muted)">contact</dt><dd style="margin: 0"><a href="mailto:contact@valentinbourreau.com">contact@valentinbourreau.com</a></dd>
+</dl>
+<p style="margin: 0; font-size: 15px; color: var(--text2)">Ci-après «&nbsp;le Prestataire&nbsp;».</p>
+</section>
+
+<div class="only-mobile">
+<details style="border-bottom: 1px solid var(--line)">
+<summary style="display: flex; justify-content: space-between; align-items: center; min-height: 52px; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--text)"><span>sommaire · 20 articles</span><span aria-hidden="true" style="color: var(--muted)">+</span></summary>
+<ol style="margin: 0 0 16px; padding: 0; list-style: none; display: flex; flex-direction: column">
+<li><a href="#art-01" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">01</span>Objet et champ d’application</a></li>
+<li><a href="#art-02" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">02</span>Documents contractuels</a></li>
+<li><a href="#art-03" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">03</span>Devis et commande</a></li>
+<li><a href="#art-04" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">04</span>Modes d’exécution</a></li>
+<li><a href="#art-05" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">05</span>Obligations du client</a></li>
+<li><a href="#art-06" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">06</span>Livraison et recette</a></li>
+<li><a href="#art-07" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">07</span>Modifications du périmètre</a></li>
+<li><a href="#art-08" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">08</span>Prix</a></li>
+<li><a href="#art-09" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">09</span>Facturation et paiement</a></li>
+<li><a href="#art-10" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">10</span>Retard de paiement</a></li>
+<li><a href="#art-11" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">11</span>Suspension</a></li>
+<li><a href="#art-12" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">12</span>Propriété intellectuelle</a></li>
+<li><a href="#art-13" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">13</span>Confidentialité</a></li>
+<li><a href="#art-14" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">14</span>Données personnelles</a></li>
+<li><a href="#art-15" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">15</span>Responsabilité</a></li>
+<li><a href="#art-16" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">16</span>Force majeure</a></li>
+<li><a href="#art-17" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">17</span>Durée et résiliation</a></li>
+<li><a href="#art-18" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">18</span>Sous-traitance</a></li>
+<li><a href="#art-19" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">19</span>Droit applicable et litiges</a></li>
+<li><a href="#art-20" data-toc-link style="display: flex; gap: 12px; min-height: 40px; align-items: center; text-decoration: none; font-size: 15px; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted)">20</span>Dispositions générales</a></li>
+</ol>
+</details>
+</div>
+
+<div style="display: flex; align-items: flex-start; gap: 64px; padding-bottom: 80px">
+
+<div class="only-desktop">
+<nav aria-label="Sommaire des CGP" style="flex: 0 0 248px; position: sticky; top: 24px; padding-top: 32px; display: flex; flex-direction: column; gap: 12px">
+<p style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--muted)">sommaire</p>
+<ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0">
+<li><a href="#art-01" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">01</span>Objet et champ d’application</a></li>
+<li><a href="#art-02" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">02</span>Documents contractuels</a></li>
+<li><a href="#art-03" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">03</span>Devis et commande</a></li>
+<li><a href="#art-04" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">04</span>Modes d’exécution</a></li>
+<li><a href="#art-05" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">05</span>Obligations du client</a></li>
+<li><a href="#art-06" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">06</span>Livraison et recette</a></li>
+<li><a href="#art-07" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">07</span>Modifications du périmètre</a></li>
+<li><a href="#art-08" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">08</span>Prix</a></li>
+<li><a href="#art-09" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">09</span>Facturation et paiement</a></li>
+<li><a href="#art-10" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">10</span>Retard de paiement</a></li>
+<li><a href="#art-11" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">11</span>Suspension</a></li>
+<li><a href="#art-12" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">12</span>Propriété intellectuelle</a></li>
+<li><a href="#art-13" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">13</span>Confidentialité</a></li>
+<li><a href="#art-14" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">14</span>Données personnelles</a></li>
+<li><a href="#art-15" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">15</span>Responsabilité</a></li>
+<li><a href="#art-16" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">16</span>Force majeure</a></li>
+<li><a href="#art-17" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">17</span>Durée et résiliation</a></li>
+<li><a href="#art-18" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">18</span>Sous-traitance</a></li>
+<li><a href="#art-19" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">19</span>Droit applicable et litiges</a></li>
+<li><a href="#art-20" data-toc-link style="display: flex; gap: 10px; padding: 4px 0; text-decoration: none; font-size: 14px; line-height: 1.45; color: var(--text2); font-weight: 400"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding-top: 1px; color: var(--muted)">20</span>Dispositions générales</a></li>
+</ol>
+</nav>
+</div>
+
+<article style="flex: 1 1 0; min-width: 0; max-width: 700px; display: flex; flex-direction: column">
+
+<section id="art-01" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">01</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Objet et champ d’application <a class="anc" href="#art-01" aria-label="Lien vers l’article 1">#</a></h2>
+<p style="margin: 0">Les présentes conditions générales de prestation («&nbsp;CGP&nbsp;») encadrent les prestations de développement logiciel, d’ingénierie front-end, de conseil, d’audit et d’accompagnement technique réalisées par le Prestataire.</p>
+<p style="margin: 0">Elles s’adressent exclusivement aux professionnels («&nbsp;le Client&nbsp;») et s’appliquent à toute commande, sauf dérogation écrite et signée par les deux parties.</p>
+<p style="margin: 0">Toute commande vaut acceptation des CGP. Les conditions générales d’achat du Client ne s’appliquent que si le Prestataire les a acceptées par écrit.</p>
+</div>
+</section>
+
+<section id="art-02" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">02</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Documents contractuels <a class="anc" href="#art-02" aria-label="Lien vers l’article 2">#</a></h2>
+<p style="margin: 0">Le contrat est formé, par ordre de priorité décroissant&nbsp;:</p>
+<ol style="margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 4px">
+<li>du devis signé par le Client et de ses éventuels avenants&nbsp;;</li>
+<li>des présentes CGP, dans leur version jointe au devis ou mentionnée sur celui-ci&nbsp;;</li>
+<li>le cas échéant, d’un accord de traitement des données (<a href="#art-14">article 14</a>).</li>
+</ol>
+<p style="margin: 0">En cas de contradiction, le document de rang supérieur prévaut.</p>
+</div>
+</section>
+
+<section id="art-03" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">03</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Devis et commande <a class="anc" href="#art-03" aria-label="Lien vers l’article 3">#</a></h2>
+<p style="margin: 0">Chaque prestation fait l’objet d’un devis précisant son périmètre, son mode d’exécution (forfait ou régie), son prix, son calendrier prévisionnel et ses conditions de paiement.</p>
+<p style="margin: 0">Un devis est valable 30&nbsp;jours à compter de son émission, sauf mention contraire.</p>
+<p style="margin: 0">La commande est ferme à réception du devis signé, portant la mention «&nbsp;Bon pour accord&nbsp;» et l’acceptation des CGP, et, lorsqu’il est prévu, du paiement de l’acompte. Le Prestataire commence les travaux à cette date.</p>
+</div>
+</section>
+
+<section id="art-04" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">04</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Modes d’exécution <a class="anc" href="#art-04" aria-label="Lien vers l’article 4">#</a></h2>
+<h3 style="margin: 8px 0 0; font-size: 16px; font-weight: 600; color: var(--text)"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-weight: 400; color: var(--muted)">4.1</span> Forfait</h3>
+<p style="margin: 0">Le Prestataire s’engage à livrer les éléments décrits au devis, pour un prix fixé à l’avance. Toute demande hors périmètre fait l’objet d’un devis complémentaire ou d’un avenant (<a href="#art-07">article 7</a>).</p>
+<h3 style="margin: 8px 0 0; font-size: 16px; font-weight: 600; color: var(--text)"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-weight: 400; color: var(--muted)">4.2</span> Régie</h3>
+<p style="margin: 0">Le Prestataire met ses compétences à disposition du Client pour un nombre de jours estimé, facturé au temps réellement passé, sur la base du taux journalier (TJM) indiqué au devis. Une journée correspond à 7&nbsp;heures de travail effectif, fractionnable en demi-journées. Le Prestataire tient un relevé des jours travaillés, transmis avec chaque facture.</p>
+<h3 style="margin: 8px 0 0; font-size: 16px; font-weight: 600; color: var(--text)"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-weight: 400; color: var(--muted)">4.3</span> Indépendance</h3>
+<p style="margin: 0">Le Prestataire exerce en toute indépendance. Il organise librement son travail, ses horaires et son lieu d’exécution, y compris à distance et depuis l’étranger, et n’est soumis à aucun lien de subordination envers le Client. Les réunions et jalons sont fixés d’un commun accord.</p>
+<p style="margin: 0">Le Prestataire est tenu à une obligation de moyens.</p>
+</div>
+</section>
+
+<section id="art-05" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">05</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Obligations du client <a class="anc" href="#art-05" aria-label="Lien vers l’article 5">#</a></h2>
+<p style="margin: 0">Le Client s’engage à&nbsp;:</p>
+<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px">
+<li>fournir en temps utile les informations, contenus, maquettes, accès et environnements nécessaires&nbsp;;</li>
+<li>désigner un interlocuteur disposant du pouvoir de décision&nbsp;;</li>
+<li>répondre aux demandes de validation dans les délais convenus&nbsp;;</li>
+<li>détenir les droits sur les contenus et éléments qu’il fournit, et garantir le Prestataire contre toute réclamation à ce titre.</li>
+</ul>
+<p style="margin: 0">Tout retard imputable au Client décale d’autant le calendrier, sans que la responsabilité du Prestataire puisse être engagée.</p>
+</div>
+</section>
+
+<section id="art-06" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">06</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Livraison et recette <a class="anc" href="#art-06" aria-label="Lien vers l’article 6">#</a></h2>
+<p style="margin: 0">Pour les prestations au forfait, le Prestataire notifie chaque livraison au Client. Celui-ci dispose de 10&nbsp;jours ouvrés pour signaler par écrit les anomalies constatées au regard du devis.</p>
+<p style="margin: 0">Le Prestataire corrige les anomalies avérées dans un délai raisonnable, puis soumet une nouvelle livraison selon la même procédure.</p>
+<p style="margin: 0">La recette est réputée acquise à la première des dates suivantes&nbsp;: validation écrite du Client, expiration du délai de 10&nbsp;jours ouvrés sans réserve écrite, ou mise en production par le Client.</p>
+</div>
+</section>
+
+<section id="art-07" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">07</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Modifications du périmètre <a class="anc" href="#art-07" aria-label="Lien vers l’article 7">#</a></h2>
+<p style="margin: 0">Toute modification du périmètre, du calendrier ou des livrables demandée par le Client fait l’objet d’un devis complémentaire ou d’un avenant, accepté par écrit avant exécution.</p>
+</div>
+</section>
+
+<section id="art-08" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">08</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Prix <a class="anc" href="#art-08" aria-label="Lien vers l’article 8">#</a></h2>
+<p style="margin: 0">Les prix sont exprimés en euros, hors taxes. TVA non applicable, article 293&nbsp;B du CGI, tant que le Prestataire bénéficie de la franchise en base. Si celle-ci prend fin, la TVA au taux en vigueur s’ajoute aux prix à compter de cette date.</p>
+<p style="margin: 0">Les frais de déplacement, d’hébergement et les licences ou services tiers ne sont pas inclus, sauf mention au devis. Ils sont refacturés au réel, après accord préalable du Client.</p>
+</div>
+</section>
+
+<section id="art-09" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">09</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Facturation et paiement <a class="anc" href="#art-09" aria-label="Lien vers l’article 9">#</a></h2>
+<p style="margin: 0">Sauf mention contraire au devis&nbsp;:</p>
+<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px">
+<li><strong style="font-weight: 600; color: var(--text)">forfait</strong>&nbsp;: acompte de 30&nbsp;% à la commande, solde à la recette&nbsp;; pour les projets de plus de deux mois, les factures intermédiaires suivent les jalons définis au devis&nbsp;;</li>
+<li><strong style="font-weight: 600; color: var(--text)">régie</strong>&nbsp;: facturation mensuelle, en fin de mois, des jours réellement travaillés.</li>
+</ul>
+<p style="margin: 0">Les factures sont payables à 30&nbsp;jours à compter de leur date d’émission, par virement bancaire sur le compte indiqué sur la facture. Aucun escompte n’est accordé en cas de paiement anticipé.</p>
+</div>
+</section>
+
+<section id="art-10" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">10</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Retard de paiement <a class="anc" href="#art-10" aria-label="Lien vers l’article 10">#</a></h2>
+<p style="margin: 0">Tout retard de paiement entraîne de plein droit, sans rappel préalable&nbsp;:</p>
+<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px">
+<li>des pénalités de retard calculées au taux appliqué par la Banque centrale européenne à son opération de refinancement la plus récente, majoré de 10&nbsp;points, à compter du lendemain de la date d’échéance&nbsp;;</li>
+<li>une indemnité forfaitaire pour frais de recouvrement de 40&nbsp;€ (articles L441-10 et D441-5 du Code de commerce), sans préjudice d’une indemnisation complémentaire sur justificatifs.</li>
+</ul>
+<p style="margin: 0">Le retard de paiement d’une facture rend immédiatement exigibles toutes les sommes dues au titre du contrat.</p>
+</div>
+</section>
+
+<section id="art-11" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 48px 0; margin: 8px 0; border-top: 1px solid var(--text); border-bottom: 1px solid var(--text)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--text); padding-top: 5px">11</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Suspension <a class="anc" href="#art-11" aria-label="Lien vers l’article 11">#</a></h2>
+<p style="margin: 0">En cas de non-paiement d’une facture à son échéance, le Prestataire adresse au Client une mise en demeure par écrit (courrier recommandé ou e-mail avec accusé de réception).</p>
+<p style="margin: 0">Si la mise en demeure reste sans effet pendant 15&nbsp;jours, le Prestataire peut, sans indemnité pour le Client&nbsp;:</p>
+<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px">
+<li>suspendre l’exécution de toutes ses prestations en cours&nbsp;;</li>
+<li>retirer la licence d’utilisation provisoire prévue à l’<a href="#art-12">article 12.2</a>&nbsp;;</li>
+<li>interrompre l’accès aux environnements, dépôts de code et déploiements qu’il opère sous ses propres comptes.</li>
+</ul>
+<p style="margin: 0">La suspension ne porte jamais atteinte aux données du Client, qui restent intactes. Les prestations reprennent dans un délai raisonnable après le paiement intégral des sommes dues, pénalités comprises. Le calendrier est décalé de la durée de la suspension.</p>
+</div>
+</section>
+
+<section id="art-12" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 48px 0; margin: 0 0 8px; border-bottom: 1px solid var(--text)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--text); padding-top: 5px">12</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Propriété intellectuelle <a class="anc" href="#art-12" aria-label="Lien vers l’article 12">#</a></h2>
+<h3 style="margin: 8px 0 0; font-size: 16px; font-weight: 600; color: var(--text)"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-weight: 400; color: var(--muted)">12.1</span> Cession des droits</h3>
+<p style="margin: 0">Sous réserve du paiement intégral du prix, le Prestataire cède au Client, à titre exclusif, les droits patrimoniaux d’auteur sur les livrables spécifiquement créés pour lui et identifiés au devis&nbsp;: droits de reproduction, de représentation, d’adaptation, de modification, de traduction et de distribution, sur tout support, pour le monde entier et pour toute la durée légale de protection, aux fins d’exploitation décrites au devis.</p>
+<p style="margin: 0">Le prix de cette cession est inclus dans le prix de la prestation.</p>
+<p style="margin: 0">La cession prend effet à la date du paiement intégral. Les dépôts de code, comptes et déploiements opérés par le Prestataire sont alors transférés au Client.</p>
+<h3 style="margin: 8px 0 0; font-size: 16px; font-weight: 600; color: var(--text)"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-weight: 400; color: var(--muted)">12.2</span> Avant paiement intégral</h3>
+<p style="margin: 0">Jusqu’au paiement intégral, le Client bénéficie d’une licence d’utilisation des livrables non exclusive, non transférable et révocable, limitée aux besoins de la recette et de l’exploitation prévue au devis. Cette licence peut être retirée dans les conditions de l’<a href="#art-11">article 11</a>.</p>
+<h3 style="margin: 8px 0 0; font-size: 16px; font-weight: 600; color: var(--text)"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-weight: 400; color: var(--muted)">12.3</span> Éléments préexistants et outils génériques</h3>
+<p style="margin: 0">Le Prestataire reste titulaire des éléments qu’il a créés indépendamment de la mission ou qui ne sont pas spécifiques au Client&nbsp;: composants, bibliothèques, utilitaires, configurations, modèles de code, méthodes et savoir-faire. Lorsqu’ils sont intégrés aux livrables, le Prestataire concède au Client, à compter du paiement intégral, une licence non exclusive, gratuite, mondiale et pour la durée des droits, limitée à l’exploitation des livrables. Le Prestataire reste libre de les réutiliser.</p>
+<h3 style="margin: 8px 0 0; font-size: 16px; font-weight: 600; color: var(--text)"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-weight: 400; color: var(--muted)">12.4</span> Logiciels libres et services tiers</h3>
+<p style="margin: 0">Les composants open source et services tiers intégrés aux livrables restent soumis à leurs licences et conditions propres, que le Client s’engage à respecter.</p>
+<h3 style="margin: 8px 0 0; font-size: 16px; font-weight: 600; color: var(--text)"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-weight: 400; color: var(--muted)">12.5</span> Références</h3>
+<p style="margin: 0">Sauf refus écrit du Client ou engagement de confidentialité, le Prestataire peut mentionner le nom et le logo du Client, et présenter les travaux réalisés à titre de référence, une fois ceux-ci rendus publics.</p>
+</div>
+</section>
+
+<section id="art-13" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">13</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Confidentialité <a class="anc" href="#art-13" aria-label="Lien vers l’article 13">#</a></h2>
+<p style="margin: 0">Chaque partie garde confidentielles les informations non publiques communiquées par l’autre partie à l’occasion du contrat, et ne les utilise que pour son exécution. Cette obligation dure pendant le contrat et trois ans après sa fin.</p>
+</div>
+</section>
+
+<section id="art-14" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">14</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Données personnelles <a class="anc" href="#art-14" aria-label="Lien vers l’article 14">#</a></h2>
+<p style="margin: 0">Lorsque l’exécution de la prestation conduit le Prestataire à traiter des données personnelles pour le compte du Client, il agit en qualité de sous-traitant au sens de l’article 28 du RGPD&nbsp;: il ne traite ces données que sur instruction documentée du Client, en assure la sécurité et la confidentialité, et les supprime ou les restitue en fin de mission. Les parties concluent si nécessaire un accord de traitement des données.</p>
+<p style="margin: 0">Les données du Client et de ses interlocuteurs collectées par le Prestataire pour gérer la relation commerciale sont traitées selon la politique décrite dans les <a href="/fr/legal">mentions légales de valentinbourreau.com</a>.</p>
+</div>
+</section>
+
+<section id="art-15" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">15</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Responsabilité <a class="anc" href="#art-15" aria-label="Lien vers l’article 15">#</a></h2>
+<p style="margin: 0">Le Prestataire est tenu à une obligation de moyens. Sa responsabilité ne peut être engagée qu’en cas de faute prouvée.</p>
+<p style="margin: 0">Il n’est pas responsable&nbsp;:</p>
+<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px">
+<li>des dommages indirects, tels que perte de chiffre d’affaires, de clientèle, de données ou d’image&nbsp;;</li>
+<li>des dysfonctionnements causés par les contenus, infrastructures, hébergements ou services tiers choisis ou fournis par le Client&nbsp;;</li>
+<li>des modifications apportées aux livrables par le Client ou par un tiers.</li>
+</ul>
+<p style="margin: 0">Le Client reste responsable de la sauvegarde de ses données et de ses environnements.</p>
+<p style="margin: 0">En tout état de cause, la responsabilité totale du Prestataire est limitée au montant hors taxes effectivement payé par le Client au titre du devis concerné au cours des douze derniers mois.</p>
+</div>
+</section>
+
+<section id="art-16" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">16</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Force majeure <a class="anc" href="#art-16" aria-label="Lien vers l’article 16">#</a></h2>
+<p style="margin: 0">Aucune partie n’est responsable d’un manquement causé par un cas de force majeure au sens de l’article 1218 du Code civil. Les obligations concernées sont suspendues pendant sa durée. Si la force majeure dure plus de 30&nbsp;jours, chaque partie peut résilier le contrat par écrit, les prestations réalisées restant dues.</p>
+</div>
+</section>
+
+<section id="art-17" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">17</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Durée et résiliation <a class="anc" href="#art-17" aria-label="Lien vers l’article 17">#</a></h2>
+<p style="margin: 0">Le contrat prend fin à l’achèvement des prestations prévues au devis.</p>
+<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px">
+<li><strong style="font-weight: 600; color: var(--text)">Régie</strong>&nbsp;: chaque partie peut y mettre fin par écrit, avec un préavis de 15&nbsp;jours. Les jours travaillés jusqu’à la fin du préavis sont dus.</li>
+<li><strong style="font-weight: 600; color: var(--text)">Forfait</strong>&nbsp;: si le Client met fin au contrat avant son terme, il règle les travaux réalisés à la date de la résiliation, au prorata du devis. L’acompte reste acquis au Prestataire.</li>
+<li><strong style="font-weight: 600; color: var(--text)">Manquement grave</strong>&nbsp;: en cas de manquement d’une partie non corrigé 30&nbsp;jours après une mise en demeure, l’autre partie peut résilier le contrat par écrit, sans préjudice des dommages et intérêts.</li>
+</ul>
+<p style="margin: 0">Les articles <a href="#art-10">10</a>, <a href="#art-12">12</a>, <a href="#art-13">13</a> et <a href="#art-15">15</a> survivent à la fin du contrat.</p>
+</div>
+</section>
+
+<section id="art-18" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">18</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Sous-traitance <a class="anc" href="#art-18" aria-label="Lien vers l’article 18">#</a></h2>
+<p style="margin: 0">Le Prestataire peut faire appel à un sous-traitant, après accord écrit du Client. Il reste alors responsable de la bonne exécution des prestations.</p>
+</div>
+</section>
+
+<section id="art-19" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">19</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Droit applicable et litiges <a class="anc" href="#art-19" aria-label="Lien vers l’article 19">#</a></h2>
+<p style="margin: 0">Le contrat est soumis au droit français.</p>
+<p style="margin: 0">En cas de différend, les parties recherchent d’abord une solution amiable, pendant 30&nbsp;jours à compter de la notification écrite du différend.</p>
+<p style="margin: 0">À défaut d’accord, et dans la mesure où la loi le permet, le litige est porté devant les juridictions compétentes du ressort de la cour d’appel d’Angers.</p>
+</div>
+</section>
+
+<section id="art-20" style="display: grid; grid-template-columns: var(--num-col) minmax(0, 1fr); gap: 0 12px; padding: 32px 0">
+<span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--muted); padding-top: 5px">20</span>
+<div style="display: flex; flex-direction: column; gap: 12px; color: var(--text2)">
+<h2 style="margin: 0; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; color: var(--text)">Dispositions générales <a class="anc" href="#art-20" aria-label="Lien vers l’article 20">#</a></h2>
+<p style="margin: 0">Si une clause est déclarée nulle, les autres clauses restent en vigueur. Le fait de ne pas se prévaloir d’une clause ne vaut pas renonciation à s’en prévaloir plus tard.</p>
+<p style="margin: 0">Les CGP sont rédigées en français. En cas de traduction, la version française prévaut.</p>
+<p style="margin: 0">Le Prestataire peut modifier les CGP. La version applicable est celle jointe au devis signé, ou mentionnée sur celui-ci.</p>
+</div>
+</section>
+
+</article>
+</div>
+
+<footer style="border-top: 1px solid var(--line); padding: 24px 0 40px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--muted)">
+<span>© 2026 Valentin Bourreau</span>
+<span style="display: flex; gap: 20px"><a href="/fr/legal" style="color: var(--muted)">mentions légales</a><a href="#" aria-current="page" style="color: var(--accent)">cgv</a></span>
+</footer>
+
+</div>
+</div>
+
+<script>
+(function(){
+  var root=document.querySelector('.vb');
+  var mq=window.matchMedia('(prefers-color-scheme: dark)');
+  function stored(){try{return localStorage.getItem('theme')}catch(e){return null}}
+  function apply(){var t=stored();root.dataset.theme=t?t:(mq.matches?'nuit':'jour')}
+  apply();mq.addEventListener('change',apply);
+  document.getElementById('theme-toggle').addEventListener('click',function(){
+    var next=root.dataset.theme==='nuit'?'jour':'nuit';root.dataset.theme=next;
+    try{localStorage.setItem('theme',next)}catch(e){}
+  });
+  // scrollspy : article actif dans le sommaire
+  var links=[].slice.call(document.querySelectorAll('[data-toc-link]'));
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;
+    links.forEach(function(a){a.setAttribute('aria-current',a.getAttribute('href')==='#'+e.target.id?'true':'false')})})},
+    {rootMargin:'-20% 0px -70% 0px'});
+  document.querySelectorAll('section[id]').forEach(function(s){io.observe(s)});
+  // ferme le sommaire mobile après un clic
+  document.querySelectorAll('.only-mobile [data-toc-link]').forEach(function(a){a.addEventListener('click',function(){a.closest('details').open=false})});
+})();
+</script>
+</body>
+</html>

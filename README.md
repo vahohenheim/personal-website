@@ -1,7 +1,8 @@
 # valentinbourreau.com
 
 Personal website of Valentin Bourreau, senior front-end engineer: a home page, an online
-resume with a one-page PDF, posts and a legal notice, in English and French. Live at [valentinbourreau.com](https://www.valentinbourreau.com).
+resume with a one-page PDF, posts, a legal notice and the general terms of service, in
+English and French. Live at [valentinbourreau.com](https://www.valentinbourreau.com).
 
 Built with Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4 and shadcn/ui, on a design
 charter of its own ([docs/redesign/](docs/redesign/charte-graphique-valentinbourreau.md)).
@@ -39,6 +40,7 @@ credentials or a database.
 | `npm run lint`       | ESLint with `--fix`                            |
 | `npm run format`     | Prettier on the whole repository               |
 | `npm run cv:pdf`     | Prints the resume PDFs, after a build          |
+| `npm run cgv:pdf`    | Prints the terms of one language to a PDF      |
 | `npm run db:setup`   | Applies the database schema                    |
 
 ## Where things are
@@ -49,7 +51,8 @@ credentials or a database.
 | `components/`                                                    | Header, portrait, profile card, changelog entry, project card…        | [frontend/components.md](docs/frontend/components.md), [frontend/styling.md](docs/frontend/styling.md) |
 | `locales/content/`                                               | Texts of the home page and the resume, in French and English          | [content/resume-data.md](docs/content/resume-data.md)                                                  |
 | `lib/constants/`, `lib/models/`                                  | Resume data used by the structured data, content types                | [content/resume-data.md](docs/content/resume-data.md)                                                  |
-| `locales/`                                                       | Dictionaries: metadata, labels, legal texts                           | [architecture/i18n.md](docs/architecture/i18n.md)                                                      |
+| `locales/`                                                       | Dictionaries: metadata, labels                                        | [architecture/i18n.md](docs/architecture/i18n.md)                                                      |
+| `locales/legal/`, `public/cgv/`                                  | Legal notice and terms of service, and the PDF of each terms version  | [features/legal-pages.md](docs/features/legal-pages.md)                                                |
 | `lib/i18n/`, `proxy.ts`                                          | Locales, dictionaries, language redirect                              | [architecture/i18n.md](docs/architecture/i18n.md)                                                      |
 | `lib/helpers/`                                                   | Meta tags and structured data (JSON-LD)                               | [features/seo.md](docs/features/seo.md)                                                                |
 | `components/contact/`, `app/api/contact/`                        | Contact dialog for leads and its API                                  | [features/contact-form.md](docs/features/contact-form.md)                                              |
@@ -78,6 +81,9 @@ credentials or a database.
   `public/posts/<slug>/`, add it to [lib/constants/posts.ts](lib/constants/posts.ts) and
   its loader to [lib/constants/post-bodies.ts](lib/constants/post-bodies.ts). Drafts show
   on preview deployments. Checklist in [features/posts.md](docs/features/posts.md#checklist-publishing-a-post).
+- **The legal notice or the terms**: edit the Markdown source in `docs/legal-handoff/content/`
+  and `locales/legal/`; a new version of the terms adds its PDFs in `public/cgv/`
+  (`npm run cgv:pdf -- en` for the English one) and never replaces one ([features/legal-pages.md](docs/features/legal-pages.md)).
 - **A new page**: follow the checklist in [features/pages.md](docs/features/pages.md#adding-a-page).
   It includes the meta tags and the structured data.
 - **The portrait**: replace [public/avatar.jpg](public/avatar.jpg) with another square image

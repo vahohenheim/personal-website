@@ -1,10 +1,12 @@
 ---
 title: Pages
-description: The pages of the site (home, resume, posts, legal notice, 404, error), what each one shows, and the checklist to add a page.
+description: The pages of the site (home, resume, posts, legal notice, terms of service, 404, error), what each one shows, and the checklist to add a page.
 related_code:
   - ../../app/[locale]/page.tsx
   - ../../app/[locale]/resume/page.tsx
   - ../../app/[locale]/legal/page.tsx
+  - ../../app/[locale]/cgv/page.tsx
+  - ../../components/legal-links/legal-links.tsx
   - ../../app/[locale]/posts/page.tsx
   - ../../app/[locale]/resume/print/page.tsx
   - ../../app/[locale]/not-found.tsx
@@ -13,13 +15,13 @@ related_code:
   - ../../lib/constants/pages.ts
   - ../../locales/content/fr.ts
   - ../../locales/content/en.ts
-last_updated: 2026-10-14
+last_updated: 2026-10-15
 ---
 
 # Pages
 
-**Summary.** The site has three public pages, each in French and English (home, resume,
-legal notice), a posts section that appears with the first published post, plus a
+**Summary.** The site has four public pages, each in French and English (home, resume,
+legal notice, general terms of service), a posts section that appears with the first published post, plus a
 translated 404 page and a translated error page. The home page and
 the resume follow the brief of the redesign ([brief.md](../redesign/brief.md)), whose
 French texts are reproduced word for word. Pages are declared in
@@ -37,7 +39,7 @@ structured data are keyed by that list.
    to the full changelog (the resume).
 4. **Projects** (`#projects`): three cards, then the archived ones as a line of links.
 5. **Contact** (`#contact`): the page footer, with the main contact link, the social
-   links as words, the copyright line and the link to the legal notice.
+   links as words, the copyright line and the links to the legal notice and the terms.
 
 ## Resume: `/[locale]/resume/`
 
@@ -73,17 +75,27 @@ it. See [posts.md](posts.md).
 
 ## Legal notice and privacy: `/[locale]/legal/`
 
-[app/[locale]/legal/page.tsx](../../app/[locale]/legal/page.tsx) renders the sections of
-`legal.sections` in the dictionaries. Both footers link to it.
+[app/[locale]/legal/page.tsx](../../app/[locale]/legal/page.tsx) renders the seven numbered
+sections of `legal.sections` (`locales/legal/notice.*.ts`) with the layout shared with the
+terms: summary, `#sec-01` to `#sec-07`, identity card, one row per processing of personal
+data. Every footer links to it. Details: [legal-pages.md](legal-pages.md).
 
 The publisher section carries the business identity of the sole proprietorship (trade
-name, SIREN, SIRET, APE code, address, publication director), copied from the INSEE
-notice of 2026-10-12. Update it in both languages if the registered office changes.
+name, activity, SIREN, SIRET, APE code, VAT status, address, publication director), copied
+from the INSEE notice of 2026-10-12. Update it in both languages if the registered office
+changes.
 
 It exists because French law requires a site to name at least its hosting provider, and
 the GDPR requires visitors to be told how their data is handled. Whenever a tool that
 touches visitor data is added, removed or changed, update the texts in both languages and
 bump `updatedAt` for `legal` in `PAGES`.
+
+## General terms of service: `/[locale]/cgv/`
+
+[app/[locale]/cgv/page.tsx](../../app/[locale]/cgv/page.tsx): the terms of service, version
+1.0, in 20 articles, with the link to the PDF of the language (`public/cgv/cgp-1.0.pdf`,
+`cgp-1.0-en.pdf`). The English page is a translation and says, under its title, that the
+French version prevails. Every footer links to it. Details: [legal-pages.md](legal-pages.md).
 
 ## 404 and error
 
@@ -102,7 +114,9 @@ in the language, the language link and the theme button. From a post that has no
 in the other language (or a protected post), the language link goes to the list of the
 other language, or its home page.
 Each page renders its own footer: the home page ends with its contact section, the other
-pages with `SiteFooterComponent`.
+pages with `SiteFooterComponent`. Both carry "mentions légales · cgv"
+(`LegalLinksComponent`); the legal pages pass `current` so that their own link takes the
+accent and `aria-current="page"`.
 
 ## Adding a page
 

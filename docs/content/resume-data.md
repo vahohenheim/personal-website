@@ -15,7 +15,7 @@ related_code:
   - ../../lib/constants/project-links.ts
   - ../../lib/constants/skills.ts
   - ../../lib/constants/site.ts
-last_updated: 2026-10-14
+last_updated: 2026-10-15
 ---
 
 # Content and resume data
@@ -41,8 +41,9 @@ entry for entry.
 | `home.projects.items`                                | `ProjectContent[]` | project cards      |
 | `resume.education.rows`, `resume.languages.rows`     | `ProfileRow[]`     | dated lists        |
 
-The other dictionary keys (`metadata`, `a11y`, `legal`, `not-found`, `error`…) are in
-`locales/fr.ts` and `locales/en.ts`. `en.ts` defines the `Dictionary` type and `fr.ts` is
+The other dictionary keys (`metadata`, `a11y`, `legal`, `cgv`, `not-found`, `error`…) are in
+`locales/fr.ts` and `locales/en.ts`; the legal texts themselves are in `locales/legal/`
+([legal-pages.md](../features/legal-pages.md)). `en.ts` defines the `Dictionary` type and `fr.ts` is
 typed with it, so a missing key fails the type check.
 
 Writing rules are in [styling.md](../frontend/styling.md#typography-of-texts): typographic

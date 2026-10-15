@@ -41,8 +41,16 @@ export const PAGES = {
   legal: {
     path: "/legal/",
     createdAt: "2026-10-10",
-    updatedAt: "2026-10-14",
+    updatedAt: "2026-10-15",
     priority: 0.2,
+    changeFrequency: "yearly",
+  },
+  // The general terms of service. The English page shows the French text.
+  cgv: {
+    path: "/cgv/",
+    createdAt: "2026-10-15",
+    updatedAt: "2026-10-15",
+    priority: 0.3,
     changeFrequency: "yearly",
   },
 } as const satisfies Record<string, PageDefinition>;
