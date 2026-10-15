@@ -1,6 +1,6 @@
 {
   "name": "personal-website",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "private": true,
   "engines": {
     "node": ">=22"
@@ -59,6 +59,6 @@
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.71.1",
-    "vitest": "^3.2.7"
+    "vitest": "^5.0.4"
   }
 }
