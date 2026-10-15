@@ -99,14 +99,16 @@ describe("files and feeds", () => {
     expect(target(old)).toBe("/cv-fr.pdf");
   });
 
-  it("serves the PDF of the terms, linked from the terms in each language", async () => {
-    const response = await get("/cgv/cgp-1.0.pdf");
+  it("serves the PDF of the terms in each language, linked from the terms", async () => {
+    for (const [locale, pdf] of [
+      ["fr", "/cgv/cgp-1.0.pdf"],
+      ["en", "/cgv/cgp-1.0-en.pdf"],
+    ]) {
+      const response = await get(pdf);
 
-    expect(response.status).toBe(200);
-    expect(response.headers.get("content-type")).toContain("application/pdf");
-
-    for (const locale of LOCALES) {
-      expect(await (await get(`/${locale}/cgv/`)).text()).toContain('href="/cgv/cgp-1.0.pdf"');
+      expect(response.status, pdf).toBe(200);
+      expect(response.headers.get("content-type")).toContain("application/pdf");
+      expect(await (await get(`/${locale}/cgv/`)).text()).toContain(`href="${pdf}"`);
     }
   });
 
@@ -124,13 +126,14 @@ describe("files and feeds", () => {
     }
   });
 
-  it("shows the French terms on the English page, marked as French", async () => {
+  it("shows the English terms on the English page, under the prevailing-language notice", async () => {
     const html = await (await get("/en/cgv/")).text();
 
     expect(html).toContain('<html lang="en"');
-    expect(html).toContain('<article lang="fr"');
-    expect(html).toContain("These terms are available in French only.");
-    expect(html).toContain("Objet et champ d’application");
+    expect(html).not.toContain('<article lang="fr"');
+    expect(html).toContain("the French version prevails");
+    expect(html).toContain("Purpose and scope");
+    expect(html).not.toContain("Objet et champ d’application");
   });
 
   it("keeps the print page of the resume out of search engines", async () => {

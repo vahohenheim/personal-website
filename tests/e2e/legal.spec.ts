@@ -7,24 +7,27 @@ const articleText = async (page: Page) =>
   normalize((await page.locator("article").textContent()) ?? "");
 
 test.describe("general terms of service", () => {
-  test("show the source text, word for word", async ({ page }) => {
-    await page.goto("/fr/cgv/");
+  for (const [locale, source, title] of [
+    ["fr", "cgv.fr.md", "Conditions générales de prestation"],
+    ["en", "cgv.en.md", "General terms of service"],
+  ] as const) {
+    test(`show the ${locale} source text, word for word`, async ({ page }) => {
+      await page.goto(`/${locale}/cgv/`);
 
-    const text = await articleText(page);
+      const text = await articleText(page);
 
-    for (const section of readMarkdownSections(readLegalSource("cgv.fr.md"))) {
-      expect(text).toContain(section.title);
+      for (const section of readMarkdownSections(readLegalSource(source))) {
+        expect(text).toContain(section.title);
 
-      for (const unit of section.units) {
-        expect(text).toContain(unit);
+        for (const unit of section.units) {
+          expect(text).toContain(unit);
+        }
       }
-    }
 
-    await expect(page.locator("article section")).toHaveCount(20);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-      "Conditions générales de prestation",
-    );
-  });
+      await expect(page.locator("article section")).toHaveCount(20);
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText(title);
+    });
+  }
 
   test("link to the PDF of their version", async ({ page, request }) => {
     await page.goto("/fr/cgv/");
@@ -99,14 +102,22 @@ test.describe("general terms of service", () => {
     await expect(page.getByRole("heading", { level: 2, name: "Prix" })).toBeInViewport();
   });
 
-  test("stay in French on the English page, under a notice", async ({ page }) => {
+  test("are in English on the English page, with their own PDF", async ({ page, request }) => {
     await page.goto("/en/cgv/");
 
-    await expect(page.getByText("These terms are available in French only.")).toBeVisible();
-    await expect(page.locator("article")).toHaveAttribute("lang", "fr");
     await expect(
-      page.getByRole("heading", { level: 2, name: "Objet et champ d’application" }),
+      page.getByText("In the event of any discrepancy, the French version prevails"),
     ).toBeVisible();
+    await expect(page.locator("article")).not.toHaveAttribute("lang");
+    await expect(page.getByRole("heading", { level: 2, name: "Client obligations" })).toBeVisible();
+
+    const link = page.getByRole("link", { name: "download as PDF" });
+
+    await expect(link).toHaveAttribute("href", "/cgv/cgp-1.0-en.pdf");
+    expect((await request.get("/cgv/cgp-1.0-en.pdf")).status()).toBe(200);
+
+    await page.getByRole("link", { name: "legal notice of valentinbourreau.com" }).click();
+    await expect(page).toHaveURL("/en/legal/#sec-05");
   });
 });
 
@@ -132,10 +143,14 @@ test.describe("legal notice", () => {
     );
   });
 
-  test("links the services to the terms and shows the blank still to fill", async ({ page }) => {
+  test("links the services to the terms, without the withheld e-invoicing sentence", async ({
+    page,
+  }) => {
     await page.goto("/fr/legal/");
 
-    await expect(page.getByText("[à compléter]", { exact: true })).toBeVisible();
+    // TODO(e-invoicing): withheld until Valentin has chosen the platform.
+    await expect(page.getByText("facturation électronique")).toHaveCount(0);
+    await expect(page.getByText("[à compléter]")).toHaveCount(0);
     await page.getByRole("link", { name: "conditions générales de prestation" }).click();
     await expect(page).toHaveURL("/fr/cgv/");
   });

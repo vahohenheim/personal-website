@@ -31,22 +31,12 @@ const renderToken = (token: RichTextToken, key: string): ReactNode => {
           {token.text}
         </code>
       );
-    case "placeholder":
-      // A blank Valentin still has to fill: visible on purpose, until he does.
-      return (
-        <span
-          key={key}
-          className="rounded border border-line bg-surface px-1 font-mono text-[14px] text-text"
-        >
-          {token.text}
-        </span>
-      );
     case "text":
       return token.text;
   }
 };
 
-/** A text of `locales/legal/` with its links, strong words, names and placeholders. */
+/** A text of `locales/legal/` with its links, strong words and names. */
 const RichTextComponent = ({ text }: { text: RichText }) => {
   const tokens = parseRichText(text);
   // The position of a mark in the text is a stable key: the text never changes at runtime.

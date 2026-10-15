@@ -40,6 +40,7 @@ credentials or a database.
 | `npm run lint`       | ESLint with `--fix`                            |
 | `npm run format`     | Prettier on the whole repository               |
 | `npm run cv:pdf`     | Prints the resume PDFs, after a build          |
+| `npm run cgv:pdf`    | Prints the terms of one language to a PDF      |
 | `npm run db:setup`   | Applies the database schema                    |
 
 ## Where things are
@@ -80,8 +81,9 @@ credentials or a database.
   `public/posts/<slug>/`, add it to [lib/constants/posts.ts](lib/constants/posts.ts) and
   its loader to [lib/constants/post-bodies.ts](lib/constants/post-bodies.ts). Drafts show
   on preview deployments. Checklist in [features/posts.md](docs/features/posts.md#checklist-publishing-a-post).
-- **The legal notice or the terms**: edit `locales/legal/`; a new version of the terms adds
-  a PDF in `public/cgv/` and never replaces one ([features/legal-pages.md](docs/features/legal-pages.md)).
+- **The legal notice or the terms**: edit the Markdown source in `docs/legal-handoff/content/`
+  and `locales/legal/`; a new version of the terms adds its PDFs in `public/cgv/`
+  (`npm run cgv:pdf -- en` for the English one) and never replaces one ([features/legal-pages.md](docs/features/legal-pages.md)).
 - **A new page**: follow the checklist in [features/pages.md](docs/features/pages.md#adding-a-page).
   It includes the meta tags and the structured data.
 - **The portrait**: replace [public/avatar.jpg](public/avatar.jpg) with another square image

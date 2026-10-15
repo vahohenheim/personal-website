@@ -2,12 +2,11 @@
  * Shapes of the legal documents written in `locales/legal/`: the general terms of service
  * (`/cgv/`) and the legal notice (`/legal/`).
  *
- * Every text is a `RichText`: a plain string with four inline marks, read by
+ * Every text is a `RichText`: a plain string with three inline marks, read by
  * `parseRichText` (`lib/helpers/rich-text.ts`):
  * - `[text](href)`: a link (`#art-12`, `/fr/legal/#sec-05`, `mailto:…`);
  * - `**text**`: strong text;
- * - `` `text` ``: a name in mono (a cookie name);
- * - `[[text]]`: a placeholder Valentin still has to fill, shown in a small mono box.
+ * - `` `text` ``: a name in mono (a cookie name).
  */
 export type RichText = string;
 
@@ -54,9 +53,9 @@ export type LegalTocTexts = {
 };
 
 /**
- * The general terms of service, in French only: the English page shows them as they are.
- * Everything a reader sees inside the terms, summary included, is in this object, so that
- * the whole block can carry `lang="fr"` on the English page.
+ * The general terms of service in one language: the French original (`cgv.fr.ts`) or its
+ * English translation (`cgv.en.ts`), with the same sections and anchors. Everything a
+ * reader sees inside the terms, summary included, is in this object.
  */
 export type TermsDocument = {
   /** The identity of the provider, at the top of the page. */

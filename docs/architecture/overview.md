@@ -78,7 +78,7 @@ app/
     posts/                  List of posts, a post and its sharing image ([slug]), RSS feed (feed.xml)
     unlock/[slug]/page.tsx  Password form of a protected post, shown by proxy.ts at its URL
     legal/page.tsx          Legal notice and privacy
-    cgv/page.tsx            General terms of service (French text in both languages)
+    cgv/page.tsx            General terms of service (French original, English translation)
   admin/                    Dashboard of leads: own root layout, French only
   api/contact/route.ts      Receives a lead from the contact dialog
   api/events/route.ts       Counts a step of the contact dialog
@@ -106,11 +106,11 @@ public/posts/               Images of the posts: <slug>/<name>[-jour|-nuit].webp
 mdx-components.tsx          The MDX components of a post and how its elements are drawn
 locales/                    en.ts, fr.ts: dictionaries
   content/                  en.ts, fr.ts: texts of the home page and the resume
-  legal/                    cgv.fr.ts (the terms, French only), notice.fr.ts, notice.en.ts
+  legal/                    cgv.fr.ts, cgv.en.ts (the terms), notice.fr.ts, notice.en.ts
 proxy.ts                    Locale redirect, gate of /admin and of protected posts
 instrumentation-client.ts   Routes protected by Vercel BotID
 db/                         schema.sql and its setup script
-scripts/                    cv-pdf.mjs: prints the resume PDFs
+scripts/                    cv-pdf.mjs, cgv-pdf.mjs: print the resume and the terms PDFs
 tests/                      unit/, routes/, smoke/: the test suite (Vitest)
 vercel.json                 Cron schedule
 public/                     Portrait, resume PDFs, security.txt

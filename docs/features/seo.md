@@ -96,7 +96,7 @@ dictionaries directly, so a test builds every page in every language.
 | Home   | `WebSite` (site name), `ProfilePage`, `Person` (summary), `ItemList` of personal projects; `hasPart` → `Blog` when the posts block shows |
 | Resume | `ProfilePage`, `Person` (full), `BreadcrumbList`                                                                                         |
 | Legal  | `WebPage`, `BreadcrumbList`                                                                                                              |
-| Terms  | `WebPage`, `BreadcrumbList` (both languages; the English page shows the French terms)                                                    |
+| Terms  | `WebPage`, `BreadcrumbList`, in both languages                                                                                           |
 | Posts  | `CollectionPage`, `Blog` (`…/posts/#blog`) listing a summary `BlogPosting` per listed post, `BreadcrumbList`                             |
 | A post | `WebPage`, `BlogPosting` (full), `BreadcrumbList` Home › Articles › title                                                                |
 

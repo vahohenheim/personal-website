@@ -93,9 +93,9 @@ bump `updatedAt` for `legal` in `PAGES`.
 ## General terms of service: `/[locale]/cgv/`
 
 [app/[locale]/cgv/page.tsx](../../app/[locale]/cgv/page.tsx): the terms of service, version
-1.0, in 20 articles, with the link to their PDF (`public/cgv/cgp-1.0.pdf`). French only: the
-English page shows the French text, marked `lang="fr"`, under a one-line notice. Every
-footer links to it. Details: [legal-pages.md](legal-pages.md).
+1.0, in 20 articles, with the link to the PDF of the language (`public/cgv/cgp-1.0.pdf`,
+`cgp-1.0-en.pdf`). The English page is a translation and says, under its title, that the
+French version prevails. Every footer links to it. Details: [legal-pages.md](legal-pages.md).
 
 ## 404 and error
 

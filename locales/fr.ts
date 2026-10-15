@@ -45,12 +45,11 @@ const fr: Dictionary = {
     },
     sections: notice.sections,
   },
-  // The page chrome is translated; the terms themselves are in French in both languages.
   cgv: {
     title: "Conditions générales de prestation",
     version: "version {version} · en vigueur au {date}",
     download: "télécharger en PDF",
-    // Shown on the English page only, where the terms stay in French.
+    // Shown on the English page only, where the terms are a translation.
     notice: "",
     metadata: {
       title: "Conditions générales de prestation | valentinbourreau",

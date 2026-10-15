@@ -11,21 +11,17 @@ import { getDictionary, getLocale } from "@/lib/i18n/dictionaries";
 // Registers the French month names used below.
 import "dayjs/locale/fr";
 
-/** The language of the terms: they only exist in French. */
-const TERMS_LOCALE = "fr";
-
 export const generateMetadata = (): Promise<Metadata> => getPageMetadata("cgv");
 
 /**
- * The general terms of service. The page around them is translated; the terms are in
- * French in both languages, marked `lang="fr"` on the English page, under a notice.
+ * The general terms of service, in the language of the page. The English page is a
+ * translation and says, under the title, that the French version prevails.
  */
 export default async function CgvPage() {
   const locale = await getLocale();
   const { cgv, a11y } = await getDictionary();
   const { terms } = cgv;
   const effectiveAt = dayjs(TERMS.effectiveAt).locale(locale).format("D MMMM YYYY");
-  const lang = locale === TERMS_LOCALE ? undefined : TERMS_LOCALE;
 
   return (
     <>
@@ -39,7 +35,7 @@ export default async function CgvPage() {
               <p className="text-muted">
                 {cgv.version.replace("{version}", TERMS.version).replace("{date}", effectiveAt)}
               </p>
-              <a href={TERMS.pdf}>{cgv.download}</a>
+              <a href={TERMS.pdf[locale]}>{cgv.download}</a>
             </div>
           }
           intro={
@@ -49,18 +45,15 @@ export default async function CgvPage() {
                   <RichTextComponent text={cgv.notice} />
                 </p>
               )}
-              <div lang={lang} className="flex flex-col gap-5">
-                <IdentityCardComponent rows={terms.identity} className="mt-2 max-w-[720px]" />
-                <p className="text-[15px] text-text2">
-                  <RichTextComponent text={terms.designation} />
-                </p>
-              </div>
+              <IdentityCardComponent rows={terms.identity} className="mt-2 max-w-[720px]" />
+              <p className="text-[15px] text-text2">
+                <RichTextComponent text={terms.designation} />
+              </p>
             </>
           }
           toc={terms.toc}
           anchor={terms.anchor}
           sections={terms.sections}
-          lang={lang}
         />
       </main>
       <SiteFooterComponent current="cgv" />

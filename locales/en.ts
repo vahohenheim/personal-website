@@ -1,5 +1,5 @@
 import * as content from "./content/en";
-import { cgv } from "./legal/cgv.fr";
+import { cgv } from "./legal/cgv.en";
 import * as notice from "./legal/notice.en";
 
 const en = {
@@ -44,18 +44,17 @@ const en = {
     },
     sections: notice.sections,
   },
-  // The page chrome is translated; the terms themselves are in French in both languages.
   cgv: {
     title: "General terms of service",
     version: "version {version} · effective from {date}",
     download: "download as PDF",
-    // Shown on the English page only, where the terms stay in French.
+    // Shown on the English page only: the English terms are a translation.
     notice:
-      "These terms are available in French only. The French version prevails ([article 20](#art-20)).",
+      "These Terms are a translation of the French original. In the event of any discrepancy, the French version prevails ([article 20](#art-20)).",
     metadata: {
       title: "General terms of service | valentinbourreau",
       description:
-        "General terms of service of Valentin Bourreau, freelance front-end engineer, in French: quotes, delivery, prices, payment, intellectual property.",
+        "General terms of service of Valentin Bourreau, freelance front-end engineer: quotes, delivery, prices, payment, intellectual property, liability.",
     },
     terms: cgv,
   },

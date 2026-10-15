@@ -14,8 +14,6 @@ type LegalTocComponentProps = {
   navLabel: string;
   /** The sticky column of wide screens, or the folded list of phones. */
   variant: "desktop" | "mobile";
-  /** Set when the entries are in another language than the page. */
-  lang?: string;
   className?: string;
 };
 
@@ -67,7 +65,6 @@ const LegalTocComponent = ({
   summary,
   navLabel,
   variant,
-  lang,
   className,
 }: LegalTocComponentProps) => {
   const active = useActiveSection(entries.map((entry) => entry.id));
@@ -116,7 +113,7 @@ const LegalTocComponent = ({
 
   if (variant === "mobile") {
     return (
-      <details ref={details} lang={lang} className={cn("border-b border-line", className)}>
+      <details ref={details} className={cn("border-b border-line", className)}>
         <summary className="flex min-h-[52px] cursor-pointer list-none items-center justify-between font-mono text-[13px] text-text [&::-webkit-details-marker]:hidden">
           <span>{summary}</span>
           <span aria-hidden className="text-muted">
@@ -131,7 +128,6 @@ const LegalTocComponent = ({
   return (
     <nav
       aria-label={navLabel}
-      lang={lang}
       className={cn("sticky top-6 w-[248px] shrink-0 flex-col gap-3 pt-8", className)}
     >
       <p className="font-mono text-[12px] text-muted">{label}</p>

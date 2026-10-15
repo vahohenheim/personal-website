@@ -4,12 +4,10 @@ export type RichTextToken =
   | { type: "text"; text: string }
   | { type: "link"; text: string; href: string }
   | { type: "strong"; text: string }
-  | { type: "code"; text: string }
-  | { type: "placeholder"; text: string };
+  | { type: "code"; text: string };
 
-// One alternative per mark, tried left to right. A placeholder `[[…]]` comes before a link
-// `[…](…)`, so that its opening brackets are not read as the start of a link.
-const MARKS = /\[\[[^\]]+\]\]|\[([^\]]+)\]\(([^)\s]+)\)|\*\*[^*]+\*\*|`[^`]+`/g;
+// One alternative per mark, tried left to right.
+const MARKS = /\[([^\]]+)\]\(([^)\s]+)\)|\*\*[^*]+\*\*|`[^`]+`/g;
 
 /**
  * Splits a text of `locales/legal/` into plain text and its inline marks (see `RichText`).
@@ -28,9 +26,7 @@ export const parseRichText = (value: RichText): RichTextToken[] => {
     }
 
     // The opening characters tell the marks apart; the inner text drops them.
-    if (whole.startsWith("[[")) {
-      tokens.push({ type: "placeholder", text: whole.slice(1, -1) });
-    } else if (whole.startsWith("[")) {
+    if (whole.startsWith("[")) {
       tokens.push({ type: "link", text: linkText, href });
     } else if (whole.startsWith("**")) {
       tokens.push({ type: "strong", text: whole.slice(2, -2) });

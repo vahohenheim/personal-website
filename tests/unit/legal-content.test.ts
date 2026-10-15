@@ -3,8 +3,14 @@ import { parseRichText } from "@/lib/helpers/rich-text";
 import { type LegalBlock, type LegalSection } from "@/lib/models/legal";
 import en from "@/locales/en";
 import fr from "@/locales/fr";
-import { cgv } from "@/locales/legal/cgv.fr";
-import { normalize, readLegalSource, readMarkdownSections } from "../helpers/legal";
+import { cgv as cgvEn } from "@/locales/legal/cgv.en";
+import { cgv as cgvFr } from "@/locales/legal/cgv.fr";
+import {
+  normalize,
+  readLegalSource,
+  readMarkdownSections,
+  WITHHELD_FROM_NOTICE,
+} from "../helpers/legal";
 
 /** Every unit of text of a section, in reading order, as `readMarkdownSections` gives them. */
 const unitsOf = (blocks: LegalBlock[]): string[] =>
@@ -57,47 +63,79 @@ const linksOf = (sections: LegalSection[]) => {
     .flatMap((token) => (token.type === "link" ? [token.href] : []));
 };
 
-describe("general terms of service", () => {
-  const source = readLegalSource("cgv.fr.md");
+/** The skeleton of a document: anchors, numbers, emphasis and block types, not the words. */
+const shapeOf = (sections: LegalSection[]) => {
+  const blocks = (list: LegalBlock[]): unknown[] =>
+    list.map((block) => {
+      switch (block.type) {
+        case "subsection":
+          return { id: block.id, number: block.number, blocks: blocks(block.blocks) };
+        case "ol":
+        case "ul":
+          return `${block.type}:${block.items.length}`;
+        case "processing":
+          return `processing:${block.items.length}`;
+        case "identity":
+          return `identity:${block.rows.length}`;
+        case "p":
+          return "p";
+      }
+    });
+
+  return sections.map((section) => ({
+    id: section.id,
+    number: section.number,
+    emphasis: section.emphasis === true,
+    blocks: blocks(section.blocks),
+  }));
+};
+
+const TERMS = [
+  { locale: "fr", source: "cgv.fr.md", terms: cgvFr },
+  { locale: "en", source: "cgv.en.md", terms: cgvEn },
+] as const;
+
+describe.each(TERMS)("general terms of service in $locale", ({ locale, source, terms }) => {
+  const markdown = readLegalSource(source);
 
   it("are the source text, word for word, article by article", () => {
-    const expected = readMarkdownSections(source);
+    const expected = readMarkdownSections(markdown);
 
-    expect(cgv.sections.map((section) => normalize(section.title))).toEqual(
+    expect(terms.sections.map((section) => normalize(section.title))).toEqual(
       expected.map((section) => section.title),
     );
 
-    cgv.sections.forEach((section, index) => {
+    terms.sections.forEach((section, index) => {
       expect(unitsOf(section.blocks), section.id).toEqual(expected[index].units);
     });
   });
 
   it("take the provider's identity from the source", () => {
-    const header = normalize(source.split(/^## /m)[0]);
+    const header = normalize(markdown.split(/^## /m)[0]);
 
-    for (const row of cgv.identity) {
+    for (const row of terms.identity) {
       expect(header).toContain(normalize(row.value));
     }
 
-    expect(header).toContain(normalize(cgv.designation));
+    expect(header).toContain(normalize(terms.designation));
   });
 
   it("number the articles art-01 to art-20 and emphasise 11 and 12 only", () => {
-    expect(cgv.sections.map((section) => section.id)).toEqual(
+    expect(terms.sections.map((section) => section.id)).toEqual(
       Array.from({ length: 20 }, (_, index) => `art-${String(index + 1).padStart(2, "0")}`),
     );
-    expect(cgv.sections.filter((section) => section.emphasis).map(({ id }) => id)).toEqual([
+    expect(terms.sections.filter((section) => section.emphasis).map(({ id }) => id)).toEqual([
       "art-11",
       "art-12",
     ]);
   });
 
   it("link every internal reference to an anchor that exists", () => {
-    const anchors = anchorsOf(cgv.sections);
-    const links = linksOf(cgv.sections);
+    const anchors = anchorsOf(terms.sections);
+    const links = linksOf(terms.sections);
 
     expect(links).toContain("#art-12-2");
-    expect(links).toContain("/fr/legal/#sec-05");
+    expect(links).toContain(`/${locale}/legal/#sec-05`);
 
     for (const href of links.filter((link) => link.startsWith("#"))) {
       expect(anchors).toContain(href.slice(1));
@@ -106,8 +144,38 @@ describe("general terms of service", () => {
     expect(fr.legal.sections.map((section) => section.id)).toContain("sec-05");
   });
 
-  it("are the same French text on both languages of the site", () => {
-    expect(en.cgv.terms).toBe(fr.cgv.terms);
+  it("are the terms of the page in that language", () => {
+    expect({ fr, en }[locale].cgv.terms).toBe(terms);
+  });
+});
+
+describe("English terms of service", () => {
+  it("have the structure, anchors and links of the French original", () => {
+    expect(shapeOf(cgvEn.sections)).toEqual(shapeOf(cgvFr.sections));
+    expect(linksOf(cgvEn.sections)).toEqual(
+      linksOf(cgvFr.sections).map((href) => href.replace("/fr/", "/en/")),
+    );
+    expect(cgvEn.identity.map((row) => row.value)).toEqual(
+      cgvFr.identity.map((row) =>
+        row.value.replace(
+          "entrepreneur individuel (EI)",
+          "sole proprietor (entrepreneur individuel, EI)",
+        ),
+      ),
+    );
+  });
+
+  it("say on the page and in the source that the French version prevails", () => {
+    const header = normalize(readLegalSource("cgv.en.md").split(/^## /m)[0]);
+
+    expect(header).toContain(normalize(en.cgv.notice));
+    expect(normalize(en.cgv.notice)).toContain("the French version prevails");
+    expect(fr.cgv.notice).toBe("");
+  });
+
+  it("call article 5 the Client obligations, Client with a capital C in French", () => {
+    expect(cgvFr.sections[4].title).toBe("Obligations du Client");
+    expect(cgvEn.sections[4].title).toBe("Client obligations");
   });
 });
 
@@ -166,12 +234,17 @@ describe("legal notice", () => {
     }
   });
 
-  it("keeps the blank of the e-invoicing platform visible until Valentin fills it", () => {
-    const placeholders = (sectionsOf: LegalSection[]) =>
-      JSON.stringify(sectionsOf).match(/\[\[[^\]]+\]\]/g);
+  it("withholds the e-invoicing sentence in both languages until Valentin chooses the tool", () => {
+    // TODO(e-invoicing): when the sentence is back, check it here instead.
+    for (const dictionary of [fr, en]) {
+      const text = JSON.stringify(dictionary.legal.sections);
 
-    expect(placeholders(fr.legal.sections)).toEqual(["[[à compléter]]"]);
-    expect(placeholders(en.legal.sections)).toEqual(["[[to be completed]]"]);
+      expect(text).not.toMatch(
+        /facturation électronique|e-invoicing|\[\[|compléter|to be completed/,
+      );
+    }
+
+    expect(readLegalSource("mentions-legales.fr.md")).toContain(WITHHELD_FROM_NOTICE.trim());
   });
 
   it("has the same structure and anchors in English", () => {

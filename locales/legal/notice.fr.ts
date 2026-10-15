@@ -125,7 +125,13 @@ export const sections: LegalSection[] = [
       },
       {
         type: "p",
-        text: "**Destinataires et transferts.** Vercel Inc. (hébergement, mesure d’audience, protection contre les robots) et Neon Inc. (base de données où sont stockées les demandes) agissent comme sous-traitants. Ces sociétés sont établies aux États-Unis\u00a0: des données peuvent donc être traitées hors de l’Union européenne, selon les garanties prévues par leurs accords de traitement des données. Les factures transitent par la plateforme de facturation électronique agréée [[à compléter]] et peuvent être transmises à l’administration fiscale, comme la loi l’exige. Personne d’autre que Valentin Bourreau ne lit les demandes.",
+        text:
+          "**Destinataires et transferts.** Vercel Inc. (hébergement, mesure d’audience, protection contre les robots) et Neon Inc. (base de données où sont stockées les demandes) agissent comme sous-traitants. Ces sociétés sont établies aux États-Unis\u00a0: des données peuvent donc être traitées hors de l’Union européenne, selon les garanties prévues par leurs accords de traitement des données. " +
+          // TODO(e-invoicing): put this sentence back, with the name of the platform in place
+          // of the blank, once Valentin has chosen his e-invoicing tool. It is in the handoff
+          // source, and withheld from the page until then (docs/features/legal-pages.md):
+          // "Les factures transitent par la plateforme de facturation électronique agréée [à compléter] et peuvent être transmises à l’administration fiscale, comme la loi l’exige. "
+          "Personne d’autre que Valentin Bourreau ne lit les demandes.",
       },
     ],
   },

@@ -1,9 +1,7 @@
 import { type LegalSection } from "@/lib/models/legal";
 
 // English mirror of notice.fr.ts: same sections, same order, same anchors. The passages
-// added on 15 October 2026 (services, fonts and third-party names, clients, legal basis for
-// clients, e-invoicing platform, data the law requires to keep) are translations awaiting
-// Valentin's proofreading; see docs/features/legal-pages.md.
+// added on 15 October 2026 were translated, then approved by Valentin as they are.
 
 export const sections: LegalSection[] = [
   {
@@ -50,7 +48,7 @@ export const sections: LegalSection[] = [
     blocks: [
       {
         type: "p",
-        text: "Valentin Bourreau’s services are reserved for businesses and governed by his [general terms of service](/en/cgv/) (in French), attached to every quote. This notice applies to the website only.",
+        text: "Valentin Bourreau’s services are reserved for businesses and governed by his [general terms of service](/en/cgv/), attached to every quote. This notice applies to the website only.",
       },
     ],
   },
@@ -124,7 +122,12 @@ export const sections: LegalSection[] = [
       },
       {
         type: "p",
-        text: "**Recipients and transfers.** Vercel Inc. (hosting, audience measurement, bot protection) and Neon Inc. (the database where requests are stored) act as processors. They are established in the United States, so data may be processed outside the European Union, under the safeguards set out in their data processing agreements. Invoices go through the approved e-invoicing platform [[to be completed]] and may be passed on to the tax authorities, as the law requires. Nobody but Valentin Bourreau reads the requests.",
+        text:
+          "**Recipients and transfers.** Vercel Inc. (hosting, audience measurement, bot protection) and Neon Inc. (the database where requests are stored) act as processors. They are established in the United States, so data may be processed outside the European Union, under the safeguards set out in their data processing agreements. " +
+          // TODO(e-invoicing): put this sentence back, with the name of the platform, once
+          // Valentin has chosen his e-invoicing tool, as in notice.fr.ts:
+          // "Invoices go through the approved e-invoicing platform [to be completed] and may be passed on to the tax authorities, as the law requires. "
+          "Nobody but Valentin Bourreau reads the requests.",
       },
     ],
   },

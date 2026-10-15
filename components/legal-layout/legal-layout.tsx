@@ -17,8 +17,6 @@ type LegalLayoutComponentProps = {
   /** Name of the `#` link of each section; `{n}` and `{title}` are replaced. */
   anchor: string;
   sections: LegalSection[];
-  /** Language of the summary and the sections, when it is not the page's. */
-  lang?: string;
 };
 
 /**
@@ -52,7 +50,6 @@ const LegalLayoutComponent = ({
   toc,
   anchor,
   sections,
-  lang,
 }: LegalLayoutComponentProps) => {
   const entries = sections.map(({ id, number, title: entryTitle }) => ({
     id,
@@ -64,7 +61,6 @@ const LegalLayoutComponent = ({
     label: toc.label,
     summary: toc.summary.replace("{count}", `${sections.length}`),
     navLabel: toc.navLabel,
-    lang,
   };
 
   return (
@@ -84,7 +80,7 @@ const LegalLayoutComponent = ({
           variant="desktop"
           className="print-hidden hidden md:flex"
         />
-        <article lang={lang} className="flex max-w-[700px] min-w-0 flex-1 flex-col">
+        <article className="flex max-w-[700px] min-w-0 flex-1 flex-col">
           {sections.map((section, index) => (
             <NumberedSectionComponent
               key={section.id}
