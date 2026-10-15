@@ -1,0 +1,22 @@
+/* Charte valentinbourreau — jetons. Jour par défaut, nuit via [data-theme="nuit"] ou .dark (next-themes). */
+:root{
+  --bg:#F7F9F9; --surface:#EEF1F0; --line:#DCE2E0; --muted:#646C6A;
+  --text2:#393F3E; --text:#141818; --accent:#3D6A60; --on-accent:#FFFFFF;
+  --radius:2px; --radius-photo:6px;
+  --font-sans:'Geist',system-ui,sans-serif;
+  --font-mono:'Geist Mono',ui-monospace,monospace;
+  color-scheme:light;
+}
+.dark,[data-theme="nuit"]{
+  --bg:#0E1111; --surface:#151918; --line:#272D2C; --muted:#8F9896;
+  --text2:#BEC5C3; --text:#E8ECEB; --accent:#9EC4BA; --on-accent:#0E1111;
+  color-scheme:dark;
+}
+/* Impression : toujours en jour. */
+@media print{
+  .dark,[data-theme="nuit"]{
+    --bg:#FFFFFF; --surface:#EEF1F0; --line:#DCE2E0; --muted:#646C6A;
+    --text2:#393F3E; --text:#141818; --accent:#3D6A60; --on-accent:#FFFFFF;
+    color-scheme:light;
+  }
+}
