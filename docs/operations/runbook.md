@@ -5,6 +5,8 @@ related_code:
   - ../../package.json
   - ../../next.config.ts
   - ../../.github/workflows/ci.yml
+  - ../../.github/workflows/release.yml
+  - ../releases/
   - ../../.nvmrc
   - ../../vercel.json
   - ../../.env.example
@@ -151,13 +153,32 @@ The version of the site lives in `package.json` (and `package-lock.json`) and fo
 | A fix, a content change, a docs or dependency change | patch | renaming a project (`2.4.1`)     |
 
 Every change bumps the version in the same change (`npm version <major|minor|patch>
---no-git-tag-version`). Once it is on `main`, the merge commit (or the last commit of a
-direct push) gets an annotated tag `v<version>`, pushed to GitHub, and a GitHub release
-whose notes say what changed for a visitor and for Valentin:
+--no-git-tag-version`), and adds its release notes in `docs/releases/v<version>.md`: the
+first line is the title (lowercase, like `posts section`), then the bullets of what changed
+for a visitor and for Valentin. These files are release notes, not documentation pages:
+no YAML header.
+
+Once the change is on `main`, the **Release** workflow
+([.github/workflows/release.yml](../../.github/workflows/release.yml)) does the rest, on
+every push to `main` (or by hand from the Actions tab, `workflow_dispatch`):
+
+1. It reads the version from `package.json`. If the tag `v<version>` exists, it stops.
+2. It creates the annotated tag `v<version>`, message `v<version>: <title>`, on the commit
+   that last changed `package.json` on the first-parent history of `main`
+   (`git log -1 --first-parent --format=%H -- package.json`): the merge commit of the pull
+   request that bumped the version, or the commit of a direct push.
+3. It publishes the GitHub release `v<version> · <title>` with the notes of the file, or
+   with GitHub's generated notes (and the version as title) when there is no file.
+
+A change that does not bump the version (CI only, for example) releases nothing. A
+version is released once: to correct notes afterwards, edit the release on GitHub.
+
+Fallback, if the workflow cannot run (same tag target, title and notes):
 
 ```sh
-git tag -a v2.5.0 -m "v2.5.0: posts section" && git push origin v2.5.0
-gh release create v2.5.0 --title "v2.5.0 · posts section" --notes-file notes.md
+git tag -a v2.5.0 -m "v2.5.0: posts section" "$(git log -1 --first-parent --format=%H -- package.json)"
+git push origin v2.5.0
+gh release create v2.5.0 --verify-tag --title "v2.5.0 · posts section" --notes-file notes.md
 ```
 
 Earlier milestones were tagged afterwards, on the commit that was live at the time:
