@@ -17,7 +17,7 @@ related_code:
   - ../../lib/helpers/og-fonts.ts
   - ../../app/[locale]/posts/[slug]/opengraph-image.tsx
   - ../../tests/unit/json-ld.test.ts
-last_updated: 2026-10-14
+last_updated: 2026-10-15
 ---
 
 # SEO and structured data
@@ -32,7 +32,7 @@ the current locale, so they always match what the page shows. Nothing is written
 returns, for the current locale:
 
 - the translated title and description (`metadata.*`, `resume.metadata.*`,
-  `legal.metadata.*`). Keep descriptions under 155 characters: search engines cut the rest;
+  `legal.metadata.*`, `cgv.metadata.*`). Keep descriptions under 155 characters: search engines cut the rest;
 - the canonical URL and the `hreflang` alternates of every locale, plus `x-default`;
 - the Open Graph data (URL, site name, locale) and a `summary_large_image` Twitter card.
   The image itself comes from the file convention below.
@@ -96,6 +96,7 @@ dictionaries directly, so a test builds every page in every language.
 | Home   | `WebSite` (site name), `ProfilePage`, `Person` (summary), `ItemList` of personal projects; `hasPart` → `Blog` when the posts block shows |
 | Resume | `ProfilePage`, `Person` (full), `BreadcrumbList`                                                                                         |
 | Legal  | `WebPage`, `BreadcrumbList`                                                                                                              |
+| Terms  | `WebPage`, `BreadcrumbList` (both languages; the English page shows the French terms)                                                    |
 | Posts  | `CollectionPage`, `Blog` (`…/posts/#blog`) listing a summary `BlogPosting` per listed post, `BreadcrumbList`                             |
 | A post | `WebPage`, `BlogPosting` (full), `BreadcrumbList` Home › Articles › title                                                                |
 

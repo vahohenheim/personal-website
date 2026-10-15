@@ -4,7 +4,7 @@ description: Index of the technical documentation of the personal website, with 
 related_code:
   - ../CLAUDE.md
   - ../README.md
-last_updated: 2026-10-14
+last_updated: 2026-10-15
 ---
 
 # Documentation
@@ -25,7 +25,8 @@ file in the `related_code` fields.
 | [architecture/i18n.md](architecture/i18n.md)                                                   | Locales, the `proxy.ts` redirect, dictionaries read through `next/root-params`, adding a locale.                                                                   |
 | [architecture/security.md](architecture/security.md)                                           | Content Security Policy and security headers, `security.txt`, the DNS records still to add, and what all this implies for third-party services.                    |
 | [content/resume-data.md](content/resume-data.md)                                               | Where the page texts live and how they are typed, the data kept for the structured data, and how to update the changelog, the projects and the profile.            |
-| [features/pages.md](features/pages.md)                                                         | The pages of the site (home, resume, legal notice, 404, error) and the checklist to add one.                                                                       |
+| [features/pages.md](features/pages.md)                                                         | The pages of the site (home, resume, legal notice, terms of service, 404, error) and the checklist to add one.                                                     |
+| [features/legal-pages.md](features/legal-pages.md)                                             | The terms of service and the legal notice: texts, layout, the PDF and its versions, English pages, the handoff, decisions taken against the brief.                 |
 | [features/seo.md](features/seo.md)                                                             | Meta tags, canonical and `hreflang`, sitemap, robots, sharing image and icons, and the JSON-LD graph of each page.                                                 |
 | [features/posts.md](features/posts.md)                                                         | The posts section end to end: reader's path, writing and publishing, MDX components, images, registry, drafts on previews, protected posts, SEO, tests, checklist. |
 | [features/resume-pdf.md](features/resume-pdf.md)                                               | The one-page A4 resume of the charter: the print page, the script that prints it in each language, when to regenerate it.                                          |

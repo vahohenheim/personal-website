@@ -20,7 +20,15 @@ related_code:
   - ../../components/project-card/project-card.tsx
   - ../../lib/models/content.ts
   - ../../lib/utils/cn.ts
-last_updated: 2026-10-14
+  - ../../components/legal-layout/legal-layout.tsx
+  - ../../components/legal-toc/legal-toc.tsx
+  - ../../components/numbered-section/numbered-section.tsx
+  - ../../components/legal-blocks/legal-blocks.tsx
+  - ../../components/identity-card/identity-card.tsx
+  - ../../components/processing-list/processing-list.tsx
+  - ../../components/rich-text/rich-text.tsx
+  - ../../components/legal-links/legal-links.tsx
+last_updated: 2026-10-15
 ---
 
 # Components
@@ -36,7 +44,8 @@ The blocks of the design (profile sheet, project card, changelog entry…) are b
 - One folder per component, in kebab-case: `components/<name>/<name>.tsx`.
 - Default export, named `<Name>Component`.
 - `"use client"` only for what needs the browser: `HeaderNavComponent` (current path),
-  `ThemeToggleComponent`, `ThemeProvider`, and the error boundary.
+  `ThemeToggleComponent`, `ThemeProvider`, `LegalTocComponent` (scroll spy), and the error
+  boundary.
 - Conditional classes with `cn()` from [lib/utils/cn.ts](../../lib/utils/cn.ts).
 - Content comes in as props typed by [lib/models/content.ts](../../lib/models/content.ts);
   components hold no text.
@@ -61,7 +70,9 @@ The blocks of the design (profile sheet, project card, changelog entry…) are b
 | `PostTagsComponent`, `PostTocComponent`     | The tags of a post as mono chips; the summary of a post, one link per numbered section.                                                                                                                                                                                                               |
 | `PostUnlockFormComponent`                   | The password form of a protected post (client): `fetch`, honeypot, time trap, toasts.                                                                                                                                                                                                                 |
 | `Post*` MDX components                      | `components/post-*/`: the fourteen components a post may use, registered in `mdx-components.tsx`. Props and examples in [posts.md](../features/posts.md#mdx-components). `PostImageComponent` draws a day/night pair without client code; `PostFigureComponent` is the shared `<figure>` and caption. |
-| `SiteFooterComponent`                       | Closing line of inner pages: copyright, legal link, `cd ~/`. The home page has its own footer, the contact section.                                                                                                                                                                                   |
+| `SiteFooterComponent`                       | Closing line of inner pages: copyright, legal links, `cd ~/`. The home page has its own footer, the contact section.                                                                                                                                                                                  |
+| `LegalLinksComponent`                       | "mentions légales · cgv" in both footers; `current` puts the link of the page being read in the accent with `aria-current="page"`.                                                                                                                                                                    |
+| `LegalLayoutComponent` and its parts        | The two legal pages: `LegalTocComponent` (sticky summary with scroll spy, folded `<details>` on phones), `NumberedSectionComponent`, `LegalBlocksComponent`, `IdentityCardComponent`, `ProcessingListComponent`, `RichTextComponent`. See [legal-pages.md](../features/legal-pages.md#components).    |
 | `JsonLdComponent`, `SkipLinkComponent`      | Structured data of a page; "skip to content" link.                                                                                                                                                                                                                                                    |
 
 ## shadcn/ui
@@ -98,6 +109,11 @@ Not shadcn, on purpose:
   are semantic lists (`<ol>`, `<ul>`, `<dl>`).
 - **The status select of the admin** is a native `<select>`: three fixed choices do not
   need a custom listbox.
+- **The summary of the legal pages** is a native `<details>` on phones, not `Accordion`,
+  and a list of anchors on wide screens, not `NavigationMenu`: the browser already folds
+  and unfolds, and only the scroll spy needs client code.
+- **Numbered sections, the processing list and inline marks of legal texts** have no
+  shadcn equivalent; the identity card is the shadcn `Card`.
 
 The CLI overwrites files it depends on: adding `chart` rewrote `card.tsx`. After every
 `add`, check `git status` and restore what was restyled.

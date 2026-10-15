@@ -103,6 +103,8 @@
 
   html {
     background: var(--bg);
+    /* An anchor reached directly (#art-12, #sec-05) keeps its title off the top edge. */
+    scroll-padding-top: 24px;
   }
 
   body {

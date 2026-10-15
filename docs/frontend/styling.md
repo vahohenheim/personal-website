@@ -9,7 +9,7 @@ related_code:
   - ../../components/avatar/avatar.tsx
   - ../../public/avatar.jpg
   - ../redesign/charte-graphique-valentinbourreau.md
-last_updated: 2026-10-11
+last_updated: 2026-10-15
 ---
 
 # Styling
@@ -74,8 +74,12 @@ step, and no shadow utility exists.
 - **Focus:** a 2 px `--accent` outline, offset by 3 px, on every focusable element.
 - **Selection:** `--accent` background, `--on-accent` text.
 - **Motion:** colour transitions of 150 ms at most, removed under
-  `prefers-reduced-motion`. No entrance animation: nothing starts at `opacity: 0`.
+  `prefers-reduced-motion`. No entrance animation: nothing starts at `opacity: 0`. One
+  exception, which is not an entrance: the `#` link next to the titles of the legal pages
+  is transparent until its title is hovered or the link is focused.
 - **Layout:** `container-page` gives the 1040 px container with its fluid side padding.
+- **Anchors:** `html` has `scroll-padding-top: 24px`, so a title reached by its anchor
+  (`#art-12`, `#sec-05`, a section of a post) is not stuck to the top edge.
 
 ## Light and dark mode
 
@@ -124,6 +128,7 @@ larger. To change it, replace the file with another square image.
 
 Two sets of rules in [globals.css](../../app/globals.css):
 
-- `@media print` switches any page to day mode and hides the navigation and the buttons.
+- `@media print` switches any page to day mode and hides the navigation, the buttons and
+  anything marked `print-hidden` (the summaries of the legal pages).
 - `.resume-sheet` lays out the one-page A4 resume, in mm and pt, always in day mode. See
   [resume-pdf.md](../features/resume-pdf.md).

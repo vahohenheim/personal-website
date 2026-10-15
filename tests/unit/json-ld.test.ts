@@ -183,3 +183,17 @@ describe("graphs of the list and of the home page", () => {
     expect(JSON.stringify(getPageGraph("home", "fr"))).not.toContain("BlogPosting");
   });
 });
+
+describe("graph of the terms", () => {
+  it("is a web page with its trail, in each language", () => {
+    for (const locale of LOCALES) {
+      const graph = getPageGraph("cgv", locale);
+      const trail = byType(graph, "BreadcrumbList")?.itemListElement as Node[] | undefined;
+
+      expect(byType(graph, "WebPage")?.url).toBe(`https://www.valentinbourreau.com/${locale}/cgv/`);
+      expect(trail?.at(-1)?.name).toBe(
+        locale === "fr" ? "Conditions générales de prestation" : "General terms of service",
+      );
+    }
+  });
+});

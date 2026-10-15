@@ -5,6 +5,7 @@ import BreadcrumbComponent from "@/components/breadcrumb/breadcrumb";
 import ChangelogEntryComponent from "@/components/changelog-entry/changelog-entry";
 import ContactTriggerComponent from "@/components/contact/contact-trigger";
 import JsonLdComponent from "@/components/json-ld/json-ld";
+import LegalLinksComponent from "@/components/legal-links/legal-links";
 import PostListItemComponent from "@/components/post-list-item/post-list-item";
 import ProfileCardComponent from "@/components/profile-card/profile-card";
 import ProjectCardComponent from "@/components/project-card/project-card";
@@ -34,7 +35,7 @@ const FOOTER_NETWORKS = ["GitHub", "LinkedIn", "Dribbble", "Behance"];
 
 export default async function HomePage() {
   const locale = await getLocale();
-  const { home, a11y, footer, contact, posts } = await getDictionary();
+  const { home, a11y, contact, posts } = await getDictionary();
   const latestPosts = getHomePosts(locale);
   // The "read the post" link of a project card, when a post about the project is listed.
   const getProjectPost = (id: string) => {
@@ -191,14 +192,12 @@ export default async function HomePage() {
               ))}
             </ul>
           </div>
-          <p className="flex flex-wrap gap-x-4 gap-y-1 font-mono text-[12px] text-muted">
-            <span>
+          <div className="flex flex-wrap gap-x-5 gap-y-1 font-mono text-[12px] text-muted">
+            <p>
               © {new Date().getFullYear()} {SITE_NAME}
-            </span>
-            <Link href={`/${locale}/legal/`} className="text-muted no-underline hover:text-accent">
-              {footer.legal}
-            </Link>
-          </p>
+            </p>
+            <LegalLinksComponent />
+          </div>
         </div>
       </footer>
     </>

@@ -373,6 +373,10 @@ const PAGE_GRAPHS: Record<PageId, (context: Context) => Thing[]> = {
     getWebPage("legal", "WebPage", context),
     getBreadcrumb("legal", context.dictionary.legal.title, context),
   ],
+  cgv: (context) => [
+    getWebPage("cgv", "WebPage", context),
+    getBreadcrumb("cgv", context.dictionary.cgv.title, context),
+  ],
 };
 
 /** The graph of a page in one language. */

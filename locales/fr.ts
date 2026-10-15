@@ -1,5 +1,7 @@
 import * as content from "./content/fr";
 import type { Dictionary } from "./en";
+import { cgv } from "./legal/cgv.fr";
+import * as notice from "./legal/notice.fr";
 
 const fr: Dictionary = {
   metadata: {
@@ -28,64 +30,34 @@ const fr: Dictionary = {
     themeSystem: "Système",
   },
   legal: {
-    title: "mentions légales et confidentialité",
-    updated: "Dernière mise à jour le {date}.",
+    title: "Mentions légales et confidentialité",
+    updated: "dernière mise à jour le {date}",
+    toc: {
+      label: "sommaire",
+      summary: "sommaire · {count} sections",
+      navLabel: "Sommaire des mentions légales",
+    },
+    anchor: "Lien vers la section {title}",
     metadata: {
       title: "Mentions légales et confidentialité | valentinbourreau",
       description:
-        "Éditeur et hébergeur de valentinbourreau.com, et traitement des données des visiteurs : mesure d’audience, hébergement, cookies et vos droits.",
+        "Éditeur et hébergeur de valentinbourreau.com, et traitement des données des visiteurs et des clients\u00a0: mesure d’audience, cookies, vos droits.",
     },
-    sections: [
-      {
-        heading: "Éditeur",
-        paragraphs: [
-          "Ce site est édité par Valentin Bourreau, entrepreneur individuel (EI), sous le nom commercial valentinbourreau.",
-          "SIREN\u00a0: 130\u00a0933\u00a0922. SIRET du siège\u00a0: 130\u00a0933\u00a0922\u00a000010. Code APE\u00a0: 62.02A, conseil en systèmes et logiciels informatiques.",
-          "Adresse\u00a0: 520 route de Voivres, 72210 Fillé, France.",
-          "Directeur de la publication\u00a0: Valentin Bourreau.",
-          "Contact\u00a0: contact@valentinbourreau.com.",
-        ],
-      },
-      {
-        heading: "Hébergement",
-        paragraphs: [
-          "Le site est hébergé par Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis (vercel.com).",
-        ],
-      },
-      {
-        heading: "Propriété intellectuelle",
-        paragraphs: [
-          "Les textes, le portrait et le code source sont l’œuvre de Valentin Bourreau. Tous droits réservés.",
-        ],
-      },
-      {
-        heading: "Données personnelles",
-        paragraphs: [
-          "Ce site n’a ni compte ni publicité. Valentin Bourreau est le responsable des traitements décrits ci-dessous.",
-          "Formulaire de contact. Quand vous envoyez une demande, le site enregistre ce que vous avez saisi\u00a0: votre besoin, le démarrage souhaité, votre message, votre nom, votre adresse e-mail, votre entreprise si vous l’indiquez, la langue de la page et, quand il est connu, le site depuis lequel vous êtes arrivé (son nom de domaine, ou l’origine indiquée dans le lien suivi). Au fil de nos échanges, des notes de suivi peuvent y être ajoutées\u00a0: état de la demande, montant estimé, date de relance. Ces données servent uniquement à vous répondre et à suivre votre demande. Elles sont conservées au plus trois ans après notre dernier échange, puis supprimées. Vous pouvez demander leur suppression à tout moment.",
-          "Protection contre les robots. À l’envoi du formulaire, Vercel BotID analyse des signaux techniques de votre navigateur pour distinguer une personne d’un robot. Aucun de ces signaux n’est enregistré avec votre demande.",
-          "Mesure d’audience. Vercel Web Analytics compte les pages vues, pour savoir comment le site est utilisé. D’après Vercel, l’outil ne dépose aucun cookie, reconnaît une visite grâce à une empreinte de la requête supprimée au bout de 24 heures, et enregistre avec chaque page vue la page, le site d’origine, le pays et la région, le navigateur, le système d’exploitation et le type d’appareil. Chaque jour, le site recopie dans sa base de données des totaux anonymes (nombre de visites et de pages vues par jour, par page, par site d’origine, par pays et par type d’appareil) et les conserve sans limite de durée. Ces totaux ne permettent d’identifier personne.",
-          "Formulaire\u00a0: mesure d’utilisation. Le site compte, par jour, combien de fois le formulaire de contact est ouvert, combien de fois chaque étape est atteinte et combien de messages sont envoyés. Ce sont de simples compteurs\u00a0: aucun identifiant, aucune adresse IP ni aucun contenu saisi n’y est associé, et ils ne permettent d’identifier personne.",
-          "Hébergement. Comme tout hébergeur, Vercel traite l’adresse IP et les données techniques de chaque requête pour servir les pages et protéger le service, pendant la durée qu’il fixe.",
-          "Base légale. Pour le formulaire\u00a0: les mesures prises à votre demande avant un éventuel contrat. Pour le reste\u00a0: l’intérêt légitime à faire fonctionner le site, à le sécuriser et à connaître son audience.",
-          "Destinataires et transferts. Vercel Inc. (hébergement, mesure d’audience, protection contre les robots) et Neon Inc. (base de données où sont stockées les demandes) agissent comme sous-traitants. Ces sociétés sont établies aux États-Unis\u00a0: des données peuvent donc être traitées hors de l’Union européenne, selon les garanties prévues par leurs accords de traitement des données. Personne d’autre que Valentin Bourreau ne lit les demandes.",
-          "E-mail. Si vous écrivez à l’adresse de contact, votre message et votre adresse ne servent qu’à vous répondre.",
-        ],
-      },
-      {
-        heading: "Cookies et stockage local",
-        paragraphs: [
-          "Le site conserve dans votre navigateur, et seulement quand vous agissez\u00a0: la langue choisie (un cookie nommé NEXT_LOCALE, conservé un an), le thème clair ou sombre (stockage local) et, après l’envoi du formulaire, la date de cet envoi (stockage local), pour vous confirmer que votre message est parti. Un article protégé par un mot de passe dépose, une fois le bon mot de passe saisi, un cookie nommé post_access_ suivi du nom de l’article, conservé 30\u00a0jours\u00a0: il prouve seulement que ce navigateur peut lire cet article, et il est strictement nécessaire pour l’ouvrir. Rien de cela ne sert à vous suivre ni ne nécessite de consentement.",
-        ],
-      },
-      {
-        heading: "Vos droits",
-        paragraphs: [
-          "Conformément au RGPD, vous pouvez demander l’accès à vos données, leur rectification ou leur suppression, ou vous opposer à leur traitement, en écrivant à contact@valentinbourreau.com.",
-          "Vous pouvez aussi adresser une réclamation à la CNIL (cnil.fr).",
-        ],
-      },
-    ],
+    sections: notice.sections,
+  },
+  // The page chrome is translated; the terms themselves are in French in both languages.
+  cgv: {
+    title: "Conditions générales de prestation",
+    version: "version {version} · en vigueur au {date}",
+    download: "télécharger en PDF",
+    // Shown on the English page only, where the terms stay in French.
+    notice: "",
+    metadata: {
+      title: "Conditions générales de prestation | valentinbourreau",
+      description:
+        "Conditions générales de prestation de Valentin Bourreau, ingénieur front-end freelance\u00a0: devis, exécution, prix, paiement, propriété intellectuelle.",
+    },
+    terms: cgv,
   },
   contact: {
     title: "Prendre contact",
@@ -330,6 +302,7 @@ const fr: Dictionary = {
   },
   footer: {
     legal: "mentions légales",
+    cgv: "cgv",
   },
 };
 
