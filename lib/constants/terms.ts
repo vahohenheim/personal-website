@@ -16,6 +16,6 @@ type TermsVersion = {
  */
 export const TERMS: TermsVersion = {
   version: "1.1",
-  effectiveAt: "2026-10-16",
+  effectiveAt: "2026-10-17",
   pdf: { fr: "/cgv/cgp-1.1.pdf", en: "/cgv/cgp-1.1-en.pdf" },
 };

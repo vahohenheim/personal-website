@@ -38,7 +38,7 @@ last_updated: 2026-10-16
 
 **Summary.** Two pages share one layout: the general terms of service
 (_conditions générales de prestation_, `/[locale]/cgv/`, version 1.1 in force from
-16 October 2026) and the legal notice and privacy page (`/[locale]/legal/`). Both are
+17 October 2026) and the legal notice and privacy page (`/[locale]/legal/`). Both are
 numbered documents with a summary that follows the reading. Their texts are typed data
 in `locales/legal/`, copied word for word from the Markdown sources of
 [docs/legal-handoff/content/](../legal-handoff/content/); a test compares them. The terms
@@ -49,8 +49,8 @@ prevails (article 20). Each language has its PDF. Every footer links to both pag
 
 | Page                       | Content                                                                                                                                                                                                                                                                                                                         |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/fr/cgv/`                 | Trail `~/valentin-bourreau/cgv`, title, "version 1.1 · en vigueur au 16 octobre 2026" and the link to the PDF, the identity card of the provider, "Ci-après « le Prestataire »", then 20 articles (`#art-01` to `#art-20`). Articles 11 (suspension) and 12 (intellectual property) are framed by two rules in the text colour. |
-| `/en/cgv/`                 | The English translation, same layout and same anchors: "General terms of service", "version 1.1 · effective from 16 October 2026", the link to the English PDF, then the notice "These Terms are a translation of the French original. In the event of any discrepancy, the French version prevails (article 20)."              |
+| `/fr/cgv/`                 | Trail `~/valentin-bourreau/cgv`, title, "version 1.1 · en vigueur au 17 octobre 2026" and the link to the PDF, the identity card of the provider, "Ci-après « le Prestataire »", then 20 articles (`#art-01` to `#art-20`). Articles 11 (suspension) and 12 (intellectual property) are framed by two rules in the text colour. |
+| `/en/cgv/`                 | The English translation, same layout and same anchors: "General terms of service", "version 1.1 · effective from 17 October 2026", the link to the English PDF, then the notice "These Terms are a translation of the French original. In the event of any discrepancy, the French version prevails (article 20)."              |
 | `/fr/legal/`, `/en/legal/` | Seven sections (`#sec-01` to `#sec-07`): publisher (with its identity card), hosting, services (link to the terms), intellectual property, personal data (one row per processing, with its retention period), cookies and local storage, your rights.                                                                           |
 
 Internal references are links: "article 14" → `#art-14`, "article 12.2" → `#art-12-2` (the
@@ -109,8 +109,8 @@ like the rest of the site.
 | --------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `public/cgv/cgp-1.0.pdf`    | French   | Handed over with the brief: three A4 pages of HTML (the annex of a quote, from the design canvas, outside the repository) printed by Chromium. It prevails. |
 | `public/cgv/cgp-1.0-en.pdf` | English  | `npm run cgv:pdf -- en` ([scripts/cgv-pdf.mjs](../../scripts/cgv-pdf.mjs)) from `cgv.en.md`, on 15 October 2026.                                            |
-| `public/cgv/cgp-1.1.pdf`    | French   | `npm run cgv:pdf -- fr` from `cgv.fr.md`, on 16 October 2026. It prevails.                                                                                  |
-| `public/cgv/cgp-1.1-en.pdf` | English  | `npm run cgv:pdf -- en` from `cgv.en.md`, on 16 October 2026.                                                                                               |
+| `public/cgv/cgp-1.1.pdf`    | French   | `npm run cgv:pdf -- fr` from `cgv.fr.md`, on 17 October 2026. It prevails.                                                                                  |
+| `public/cgv/cgp-1.1-en.pdf` | English  | `npm run cgv:pdf -- en` from `cgv.en.md`, on 17 October 2026.                                                                                               |
 
 `npm run cgv:pdf -- <locale>` reproduces the look of the French PDF from a Markdown source:
 A4, 20 mm margins, Geist and Geist Mono (from the `geist` package, embedded), a running
@@ -131,7 +131,7 @@ A signed quote refers to one version of the terms, so a version is never replace
 
 ### Version 1.1
 
-In force from 16 October 2026, with the custom websites and apps of the [services
+In force from 17 October 2026, with the custom websites and apps of the [services
 page](offer.md#custom-websites-and-apps). Article 1 names the creation of websites and web
 applications and maintenance; a new subsection **4.4 Maintenance mensuelle** sets the
 monthly subscription (renewed month to month, 30 days' notice, unused time not carried

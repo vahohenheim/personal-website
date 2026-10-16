@@ -1,6 +1,6 @@
 # General terms of service
 
-Version 1.1, in force from 16 October 2026.
+Version 1.1, in force from 17 October 2026.
 
 Valentin Bourreau, sole proprietor (entrepreneur individuel, EI), trading as valentinbourreau.
 SIREN 130 933 922, SIRET 130 933 922 00010, APE code 62.02A.

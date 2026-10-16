@@ -1,6 +1,6 @@
 # Conditions générales de prestation
 
-Version 1.1, en vigueur au 16 octobre 2026.
+Version 1.1, en vigueur au 17 octobre 2026.
 
 Valentin Bourreau, entrepreneur individuel (EI), nom commercial valentinbourreau.
 SIREN 130 933 922, SIRET 130 933 922 00010, code APE 62.02A.
