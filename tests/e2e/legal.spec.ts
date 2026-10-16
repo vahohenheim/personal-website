@@ -34,9 +34,9 @@ test.describe("general terms of service", () => {
 
     const link = page.getByRole("link", { name: "télécharger en PDF" });
 
-    await expect(link).toHaveAttribute("href", "/cgv/cgp-1.0.pdf");
+    await expect(link).toHaveAttribute("href", "/cgv/cgp-1.1.pdf");
 
-    const response = await request.get("/cgv/cgp-1.0.pdf");
+    const response = await request.get("/cgv/cgp-1.1.pdf");
 
     expect(response.status()).toBe(200);
     expect(response.headers()["content-type"]).toContain("application/pdf");
@@ -113,8 +113,8 @@ test.describe("general terms of service", () => {
 
     const link = page.getByRole("link", { name: "download as PDF" });
 
-    await expect(link).toHaveAttribute("href", "/cgv/cgp-1.0-en.pdf");
-    expect((await request.get("/cgv/cgp-1.0-en.pdf")).status()).toBe(200);
+    await expect(link).toHaveAttribute("href", "/cgv/cgp-1.1-en.pdf");
+    expect((await request.get("/cgv/cgp-1.1-en.pdf")).status()).toBe(200);
 
     await page.getByRole("link", { name: "legal notice of valentinbourreau.com" }).click();
     await expect(page).toHaveURL("/en/legal/#sec-05");

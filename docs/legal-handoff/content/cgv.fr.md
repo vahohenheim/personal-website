@@ -1,6 +1,6 @@
 # Conditions générales de prestation
 
-Version 1.0, en vigueur au 15 octobre 2026.
+Version 1.1, en vigueur au 16 octobre 2026.
 
 Valentin Bourreau, entrepreneur individuel (EI), nom commercial valentinbourreau.
 SIREN 130 933 922, SIRET 130 933 922 00010, code APE 62.02A.
@@ -9,7 +9,7 @@ Ci-après « le Prestataire ».
 
 ## 1. Objet et champ d’application
 
-Les présentes conditions générales de prestation (« CGP ») encadrent les prestations de développement logiciel, d’ingénierie front-end, de conseil, d’audit et d’accompagnement technique réalisées par le Prestataire.
+Les présentes conditions générales de prestation (« CGP ») encadrent les prestations de développement logiciel, d’ingénierie front-end, de création de sites et d’applications web, de maintenance, de conseil, d’audit et d’accompagnement technique réalisées par le Prestataire.
 
 Elles s’adressent exclusivement aux professionnels (« le Client ») et s’appliquent à toute commande, sauf dérogation écrite et signée par les deux parties.
 
@@ -49,6 +49,16 @@ Le Prestataire exerce en toute indépendance. Il organise librement son travail,
 
 Le Prestataire est tenu à une obligation de moyens.
 
+### 4.4 Maintenance mensuelle
+
+La maintenance mensuelle est un abonnement à prix fixe, dont le contenu est décrit au devis : hébergement, mises à jour, temps d’intervention inclus. Elle commence à la date fixée au devis, pour une durée d’un mois, puis se renouvelle tacitement de mois en mois.
+
+Chaque partie peut y mettre fin par écrit, avec un préavis de 30 jours. Le mois en cours reste dû. Le temps d’intervention inclus et non utilisé dans le mois n’est pas reporté ; au-delà, les interventions font l’objet d’un devis ou sont facturées au TJM indiqué au devis.
+
+Le Prestataire peut réviser le prix une fois par an, en le notifiant par écrit au moins 30 jours avant la date d’effet. Le Client peut alors mettre fin à la maintenance avant cette date, sans préavis.
+
+Lorsque la maintenance comprend l’hébergement, le site ou l’application reste déployé sur les comptes du Prestataire pendant toute sa durée. Le nom de domaine est enregistré au nom du Client. Le Prestataire ne garantit pas une disponibilité supérieure à celle de l’hébergeur retenu. À la fin de la maintenance, ou à tout moment sur demande écrite du Client, le Prestataire lui transfère le code, les comptes et le déploiement dans un délai raisonnable.
+
 ## 5. Obligations du Client
 
 Le Client s’engage à :
@@ -68,6 +78,8 @@ Le Prestataire corrige les anomalies avérées dans un délai raisonnable, puis 
 
 La recette est réputée acquise à la première des dates suivantes : validation écrite du Client, expiration du délai de 10 jours ouvrés sans réserve écrite, ou mise en production par le Client.
 
+Pour un site ou une application, le devis précise le nombre de tours de retours inclus. Un tour de retours regroupe, en un seul envoi écrit, les demandes de modification du Client sur une livraison. Les tours supplémentaires et les demandes hors périmètre relèvent de l’article 7.
+
 ## 7. Modifications du périmètre
 
 Toute modification du périmètre, du calendrier ou des livrables demandée par le Client fait l’objet d’un devis complémentaire ou d’un avenant, accepté par écrit avant exécution.
@@ -83,7 +95,8 @@ Les frais de déplacement, d’hébergement et les licences ou services tiers ne
 Sauf mention contraire au devis :
 
 - **forfait** : acompte de 30 % à la commande, solde à la recette ; pour les projets de plus de deux mois, les factures intermédiaires suivent les jalons définis au devis ;
-- **régie** : facturation mensuelle, en fin de mois, des jours réellement travaillés.
+- **régie** : facturation mensuelle, en fin de mois, des jours réellement travaillés ;
+- **maintenance mensuelle** : facturation mensuelle, en début de mois.
 
 Les factures sont payables à 30 jours à compter de leur date d’émission, par virement bancaire sur le compte indiqué sur la facture. Aucun escompte n’est accordé en cas de paiement anticipé.
 
@@ -116,7 +129,7 @@ Sous réserve du paiement intégral du prix, le Prestataire cède au Client, à 
 
 Le prix de cette cession est inclus dans le prix de la prestation.
 
-La cession prend effet à la date du paiement intégral. Les dépôts de code, comptes et déploiements opérés par le Prestataire sont alors transférés au Client.
+La cession prend effet à la date du paiement intégral. Les dépôts de code, comptes et déploiements opérés par le Prestataire sont alors transférés au Client, sauf pendant une maintenance mensuelle qui comprend l’hébergement, où le transfert suit l’article 4.4.
 
 ### 12.2 Avant paiement intégral
 
@@ -168,6 +181,7 @@ Le contrat prend fin à l’achèvement des prestations prévues au devis.
 
 - **Régie** : chaque partie peut y mettre fin par écrit, avec un préavis de 15 jours. Les jours travaillés jusqu’à la fin du préavis sont dus.
 - **Forfait** : si le Client met fin au contrat avant son terme, il règle les travaux réalisés à la date de la résiliation, au prorata du devis. L’acompte reste acquis au Prestataire.
+- **Maintenance mensuelle** : chaque partie peut y mettre fin selon l’article 4.4.
 - **Manquement grave** : en cas de manquement d’une partie non corrigé 30 jours après une mise en demeure, l’autre partie peut résilier le contrat par écrit, sans préjudice des dommages et intérêts.
 
 Les articles 10, 12, 13 et 15 survivent à la fin du contrat.

@@ -1,6 +1,6 @@
 import { type TermsDocument } from "@/lib/models/legal";
 
-// The general terms of service, version 1.0, in English: a translation of the French
+// The general terms of service, version 1.1, in English: a translation of the French
 // original (cgv.fr.ts), which prevails (article 20). Word for word from
 // docs/legal-handoff/content/cgv.en.md, the single source lotus reuses for English quotes,
 // with non-breaking spaces between numbers and units, narrow ones in the SIREN and SIRET, and
@@ -35,7 +35,7 @@ export const cgv: TermsDocument = {
       blocks: [
         {
           type: "p",
-          text: "These general terms of service (the “Terms”) govern the software development, front-end engineering, consulting, audit and technical support services provided by the Provider.",
+          text: "These general terms of service (the “Terms”) govern the software development, front-end engineering, website and web application creation, maintenance, consulting, audit and technical support services provided by the Provider.",
         },
         {
           type: "p",
@@ -134,6 +134,30 @@ export const cgv: TermsDocument = {
             },
           ],
         },
+        {
+          type: "subsection",
+          id: "art-04-4",
+          number: "4.4",
+          title: "Monthly maintenance",
+          blocks: [
+            {
+              type: "p",
+              text: "Monthly maintenance is a fixed-price subscription whose content is set out in the quote: hosting, updates, included intervention time. It starts on the date set in the quote, for a term of one month, and is then tacitly renewed from month to month.",
+            },
+            {
+              type: "p",
+              text: "Either party may terminate it in writing, with 30\u00a0days’ notice. The current month remains payable. Included intervention time not used in a month is not carried over; beyond it, work is quoted or invoiced at the daily rate stated in the quote.",
+            },
+            {
+              type: "p",
+              text: "The Provider may revise the price once a year, by giving written notice at least 30\u00a0days before the effective date. The Client may then terminate the maintenance before that date, without notice.",
+            },
+            {
+              type: "p",
+              text: "When the maintenance includes hosting, the website or application remains deployed on the Provider’s accounts for its whole term. The domain name is registered in the Client’s name. The Provider does not guarantee an availability higher than that of the chosen host. At the end of the maintenance, or at any time on the Client’s written request, the Provider transfers the code, the accounts and the deployment to the Client within a reasonable time.",
+            },
+          ],
+        },
       ],
     },
     {
@@ -177,6 +201,10 @@ export const cgv: TermsDocument = {
           type: "p",
           text: "Acceptance is deemed given on the earliest of the following dates: the Client’s written approval, the expiry of the 10-working-day period without written reservations, or the putting into production of the deliverables by the Client.",
         },
+        {
+          type: "p",
+          text: "For a website or an application, the quote states the number of feedback rounds included. A feedback round gathers, in a single written message, the Client’s change requests on one delivery. Additional rounds and requests outside the scope fall under [article 7](#art-07).",
+        },
       ],
     },
     {
@@ -218,7 +246,8 @@ export const cgv: TermsDocument = {
           type: "ul",
           items: [
             "**fixed price**: a 30% deposit on order, the balance on acceptance; for projects lasting more than two months, interim invoices follow the milestones set out in the quote;",
-            "**time and materials**: monthly invoicing, at the end of each month, of the days actually worked.",
+            "**time and materials**: monthly invoicing, at the end of each month, of the days actually worked;",
+            "**monthly maintenance**: monthly invoicing, at the start of each month.",
           ],
         },
         {
@@ -298,7 +327,7 @@ export const cgv: TermsDocument = {
             },
             {
               type: "p",
-              text: "The assignment takes effect on the date of full payment. The code repositories, accounts and deployments operated by the Provider are then transferred to the Client.",
+              text: "The assignment takes effect on the date of full payment. The code repositories, accounts and deployments operated by the Provider are then transferred to the Client, except during a monthly maintenance that includes hosting, where the transfer follows [article 4.4](#art-04-4).",
             },
           ],
         },
@@ -435,6 +464,7 @@ export const cgv: TermsDocument = {
           items: [
             "**Time and materials**: either party may terminate it in writing, with 15\u00a0days’ notice. The days worked until the end of the notice period are payable.",
             "**Fixed price**: if the Client terminates the contract before its term, it pays for the work carried out up to the date of termination, pro rata to the quote. The deposit remains with the Provider.",
+            "**Monthly maintenance**: either party may terminate it under [article 4.4](#art-04-4).",
             "**Serious breach**: if a breach by a party is not remedied 30\u00a0days after formal notice, the other party may terminate the contract in writing, without prejudice to any damages.",
           ],
         },
