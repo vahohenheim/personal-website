@@ -367,7 +367,9 @@ const getPriceSpecification = (price: Price): Offer["priceSpecification"] => {
     valueAddedTaxIncluded: false,
     ...(price.type === "fixed"
       ? { price: price.amount }
-      : { minPrice: price.min, maxPrice: price.max }),
+      : price.type === "from"
+        ? { minPrice: price.amount }
+        : { minPrice: price.min, maxPrice: price.max }),
     ...(price.unit && { unitCode: UNIT_CODES[price.unit] }),
   };
 };

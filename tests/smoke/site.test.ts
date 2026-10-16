@@ -101,14 +101,20 @@ describe("files and feeds", () => {
 
   it("serves the PDF of the terms in each language, linked from the terms", async () => {
     for (const [locale, pdf] of [
-      ["fr", "/cgv/cgp-1.0.pdf"],
-      ["en", "/cgv/cgp-1.0-en.pdf"],
+      ["fr", "/cgv/cgp-1.1.pdf"],
+      ["en", "/cgv/cgp-1.1-en.pdf"],
     ]) {
       const response = await get(pdf);
 
       expect(response.status, pdf).toBe(200);
       expect(response.headers.get("content-type")).toContain("application/pdf");
       expect(await (await get(`/${locale}/cgv/`)).text()).toContain(`href="${pdf}"`);
+    }
+  });
+
+  it("keeps the PDFs of earlier versions of the terms online, for signed quotes", async () => {
+    for (const pdf of ["/cgv/cgp-1.0.pdf", "/cgv/cgp-1.0-en.pdf"]) {
+      expect((await get(pdf)).status, pdf).toBe(200);
     }
   });
 
@@ -232,13 +238,22 @@ describe("services", () => {
     const offre = await (await get("/fr/offre/")).text();
     const home = await (await get("/fr/")).text();
 
-    for (const price of ["1\u202f900\u00a0€", "5\u202f000\u00a0€", "850\u00a0€/j", "sur devis"]) {
+    for (const price of [
+      "1\u202f900\u00a0€",
+      "5\u202f000\u00a0€",
+      "850\u00a0€/j",
+      "sur devis",
+      "1\u202f200\u00a0€",
+      "dès 9\u202f000\u00a0€",
+      "120\u00a0€/mois",
+    ]) {
       expect(offre).toContain(price);
     }
 
     expect(offre).toContain("800\u00a0€/j");
     expect(offre).toContain("950\u00a0€/j");
     expect(home).toContain("dès 1\u202f900\u00a0€");
+    expect(home).toContain("dès 1\u202f200\u00a0€");
     expect(home).toContain('href="/fr/offre/"');
   });
 

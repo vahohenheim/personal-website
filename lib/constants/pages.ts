@@ -57,7 +57,7 @@ export const PAGES = {
   cgv: {
     path: "/cgv/",
     createdAt: "2026-10-15",
-    updatedAt: "2026-10-15",
+    updatedAt: "2026-10-17",
     priority: 0.3,
     changeFrequency: "yearly",
   },

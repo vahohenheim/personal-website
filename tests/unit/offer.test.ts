@@ -26,6 +26,10 @@ describe("prices", () => {
       `3${NNBSP}500${NBSP}€ à 7${NNBSP}000${NBSP}€`,
     );
     expect(formatPrice({ type: "quote" }, "fr", fr.offre.price)).toBe("sur devis");
+    expect(formatPrice({ type: "from", amount: 5500 }, "fr", fr.offre.price)).toBe(
+      `dès 5${NNBSP}500${NBSP}€`,
+    );
+    expect(formatPrice({ type: "from", amount: 9000 }, "en", en.offre.price)).toBe("from €9,000");
   });
 
   it("start from the lowest price on the home page, or show the only one", () => {
@@ -40,6 +44,12 @@ describe("prices", () => {
     expect(formatStartingPrice(getService("build"), "fr", fr.offre.price)).toBe("sur devis");
   });
 
+  it("start a website from its cheapest option, not from an add-on", () => {
+    expect(formatStartingPrice(getService("creation"), "fr", fr.offre.price)).toBe(
+      `dès 1${NNBSP}200${NBSP}€`,
+    );
+  });
+
   it("are those of Valentin's brief", () => {
     expect(
       Object.fromEntries(
@@ -52,11 +62,19 @@ describe("prices", () => {
       ],
       lead: [{ type: "fixed", amount: 850, unit: "day" }],
       build: [{ type: "quote" }],
+      creation: [
+        { type: "fixed", amount: 1200 },
+        { type: "fixed", amount: 2500 },
+        { type: "fixed", amount: 300 },
+        { type: "from", amount: 5500 },
+        { type: "from", amount: 9000 },
+        { type: "fixed", amount: 120, unit: "month" },
+      ],
       launch: [{ type: "range", min: 3500, max: 7000 }],
       retainer: [{ type: "range", min: 2500, max: 4000, unit: "month" }],
     });
     expect(DAY_RATES).toEqual({ reference: 800, urgent: 950 });
-    expect(HOME_SERVICES).toEqual(["audit", "lead", "launch"]);
+    expect(HOME_SERVICES).toEqual(["audit", "lead", "launch", "creation"]);
   });
 });
 

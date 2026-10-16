@@ -15,7 +15,7 @@ type TermsVersion = {
  * a new version adds files in `public/cgv/`, it never replaces one.
  */
 export const TERMS: TermsVersion = {
-  version: "1.0",
-  effectiveAt: "2026-10-15",
-  pdf: { fr: "/cgv/cgp-1.0.pdf", en: "/cgv/cgp-1.0-en.pdf" },
+  version: "1.1",
+  effectiveAt: "2026-10-17",
+  pdf: { fr: "/cgv/cgp-1.1.pdf", en: "/cgv/cgp-1.1-en.pdf" },
 };

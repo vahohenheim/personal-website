@@ -1,6 +1,6 @@
 import { type TermsDocument } from "@/lib/models/legal";
 
-// The general terms of service (conditions générales de prestation), version 1.0, in French
+// The general terms of service (conditions générales de prestation), version 1.1, in French
 // only: the English page shows this same text. Word for word from
 // docs/legal-handoff/content/cgv.fr.md, with French typography added (non-breaking spaces,
 // narrow ones in the SIREN and SIRET) and the internal references turned into links. A test
@@ -34,7 +34,7 @@ export const cgv: TermsDocument = {
       blocks: [
         {
           type: "p",
-          text: "Les présentes conditions générales de prestation («\u00a0CGP\u00a0») encadrent les prestations de développement logiciel, d’ingénierie front-end, de conseil, d’audit et d’accompagnement technique réalisées par le Prestataire.",
+          text: "Les présentes conditions générales de prestation («\u00a0CGP\u00a0») encadrent les prestations de développement logiciel, d’ingénierie front-end, de création de sites et d’applications web, de maintenance, de conseil, d’audit et d’accompagnement technique réalisées par le Prestataire.",
         },
         {
           type: "p",
@@ -133,6 +133,30 @@ export const cgv: TermsDocument = {
             },
           ],
         },
+        {
+          type: "subsection",
+          id: "art-04-4",
+          number: "4.4",
+          title: "Maintenance mensuelle",
+          blocks: [
+            {
+              type: "p",
+              text: "La maintenance mensuelle est un abonnement à prix fixe, dont le contenu est décrit au devis\u00a0: hébergement, mises à jour, temps d’intervention inclus. Elle commence à la date fixée au devis, pour une durée d’un mois, puis se renouvelle tacitement de mois en mois.",
+            },
+            {
+              type: "p",
+              text: "Chaque partie peut y mettre fin par écrit, avec un préavis de 30\u00a0jours. Le mois en cours reste dû. Le temps d’intervention inclus et non utilisé dans le mois n’est pas reporté\u00a0; au-delà, les interventions font l’objet d’un devis ou sont facturées au TJM indiqué au devis.",
+            },
+            {
+              type: "p",
+              text: "Le Prestataire peut réviser le prix une fois par an, en le notifiant par écrit au moins 30\u00a0jours avant la date d’effet. Le Client peut alors mettre fin à la maintenance avant cette date, sans préavis.",
+            },
+            {
+              type: "p",
+              text: "Lorsque la maintenance comprend l’hébergement, le site ou l’application reste déployé sur les comptes du Prestataire pendant toute sa durée. Le nom de domaine est enregistré au nom du Client. Le Prestataire ne garantit pas une disponibilité supérieure à celle de l’hébergeur retenu. À la fin de la maintenance, ou à tout moment sur demande écrite du Client, le Prestataire lui transfère le code, les comptes et le déploiement dans un délai raisonnable.",
+            },
+          ],
+        },
       ],
     },
     {
@@ -176,6 +200,10 @@ export const cgv: TermsDocument = {
           type: "p",
           text: "La recette est réputée acquise à la première des dates suivantes\u00a0: validation écrite du Client, expiration du délai de 10\u00a0jours ouvrés sans réserve écrite, ou mise en production par le Client.",
         },
+        {
+          type: "p",
+          text: "Pour un site ou une application, le devis précise le nombre de tours de retours inclus. Un tour de retours regroupe, en un seul envoi écrit, les demandes de modification du Client sur une livraison. Les tours supplémentaires et les demandes hors périmètre relèvent de l’[article 7](#art-07).",
+        },
       ],
     },
     {
@@ -217,7 +245,8 @@ export const cgv: TermsDocument = {
           type: "ul",
           items: [
             "**forfait**\u00a0: acompte de 30\u00a0% à la commande, solde à la recette\u00a0; pour les projets de plus de deux mois, les factures intermédiaires suivent les jalons définis au devis\u00a0;",
-            "**régie**\u00a0: facturation mensuelle, en fin de mois, des jours réellement travaillés.",
+            "**régie**\u00a0: facturation mensuelle, en fin de mois, des jours réellement travaillés\u00a0;",
+            "**maintenance mensuelle**\u00a0: facturation mensuelle, en début de mois.",
           ],
         },
         {
@@ -297,7 +326,7 @@ export const cgv: TermsDocument = {
             },
             {
               type: "p",
-              text: "La cession prend effet à la date du paiement intégral. Les dépôts de code, comptes et déploiements opérés par le Prestataire sont alors transférés au Client.",
+              text: "La cession prend effet à la date du paiement intégral. Les dépôts de code, comptes et déploiements opérés par le Prestataire sont alors transférés au Client, sauf pendant une maintenance mensuelle qui comprend l’hébergement, où le transfert suit l’[article 4.4](#art-04-4).",
             },
           ],
         },
@@ -434,6 +463,7 @@ export const cgv: TermsDocument = {
           items: [
             "**Régie**\u00a0: chaque partie peut y mettre fin par écrit, avec un préavis de 15\u00a0jours. Les jours travaillés jusqu’à la fin du préavis sont dus.",
             "**Forfait**\u00a0: si le Client met fin au contrat avant son terme, il règle les travaux réalisés à la date de la résiliation, au prorata du devis. L’acompte reste acquis au Prestataire.",
+            "**Maintenance mensuelle**\u00a0: chaque partie peut y mettre fin selon l’[article 4.4](#art-04-4).",
             "**Manquement grave**\u00a0: en cas de manquement d’une partie non corrigé 30\u00a0jours après une mise en demeure, l’autre partie peut résilier le contrat par écrit, sans préjudice des dommages et intérêts.",
           ],
         },

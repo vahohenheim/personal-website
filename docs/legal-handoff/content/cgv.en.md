@@ -1,6 +1,6 @@
 # General terms of service
 
-Version 1.0, in force from 15 October 2026.
+Version 1.1, in force from 17 October 2026.
 
 Valentin Bourreau, sole proprietor (entrepreneur individuel, EI), trading as valentinbourreau.
 SIREN 130 933 922, SIRET 130 933 922 00010, APE code 62.02A.
@@ -11,7 +11,7 @@ These Terms are a translation of the French original. In the event of any discre
 
 ## 1. Purpose and scope
 
-These general terms of service (the “Terms”) govern the software development, front-end engineering, consulting, audit and technical support services provided by the Provider.
+These general terms of service (the “Terms”) govern the software development, front-end engineering, website and web application creation, maintenance, consulting, audit and technical support services provided by the Provider.
 
 They are intended exclusively for professional customers (the “Client”) and apply to every order, unless otherwise agreed in a document signed by both parties.
 
@@ -51,6 +51,16 @@ The Provider acts with full independence. It freely organises its work, its work
 
 The Provider is bound by an obligation of means (obligation de moyens).
 
+### 4.4 Monthly maintenance
+
+Monthly maintenance is a fixed-price subscription whose content is set out in the quote: hosting, updates, included intervention time. It starts on the date set in the quote, for a term of one month, and is then tacitly renewed from month to month.
+
+Either party may terminate it in writing, with 30 days’ notice. The current month remains payable. Included intervention time not used in a month is not carried over; beyond it, work is quoted or invoiced at the daily rate stated in the quote.
+
+The Provider may revise the price once a year, by giving written notice at least 30 days before the effective date. The Client may then terminate the maintenance before that date, without notice.
+
+When the maintenance includes hosting, the website or application remains deployed on the Provider’s accounts for its whole term. The domain name is registered in the Client’s name. The Provider does not guarantee an availability higher than that of the chosen host. At the end of the maintenance, or at any time on the Client’s written request, the Provider transfers the code, the accounts and the deployment to the Client within a reasonable time.
+
 ## 5. Client obligations
 
 The Client undertakes to:
@@ -70,6 +80,8 @@ The Provider corrects any confirmed defects within a reasonable time, then submi
 
 Acceptance is deemed given on the earliest of the following dates: the Client’s written approval, the expiry of the 10-working-day period without written reservations, or the putting into production of the deliverables by the Client.
 
+For a website or an application, the quote states the number of feedback rounds included. A feedback round gathers, in a single written message, the Client’s change requests on one delivery. Additional rounds and requests outside the scope fall under article 7.
+
 ## 7. Changes to the scope
 
 Any change to the scope, the schedule or the deliverables requested by the Client is subject to an additional quote or an amendment, accepted in writing before it is carried out.
@@ -85,7 +97,8 @@ Travel and accommodation expenses and third-party licences or services are not i
 Unless otherwise stated in the quote:
 
 - **fixed price**: a 30% deposit on order, the balance on acceptance; for projects lasting more than two months, interim invoices follow the milestones set out in the quote;
-- **time and materials**: monthly invoicing, at the end of each month, of the days actually worked.
+- **time and materials**: monthly invoicing, at the end of each month, of the days actually worked;
+- **monthly maintenance**: monthly invoicing, at the start of each month.
 
 Invoices are payable within 30 days of their date of issue, by bank transfer to the account stated on the invoice. No discount is granted for early payment.
 
@@ -118,7 +131,7 @@ Subject to full payment of the price, the Provider assigns to the Client, on an 
 
 The price of this assignment is included in the price of the service.
 
-The assignment takes effect on the date of full payment. The code repositories, accounts and deployments operated by the Provider are then transferred to the Client.
+The assignment takes effect on the date of full payment. The code repositories, accounts and deployments operated by the Provider are then transferred to the Client, except during a monthly maintenance that includes hosting, where the transfer follows article 4.4.
 
 ### 12.2 Before full payment
 
@@ -170,6 +183,7 @@ The contract ends upon completion of the services provided for in the quote.
 
 - **Time and materials**: either party may terminate it in writing, with 15 days’ notice. The days worked until the end of the notice period are payable.
 - **Fixed price**: if the Client terminates the contract before its term, it pays for the work carried out up to the date of termination, pro rata to the quote. The deposit remains with the Provider.
+- **Monthly maintenance**: either party may terminate it under article 4.4.
 - **Serious breach**: if a breach by a party is not remedied 30 days after formal notice, the other party may terminate the contract in writing, without prejudice to any damages.
 
 Articles 10, 12, 13 and 15 survive the end of the contract.

@@ -7,7 +7,7 @@ import { type OfferTexts } from "@/lib/models/offer";
 export const offer: OfferTexts = {
   title: "Offre",
   breadcrumb: "offre",
-  lead: "Ingénieur web senior, spécialiste des plateformes headless et de Next.js. Audit, lead technique, développement et mise en production, à distance et en asynchrone.",
+  lead: "Ingénieur web senior, spécialiste des plateformes headless et de Next.js. Audit, lead technique, développement, création de sites et mise en production, à distance et en asynchrone.",
   meta: { status: "freelance", remote: "100 % à distance", vat: "prix HT" },
   actions: { contact: "Prendre contact", resume: "Voir le CV" },
   toc: {
@@ -71,6 +71,28 @@ export const offer: OfferTexts = {
       deliverables: ["Front Next.js", "Intégration CMS ou e-commerce", "API et BFF Node"],
       detail: { label: "durée", value: "selon le périmètre" },
       prices: { quote: "prix" },
+    },
+    creation: {
+      code: "création",
+      billing: "prix fixe",
+      title: "Création de site ou d’application sur mesure",
+      summary: "Landing page, site vitrine, boutique ou application, à prix fixe",
+      text: "Un site ou une application dessinés pour vous, sur une base technique éprouvée\u00a0: Next.js, contenus modifiables par vous, mise en ligne sur Vercel. Un périmètre écrit et un prix fixe\u00a0; une boutique headless ou une application plus large se chiffre sur devis.",
+      deliverables: [
+        "Design sur mesure, sans thème acheté",
+        "Contenus modifiables sans développeur",
+        "Performance et SEO de base",
+        "Deux tours de retours inclus",
+        "Textes et images fournis par vous",
+      ],
+      prices: {
+        landing: "landing page · 1 page",
+        site: "site vitrine · 5 pages",
+        page: "page supplémentaire",
+        shop: "boutique en ligne · Shopify",
+        app: "application web · 1 parcours",
+        care: "maintenance · hébergement, mises à jour, 1\u00a0h",
+      },
     },
     launch: {
       code: "mise en prod",
@@ -137,7 +159,7 @@ export const offer: OfferTexts = {
   },
   home: {
     title: "offre",
-    lead: "Ingénieur web senior, spécialiste des plateformes headless et de Next.js. Je couvre aussi le back et l’infra, à distance et en asynchrone.",
+    lead: "Ingénieur web senior, spécialiste des plateformes headless et de Next.js. Je couvre aussi le back et l’infra, et je crée des sites et des applications sur mesure, à prix fixe.",
     more: "Voir l’offre complète →",
     vat: "prix HT",
   },
