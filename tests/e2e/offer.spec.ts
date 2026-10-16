@@ -37,7 +37,7 @@ test("lists the six services and their prices, with the summary on the left", as
 
   await expect(services.getByRole("heading", { level: 3 })).toHaveCount(6);
   await expect(services.getByText("dès 5\u202f500\u00a0€")).toBeVisible();
-  await expect(services.getByText("sur devis")).toBeVisible();
+  await expect(services.getByText("sur devis", { exact: true })).toBeVisible();
   await expect(page.locator("#sec-03").getByRole("table")).toContainText("950 €/j");
 
   // The summary is left of the text.
