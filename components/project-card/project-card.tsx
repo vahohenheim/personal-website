@@ -26,7 +26,7 @@ const ProjectCardComponent = ({ project, href, statusLabels, post }: ProjectCard
     <li>
       <Card className="h-full p-5">
         <CardHeader>
-          <CardTitle className="font-mono text-[15px] font-medium">
+          <CardTitle className="type-subhead">
             {href ? (
               <a href={href} target="_blank" rel="noopener noreferrer">
                 {project.name}

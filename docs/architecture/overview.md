@@ -9,7 +9,7 @@ related_code:
   - ../../proxy.ts
   - ../../next.config.ts
   - ../../package.json
-last_updated: 2026-10-15
+last_updated: 2026-10-16
 ---
 
 # Architecture overview
@@ -79,13 +79,14 @@ app/
     unlock/[slug]/page.tsx  Password form of a protected post, shown by proxy.ts at its URL
     legal/page.tsx          Legal notice and privacy
     cgv/page.tsx            General terms of service (French original, English translation)
-  admin/                    Dashboard of leads: own root layout, French only
+  admin/                    Dashboard of leads, design system page: own root layout,
+                            French only
   api/contact/route.ts      Receives a lead from the contact dialog
   api/events/route.ts       Counts a step of the contact dialog
   api/posts/unlock/route.ts Exchanges the password of a protected post for a signed cookie
   api/cron/                 Scheduled jobs: copy of the audience figures, lotus retry
-components/                 One folder per component (header, avatar, breadcrumb,
-                            profile-card, changelog-entry, project-card, post-*…)
+components/                 One folder per component (header, heading, page-header,
+                            key-value, log-entry, toc, project-card, post-*…)
   ui/                       shadcn/ui components, restyled for the charter
 lib/
   i18n/                     Locales, getLocale, getDictionary

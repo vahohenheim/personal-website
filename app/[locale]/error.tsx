@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import HeadingComponent from "@/components/heading/heading";
 import { Button } from "@/components/ui/button";
 import { SOCIAL_NETWORK_LINKS } from "@/lib/constants/social-network";
 import { DEFAULT_LOCALE, hasLocale } from "@/lib/i18n/config";
@@ -28,9 +29,9 @@ export default function Error({ retry }: { error: Error; retry: () => void }) {
       id="main"
       className="container-page flex grow flex-col items-start gap-6 pt-[clamp(48px,8vw,112px)] pb-[clamp(56px,7vw,96px)]"
     >
-      <h1 className="text-[clamp(32px,4.4vw,48px)] leading-[1.05] font-semibold tracking-[-0.03em]">
+      <HeadingComponent level={1} className="max-w-[20ch]">
         {messages.title}
-      </h1>
+      </HeadingComponent>
       <p className="max-w-[40em] text-text2">
         {before}
         {linkLabel && (

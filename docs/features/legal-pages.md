@@ -15,10 +15,11 @@ related_code:
   - ../../lib/constants/terms.ts
   - ../../lib/constants/pages.ts
   - ../../components/legal-layout/legal-layout.tsx
-  - ../../components/legal-toc/legal-toc.tsx
+  - ../../components/toc/toc.tsx
+  - ../../components/document-layout/document-layout.tsx
   - ../../components/numbered-section/numbered-section.tsx
   - ../../components/legal-blocks/legal-blocks.tsx
-  - ../../components/identity-card/identity-card.tsx
+  - ../../components/key-value/key-value.tsx
   - ../../components/processing-list/processing-list.tsx
   - ../../components/rich-text/rich-text.tsx
   - ../../components/legal-links/legal-links.tsx
@@ -30,7 +31,7 @@ related_code:
   - ../../tests/e2e/legal.spec.ts
   - ../../tests/helpers/legal.ts
   - ../legal-handoff/
-last_updated: 2026-10-15
+last_updated: 2026-10-16
 ---
 
 # Legal pages
@@ -89,15 +90,15 @@ language: the test fails until both say the same thing.
 
 ## Components
 
-| Component                  | Role                                                                                                                                                                                                                                      |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `LegalLayoutComponent`     | Intro (trail, H1 36 px on phones and 60 px from 768 px, meta, identity), then the summary and the sections. Draws the rules between sections, and the frame of a run of emphasised sections.                                              |
-| `LegalTocComponent`        | Client component (scroll spy). `desktop`: sticky 248 px column, current entry in the accent with `aria-current="true"` (IntersectionObserver, `rootMargin: -20% 0px -70% 0px`). `mobile`: a native `<details>` that folds after a choice. |
-| `NumberedSectionComponent` | Grid `32px / 1fr` (48 px from 768 px): number in mono, H2 21 px, `#` link, body. `emphasis`: number in the text colour, 48 px of padding.                                                                                                 |
-| `LegalBlocksComponent`     | Paragraphs, lists (markers in `--muted`), H3 subsections with their number in mono, and the two cards below.                                                                                                                              |
-| `IdentityCardComponent`    | shadcn `Card` on `--surface`: a mono `<dl>`, labels in a 140 px column (96 px on phones), values that break anywhere.                                                                                                                     |
-| `ProcessingListComponent`  | The processing of personal data: name in bold, retention in mono `--muted`, then the text; one valid `<dl>`, one row each.                                                                                                                |
-| `LegalLinksComponent`      | "mentions légales · cgv" ("legal notice · terms") in every footer; the link of the current page is in the accent with `aria-current="page"`.                                                                                              |
+| Component                  | Role                                                                                                                                                                                                                                                                                                        |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `LegalLayoutComponent`     | The page on the document template: `PageHeaderComponent` (trail, `h1`, meta, identity), then `DocumentLayoutComponent` (summary on the left, sections on the right), then `PageNavComponent` towards the other legal page. Draws the rules between sections, and the frame of a run of emphasised sections. |
+| `TocComponent`             | Shared with the posts. Client component (scroll spy). `desktop`: sticky 216 px column on the left, current entry in the accent with `aria-current="true"` (IntersectionObserver, `rootMargin: -20% 0px -70% 0px`). `mobile` (below 1024 px): a native `<details>` that folds after a choice.                |
+| `NumberedSectionComponent` | Shared with the posts: the number as a mono eyebrow, `h2` in the `title` style, `#` link, body. `emphasis`: number in the text colour, 48 px of padding.                                                                                                                                                    |
+| `LegalBlocksComponent`     | Paragraphs, lists (markers in `--muted`), `h3` subsections in the `subhead` style with their number in mono, the identity sheet and the processing list.                                                                                                                                                    |
+| `KeyValueComponent`        | The identity of the business: the key / value sheet of the site, values that break anywhere.                                                                                                                                                                                                                |
+| `ProcessingListComponent`  | The processing of personal data: name in bold, retention in mono `--muted`, then the text; one valid `<dl>`, one row each.                                                                                                                                                                                  |
+| `LegalLinksComponent`      | "mentions légales · cgv" ("legal notice · terms") in every footer; the link of the current page is in the accent with `aria-current="page"`.                                                                                                                                                                |
 
 Both summaries are hidden in print (`print-hidden`), and the print style is the day mode,
 like the rest of the site.

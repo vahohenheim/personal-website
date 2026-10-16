@@ -12,10 +12,7 @@ const HeaderComponent = async () => {
 
   return (
     <header className="container-page flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-6">
-      <Link
-        href={`/${locale}/`}
-        className="text-[18px] leading-none font-bold tracking-[-0.02em] text-text no-underline"
-      >
+      <Link href={`/${locale}/`} className="logotype text-text no-underline">
         valentinbourreau
       </Link>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2">

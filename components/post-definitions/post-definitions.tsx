@@ -18,14 +18,7 @@ const PostDefinitionsComponent = ({ items, stacked = false }: PostDefinitionsCom
             !stacked && "sm:grid sm:grid-cols-[minmax(96px,144px)_1fr] sm:gap-5",
           )}
         >
-          <dt
-            className={cn(
-              "font-mono text-[13px] leading-[1.8]",
-              stacked ? "text-text" : "text-muted",
-            )}
-          >
-            {term}
-          </dt>
+          <dt className={cn("pt-0.5 type-label", stacked ? "text-text" : "text-muted")}>{term}</dt>
           <dd className="text-text2">{text}</dd>
         </div>
       ))}

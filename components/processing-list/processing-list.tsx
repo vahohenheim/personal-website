@@ -14,7 +14,7 @@ const ProcessingListComponent = ({ items }: { items: ProcessingItem[] }) => {
           className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5 border-b border-line py-4"
         >
           <dt className="font-semibold text-text">{item.title}</dt>
-          <dd className="font-mono text-[12px] text-muted">{item.retention}</dd>
+          <dd className="type-meta text-muted">{item.retention}</dd>
           <dd className="mt-1 basis-full">
             <RichTextComponent text={item.text} />
           </dd>

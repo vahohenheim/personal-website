@@ -151,7 +151,9 @@ test.describe("legal notice", () => {
     // TODO(e-invoicing): withheld until Valentin has chosen the platform.
     await expect(page.getByText("facturation électronique")).toHaveCount(0);
     await expect(page.getByText("[à compléter]")).toHaveCount(0);
-    await page.getByRole("link", { name: "conditions générales de prestation" }).click();
+    await page
+      .getByRole("link", { name: "conditions générales de prestation", exact: true })
+      .click();
     await expect(page).toHaveURL("/fr/cgv/");
   });
 

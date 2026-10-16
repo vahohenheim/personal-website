@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils/cn";
 
-export type LegalTocEntry = { id: string; number: string; title: string };
+export type TocEntry = { id: string; number: string; title: string };
 
-type LegalTocComponentProps = {
-  entries: LegalTocEntry[];
+type TocComponentProps = {
+  entries: TocEntry[];
   /** Visible label on wide screens: "sommaire". */
   label: string;
   /** Summary of the folded list on phones: "sommaire · 20 articles". */
@@ -54,19 +54,20 @@ const useActiveSection = (ids: string[]) => {
 };
 
 /**
- * Summary of a legal document. On wide screens, a sticky column whose current entry takes
+ * The summary of a document (post, terms, legal notice, design system page), always on the
+ * left of the text. On wide screens, a sticky column of 216 px whose current entry takes
  * the accent; on phones, a native `<details>` that folds again when a link is followed.
  * A client component for the scroll spy only. Written from scratch: shadcn's closest
  * pieces (Accordion, NavigationMenu) would ship client code a native `<details>` does not need.
  */
-const LegalTocComponent = ({
+const TocComponent = ({
   entries,
   label,
   summary,
   navLabel,
   variant,
   className,
-}: LegalTocComponentProps) => {
+}: TocComponentProps) => {
   const active = useActiveSection(entries.map((entry) => entry.id));
   const details = useRef<HTMLDetailsElement>(null);
 
@@ -87,16 +88,16 @@ const LegalTocComponent = ({
               }}
               className={cn(
                 "flex no-underline hover:text-accent",
-                variant === "desktop"
-                  ? "gap-2.5 py-1 text-[14px] leading-[1.45]"
-                  : "min-h-10 items-center gap-3 text-[15px]",
+                "type-small",
+                variant === "desktop" ? "gap-2.5 py-1" : "min-h-10 items-center gap-3",
                 isActive ? "font-medium text-accent" : "text-text2",
               )}
             >
               <span
                 className={cn(
                   "font-mono",
-                  variant === "desktop" ? "pt-px text-[12px]" : "text-[13px]",
+                  "shrink-0 type-meta",
+                  variant === "desktop" && "pt-0.5",
                   isActive ? "text-accent" : "text-muted",
                 )}
               >
@@ -114,7 +115,7 @@ const LegalTocComponent = ({
   if (variant === "mobile") {
     return (
       <details ref={details} className={cn("border-b border-line", className)}>
-        <summary className="flex min-h-[52px] cursor-pointer list-none items-center justify-between font-mono text-[13px] text-text [&::-webkit-details-marker]:hidden">
+        <summary className="flex min-h-[52px] cursor-pointer list-none items-center justify-between type-label text-text [&::-webkit-details-marker]:hidden">
           <span>{summary}</span>
           <span aria-hidden className="text-muted">
             +
@@ -128,12 +129,12 @@ const LegalTocComponent = ({
   return (
     <nav
       aria-label={navLabel}
-      className={cn("sticky top-6 w-[248px] shrink-0 flex-col gap-3 pt-8", className)}
+      className={cn("sticky top-6 w-[216px] shrink-0 flex-col gap-3", className)}
     >
-      <p className="font-mono text-[12px] text-muted">{label}</p>
+      <p className="type-label font-medium text-muted">{label}</p>
       {links}
     </nav>
   );
 };
 
-export default LegalTocComponent;
+export default TocComponent;

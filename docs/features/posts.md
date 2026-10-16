@@ -18,7 +18,7 @@ related_code:
   - ../../components/post-diagram/
   - ../../components/post-figure/
   - ../../components/post-image/
-  - ../../components/post-list-item/
+  - ../../components/log-entry/
   - ../../components/post-plus-list/
   - ../../components/post-project-sheet/
   - ../../components/post-pull-quote/
@@ -27,7 +27,10 @@ related_code:
   - ../../components/post-shot/
   - ../../components/post-stats/
   - ../../components/post-tags/
-  - ../../components/post-toc/
+  - ../../components/toc/
+  - ../../components/document-layout/
+  - ../../components/numbered-section/
+  - ../../components/page-nav/
   - ../../components/post-unlock-form/
   - ../../components/project-card/project-card.tsx
   - ../../components/header/header.tsx
@@ -43,7 +46,7 @@ related_code:
   - ../../proxy.ts
   - ../../next.config.ts
   - ../../instrumentation-client.ts
-last_updated: 2026-10-14
+last_updated: 2026-10-16
 ---
 
 # Posts
@@ -92,14 +95,17 @@ the proxy bundle.
 3. **Project cards.** A card whose project has a listed post (`project.personalProjectId`)
    gets a discreet "lire l’article →" link. Its accessible name adds the project name,
    since the visible text is the same on every card.
-4. **List** (`/[locale]/posts/`): breadcrumb, title, lead, feed link, then per post the
-   date, the reading time, the title as a link, the description and the tags.
-5. **Post** (`/[locale]/posts/<slug>/`): the trail `~/articles/<slug>`, the `h1`, the lead,
-   a mono line "13 oct. 2026 · 10 min de lecture" (plus the update date when it differs),
-   the tags as mono chips, then the body. The summary is built from the numbered
-   sections: sticky in a right column on wide screens, above the body on phones. At the
-   bottom, a link to the next post (registry order, most recent first, looping) and one
-   back to the list.
+4. **List** (`/[locale]/posts/`): breadcrumb, title, lead, feed link, then per post (a
+   `LogEntryComponent`, as in the changelog) the date, the reading time, the title as an
+   `h2` link, the description and the tags.
+5. **Post** (`/[locale]/posts/<slug>/`), on the document template shared with the legal
+   pages: the trail `~/valentin-bourreau/articles/<slug>`, the `h1` (one step down,
+   `display-compact`, for long titles), the lead, a mono line "13 oct. 2026 · 10 min de
+   lecture" (plus the update date when it differs), the tags as mono chips, then the body.
+   The summary is built from the numbered sections, with their numbers: sticky in a
+   **left** column on wide screens, folded in a `<details>` above the body below 1024 px,
+   like the terms. At the bottom, a link to the next post (registry order, most recent
+   first, looping) and one back to the list.
 6. **Feed** (`/[locale]/posts/feed.xml`): RSS 2.0, one per language. The item
    description is the lead; each tag is a `<category>`.
 
@@ -156,22 +162,22 @@ no shadow). Props are exactly these; a test fails when an MDX file uses a name t
 `mdx-components.tsx` does not register. Plain Markdown also works: `###` headings, lists,
 `>` quotes, code fences (`text`, `ts`, `json`, `jsonc`) and inline code.
 
-| Component         | Props                                                           | Renders                                                                                                                                                                                 |
-| ----------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `<Screens>`       | `caption`, `variant?: "hero"`; children: `<Screen>`             | A row of phone screens (390 × 844), wrapping on small screens, one caption.                                                                                                             |
-| `<Screen>`        | `src`, `alt`, `mode?: "nuit"`                                   | One phone screen. `mode="nuit"` forces the night image whatever the theme.                                                                                                              |
-| `<Shot>`          | `src`, `alt`, `width`, `height`, `caption?`, `variant?: "hero"` | One large screenshot in a 1 px frame, with a caption.                                                                                                                                   |
-| `<Shots>`         | `caption`; children: `<Shot>`                                   | Two shots side by side, stacked below 768 px, one shared caption.                                                                                                                       |
-| `<Diagram>`       | `src`, `alt`, `width`, `height`, `caption`, `variant?: "hero"`  | A diagram, always a jour/nuit pair. The `alt` describes the whole diagram.                                                                                                              |
-| `<ProjectSheet>`  | `rows: [label, value][]`, `status`, `link?: [label, href]`      | The project sheet: mono labels and values, a status line with the accent dot, a link.                                                                                                   |
-| `<Section>`       | `n?`, `label?`, `title?`; children                              | With a title: a `<section>` with the label `01 · contexte` and an anchored `h2` (the summary entry). Without props: the continuation of the previous section after a full-width figure. |
-| `<PlusList>`      | children: `<Plus>`                                              | A list whose bullet is the `+` glyph.                                                                                                                                                   |
-| `<Plus>`          | `title`; children                                               | One item: the title in bold, then the text on the same line.                                                                                                                            |
-| `<Definitions>`   | `items: [term, text][]`, `stacked?`                             | A definition list, the term in mono on the left (above when `stacked`).                                                                                                                 |
-| `<Callout>`       | `label`; children                                               | A boxed aside on the surface colour, with a mono label.                                                                                                                                 |
-| `<DecisionTable>` | `columns: string[]`, `rows: string[][]`                         | A table that scrolls on its own on phones, reachable with the keyboard; the page never does.                                                                                            |
-| `<PullQuote>`     | children                                                        | A large quote with an accent rule.                                                                                                                                                      |
-| `<Stats>`         | `items: [label, value][]`                                       | A row of figures, mono labels. A value never wraps; the cells wrap (two per row at 375 px), a last short row fills the width, values align at the bottom.                               |
+| Component         | Props                                                           | Renders                                                                                                                                                                                                                    |
+| ----------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `<Screens>`       | `caption`, `variant?: "hero"`; children: `<Screen>`             | A row of phone screens (390 × 844), wrapping on small screens, one caption.                                                                                                                                                |
+| `<Screen>`        | `src`, `alt`, `mode?: "nuit"`                                   | One phone screen. `mode="nuit"` forces the night image whatever the theme.                                                                                                                                                 |
+| `<Shot>`          | `src`, `alt`, `width`, `height`, `caption?`, `variant?: "hero"` | One large screenshot in a 1 px frame, with a caption.                                                                                                                                                                      |
+| `<Shots>`         | `caption`; children: `<Shot>`                                   | Two shots side by side, stacked below 768 px, one shared caption.                                                                                                                                                          |
+| `<Diagram>`       | `src`, `alt`, `width`, `height`, `caption`, `variant?: "hero"`  | A diagram, always a jour/nuit pair. The `alt` describes the whole diagram.                                                                                                                                                 |
+| `<ProjectSheet>`  | `rows: [label, value][]`, `status`, `link?: [label, href]`      | The project sheet: mono labels and values, a status line with the accent dot, a link.                                                                                                                                      |
+| `<Section>`       | `n?`, `label?`, `title?`; children                              | With a title: a `NumberedSectionComponent` opened by a rule, with the eyebrow `01 · contexte` and an anchored `h2` (the summary entry). Without props: the continuation of the previous section after a full-width figure. |
+| `<PlusList>`      | children: `<Plus>`                                              | A list whose bullet is the `+` glyph.                                                                                                                                                                                      |
+| `<Plus>`          | `title`; children                                               | One item: the title in bold, then the text on the same line.                                                                                                                                                               |
+| `<Definitions>`   | `items: [term, text][]`, `stacked?`                             | A definition list, the term in mono on the left (above when `stacked`).                                                                                                                                                    |
+| `<Callout>`       | `label`; children                                               | A boxed aside on the surface colour, with a mono label.                                                                                                                                                                    |
+| `<DecisionTable>` | `columns: string[]`, `rows: string[][]`                         | A table that scrolls on its own on phones, reachable with the keyboard; the page never does.                                                                                                                               |
+| `<PullQuote>`     | children                                                        | A large quote with an accent rule.                                                                                                                                                                                         |
+| `<Stats>`         | `items: [label, value][]`                                       | A row of figures, mono labels. A value never wraps; the cells wrap (two per row at 375 px), a last short row fills the width, values align at the bottom.                                                                  |
 
 Examples:
 

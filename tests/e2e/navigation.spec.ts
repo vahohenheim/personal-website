@@ -153,7 +153,8 @@ test.describe("footer", () => {
   test("opens external profiles in a new tab, safely", async ({ page }) => {
     await page.goto("/fr/");
 
-    const github = page.getByRole("contentinfo").getByRole("link", { name: /github/ });
+    // In the contact section of the home page, above the footer.
+    const github = page.locator("#contact").getByRole("link", { name: /github/ });
 
     await expect(github).toHaveAttribute("href", "https://github.com/vahohenheim");
     await expect(github).toHaveAttribute("target", "_blank");

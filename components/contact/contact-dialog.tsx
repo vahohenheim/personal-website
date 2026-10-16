@@ -244,18 +244,16 @@ const ContactDialogProvider = ({ locale, email, texts, children }: ContactDialog
           {step === SUCCESS ? (
             <>
               <DialogHeader>
-                <p className="flex items-center gap-2 font-mono text-[13px] text-primary">
+                <p className="flex items-center gap-2 type-label text-primary">
                   <StatusDotComponent />
                   {texts.success.status}
                 </p>
-                <DialogTitle className="text-[clamp(28px,4vw,36px)] leading-[1.1] tracking-[-0.03em]">
-                  {texts.success.title}
-                </DialogTitle>
+                <DialogTitle>{texts.success.title}</DialogTitle>
                 <DialogDescription>
                   {texts.success.text.replace("{name}", fields.name.trim())}
                 </DialogDescription>
               </DialogHeader>
-              <Card className="bg-surface p-5 font-mono text-[13px]">
+              <Card className="bg-surface p-5 type-label">
                 <CardContent>
                   <dl className="grid grid-cols-[minmax(72px,104px)_1fr] gap-x-5 gap-y-2">
                     <dt className="text-muted-foreground">{texts.success.recap.need}</dt>
@@ -280,7 +278,7 @@ const ContactDialogProvider = ({ locale, email, texts, children }: ContactDialog
           ) : (
             <form className="flex flex-col gap-6" noValidate onSubmit={submit}>
               <DialogHeader>
-                <p className="font-mono text-[13px] text-muted-foreground">
+                <p className="type-label text-muted-foreground">
                   {texts.step
                     .replace("{current}", String(step + 1))
                     .replace("{total}", String(STEPS.length))}
@@ -303,7 +301,7 @@ const ContactDialogProvider = ({ locale, email, texts, children }: ContactDialog
                     <Label
                       key={need}
                       htmlFor={`need-${need}`}
-                      className="flex min-h-11 cursor-pointer items-center gap-3 rounded border border-border px-4 font-sans text-[15px] text-foreground has-[[data-state=checked]]:border-primary"
+                      className="flex min-h-11 cursor-pointer items-center gap-3 rounded border border-border px-4 type-small text-foreground has-[[data-state=checked]]:border-primary"
                     >
                       <RadioGroupItem id={`need-${need}`} value={need} />
                       {texts.need.options[need]}
@@ -343,7 +341,7 @@ const ContactDialogProvider = ({ locale, email, texts, children }: ContactDialog
                         <Label
                           key={timeline}
                           htmlFor={`timeline-${timeline}`}
-                          className="flex min-h-11 cursor-pointer items-center gap-3 rounded border border-border px-4 font-sans text-[15px] text-foreground has-[[data-state=checked]]:border-primary"
+                          className="flex min-h-11 cursor-pointer items-center gap-3 rounded border border-border px-4 type-small text-foreground has-[[data-state=checked]]:border-primary"
                         >
                           <RadioGroupItem id={`timeline-${timeline}`} value={timeline} />
                           {texts.details.timelines[timeline]}
@@ -412,7 +410,7 @@ const ContactDialogProvider = ({ locale, email, texts, children }: ContactDialog
                       }}
                     />
                   </div>
-                  <p className="text-[13px] text-muted-foreground">
+                  <p className="type-small text-muted-foreground">
                     {texts.privacy}{" "}
                     <Link href={`/${locale}/legal/`} className="text-muted-foreground">
                       {texts.privacyLink}

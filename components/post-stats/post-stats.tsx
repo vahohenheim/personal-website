@@ -11,10 +11,8 @@ const PostStatsComponent = ({ items }: { items: [label: string, value: string][]
           key={label}
           className="flex grow basis-[132px] flex-col justify-between gap-1 bg-bg p-4"
         >
-          <dt className="font-mono text-[12px] text-muted">{label}</dt>
-          <dd className="text-[22px] leading-[1.2] font-semibold tracking-[-0.02em] whitespace-nowrap text-text tabular-nums">
-            {value}
-          </dd>
+          <dt className="type-meta text-muted">{label}</dt>
+          <dd className="type-title whitespace-nowrap text-text tabular-nums">{value}</dd>
         </div>
       ))}
     </dl>

@@ -15,7 +15,7 @@ related_code:
   - ../../lib/constants/pages.ts
   - ../../locales/content/fr.ts
   - ../../locales/content/en.ts
-last_updated: 2026-10-15
+last_updated: 2026-10-16
 ---
 
 # Pages
@@ -113,10 +113,18 @@ The header is rendered by the root layout. Its links are `cv` (the resume), `pro
 in the language, the language link and the theme button. From a post that has no version
 in the other language (or a protected post), the language link goes to the list of the
 other language, or its home page.
-Each page renders its own footer: the home page ends with its contact section, the other
-pages with `SiteFooterComponent`. Both carry "mentions légales · cgv"
+Every page ends with `SiteFooterComponent`, the home page included (after its contact
+section, without the `cd ~/` link). It carries "mentions légales · cgv"
 (`LegalLinksComponent`); the legal pages pass `current` so that their own link takes the
 accent and `aria-current="page"`.
+
+## Templates
+
+Every page opens with `PageHeaderComponent` (trail, `h1`, lead, meta line, own blocks),
+then follows one of two templates: **index** (home, resume, posts, admin: sections opened
+by a rule and an `h2` label) or **document** (post, legal notice, terms: the summary on the
+left, numbered sections on the right, then a link to the next page). Details in
+[styling.md](../frontend/styling.md#page-templates).
 
 ## Adding a page
 

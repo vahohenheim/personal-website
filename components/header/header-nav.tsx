@@ -51,7 +51,7 @@ const HeaderNavComponent = ({
 
   return (
     <nav aria-label={menuLabel}>
-      <ul className="flex list-none flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[13px]">
+      <ul className="flex list-none flex-wrap items-center gap-x-5 gap-y-2 type-label">
         {items.map((item) => {
           const isCurrent = pathname === item.href;
 

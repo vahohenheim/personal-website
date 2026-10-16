@@ -1,17 +1,11 @@
 import Link from "next/link";
+import AdminHeaderComponent from "@/components/admin/admin-header";
 import AnalyticsActionsComponent from "@/components/admin/analytics-actions";
 import BarsChartComponent from "@/components/admin/bars-chart";
 import LeadFollowUpComponent from "@/components/admin/lead-follow-up";
+import PageHeaderComponent from "@/components/page-header/page-header";
 import SectionComponent, { SectionTitleComponent } from "@/components/section/section";
 import { Badge } from "@/components/ui/badge";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import {
@@ -166,41 +160,30 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
 
   return (
     <>
-      <header className="container-page flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-6">
-        <span className="text-[18px] leading-none font-bold tracking-[-0.02em]">
-          valentinbourreau
-        </span>
-        <Button asChild variant="secondary">
-          {/* A file download: no prefetch, and the browser saves it. */}
-          <Link href="/admin/export/" prefetch={false} download>
-            Exporter en CSV
-          </Link>
-        </Button>
-      </header>
+      <AdminHeaderComponent
+        current="leads"
+        action={
+          <Button asChild variant="secondary">
+            {/* A file download: no prefetch, and the browser saves it. */}
+            <Link href="/admin/export/" prefetch={false} download>
+              Exporter en CSV
+            </Link>
+          </Button>
+        }
+      />
 
       <main className="container-page">
-        <section className="flex flex-col gap-6 pt-[clamp(32px,5vw,64px)] pb-[clamp(40px,5vw,64px)]">
-          <Breadcrumb aria-label="Fil d’Ariane">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/">~/valentin-bourreau</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>admin</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-          <h1 className="text-[clamp(32px,4.4vw,48px)] leading-[1.05] font-semibold tracking-[-0.03em]">
-            Demandes de contact
-          </h1>
+        <PageHeaderComponent
+          breadcrumb={{ label: "Fil d’Ariane", homeHref: "/", trail: [{ label: "admin" }] }}
+          title="Demandes de contact"
+        >
           {error && (
             <p role="alert" className="max-w-[64ch] font-semibold text-foreground">
               {error}
             </p>
           )}
           {!isDatabaseConfigured() && !error && (
-            <p className="max-w-[64ch] font-mono text-[13px] text-muted-foreground">
+            <p className="max-w-[64ch] type-label text-muted-foreground">
               Mode local sans base : les demandes sont gardées en mémoire et disparaissent au
               redémarrage du serveur.
             </p>
@@ -210,24 +193,24 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
             {figures.map((figure) => (
               <li key={figure.label} className="bg-background">
                 <Card className="h-full gap-1 rounded-none border-0 p-6">
-                  <p className="font-mono text-[12px] text-muted-foreground">{figure.label}</p>
+                  <p className="type-meta text-muted-foreground">{figure.label}</p>
                   <CardTitle
                     className={
                       figure.live
-                        ? "text-[40px] leading-none tracking-[-0.03em] text-primary"
-                        : "text-[40px] leading-none tracking-[-0.03em]"
+                        ? "type-title text-primary tabular-nums"
+                        : "type-title tabular-nums"
                     }
                   >
                     {figure.value}
                   </CardTitle>
-                  <CardDescription className="font-mono text-[12px] text-muted-foreground">
+                  <CardDescription className="type-meta text-muted-foreground">
                     {figure.detail}
                   </CardDescription>
                 </Card>
               </li>
             ))}
           </ul>
-        </section>
+        </PageHeaderComponent>
 
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(380px,100%),1fr))] gap-x-10">
           <SectionComponent className="flex flex-col gap-6">
@@ -257,7 +240,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
           <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-3">
             <SectionTitleComponent>fréquentation</SectionTitleComponent>
             <nav aria-label="Période">
-              <ul className="flex list-none flex-wrap gap-x-4 gap-y-1 font-mono text-[13px]">
+              <ul className="flex list-none flex-wrap gap-x-4 gap-y-1 type-label">
                 {TRAFFIC_PERIODS.map((value) => (
                   <li key={value}>
                     <Link
@@ -283,7 +266,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
             </p>
           ) : (
             <>
-              <p className="max-w-[64ch] font-mono text-[13px] text-muted-foreground">
+              <p className="max-w-[64ch] type-label text-muted-foreground">
                 {traffic.report.history
                   ? `Historique conservé du ${longDayFormat.format(new Date(traffic.report.history.firstDay))} au ${longDayFormat.format(new Date(traffic.report.history.lastDay))} (${traffic.report.history.days} jours).`
                   : "Aucun chiffre enregistré pour l’instant."}{" "}
@@ -310,11 +293,11 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                 ].map((figure) => (
                   <li key={figure.label} className="bg-background">
                     <Card className="h-full gap-1 rounded-none border-0 p-6">
-                      <p className="font-mono text-[12px] text-muted-foreground">{figure.label}</p>
-                      <CardTitle className="text-[40px] leading-none tracking-[-0.03em]">
+                      <p className="type-meta text-muted-foreground">{figure.label}</p>
+                      <CardTitle className="type-title tabular-nums">
                         {numberFormat.format(figure.value)}
                       </CardTitle>
-                      <CardDescription className="font-mono text-[12px] text-muted-foreground">
+                      <CardDescription className="type-meta text-muted-foreground">
                         {figure.detail}
                       </CardDescription>
                     </Card>
@@ -348,20 +331,20 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                         <TableBody>
                           {traffic.report.breakdowns[dimension].length === 0 ? (
                             <TableRow>
-                              <TableCell colSpan={3} className="text-[15px] text-text2">
+                              <TableCell colSpan={3} className="type-small text-text2">
                                 Aucune donnée sur la période.
                               </TableCell>
                             </TableRow>
                           ) : (
                             traffic.report.breakdowns[dimension].map((row) => (
                               <TableRow key={row.label}>
-                                <TableCell className="max-w-[220px] text-[15px] break-words">
+                                <TableCell className="max-w-[220px] type-small break-words">
                                   {breakdownLabel(dimension, row.label)}
                                 </TableCell>
-                                <TableCell className="text-right font-mono text-[13px]">
+                                <TableCell className="text-right type-label">
                                   {numberFormat.format(row.pageviews)}
                                 </TableCell>
-                                <TableCell className="text-right font-mono text-[13px] text-muted-foreground">
+                                <TableCell className="text-right type-label text-muted-foreground">
                                   {numberFormat.format(row.visitors)}
                                 </TableCell>
                               </TableRow>
@@ -379,7 +362,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
 
         <SectionComponent id="conversion" className="flex flex-col gap-6">
           <SectionTitleComponent>conversion</SectionTitleComponent>
-          <p className="max-w-[64ch] font-mono text-[13px] text-muted-foreground">
+          <p className="max-w-[64ch] type-label text-muted-foreground">
             Du visiteur au message envoyé, sur la période choisie ci-dessus ({PERIOD_LABELS[period]}
             ). Compteurs anonymes par jour : aucun cookie, aucun identifiant.
           </p>
@@ -404,11 +387,11 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                     ) : (
                       funnel.steps.map((step) => (
                         <TableRow key={step.id}>
-                          <TableCell className="text-[15px]">{FUNNEL_LABELS[step.id]}</TableCell>
-                          <TableCell className="text-right font-mono text-[13px]">
+                          <TableCell className="type-small">{FUNNEL_LABELS[step.id]}</TableCell>
+                          <TableCell className="text-right type-label">
                             {numberFormat.format(step.count)}
                           </TableCell>
-                          <TableCell className="text-right font-mono text-[13px] text-muted-foreground">
+                          <TableCell className="text-right type-label text-muted-foreground">
                             {step.rate === null ? "–" : percentFormat.format(step.rate)}
                           </TableCell>
                         </TableRow>
@@ -431,20 +414,20 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                   <TableBody>
                     {stats.bySource.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={3} className="text-[15px] text-text2">
+                        <TableCell colSpan={3} className="type-small text-text2">
                           Aucune demande pour l’instant.
                         </TableCell>
                       </TableRow>
                     ) : (
                       stats.bySource.map((row) => (
                         <TableRow key={row.source}>
-                          <TableCell className="max-w-[220px] text-[15px] break-words">
+                          <TableCell className="max-w-[220px] type-small break-words">
                             {row.source === "" ? "Accès direct ou inconnu" : row.source}
                           </TableCell>
-                          <TableCell className="text-right font-mono text-[13px]">
+                          <TableCell className="text-right type-label">
                             {numberFormat.format(row.leads)}
                           </TableCell>
-                          <TableCell className="text-right font-mono text-[13px] text-muted-foreground">
+                          <TableCell className="text-right type-label text-muted-foreground">
                             {numberFormat.format(row.won)}
                           </TableCell>
                         </TableRow>
@@ -459,7 +442,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
 
         <SectionComponent className="flex flex-col gap-6">
           <SectionTitleComponent>toutes les demandes</SectionTitleComponent>
-          <p className="max-w-[64ch] font-mono text-[13px] text-muted-foreground">
+          <p className="max-w-[64ch] type-label text-muted-foreground">
             Transfert vers lotus {LOTUS_STATE_LABELS[lotus.status]}
             {leads.length > 0 &&
               ` ${(["synced", "pending", "rejected", "expired"] as const)
@@ -484,7 +467,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                   <TableBody>
                     {leads.map((lead) => (
                       <TableRow key={lead.id}>
-                        <TableCell className="min-w-[200px] font-mono text-[12px] whitespace-nowrap text-muted-foreground">
+                        <TableCell className="min-w-[200px] type-meta whitespace-nowrap text-muted-foreground">
                           <p>{dateFormat.format(new Date(lead.createdAt))}</p>
                           {/* In the text colour when it needs a look: refused, or too old. */}
                           <p
@@ -502,25 +485,23 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                         </TableCell>
                         <TableCell className="min-w-[180px]">
                           <p className="font-semibold">{lead.name}</p>
-                          <a href={`mailto:${lead.email}`} className="text-[15px] break-words">
+                          <a href={`mailto:${lead.email}`} className="type-small break-words">
                             {lead.email}
                           </a>
-                          {lead.company && <p className="text-[15px] text-text2">{lead.company}</p>}
+                          {lead.company && <p className="type-small text-text2">{lead.company}</p>}
                           {lead.source && (
-                            <p className="font-mono text-[12px] text-muted-foreground">
-                              via {lead.source}
-                            </p>
+                            <p className="type-meta text-muted-foreground">via {lead.source}</p>
                           )}
                         </TableCell>
                         <TableCell className="min-w-[160px]">
                           <p>{NEED_LABELS[lead.need]}</p>
                           {lead.timeline && (
-                            <p className="font-mono text-[12px] text-muted-foreground">
+                            <p className="type-meta text-muted-foreground">
                               {TIMELINE_LABELS[lead.timeline]}
                             </p>
                           )}
                         </TableCell>
-                        <TableCell className="max-w-[420px] min-w-[260px] text-[15px] whitespace-pre-wrap text-text2">
+                        <TableCell className="max-w-[420px] min-w-[260px] type-small whitespace-pre-wrap text-text2">
                           {lead.message}
                         </TableCell>
                         <TableCell className="min-w-[220px]">
@@ -530,23 +511,21 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                               {STATUS_LABELS[lead.status]}
                             </Badge>
                             {lead.amount !== null && (
-                              <p className="font-mono text-[13px]">
-                                {amountFormat.format(lead.amount)}
-                              </p>
+                              <p className="type-label">{amountFormat.format(lead.amount)}</p>
                             )}
                             {lead.followUpOn && (
                               <p
                                 className={
                                   isFollowUpDue(lead, today)
-                                    ? "font-mono text-[12px] font-semibold text-primary"
-                                    : "font-mono text-[12px] text-muted-foreground"
+                                    ? "type-meta font-semibold text-primary"
+                                    : "type-meta text-muted-foreground"
                                 }
                               >
                                 relance le {longDayFormat.format(new Date(lead.followUpOn))}
                               </p>
                             )}
                             {lead.notes && (
-                              <p className="line-clamp-3 max-w-[280px] text-[14px] whitespace-pre-wrap text-text2">
+                              <p className="line-clamp-3 max-w-[280px] type-small whitespace-pre-wrap text-text2">
                                 {lead.notes}
                               </p>
                             )}

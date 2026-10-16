@@ -1,10 +1,15 @@
 import { type ReactNode } from "react";
+import HeadingComponent from "@/components/heading/heading";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils/cn";
 
-/** Section title: mono, lowercase, muted, no prefix. */
+/** Section title of an index page: an `h2` in the `label` style, lowercase, no prefix. */
 export const SectionTitleComponent = ({ children }: { children: ReactNode }) => {
-  return <h2 className="font-mono text-[13px] font-medium text-muted-foreground">{children}</h2>;
+  return (
+    <HeadingComponent level={2} variant="label">
+      {children}
+    </HeadingComponent>
+  );
 };
 
 type SectionComponentProps = {

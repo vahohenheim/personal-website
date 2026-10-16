@@ -37,7 +37,7 @@ const ContactTriggerComponent = ({
       <p
         role="status"
         className={cn(
-          "flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[13px] text-foreground",
+          "flex flex-wrap items-center gap-x-3 gap-y-1 type-label text-foreground",
           variant !== "link" && "min-h-11",
         )}
       >
@@ -60,11 +60,7 @@ const ContactTriggerComponent = ({
   const link = (
     <a
       href={href}
-      className={
-        variant === "link"
-          ? "text-[clamp(24px,3vw,32px)] leading-[1.2] font-semibold tracking-[-0.02em]"
-          : undefined
-      }
+      className={variant === "link" ? "type-title" : undefined}
       onClick={(event) => {
         event.preventDefault();
         open();

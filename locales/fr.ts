@@ -28,6 +28,7 @@ const fr: Dictionary = {
     themeLight: "Clair",
     themeDark: "Sombre",
     themeSystem: "Système",
+    pageNav: "Pages liées",
   },
   legal: {
     title: "Mentions légales et confidentialité",
@@ -142,6 +143,7 @@ const fr: Dictionary = {
     back: "← tous les articles",
     readingTime: "{minutes}\u00a0min de lecture",
     toc: "sommaire",
+    tocSummary: "sommaire · {count} sections",
     tags: "Mots-clés",
     next: "article suivant →",
     section: "Projets",
@@ -300,6 +302,7 @@ const fr: Dictionary = {
     "back-to-homepage": "retour à la page d’accueil",
   },
   footer: {
+    seeAlso: "voir aussi",
     legal: "mentions légales",
     cgv: "cgv",
   },

@@ -52,7 +52,13 @@ describe("proxy: admin gate", () => {
   it("asks for credentials, and refuses everyone while none is configured", () => {
     vi.spyOn(console, "error").mockImplementation(() => undefined);
 
-    for (const path of ["/admin", "/admin/", "/admin/export/", "/admin/file.css"]) {
+    for (const path of [
+      "/admin",
+      "/admin/",
+      "/admin/export/",
+      "/admin/design-system/",
+      "/admin/file.css",
+    ]) {
       const response = proxy(request(path, { authorization: basic }));
 
       expect(response?.status, path).toBe(401);

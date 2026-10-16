@@ -55,7 +55,7 @@ function DialogContent({
         {children}
         <DialogPrimitive.Close
           data-slot="dialog-close"
-          className="absolute top-5 right-6 font-mono text-[13px] text-muted-foreground hover:text-primary sm:top-7 sm:right-8"
+          className="absolute top-5 right-6 type-label text-muted-foreground hover:text-primary sm:top-7 sm:right-8"
         >
           {closeLabel}
         </DialogPrimitive.Close>
@@ -84,7 +84,7 @@ function DialogTitle({ className, ...props }: React.ComponentProps<typeof Dialog
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn("text-[21px] leading-[1.3] font-semibold tracking-[-0.01em]", className)}
+      className={cn("type-title", className)}
       {...props}
     />
   );
@@ -97,7 +97,7 @@ function DialogDescription({
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
-      className={cn("text-[15px] text-text2", className)}
+      className={cn("type-small text-text2", className)}
       {...props}
     />
   );

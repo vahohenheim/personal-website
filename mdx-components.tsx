@@ -43,18 +43,12 @@ export const POST_COMPONENTS = {
 const components: MDXComponents = {
   ...POST_COMPONENTS,
   h2: ({ children, ...props }) => (
-    <h2
-      className="mt-6 max-w-[68ch] text-[24px] leading-[1.25] font-semibold tracking-[-0.02em] text-text"
-      {...props}
-    >
+    <h2 className="mt-6 max-w-[68ch] type-title text-text" {...props}>
       {children}
     </h2>
   ),
   h3: ({ children, ...props }) => (
-    <h3
-      className="mt-4 max-w-[68ch] text-[19px] leading-[1.3] font-semibold tracking-[-0.01em] text-text"
-      {...props}
-    >
+    <h3 className="mt-4 max-w-[68ch] type-subhead text-text" {...props}>
       {children}
     </h3>
   ),
@@ -67,7 +61,7 @@ const components: MDXComponents = {
   ),
   blockquote: (props) => (
     <blockquote
-      className="max-w-[60ch] border-l border-accent pl-5 text-[20px] leading-[1.4] font-medium tracking-[-0.01em] text-text [&>p]:text-text"
+      className="max-w-[60ch] border-l border-accent pl-5 type-quote text-text [&>p]:text-text"
       {...props}
     />
   ),
@@ -76,7 +70,7 @@ const components: MDXComponents = {
     <pre
       // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a region that scrolls must be reachable with the keyboard (WCAG 2.1.1)
       tabIndex={0}
-      className="overflow-x-auto rounded border border-line bg-surface p-5 font-mono text-[13px] leading-[1.6] text-text [&>code]:bg-transparent [&>code]:p-0"
+      className="overflow-x-auto rounded border border-line bg-surface p-5 type-label text-text [&>code]:bg-transparent [&>code]:p-0"
       {...props}
     />
   ),
