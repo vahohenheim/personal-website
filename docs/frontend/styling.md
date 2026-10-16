@@ -9,7 +9,11 @@ related_code:
   - ../../components/avatar/avatar.tsx
   - ../../public/avatar.jpg
   - ../redesign/charte-graphique-valentinbourreau.md
-last_updated: 2026-10-15
+  - ../../components/heading/heading.tsx
+  - ../../components/page-header/page-header.tsx
+  - ../../components/document-layout/document-layout.tsx
+  - ../../tests/unit/type-scale.test.ts
+last_updated: 2026-10-16
 ---
 
 # Styling
@@ -88,6 +92,10 @@ default) from a script that runs before paint, so there is no flash.
 [ThemeToggleComponent](../../components/theme-toggle/theme-toggle.tsx) is the square
 button of the header: one click forces the mode opposite to the one displayed.
 
+The `.dark` and `.light` classes also work on any element: they set the eight tokens for
+its subtree, whatever the mode of the page. The design system page of the admin uses them
+to show each component in both modes side by side.
+
 ## Fonts
 
 Geist and Geist Mono come from the `geist` package (`geist/font/sans`, `geist/font/mono`),
@@ -98,14 +106,65 @@ loaded in the [root layout](../../app/[locale]/layout.tsx) and exposed as `font-
 - **Geist Mono:** everything that is scanned (breadcrumb, section titles, dates, labels,
   key / value sheets, statuses, footer links), always in lowercase.
 
-| Level      | Size                                          | Weight     | Line height | Tracking |
-| ---------- | --------------------------------------------- | ---------- | ----------- | -------- |
-| Page title | `clamp(40px, 6.4vw, 76px)` (resume: 38 to 64) | 600        | 1           | −0.04em  |
-| Pull quote | `clamp(22px, 2.3vw, 28px)`                    | 500        | 1.35        | −0.02em  |
-| Subtitle   | 19 to 21 px                                   | 600        | 1.3         | −0.01em  |
-| Lead       | 18 to 21 px                                   | 400        | 1.5         | 0        |
-| Text       | 15 to 16 px                                   | 400        | 1.6         | 0        |
-| Mono       | 12 to 13 px                                   | 400 to 500 | 1.6         | 0        |
+## Type scale
+
+Nine screen styles, declared once as `@utility type-*` in
+[globals.css](../../app/globals.css), each carrying size, line height, weight and tracking
+(colour stays a separate utility). Nothing else sets a font size: no `text-[19px]`, no
+`text-[clamp(…)]`, no `text-sm`. A unit test
+([type-scale.test.ts](../../tests/unit/type-scale.test.ts)) fails on any of them, except in
+the print sheet of the resume (sizes in points) and the sharing images drawn by `next/og`.
+A size relative to its parent (`text-[0.85em]`, inline code) is allowed.
+
+| Style                  | Size                       | Weight | Line height | Tracking | Use                                                             |
+| ---------------------- | -------------------------- | ------ | ----------- | -------- | --------------------------------------------------------------- |
+| `type-display`         | `clamp(40px, 5.6vw, 64px)` | 600    | 1.02        | −0.04em  | The `h1`, once per page, every page                             |
+| `type-display-compact` | `clamp(34px, 4.4vw, 52px)` | 600    | 1.06        | −0.035em | The same `h1`, one step down, for the long titles of posts      |
+| `type-title`           | `clamp(24px, 2.6vw, 28px)` | 600    | 1.2         | −0.02em  | `h2` of a document (post, terms, legal notice), dialog title    |
+| `type-subhead`         | 20 px                      | 600    | 1.3         | −0.01em  | Every `h3`; title of an entry, a card, a list of posts          |
+| `type-quote`           | `clamp(22px, 2.4vw, 26px)` | 500    | 1.3         | −0.02em  | Pull quote                                                      |
+| `type-lead`            | `clamp(18px, 1.6vw, 19px)` | 400    | 1.5         | 0        | Lead under the `h1`, in `text2`                                 |
+| `type-body`            | 16 px                      | 400    | 1.6         | 0        | Running text (the default of `body`)                            |
+| `type-small`           | 15 px                      | —      | 1.45        | 0        | Summary, buttons, fields, table cells, captions                 |
+| `type-label`           | mono 13 px                 | —      | 1.5         | 0        | Trail, menu, eyebrows, `h2` of index pages (with `font-medium`) |
+| `type-meta`            | mono 12 px, tabular        | 400    | 1.5         | 0        | Dates, durations, small print, footer                           |
+
+The logotype has its own utility, `logotype` (Geist Bold 18 px): it is a mark, not a
+level of text.
+
+### Headings
+
+`HeadingComponent` ([components/heading/](../../components/heading/heading.tsx)) sets the
+level and the style apart: the level follows the outline of the page, the style follows
+the role.
+
+- One `h1` per page, always `display` (`display-compact` on a post), right under the
+  trail: home, resume, posts, post, legal notice, terms, 404, error, protected post, admin.
+- **Index pages** (home, resume, posts, admin): `h2` in the `label` style, the content in
+  lists opened by rules. The list of posts has its titles as `h2` in the `subhead` style.
+- **Document pages** (post, terms, legal notice, design system): `h2` in the `title`
+  style, under a mono eyebrow (`01 · contexte`, `12`), with a `#` link on hover.
+- Every `h3` is in the `subhead` style. There is no `h4`: one more level becomes a `+`
+  list, or a paragraph that opens in bold.
+
+## Page templates
+
+Every page is made of the same pieces, in the same order:
+
+1. `HeaderComponent` (or the admin header).
+2. `PageHeaderComponent`: trail, `h1`, lead, mono meta line, then the page's own blocks
+   (key / value sheet, tags, buttons). Same padding everywhere. The portrait sits beside
+   the trail on the home page and the resume only, as on the paper resume.
+3. The body, on one of two templates:
+   - **index**: `SectionComponent` blocks, each opened by a rule and an `h2` label;
+   - **document**: `DocumentLayoutComponent`, the summary on the **left** in a sticky
+     column of 216 px and the text on the right (680 px at most); below 1024 px the
+     summary folds into a `<details>` above the text. Then `PageNavComponent` (next post,
+     or the other legal page).
+4. `SiteFooterComponent`, on every page, the home page included.
+
+The design system page of the admin (`/admin/design-system/`) shows all of it: see
+[design-system.md](design-system.md).
 
 ## Typography of texts
 

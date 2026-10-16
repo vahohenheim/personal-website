@@ -14,7 +14,7 @@ const PostDecisionTableComponent = ({ columns, rows }: PostDecisionTableComponen
   return (
     <div className="my-2 min-w-0 overflow-hidden rounded border border-line">
       {/* Scrolls sideways on phones: reachable with the keyboard, then with the arrows. */}
-      <Table className="min-w-[640px] text-[14px]" containerProps={{ tabIndex: 0 }}>
+      <Table className="min-w-[640px] type-small" containerProps={{ tabIndex: 0 }}>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
             {columns.map((column) => (

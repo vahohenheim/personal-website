@@ -75,14 +75,22 @@ Une seule famille : **Geist**, avec **Geist Mono** pour la structure. Les deux s
 
 ### Échelle écran
 
-| Niveau        | Taille            | Graisse | Interlignage | Approche |
-| ------------- | ----------------- | ------- | ------------ | -------- |
-| Titre de page | 40–76 px (fluide) | 600     | 1,0          | −0,04 em |
-| Exergue       | 22–28 px          | 500     | 1,35         | −0,02 em |
-| Intertitre    | 19–21 px          | 600     | 1,3          | −0,01 em |
-| Chapô         | 18–21 px          | 400     | 1,5          | 0        |
-| Texte         | 15–16 px          | 400     | 1,6          | 0        |
-| Mono (méta)   | 12–13 px          | 400–500 | 1,6          | 0        |
+| Style           | Niveau                                                   | Taille                     | Graisse | Interlignage | Approche  |
+| --------------- | -------------------------------------------------------- | -------------------------- | ------- | ------------ | --------- |
+| display         | Titre de page (h1), une fois par page                    | 40–64 px (fluide)          | 600     | 1,02         | −0,04 em  |
+| display-compact | Le même titre, un cran plus bas (articles)               | 34–52 px (fluide)          | 600     | 1,06         | −0,035 em |
+| title           | h2 d’un document (article, CGV, mentions)                | 24–28 px                   | 600     | 1,2          | −0,02 em  |
+| subhead         | Tous les h3, titre d’entrée ou de carte                  | 20 px                      | 600     | 1,3          | −0,01 em  |
+| quote           | Exergue                                                  | 22–26 px                   | 500     | 1,3          | −0,02 em  |
+| lead            | Chapô                                                    | 18–19 px                   | 400     | 1,5          | 0         |
+| body            | Texte                                                    | 16 px                      | 400     | 1,6          | 0         |
+| small           | Sommaire, boutons, champs, tableaux                      | 15 px                      | 400–500 | 1,45         | 0         |
+| label           | Mono : fil d’Ariane, menu, surtitres, h2 des pages index | 13 px                      | 400–500 | 1,5          | 0         |
+| meta            | Mono : dates, durées, mentions                           | 12 px, chiffres tabulaires | 400     | 1,5          | 0         |
+
+Aucune autre taille à l’écran. Un seul h1 par page ; h2 en `label` sur les pages index
+(accueil, CV, articles), en `title` sur les pages document (article, CGV, mentions) ; tous
+les h3 en `subhead` ; pas de h4. Le sommaire d’un document est toujours à gauche du texte.
 
 ### Échelle imprimée (A4)
 

@@ -4,22 +4,19 @@ import * as React from "react";
 import { cn } from "@/lib/utils/cn";
 
 // shadcn/ui Badge, restyled for the design charter: a mono label, with no pill around it.
-const badgeVariants = cva(
-  "inline-flex items-center gap-1.5 font-mono text-[12px] whitespace-nowrap",
-  {
-    variants: {
-      variant: {
-        // Live: online, ongoing, current.
-        default: "text-primary",
-        // Over: archived.
-        secondary: "text-muted-foreground",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
+const badgeVariants = cva("inline-flex items-center gap-1.5 type-meta whitespace-nowrap", {
+  variants: {
+    variant: {
+      // Live: online, ongoing, current.
+      default: "text-primary",
+      // Over: archived.
+      secondary: "text-muted-foreground",
     },
   },
-);
+  defaultVariants: {
+    variant: "default",
+  },
+});
 
 function Badge({
   className,

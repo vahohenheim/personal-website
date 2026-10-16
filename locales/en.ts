@@ -27,6 +27,7 @@ const en = {
     themeLight: "Light",
     themeDark: "Dark",
     themeSystem: "System",
+    pageNav: "Related pages",
   },
   legal: {
     title: "Legal notice and privacy",
@@ -141,6 +142,7 @@ const en = {
     back: "← all posts",
     readingTime: "{minutes}\u00a0min read",
     toc: "contents",
+    tocSummary: "contents · {count} sections",
     tags: "Keywords",
     next: "next post →",
     section: "Projects",
@@ -298,6 +300,7 @@ const en = {
     "back-to-homepage": "back to homepage",
   },
   footer: {
+    seeAlso: "see also",
     legal: "legal notice",
     cgv: "terms",
   },

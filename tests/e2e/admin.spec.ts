@@ -1,4 +1,5 @@
 import { type APIRequestContext, expect, type Page, test } from "@playwright/test";
+import { expectAccessible, expectNoHorizontalScroll, gotoInTheme } from "./helpers";
 import { E2E } from "./settings";
 
 test.use({ httpCredentials: { username: E2E.adminUser, password: E2E.adminPassword } });
@@ -32,7 +33,7 @@ test.describe("without credentials", () => {
   test.use({ httpCredentials: undefined });
 
   test("is closed", async ({ request }) => {
-    for (const path of ["/admin/", "/admin/export/"]) {
+    for (const path of ["/admin/", "/admin/export/", "/admin/design-system/"]) {
       const response = await request.get(path, { maxRedirects: 0 });
 
       expect(response.status(), path).toBe(401);
@@ -165,4 +166,52 @@ test("says with a toast that the audience is not configured without the Vercel t
   await expect(
     page.getByText("La fréquentation n’est pas configurée : WEB_ANALYTICS_TOKEN est absent."),
   ).toBeVisible();
+});
+
+test.describe("design system", () => {
+  test("shows every group of components, with the summary on the left", async ({
+    page,
+    isMobile,
+  }) => {
+    await page.goto("/admin/design-system/");
+
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Design system");
+    await expect(page.getByRole("navigation", { name: "Menu de l’admin" })).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "design system" }).and(page.locator("[aria-current=page]")),
+    ).toBeVisible();
+
+    for (const name of ["Couleurs", "Typographie", "Boutons", "Entrées datées", "Hors vitrine"]) {
+      await expect(page.getByRole("heading", { level: 2, name, exact: true })).toBeVisible();
+    }
+
+    // Every specimen is drawn twice: in day mode, then in night mode.
+    await expect(page.locator("figure .light").first()).toBeVisible();
+    await expect(page.locator("figure .dark").first()).toBeVisible();
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+
+    if (!isMobile) {
+      const summary = await page
+        .getByRole("navigation", { name: "Sommaire du design system" })
+        .boundingBox();
+      const text = await page.locator("main article").boundingBox();
+
+      expect(summary && text && summary.x + summary.width < text.x).toBe(true);
+    }
+  });
+
+  for (const theme of ["light", "dark"] as const) {
+    test(`is accessible and fits the screen in ${theme} mode`, async ({ page }) => {
+      await gotoInTheme(page, "/admin/design-system/", theme);
+      await expectAccessible(page);
+      await expectNoHorizontalScroll(page);
+    });
+  }
+
+  test("is reached from the leads page", async ({ page }) => {
+    await page.goto("/admin/");
+    await page.getByRole("link", { name: "design system" }).click();
+
+    await expect(page).toHaveURL("/admin/design-system/");
+  });
 });

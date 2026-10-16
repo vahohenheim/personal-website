@@ -80,7 +80,7 @@ const LeadFollowUpComponent = ({
       <Button
         type="button"
         variant="secondary"
-        className="min-h-9 px-3 text-[13px]"
+        className="min-h-9 px-3 type-small"
         onClick={() => {
           setForm({
             status,
@@ -107,7 +107,7 @@ const LeadFollowUpComponent = ({
                 {/* A native select: a short fixed list does not need a custom listbox. */}
                 <select
                   id={`status-${id}`}
-                  className="h-11 rounded border border-input bg-background px-3 text-[15px] text-foreground"
+                  className="h-11 rounded border border-input bg-background px-3 type-small text-foreground"
                   value={form.status}
                   onChange={(event) => {
                     setForm({ ...form, status: event.target.value as LeadStatus });

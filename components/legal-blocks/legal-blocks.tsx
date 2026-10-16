@@ -1,7 +1,12 @@
-import IdentityCardComponent from "@/components/identity-card/identity-card";
+import HeadingComponent from "@/components/heading/heading";
+import KeyValueComponent from "@/components/key-value/key-value";
 import ProcessingListComponent from "@/components/processing-list/processing-list";
 import RichTextComponent from "@/components/rich-text/rich-text";
-import { type LegalBlock } from "@/lib/models/legal";
+import { type IdentityRow, type LegalBlock } from "@/lib/models/legal";
+
+/** Identity rows as key / value rows: values may hold a link, written in Markdown. */
+export const toKeyValueRows = (rows: IdentityRow[]) =>
+  rows.map((row) => ({ key: row.key, value: <RichTextComponent text={row.value} /> }));
 
 /** A stable key for a block: its text, or the anchor of a subsection. */
 const keyOf = (block: LegalBlock) => {
@@ -49,15 +54,15 @@ const LegalBlockComponent = ({ block }: { block: LegalBlock }) => {
       );
     }
     case "identity":
-      return <IdentityCardComponent rows={block.rows} className="mt-1" />;
+      return <KeyValueComponent rows={toKeyValueRows(block.rows)} className="mt-1" />;
     case "processing":
       return <ProcessingListComponent items={block.items} />;
     case "subsection":
       return (
         <>
-          <h3 id={block.id} className="mt-2 text-[16px] leading-[1.4] font-semibold text-text">
-            <span className="font-mono font-normal text-muted">{block.number}</span> {block.title}
-          </h3>
+          <HeadingComponent level={3} id={block.id} className="mt-2">
+            <span className="type-label font-normal text-muted">{block.number}</span> {block.title}
+          </HeadingComponent>
           <LegalBlocksComponent blocks={block.blocks} />
         </>
       );

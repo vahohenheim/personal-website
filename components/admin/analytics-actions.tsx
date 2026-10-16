@@ -32,7 +32,7 @@ const AnalyticsActionsComponent = ({ retentionDays, refreshDays }: AnalyticsActi
       <Button
         type="button"
         variant="secondary"
-        className="min-h-9 px-3 text-[13px]"
+        className="min-h-9 px-3 type-small"
         disabled={isPending}
         onClick={() => {
           run(refreshDays, "Fréquentation mise à jour.");
@@ -43,7 +43,7 @@ const AnalyticsActionsComponent = ({ retentionDays, refreshDays }: AnalyticsActi
       <Button
         type="button"
         variant="secondary"
-        className="min-h-9 px-3 text-[13px]"
+        className="min-h-9 px-3 type-small"
         disabled={isPending}
         onClick={() => {
           run(retentionDays, `Historique des ${retentionDays} derniers jours importé.`);

@@ -4,6 +4,8 @@ description: The /admin dashboard for leads, their follow-up, conversion and aud
 related_code:
   - ../../app/admin/layout.tsx
   - ../../app/admin/page.tsx
+  - ../../app/admin/design-system/page.tsx
+  - ../../components/admin/admin-header.tsx
   - ../../app/admin/actions.ts
   - ../../app/admin/export/route.ts
   - ../../app/admin/labels.ts
@@ -16,7 +18,7 @@ related_code:
   - ../../lib/admin/guard.ts
   - ../../lib/admin/stats.ts
   - ../../proxy.ts
-last_updated: 2026-10-12
+last_updated: 2026-10-16
 ---
 
 # Admin area
@@ -91,6 +93,12 @@ failures are toasts.
 A lead whose status is `gagné`, `perdu` or `sans suite` (`CLOSED_STATUSES`) is never due
 for a follow-up, whatever its date. The stored value of `sans suite` is `closed`: it was
 labelled "clos" before the statuses of a sale existed.
+
+## Design system page
+
+`/admin/design-system/` shows the tokens and every component of the site, in day and night
+mode side by side. The admin menu (`AdminHeaderComponent`: demandes · fréquentation ·
+design system) links the two pages. See [design-system.md](../frontend/design-system.md).
 
 ## Rules
 

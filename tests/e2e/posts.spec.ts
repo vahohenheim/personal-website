@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, type Page, test } from "@playwright/test";
 import { loadLazyImages } from "./helpers";
 
 test.describe("list", () => {
@@ -38,24 +38,55 @@ test.describe("list", () => {
   });
 });
 
+/**
+ * The summary of a post, opened first on phones, where it is folded above the text: the
+ * same summary as the legal pages (components/toc/toc.tsx).
+ */
+const openSummary = async (page: Page, isMobile: boolean, name: string) => {
+  if (isMobile) {
+    await page.locator("details summary").click();
+  }
+
+  return page.getByRole("navigation", { name });
+};
+
 test.describe("post", () => {
-  test("shows the title, the lead, the dates, the tags and the summary", async ({ page }) => {
+  test("shows the title, the lead, the dates, the tags and the summary", async ({
+    page,
+    isMobile,
+  }) => {
     await page.goto("/fr/posts/brut/");
 
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(/^BRUT, le site d’un camion/);
     await expect(page.locator("main time").first()).toHaveAttribute("datetime", "2026-10-14");
     await expect(page.getByText(/^\d+\s*min de lecture$/)).toBeVisible();
 
-    const summary = page.getByRole("navigation", { name: "sommaire" });
+    const summary = await openSummary(page, isMobile, "sommaire");
 
     await expect(summary.getByRole("link")).toHaveCount(9);
-    await expect(summary.getByRole("link").nth(6)).toHaveText("Mesurer, puis alléger");
+    // The number is part of the link, as on the legal pages.
+    await expect(summary.getByRole("link").nth(6)).toHaveText(/^\d{2}\s*Mesurer, puis alléger$/);
   });
 
-  test("jumps to a section from the summary", async ({ page }) => {
+  test("puts the summary on the left of the text, as on the legal pages", async ({
+    page,
+    isMobile,
+  }) => {
+    test.skip(isMobile, "On phones, the summary is folded above the text.");
+
     await page.goto("/fr/posts/brut/");
-    await page
-      .getByRole("navigation", { name: "sommaire" })
+
+    const summary = await page.getByRole("navigation", { name: "sommaire" }).boundingBox();
+    const text = await page.locator("main article").boundingBox();
+
+    expect(summary && text && summary.x + summary.width < text.x).toBe(true);
+  });
+
+  test("jumps to a section from the summary", async ({ page, isMobile }) => {
+    await page.goto("/fr/posts/brut/");
+    await (
+      await openSummary(page, isMobile, "sommaire")
+    )
       .getByRole("link", { name: "Mesurer, puis alléger" })
       .click();
 
@@ -136,13 +167,13 @@ test.describe("in English", () => {
     await expect(page.getByText(/min read/)).toHaveCount(3);
   });
 
-  test("shows a translated post with its own summary and anchors", async ({ page }) => {
+  test("shows a translated post with its own summary and anchors", async ({ page, isMobile }) => {
     await page.goto("/en/posts/brut/");
 
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await expect(page.locator("main time").first()).toHaveText("Oct 14, 2026");
 
-    const summary = page.getByRole("navigation", { name: "contents" });
+    const summary = await openSummary(page, isMobile, "contents");
 
     await expect(summary.getByRole("link")).toHaveCount(9);
     await summary.getByRole("link", { name: "Measure, then lighten" }).click();

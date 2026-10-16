@@ -13,7 +13,7 @@ export const generateMetadata = (): Promise<Metadata> => getPageMetadata("legal"
 
 export default async function LegalPage() {
   const locale = await getLocale();
-  const { legal, a11y } = await getDictionary();
+  const { legal, cgv, a11y, footer } = await getDictionary();
   const updatedAt = dayjs(PAGES.legal.updatedAt).locale(locale).format("D MMMM YYYY");
 
   return (
@@ -21,16 +21,24 @@ export default async function LegalPage() {
       <main id="main" className="container-page">
         <JsonLdComponent page="legal" />
         <LegalLayoutComponent
-          breadcrumb={{ label: a11y.breadcrumb, homeHref: `/${locale}/`, current: "legal" }}
+          breadcrumb={{
+            label: a11y.breadcrumb,
+            homeHref: `/${locale}/`,
+            trail: [{ label: "legal" }],
+          }}
           title={legal.title}
           meta={
-            <p className="font-mono text-[13px] text-muted">
-              {legal.updated.replace("{date}", updatedAt)}
-            </p>
+            <p className="type-label text-muted">{legal.updated.replace("{date}", updatedAt)}</p>
           }
           toc={legal.toc}
           anchor={legal.anchor}
           sections={legal.sections}
+          seeAlso={{
+            label: a11y.pageNav,
+            eyebrow: footer.seeAlso,
+            title: cgv.title,
+            href: `/${locale}/cgv/`,
+          }}
         />
       </main>
       <SiteFooterComponent current="legal" />

@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils/cn";
 
 // shadcn/ui Button, restyled for the design charter: 44 px high, 2 px radius, no shadow.
 const buttonVariants = cva(
-  "inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded text-[15px] font-medium whitespace-nowrap no-underline transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded type-small font-medium whitespace-nowrap no-underline transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {

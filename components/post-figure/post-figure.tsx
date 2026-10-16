@@ -12,11 +12,7 @@ const PostFigureComponent = ({ caption, className, children }: PostFigureCompone
   return (
     <figure className={cn("my-4 flex min-w-0 flex-col gap-3", className)}>
       {children}
-      {caption && (
-        <figcaption className="max-w-[68ch] text-[14px] leading-[1.5] text-muted">
-          {caption}
-        </figcaption>
-      )}
+      {caption && <figcaption className="max-w-[68ch] type-small text-muted">{caption}</figcaption>}
     </figure>
   );
 };

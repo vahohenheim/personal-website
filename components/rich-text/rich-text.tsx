@@ -27,7 +27,7 @@ const renderToken = (token: RichTextToken, key: string): ReactNode => {
       );
     case "code":
       return (
-        <code key={key} className="font-mono text-[14px] text-text">
+        <code key={key} className="font-mono text-[0.9em] text-text">
           {token.text}
         </code>
       );

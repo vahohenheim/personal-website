@@ -1,7 +1,8 @@
 import dayjs from "dayjs";
 import type { Metadata } from "next";
-import IdentityCardComponent from "@/components/identity-card/identity-card";
 import JsonLdComponent from "@/components/json-ld/json-ld";
+import KeyValueComponent from "@/components/key-value/key-value";
+import { toKeyValueRows } from "@/components/legal-blocks/legal-blocks";
 import LegalLayoutComponent from "@/components/legal-layout/legal-layout";
 import RichTextComponent from "@/components/rich-text/rich-text";
 import SiteFooterComponent from "@/components/site-footer/site-footer";
@@ -19,7 +20,7 @@ export const generateMetadata = (): Promise<Metadata> => getPageMetadata("cgv");
  */
 export default async function CgvPage() {
   const locale = await getLocale();
-  const { cgv, a11y } = await getDictionary();
+  const { cgv, legal, a11y, footer } = await getDictionary();
   const { terms } = cgv;
   const effectiveAt = dayjs(TERMS.effectiveAt).locale(locale).format("D MMMM YYYY");
 
@@ -28,10 +29,14 @@ export default async function CgvPage() {
       <main id="main" className="container-page">
         <JsonLdComponent page="cgv" />
         <LegalLayoutComponent
-          breadcrumb={{ label: a11y.breadcrumb, homeHref: `/${locale}/`, current: "cgv" }}
+          breadcrumb={{
+            label: a11y.breadcrumb,
+            homeHref: `/${locale}/`,
+            trail: [{ label: "cgv" }],
+          }}
           title={cgv.title}
           meta={
-            <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 font-mono text-[13px]">
+            <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 type-label">
               <p className="text-muted">
                 {cgv.version.replace("{version}", TERMS.version).replace("{date}", effectiveAt)}
               </p>
@@ -41,12 +46,12 @@ export default async function CgvPage() {
           intro={
             <>
               {cgv.notice !== "" && (
-                <p className="max-w-[720px] text-[15px] text-text2">
+                <p className="max-w-[720px] type-small text-text2">
                   <RichTextComponent text={cgv.notice} />
                 </p>
               )}
-              <IdentityCardComponent rows={terms.identity} className="mt-2 max-w-[720px]" />
-              <p className="text-[15px] text-text2">
+              <KeyValueComponent rows={toKeyValueRows(terms.identity)} />
+              <p className="type-small text-text2">
                 <RichTextComponent text={terms.designation} />
               </p>
             </>
@@ -54,6 +59,12 @@ export default async function CgvPage() {
           toc={terms.toc}
           anchor={terms.anchor}
           sections={terms.sections}
+          seeAlso={{
+            label: a11y.pageNav,
+            eyebrow: footer.seeAlso,
+            title: legal.title,
+            href: `/${locale}/legal/`,
+          }}
         />
       </main>
       <SiteFooterComponent current="cgv" />
