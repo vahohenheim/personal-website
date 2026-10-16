@@ -15,7 +15,7 @@ related_code:
   - ../../lib/constants/project-links.ts
   - ../../lib/constants/skills.ts
   - ../../lib/constants/site.ts
-last_updated: 2026-10-15
+last_updated: 2026-10-16
 ---
 
 # Content and resume data
@@ -43,7 +43,9 @@ entry for entry.
 
 The other dictionary keys (`metadata`, `a11y`, `legal`, `cgv`, `not-found`, `error`…) are in
 `locales/fr.ts` and `locales/en.ts`; the legal texts themselves are in `locales/legal/`
-([legal-pages.md](../features/legal-pages.md)). `en.ts` defines the `Dictionary` type and `fr.ts` is
+([legal-pages.md](../features/legal-pages.md)), and the texts of the services page in
+`locales/offer/`, under `offre`, with their prices in `lib/constants/offer.ts`
+([offer.md](../features/offer.md)). `en.ts` defines the `Dictionary` type and `fr.ts` is
 typed with it, so a missing key fails the type check.
 
 Writing rules are in [styling.md](../frontend/styling.md#typography-of-texts): typographic

@@ -19,7 +19,7 @@ export const PAGES = {
   home: {
     path: "/",
     createdAt: "2024-07-12",
-    updatedAt: "2026-10-14",
+    updatedAt: "2026-10-16",
     priority: 1,
     changeFrequency: "monthly",
   },
@@ -36,6 +36,14 @@ export const PAGES = {
     createdAt: "2026-10-11",
     updatedAt: "2026-10-14",
     priority: 0.6,
+    changeFrequency: "monthly",
+  },
+  // The services and their prices. The same path in both languages, like the terms.
+  offre: {
+    path: "/offre/",
+    createdAt: "2026-10-16",
+    updatedAt: "2026-10-16",
+    priority: 0.8,
     changeFrequency: "monthly",
   },
   legal: {

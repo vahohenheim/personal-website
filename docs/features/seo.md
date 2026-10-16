@@ -17,7 +17,7 @@ related_code:
   - ../../lib/helpers/og-fonts.ts
   - ../../app/[locale]/posts/[slug]/opengraph-image.tsx
   - ../../tests/unit/json-ld.test.ts
-last_updated: 2026-10-15
+last_updated: 2026-10-16
 ---
 
 # SEO and structured data
@@ -32,7 +32,7 @@ the current locale, so they always match what the page shows. Nothing is written
 returns, for the current locale:
 
 - the translated title and description (`metadata.*`, `resume.metadata.*`,
-  `legal.metadata.*`, `cgv.metadata.*`). Keep descriptions under 155 characters: search engines cut the rest;
+  `offre.metadata.*`, `legal.metadata.*`, `cgv.metadata.*`). Keep descriptions under 155 characters: search engines cut the rest;
 - the canonical URL and the `hreflang` alternates of every locale, plus `x-default`;
 - the Open Graph data (URL, site name, locale) and a `summary_large_image` Twitter card.
   The image itself comes from the file convention below.
@@ -91,14 +91,15 @@ design charter.
 graph of a page in a given language is `getPageGraph(page, locale)`: it reads the
 dictionaries directly, so a test builds every page in every language.
 
-| Page   | Nodes                                                                                                                                    |
-| ------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Home   | `WebSite` (site name), `ProfilePage`, `Person` (summary), `ItemList` of personal projects; `hasPart` → `Blog` when the posts block shows |
-| Resume | `ProfilePage`, `Person` (full), `BreadcrumbList`                                                                                         |
-| Legal  | `WebPage`, `BreadcrumbList`                                                                                                              |
-| Terms  | `WebPage`, `BreadcrumbList`, in both languages                                                                                           |
-| Posts  | `CollectionPage`, `Blog` (`…/posts/#blog`) listing a summary `BlogPosting` per listed post, `BreadcrumbList`                             |
-| A post | `WebPage`, `BlogPosting` (full), `BreadcrumbList` Home › Articles › title                                                                |
+| Page     | Nodes                                                                                                                                                                                           |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Home     | `WebSite` (site name), `ProfilePage`, `Person` (summary), `ItemList` of personal projects; `hasPart` → `Blog` when the posts block shows                                                        |
+| Resume   | `ProfilePage`, `Person` (full), `BreadcrumbList`                                                                                                                                                |
+| Services | `WebPage` whose `mainEntity` is an `OfferCatalog`: one `Offer` per way to buy a service, each a `Service` with its price excluding VAT ([offer.md](offer.md#structured-data)), `BreadcrumbList` |
+| Legal    | `WebPage`, `BreadcrumbList`                                                                                                                                                                     |
+| Terms    | `WebPage`, `BreadcrumbList`, in both languages                                                                                                                                                  |
+| Posts    | `CollectionPage`, `Blog` (`…/posts/#blog`) listing a summary `BlogPosting` per listed post, `BreadcrumbList`                                                                                    |
+| A post   | `WebPage`, `BlogPosting` (full), `BreadcrumbList` Home › Articles › title                                                                                                                       |
 
 ```mermaid
 flowchart LR

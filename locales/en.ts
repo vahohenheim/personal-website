@@ -1,6 +1,7 @@
 import * as content from "./content/en";
 import { cgv } from "./legal/cgv.en";
 import * as notice from "./legal/notice.en";
+import { offer } from "./offer/offer.en";
 
 const en = {
   metadata: {
@@ -129,7 +130,13 @@ const en = {
     },
   },
   header: {
-    menu: { resume: "cv", projects: "projects", posts: "posts", contact: "contact" },
+    menu: {
+      resume: "cv",
+      projects: "projects",
+      posts: "posts",
+      offer: "services",
+      contact: "contact",
+    },
   },
   posts: {
     title: "Posts",
@@ -174,6 +181,7 @@ const en = {
         "Projects and notes by Valentin Bourreau, senior front-end engineer: front-end architecture, design systems, quality and team leadership.",
     },
   },
+  offre: offer,
   home: content.home,
   resume: {
     ...content.resume,

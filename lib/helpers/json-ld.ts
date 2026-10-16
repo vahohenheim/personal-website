@@ -7,6 +7,8 @@ import type {
   Graph,
   ImageObject,
   ItemList,
+  Offer,
+  OfferCatalog,
   Organization,
   Person,
   ProfilePage,
@@ -17,6 +19,7 @@ import type {
 import { EXPERIENCES } from "@/lib/constants/experiences";
 import { USER_LANGUAGES } from "@/lib/constants/languages";
 import { MAIL_ADDRESS } from "@/lib/constants/mail-address";
+import { SERVICES } from "@/lib/constants/offer";
 import { PAGES, type PageId } from "@/lib/constants/pages";
 import { PROJECT_LINKS } from "@/lib/constants/project-links";
 import { QUALIFICATIONS, SCHOOLS } from "@/lib/constants/qualifications";
@@ -29,6 +32,7 @@ import { type Locale } from "@/lib/i18n/config";
 import { getLocale } from "@/lib/i18n/dictionaries";
 import { type Company } from "@/lib/models/company";
 import { type Experience } from "@/lib/models/experience";
+import { type Price } from "@/lib/models/offer";
 import { type LocalizedPost, type PostProject } from "@/lib/models/post";
 import { type School } from "@/lib/models/school";
 import { getPostOutline } from "@/lib/posts/source";
@@ -348,6 +352,65 @@ const getBlog = (context: Context): Blog => {
   };
 };
 
+// UN/CEFACT codes of the price units, as schema.org expects them in `unitCode`.
+const UNIT_CODES = { day: "DAY", month: "MON" } as const;
+
+/** The price of an offer, excluding VAT. A price on quote has none. */
+const getPriceSpecification = (price: Price): Offer["priceSpecification"] => {
+  if (price.type === "quote") {
+    return undefined;
+  }
+
+  return {
+    "@type": "UnitPriceSpecification",
+    priceCurrency: "EUR",
+    valueAddedTaxIncluded: false,
+    ...(price.type === "fixed"
+      ? { price: price.amount }
+      : { minPrice: price.min, maxPrice: price.max }),
+    ...(price.unit && { unitCode: UNIT_CODES[price.unit] }),
+  };
+};
+
+/**
+ * The services of the services page, one offer per way to buy one (the express and the
+ * full audit are two offers), each with its price as shown on the page.
+ */
+const getServiceCatalog = ({ locale, dictionary }: Context): OfferCatalog => {
+  const { offre } = dictionary;
+  const url = getPageUrl("offre", locale);
+
+  return {
+    "@type": "OfferCatalog",
+    "@id": `${url}#services`,
+    name: offre.sections.services.title,
+    itemListElement: SERVICES.flatMap((service) => {
+      const texts = offre.services[service.id];
+
+      return service.options.map((option): Offer => {
+        const priceSpecification = getPriceSpecification(option.price);
+
+        return {
+          "@type": "Offer",
+          name:
+            service.options.length > 1
+              ? `${texts.title} · ${texts.prices[option.id] ?? option.id}`
+              : texts.title,
+          url: `${url}#sec-02`,
+          seller: { "@id": PERSON_ID },
+          itemOffered: {
+            "@type": "Service",
+            name: texts.title,
+            description: texts.text,
+            provider: { "@id": PERSON_ID },
+          },
+          ...(priceSpecification && { priceSpecification }),
+        };
+      });
+    }),
+  };
+};
+
 /**
  * Structured data of each page. The record is keyed by `PageId`, so adding a page
  * to `PAGES` without describing it here fails the type check.
@@ -368,6 +431,14 @@ const PAGE_GRAPHS: Record<PageId, (context: Context) => Thing[]> = {
     { ...getWebPage("posts", "WebPage", context), "@type": "CollectionPage" },
     getBlog(context),
     getBreadcrumb("posts", context.dictionary.posts.title, context),
+  ],
+  offre: (context) => [
+    {
+      ...getWebPage("offre", "WebPage", context),
+      mainEntity: { "@id": `${getPageUrl("offre", context.locale)}#services` },
+    },
+    getServiceCatalog(context),
+    getBreadcrumb("offre", context.dictionary.offre.title, context),
   ],
   legal: (context) => [
     getWebPage("legal", "WebPage", context),

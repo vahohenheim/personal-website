@@ -6,6 +6,7 @@ import HeadingComponent from "@/components/heading/heading";
 import JsonLdComponent from "@/components/json-ld/json-ld";
 import KeyValueComponent from "@/components/key-value/key-value";
 import LogEntryComponent from "@/components/log-entry/log-entry";
+import OfferLineComponent from "@/components/offer-line/offer-line";
 import PageHeaderComponent from "@/components/page-header/page-header";
 import ProjectCardComponent from "@/components/project-card/project-card";
 import SectionComponent, { SectionTitleComponent } from "@/components/section/section";
@@ -13,9 +14,11 @@ import SiteFooterComponent from "@/components/site-footer/site-footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription } from "@/components/ui/card";
 import { MAIL_ADDRESS } from "@/lib/constants/mail-address";
+import { HOME_SERVICES } from "@/lib/constants/offer";
 import { PROJECT_LINKS } from "@/lib/constants/project-links";
 import { SOCIAL_NETWORKS } from "@/lib/constants/social-network";
 import { getPageMetadata } from "@/lib/helpers/metadata";
+import { formatStartingPrice, getService } from "@/lib/helpers/offer";
 import {
   formatPostDate,
   getPostForProject,
@@ -33,7 +36,7 @@ const FOOTER_NETWORKS = ["GitHub", "LinkedIn", "Dribbble", "Behance"];
 
 export default async function HomePage() {
   const locale = await getLocale();
-  const { home, a11y, contact, posts } = await getDictionary();
+  const { home, a11y, contact, posts, offre } = await getDictionary();
   const latestPosts = getHomePosts(locale);
   // The "read the post" link of a project card, when a post about the project is listed.
   const getProjectPost = (id: string) => {
@@ -86,6 +89,27 @@ export default async function HomePage() {
               </li>
             ))}
           </ul>
+        </SectionComponent>
+
+        <SectionComponent id="offer" className="flex flex-col gap-6">
+          <SectionTitleComponent>{offre.home.title}</SectionTitleComponent>
+          <p className="max-w-[64ch] type-lead text-text2">{offre.home.lead}</p>
+          <ol className="list-none">
+            {HOME_SERVICES.map((id) => (
+              <OfferLineComponent
+                key={id}
+                title={offre.services[id].title}
+                summary={offre.services[id].summary}
+                price={formatStartingPrice(getService(id), locale, offre.price)}
+              />
+            ))}
+          </ol>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <Button asChild variant="secondary">
+              <Link href={`/${locale}/offre/`}>{offre.home.more}</Link>
+            </Button>
+            <p className="type-meta text-muted">{offre.home.vat}</p>
+          </div>
         </SectionComponent>
 
         <SectionComponent className="flex flex-col gap-6">

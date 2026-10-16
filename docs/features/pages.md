@@ -1,9 +1,10 @@
 ---
 title: Pages
-description: The pages of the site (home, resume, posts, legal notice, terms of service, 404, error), what each one shows, and the checklist to add a page.
+description: The pages of the site (home, resume, services, posts, legal notice, terms of service, 404, error), what each one shows, and the checklist to add a page.
 related_code:
   - ../../app/[locale]/page.tsx
   - ../../app/[locale]/resume/page.tsx
+  - ../../app/[locale]/offre/page.tsx
   - ../../app/[locale]/legal/page.tsx
   - ../../app/[locale]/cgv/page.tsx
   - ../../components/legal-links/legal-links.tsx
@@ -20,8 +21,8 @@ last_updated: 2026-10-16
 
 # Pages
 
-**Summary.** The site has four public pages, each in French and English (home, resume,
-legal notice, general terms of service), a posts section that appears with the first published post, plus a
+**Summary.** The site has five public pages, each in French and English (home, resume,
+services, legal notice, general terms of service), a posts section that appears with the first published post, plus a
 translated 404 page and a translated error page. The home page and
 the resume follow the brief of the redesign ([brief.md](../redesign/brief.md)), whose
 French texts are reproduced word for word. Pages are declared in
@@ -35,10 +36,13 @@ structured data are keyed by that list.
 1. **Hero:** portrait and breadcrumb, title, lead, the key / value sheet, two buttons
    (contact, resume). Contact buttons open the [contact dialog](contact-form.md).
 2. **What I bring:** a pull quote, then three cells separated by 1 px rules.
-3. **Changelog:** five entries, the current one dated in the accent colour, with a link
+3. **Offer** (`#offer`): one sentence, three services on one line each with their starting
+   price, a "Voir l’offre complète →" button to `/offre/` and "prix HT". See
+   [offer.md](offer.md#the-home-page-block).
+4. **Changelog:** five entries, the current one dated in the accent colour, with a link
    to the full changelog (the resume).
-4. **Projects** (`#projects`): three cards, then the archived ones as a line of links.
-5. **Contact** (`#contact`): the page footer, with the main contact link, the social
+5. **Projects** (`#projects`): three cards, then the archived ones as a line of links.
+6. **Contact** (`#contact`): the page footer, with the main contact link, the social
    links as words, the copyright line and the links to the legal notice and the terms.
 
 ## Resume: `/[locale]/resume/`
@@ -54,6 +58,15 @@ structured data are keyed by that list.
 
 The download button points to `/cv-<locale>.pdf`: the one-page A4 resume, printed from
 `/[locale]/resume/print/`. See [resume-pdf.md](resume-pdf.md).
+
+## Services: `/[locale]/offre/`
+
+[app/[locale]/offre/page.tsx](../../app/[locale]/offre/page.tsx), on the document template:
+page header (trail, title, lead, a mono line, contact and resume buttons), then the summary
+on the left and five numbered sections (positioning, the five services as changelog
+entries with their prices, the rates table, the way of working, contact), then the terms
+of service as the page to read next. The path is `/offre/` in both languages. Prices come
+from `lib/constants/offer.ts`. Details: [offer.md](offer.md).
 
 ## Posts: `/[locale]/posts/` and `/[locale]/posts/<slug>/`
 
@@ -110,7 +123,7 @@ French version prevails. Every footer links to it. Details: [legal-pages.md](leg
 
 The header is rendered by the root layout. Its links are `cv` (the resume), `projets` and
 `contact` (the two anchors of the home page), `articles` once a public post is published
-in the language, the language link and the theme button. From a post that has no version
+in the language, `offre` (`services` in English, the services page), the language link and the theme button. From a post that has no version
 in the other language (or a protected post), the language link goes to the list of the
 other language, or its home page.
 Every page ends with `SiteFooterComponent`, the home page included (after its contact

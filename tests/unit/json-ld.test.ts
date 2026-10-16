@@ -197,3 +197,35 @@ describe("graph of the terms", () => {
     }
   });
 });
+
+describe("graph of the services page", () => {
+  it("lists every way to buy a service, with its price excluding VAT", () => {
+    for (const locale of LOCALES) {
+      const graph = getPageGraph("offre", locale);
+      const catalog = byType(graph, "OfferCatalog");
+      const offers = catalog?.itemListElement as Node[] | undefined;
+      const trail = byType(graph, "BreadcrumbList")?.itemListElement as Node[] | undefined;
+
+      expect(byType(graph, "WebPage")?.url).toBe(
+        `https://www.valentinbourreau.com/${locale}/offre/`,
+      );
+      expect(byType(graph, "WebPage")?.mainEntity).toEqual({ "@id": catalog?.["@id"] });
+      // Express and full audit, technical lead, development, launch, retainer.
+      expect(offers).toHaveLength(6);
+      expect(offers?.[0]?.priceSpecification).toEqual({
+        "@type": "UnitPriceSpecification",
+        priceCurrency: "EUR",
+        valueAddedTaxIncluded: false,
+        price: 1900,
+      });
+      expect(offers?.[2]?.priceSpecification).toMatchObject({ price: 850, unitCode: "DAY" });
+      expect(offers?.[3]?.priceSpecification).toBeUndefined();
+      expect(offers?.[5]?.priceSpecification).toMatchObject({
+        minPrice: 2500,
+        maxPrice: 4000,
+        unitCode: "MON",
+      });
+      expect(trail?.at(-1)?.name).toBe(locale === "fr" ? "Offre" : "Services");
+    }
+  });
+});

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { adminAuthorization, get, post, SMOKE } from "./settings";
 
 const LOCALES = ["fr", "en"];
-const PAGES = ["/", "/resume/", "/legal/", "/cgv/"];
+const PAGES = ["/", "/resume/", "/offre/", "/legal/", "/cgv/"];
 
 /** Path a redirect points to, whether the header is absolute or relative. */
 const target = (response: Response) =>
@@ -224,5 +224,28 @@ describe("cron routes", () => {
     expect((await get(path)).status).toBe(403);
     expect((await get(path, { authorization: "Bearer wrong" })).status).toBe(403);
     expect((await get(path, { authorization: `Bearer ${SMOKE.cronSecret}` })).status).toBe(200);
+  });
+});
+
+describe("services", () => {
+  it("shows every price on the services page and the starting prices on the home page", async () => {
+    const offre = await (await get("/fr/offre/")).text();
+    const home = await (await get("/fr/")).text();
+
+    for (const price of ["1\u202f900\u00a0€", "5\u202f000\u00a0€", "850\u00a0€/j", "sur devis"]) {
+      expect(offre).toContain(price);
+    }
+
+    expect(offre).toContain("800\u00a0€/j");
+    expect(offre).toContain("950\u00a0€/j");
+    expect(home).toContain("dès 1\u202f900\u00a0€");
+    expect(home).toContain('href="/fr/offre/"');
+  });
+
+  it("is listed in the sitemap in both languages", async () => {
+    const sitemap = await (await get("/sitemap.xml")).text();
+
+    expect(sitemap).toContain("<loc>https://www.valentinbourreau.com/fr/offre/</loc>");
+    expect(sitemap).toContain("<loc>https://www.valentinbourreau.com/en/offre/</loc>");
   });
 });

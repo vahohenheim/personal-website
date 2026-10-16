@@ -31,6 +31,7 @@ export const getPageTexts = (page: PageId, dictionary: Dictionary) =>
     home: dictionary.metadata,
     resume: dictionary.resume.metadata,
     posts: dictionary.posts.metadata,
+    offre: dictionary.offre.metadata,
     legal: dictionary.legal.metadata,
     cgv: dictionary.cgv.metadata,
   })[page];

@@ -29,6 +29,7 @@ const HeaderComponent = async () => {
             ...(getPosts(locale).length > 0
               ? [{ label: header.menu.posts, href: getPostsPath(locale) }]
               : []),
+            { label: header.menu.offer, href: `/${locale}/offre/` },
             { label: header.menu.contact, href: `/${locale}/#contact` },
           ]}
         />

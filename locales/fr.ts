@@ -2,6 +2,7 @@ import * as content from "./content/fr";
 import type { Dictionary } from "./en";
 import { cgv } from "./legal/cgv.fr";
 import * as notice from "./legal/notice.fr";
+import { offer } from "./offer/offer.fr";
 
 const fr: Dictionary = {
   metadata: {
@@ -130,7 +131,13 @@ const fr: Dictionary = {
     },
   },
   header: {
-    menu: { resume: "cv", projects: "projets", posts: "articles", contact: "contact" },
+    menu: {
+      resume: "cv",
+      projects: "projets",
+      posts: "articles",
+      offer: "offre",
+      contact: "contact",
+    },
   },
   posts: {
     title: "Articles",
@@ -175,6 +182,7 @@ const fr: Dictionary = {
         "Projets et notes de Valentin Bourreau, ingénieur front-end senior\u00a0: architecture front-end, design systems, qualité et lead technique.",
     },
   },
+  offre: offer,
   home: content.home,
   resume: {
     ...content.resume,

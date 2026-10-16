@@ -4,11 +4,13 @@ import BarsChartComponent from "@/components/admin/bars-chart";
 import AvatarComponent from "@/components/avatar/avatar";
 import BreadcrumbComponent from "@/components/breadcrumb/breadcrumb";
 import ChangelogEntryComponent from "@/components/changelog-entry/changelog-entry";
+import FactGridComponent from "@/components/fact-grid/fact-grid";
 import HeadingComponent from "@/components/heading/heading";
 import KeyValueComponent from "@/components/key-value/key-value";
 import LegalBlocksComponent from "@/components/legal-blocks/legal-blocks";
 import LogEntryComponent from "@/components/log-entry/log-entry";
 import NumberedSectionComponent from "@/components/numbered-section/numbered-section";
+import OfferLineComponent from "@/components/offer-line/offer-line";
 import PageNavComponent from "@/components/page-nav/page-nav";
 import PostCalloutComponent from "@/components/post-callout/post-callout";
 import PostDecisionTableComponent from "@/components/post-decision-table/post-decision-table";
@@ -43,10 +45,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
+import { HOME_SERVICES } from "@/lib/constants/offer";
+import { formatPrice, formatStartingPrice, getService } from "@/lib/helpers/offer";
 import { type LegalBlock } from "@/lib/models/legal";
 import { home, resume } from "@/locales/content/fr";
 import { cgv } from "@/locales/legal/cgv.fr";
 import { sections as noticeSections } from "@/locales/legal/notice.fr";
+import { offer } from "@/locales/offer/offer.fr";
 import { type ShownFile } from "../coverage";
 import { type SpecimenMode } from "./specimen";
 
@@ -118,6 +123,8 @@ const PROCESSING = noticeSections
   .slice(0, 2);
 
 const SUBSECTION_ARTICLE = cgv.sections.find((section) => section.number === "04");
+
+const AUDIT = getService("audit");
 
 const FREELANCE = resume.changelog.entries[0];
 const SOLO = resume.changelog.entries[1];
@@ -368,7 +375,7 @@ export const SPECIMEN_GROUPS: SpecimenGroup[] = [
     number: "10",
     label: "composés",
     title: "Entrées datées",
-    text: "La grammaire du changelog, pour le journal de l’accueil et du CV et pour les listes d’articles.",
+    text: "La grammaire du changelog, pour le journal de l’accueil et du CV, pour les listes d’articles et pour les offres.",
     specimens: [
       {
         name: "LogEntry · ChangelogEntry · AchievementList",
@@ -389,6 +396,45 @@ export const SPECIMEN_GROUPS: SpecimenGroup[] = [
             >
               <AchievementListComponent items={SOLO.achievements?.slice(0, 2) ?? []} />
             </LogEntryComponent>
+          </ol>
+        ),
+      },
+      {
+        name: "LogEntry · FactGrid : une offre",
+        files: ["log-entry/log-entry", "fact-grid/fact-grid"],
+        stack: true,
+        render: () => (
+          <ol className="list-none">
+            <LogEntryComponent
+              date={`01 · ${offer.services.audit.code}`}
+              detail={offer.services.audit.billing}
+              title={offer.services.audit.title}
+            >
+              <AchievementListComponent items={offer.services.audit.deliverables} />
+              <FactGridComponent
+                facts={AUDIT.options.map((option) => ({
+                  label: offer.services.audit.prices[option.id] ?? option.id,
+                  value: formatPrice(option.price, "fr", offer.price),
+                }))}
+              />
+            </LogEntryComponent>
+          </ol>
+        ),
+      },
+      {
+        name: "OfferLine",
+        files: ["offer-line/offer-line"],
+        stack: true,
+        render: () => (
+          <ol className="list-none">
+            {HOME_SERVICES.map((id) => (
+              <OfferLineComponent
+                key={id}
+                title={offer.services[id].title}
+                summary={offer.services[id].summary}
+                price={formatStartingPrice(getService(id), "fr", offer.price)}
+              />
+            ))}
           </ol>
         ),
       },

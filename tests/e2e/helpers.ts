@@ -7,6 +7,8 @@ export const PUBLIC_PAGES = [
   "/en/",
   "/fr/resume/",
   "/en/resume/",
+  "/fr/offre/",
+  "/en/offre/",
   "/fr/legal/",
   "/en/legal/",
   "/fr/cgv/",

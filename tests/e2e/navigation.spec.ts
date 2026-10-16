@@ -26,7 +26,7 @@ test.describe("header", () => {
   test("stays visible on a phone, every link included", async ({ page }) => {
     await page.goto("/fr/");
 
-    for (const name of ["cv", "projets", "articles", "contact"]) {
+    for (const name of ["cv", "projets", "articles", "offre", "contact"]) {
       await expect(
         page.getByRole("navigation", { name: "Menu principal" }).getByRole("link", { name }),
       ).toBeVisible();
