@@ -5,7 +5,7 @@ import { type OfferTexts } from "@/lib/models/offer";
 export const offer: OfferTexts = {
   title: "Services",
   breadcrumb: "services",
-  lead: "Senior web engineer, specialised in headless platforms and Next.js. Audit, technical leadership, development and production launch, remote and asynchronous.",
+  lead: "Senior web engineer, specialised in headless platforms and Next.js. Audit, technical leadership, development, custom websites and production launch, remote and asynchronous.",
   meta: { status: "freelance", remote: "100% remote", vat: "prices excl. VAT" },
   actions: { contact: "Get in touch", resume: "View résumé" },
   toc: {
@@ -70,6 +70,28 @@ export const offer: OfferTexts = {
       detail: { label: "duration", value: "depends on the scope" },
       prices: { quote: "price" },
     },
+    creation: {
+      code: "creation",
+      billing: "fixed price",
+      title: "Custom website or app",
+      summary: "Landing page, showcase website, shop or app, at a fixed price",
+      text: "A website or an app designed for you, on a proven technical base: Next.js, content you can edit yourself, hosted on Vercel. A written scope and a fixed price; a headless shop or a larger app is priced on quote.",
+      deliverables: [
+        "Custom design, no bought theme",
+        "Content editable without a developer",
+        "Performance and basic SEO",
+        "Two rounds of feedback included",
+        "Texts and images supplied by you",
+      ],
+      prices: {
+        landing: "landing page · 1 page",
+        site: "showcase website · 5 pages",
+        page: "extra page",
+        shop: "online shop · Shopify",
+        app: "web app · 1 user journey",
+        care: "maintenance · hosting, updates, 1 h",
+      },
+    },
     launch: {
       code: "launch",
       billing: "fixed price",
@@ -127,7 +149,7 @@ export const offer: OfferTexts = {
   },
   home: {
     title: "services",
-    lead: "Senior web engineer, specialised in headless platforms and Next.js. I also cover the back end and the infrastructure, remote and asynchronous.",
+    lead: "Senior web engineer, specialised in headless platforms and Next.js. I also cover the back end and the infrastructure, and build custom websites and apps at a fixed price.",
     more: "See all services →",
     vat: "prices excl. VAT",
   },

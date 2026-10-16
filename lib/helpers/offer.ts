@@ -16,10 +16,20 @@ export const formatEuros = (amount: number, locale: Locale) =>
 const withUnit = (text: string, price: Price, templates: OfferTexts["price"]) =>
   price.type !== "quote" && price.unit ? templates[price.unit].replace("{price}", text) : text;
 
-/** A price as written on the page: `1 900 €`, `850 €/j`, `3 500 € à 7 000 €`, `sur devis`. */
+/**
+ * A price as written on the page: `1 900 €`, `850 €/j`, `3 500 € à 7 000 €`, `dès 5 500 €`,
+ * `sur devis`.
+ */
 export const formatPrice = (price: Price, locale: Locale, templates: OfferTexts["price"]) => {
   if (price.type === "quote") {
     return templates.quote;
+  }
+
+  if (price.type === "from") {
+    return templates.from.replace(
+      "{price}",
+      withUnit(formatEuros(price.amount, locale), price, templates),
+    );
   }
 
   const text =
@@ -41,16 +51,19 @@ export const formatStartingPrice = (
   locale: Locale,
   templates: OfferTexts["price"],
 ) => {
-  const prices = service.options.map((option) => option.price);
+  // An add-on (an extra page, the maintenance) is bought with another option: it does not
+  // start the service.
+  const prices = service.options.filter((option) => !option.addOn).map((option) => option.price);
   const [only] = prices;
 
   if (prices.length === 1 && only.type !== "range") {
+    // A single starting price already reads `dès …`.
     return formatPrice(only, locale, templates);
   }
 
   // Where each price starts, with the price it belongs to for its unit.
   const starts = prices.flatMap((price): { amount: number; price: Price }[] =>
-    price.type === "fixed"
+    price.type === "fixed" || price.type === "from"
       ? [{ amount: price.amount, price }]
       : price.type === "range"
         ? [{ amount: price.min, price }]

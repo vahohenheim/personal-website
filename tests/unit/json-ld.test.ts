@@ -210,8 +210,9 @@ describe("graph of the services page", () => {
         `https://www.valentinbourreau.com/${locale}/offre/`,
       );
       expect(byType(graph, "WebPage")?.mainEntity).toEqual({ "@id": catalog?.["@id"] });
-      // Express and full audit, technical lead, development, launch, retainer.
-      expect(offers).toHaveLength(6);
+      // Express and full audit, technical lead, development, six ways to buy a website or an
+      // app, launch, retainer.
+      expect(offers).toHaveLength(12);
       expect(offers?.[0]?.priceSpecification).toEqual({
         "@type": "UnitPriceSpecification",
         priceCurrency: "EUR",
@@ -220,7 +221,11 @@ describe("graph of the services page", () => {
       });
       expect(offers?.[2]?.priceSpecification).toMatchObject({ price: 850, unitCode: "DAY" });
       expect(offers?.[3]?.priceSpecification).toBeUndefined();
-      expect(offers?.[5]?.priceSpecification).toMatchObject({
+      expect(offers?.[4]?.priceSpecification).toMatchObject({ price: 1200 });
+      expect(offers?.[8]?.priceSpecification).toMatchObject({ minPrice: 9000 });
+      expect(offers?.[8]?.priceSpecification).not.toHaveProperty("maxPrice");
+      expect(offers?.[9]?.priceSpecification).toMatchObject({ price: 120, unitCode: "MON" });
+      expect(offers?.[11]?.priceSpecification).toMatchObject({
         minPrice: 2500,
         maxPrice: 4000,
         unitCode: "MON",

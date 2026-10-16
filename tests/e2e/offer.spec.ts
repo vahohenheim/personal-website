@@ -11,6 +11,7 @@ test("leads from the home page to the services page", async ({ page }) => {
     "Audit performance & architecture",
     "Lead technique à temps partiel",
     "Mise en production web",
+    "Création de site ou d’application sur mesure",
   ]);
   await offer.getByRole("link", { name: "Voir l’offre complète →" }).click();
 
@@ -24,7 +25,7 @@ test("leads from the home page to the services page", async ({ page }) => {
   ).toHaveAttribute("aria-current", "page");
 });
 
-test("lists the five services and their prices, with the summary on the left", async ({ page }) => {
+test("lists the six services and their prices, with the summary on the left", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/fr/offre/");
 
@@ -34,7 +35,8 @@ test("lists the five services and their prices, with the summary on the left", a
 
   const services = page.locator("#sec-02");
 
-  await expect(services.getByRole("heading", { level: 3 })).toHaveCount(5);
+  await expect(services.getByRole("heading", { level: 3 })).toHaveCount(6);
+  await expect(services.getByText("dès 5\u202f500\u00a0€")).toBeVisible();
   await expect(services.getByText("sur devis")).toBeVisible();
   await expect(page.locator("#sec-03").getByRole("table")).toContainText("950 €/j");
 

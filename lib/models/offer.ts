@@ -1,6 +1,6 @@
 /** Shapes of the services page (`/offre/`) and of the offer block of the home page. */
 
-export type ServiceId = "audit" | "lead" | "build" | "launch" | "retainer";
+export type ServiceId = "audit" | "lead" | "build" | "creation" | "launch" | "retainer";
 
 export type PriceUnit = "day" | "month";
 
@@ -8,10 +8,17 @@ export type PriceUnit = "day" | "month";
 export type Price =
   | { type: "fixed"; amount: number; unit?: PriceUnit }
   | { type: "range"; min: number; max: number; unit?: PriceUnit }
+  /** A starting price, written `dès 5 500 €`: the final one depends on the scope. */
+  | { type: "from"; amount: number; unit?: PriceUnit }
   | { type: "quote" };
 
 /** One way to buy a service: the express or the full audit, the day of technical lead. */
-export type ServiceOption = { id: string; price: Price };
+export type ServiceOption = {
+  id: string;
+  price: Price;
+  /** Bought with another option (an extra page, the maintenance): not a starting price. */
+  addOn?: boolean;
+};
 
 export type Service = { id: ServiceId; options: ServiceOption[] };
 

@@ -232,13 +232,22 @@ describe("services", () => {
     const offre = await (await get("/fr/offre/")).text();
     const home = await (await get("/fr/")).text();
 
-    for (const price of ["1\u202f900\u00a0€", "5\u202f000\u00a0€", "850\u00a0€/j", "sur devis"]) {
+    for (const price of [
+      "1\u202f900\u00a0€",
+      "5\u202f000\u00a0€",
+      "850\u00a0€/j",
+      "sur devis",
+      "1\u202f200\u00a0€",
+      "dès 9\u202f000\u00a0€",
+      "120\u00a0€/mois",
+    ]) {
       expect(offre).toContain(price);
     }
 
     expect(offre).toContain("800\u00a0€/j");
     expect(offre).toContain("950\u00a0€/j");
     expect(home).toContain("dès 1\u202f900\u00a0€");
+    expect(home).toContain("dès 1\u202f200\u00a0€");
     expect(home).toContain('href="/fr/offre/"');
   });
 
