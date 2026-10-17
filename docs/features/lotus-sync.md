@@ -13,12 +13,13 @@ related_code:
   - ../../lib/models/lead.ts
   - ../../app/admin/labels.ts
   - ../../app/admin/page.tsx
+  - ../../app/admin/actions.ts
   - ../../vercel.json
   - ../../db/schema.sql
   - ../../tests/unit/lotus-forward.test.ts
   - ../../tests/unit/lotus-sync.test.ts
   - ../../tests/smoke/lotus.test.ts
-last_updated: 2026-10-12
+last_updated: 2026-10-17
 ---
 
 # Lotus sync
@@ -177,6 +178,9 @@ less than 30 days old: that is intended.
 - A change to what is sent updates the contract in the lotus repository first, then this
   page, the tests and the [legal page](pages.md#legal-notice-and-privacy-localelegal).
 - Deleting a lead in the admin does not delete it in lotus, and the reverse.
+- A lead typed by hand in the admin ("+ Nouvelle demande") is forwarded like one sent
+  through the site: after the answer, then by the daily job while it is `pending`. Editing a
+  lead in the admin sends nothing: lotus keeps the lead as it first received it.
 
 ## How to verify
 

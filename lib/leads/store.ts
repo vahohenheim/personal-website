@@ -21,6 +21,8 @@ export type LeadStore = {
   listPendingSync: (since: string, limit: number) => Promise<Lead[]>;
   /** Records the result of one attempt to forward a lead to lotus. */
   recordSync: (id: number, outcome: SyncOutcome) => Promise<void>;
+  /** Replaces what the visitor sent (or what the admin typed): contact, need, message. */
+  updateDetails: (id: number, details: LeadInput) => Promise<void>;
   updateFollowUp: (id: number, followUp: LeadFollowUp) => Promise<void>;
   remove: (id: number) => Promise<void>;
 };
@@ -141,6 +143,16 @@ const neonStore: LeadStore = {
       where id = ${id} and lotus_status <> 'synced'
     `;
   },
+  updateDetails: async (id, details) => {
+    const sql = getSql();
+    await sql`
+      update leads
+      set need = ${details.need}, timeline = ${details.timeline}, message = ${details.message},
+          name = ${details.name}, email = ${details.email}, company = ${details.company},
+          locale = ${details.locale}, source = ${details.source}
+      where id = ${id}
+    `;
+  },
   updateFollowUp: async (id, followUp) => {
     const sql = getSql();
     await sql`
@@ -216,6 +228,13 @@ const memoryStore: LeadStore = {
         ? lead
         : { ...lead, ...attempt, lotusStatus: outcome.status, lotusError: outcome.code };
     });
+
+    return Promise.resolve();
+  },
+  updateDetails: (id, details) => {
+    memory.__devLeads = (memory.__devLeads ?? []).map((lead) =>
+      lead.id === id ? { ...lead, ...details } : lead,
+    );
 
     return Promise.resolve();
   },

@@ -4,6 +4,15 @@ import { MAX_MESSAGE_LENGTH } from "@/lib/models/lead";
 import { formBody } from "../helpers/leads";
 
 describe("parseLead", () => {
+  it("accepts a shorter message when the admin asks for it, never an empty one", () => {
+    expect(parseLead(formBody({ message: "Appel" }), { minMessageLength: 1 }).ok).toBe(true);
+    expect(parseLead(formBody({ message: "Appel" })).ok).toBe(false);
+    expect(parseLead(formBody({ message: "  " }), { minMessageLength: 0 })).toEqual({
+      ok: false,
+      error: "message_too_short",
+    });
+  });
+
   it("accepts a complete form and normalises it", () => {
     const result = parseLead(formBody({ email: "  Ada@Example.COM ", name: "  Ada  " }));
 

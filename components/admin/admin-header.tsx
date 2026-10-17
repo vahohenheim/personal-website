@@ -2,12 +2,12 @@ import Link from "next/link";
 import { type ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
-export type AdminPage = "leads" | "design-system";
+export type AdminPage = "leads" | "traffic" | "design-system";
 
 // The admin is in French only, and its texts live in its code (see app/admin/labels.ts).
-const ITEMS: { id: AdminPage | "traffic"; label: string; href: string }[] = [
+const ITEMS: { id: AdminPage; label: string; href: string }[] = [
   { id: "leads", label: "demandes", href: "/admin/" },
-  { id: "traffic", label: "fréquentation", href: "/admin/#frequentation" },
+  { id: "traffic", label: "fréquentation", href: "/admin/frequentation/" },
   { id: "design-system", label: "design system", href: "/admin/design-system/" },
 ];
 

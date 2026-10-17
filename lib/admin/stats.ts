@@ -45,6 +45,32 @@ const sumAmounts = (leads: Lead[], status: LeadStatus) =>
 export const isFollowUpDue = (lead: Lead, today: string) =>
   lead.followUpOn !== null && lead.followUpOn <= today && !CLOSED_STATUSES.includes(lead.status);
 
+/** The filters of the list of leads, in the order of the tabs. */
+export const LEAD_FILTERS = ["all", "new", "due", "ongoing", "closed"] as const;
+export type LeadFilter = (typeof LEAD_FILTERS)[number];
+
+export const isLeadFilter = (value: unknown): value is LeadFilter =>
+  LEAD_FILTERS.some((filter) => filter === value);
+
+/**
+ * Whether a lead is listed under a filter: `new` still to answer, `due` to follow up today,
+ * `ongoing` answered and still open, `closed` won, lost or dropped.
+ */
+export const matchesFilter = (lead: Lead, filter: LeadFilter, today: string) => {
+  switch (filter) {
+    case "all":
+      return true;
+    case "new":
+      return lead.status === "new";
+    case "due":
+      return isFollowUpDue(lead, today);
+    case "ongoing":
+      return lead.status !== "new" && !CLOSED_STATUSES.includes(lead.status);
+    case "closed":
+      return CLOSED_STATUSES.includes(lead.status);
+  }
+};
+
 /** Figures of the dashboard. Pure: `now` is passed in. */
 export const computeLeadStats = (leads: Lead[], now: Date): LeadStats => {
   const time = now.getTime();

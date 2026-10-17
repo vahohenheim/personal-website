@@ -55,8 +55,10 @@ export type ShownFile = (typeof SHOWN_FILES)[number];
 /** Left out of the page, with the reason shown at its end. */
 export const SKIPPED_FILES: Record<string, string> = {
   "admin/admin-header": "l’en-tête de cette page",
-  "admin/analytics-actions": "agit sur les vraies données : voir la page demandes",
-  "admin/lead-follow-up": "agit sur les vraies demandes : voir la page demandes",
+  "admin/analytics-actions": "agit sur les vraies données : voir la page fréquentation",
+  "admin/admin-figures": "chiffres réels de l’admin : voir les pages demandes et fréquentation",
+  "admin/lead-delete": "agit sur les vraies demandes : voir la page demandes",
+  "admin/lead-form": "agit sur les vraies demandes : voir la page demandes",
   "contact/contact-context": "état partagé, rien à afficher",
   "contact/contact-dialog": "la fenêtre de contact : bouton « Prendre contact » du site",
   "contact/contact-trigger": "ouvre la fenêtre de contact, qui n’existe pas dans l’admin",

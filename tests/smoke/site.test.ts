@@ -157,7 +157,12 @@ describe("files and feeds", () => {
 
 describe("admin", () => {
   it("asks for credentials on every admin URL", async () => {
-    for (const path of ["/admin/", "/admin/export/", "/admin/anything.css"]) {
+    for (const path of [
+      "/admin/",
+      "/admin/frequentation/",
+      "/admin/export/",
+      "/admin/anything.css",
+    ]) {
       const response = await get(path);
 
       expect(response.status, path).toBe(401);
@@ -168,13 +173,18 @@ describe("admin", () => {
   });
 
   it("opens for the admin, without cache or indexing", async () => {
-    const response = await get("/admin/", { authorization: adminAuthorization });
-    const html = await response.text();
+    for (const [path, text] of [
+      ["/admin/", "toutes les demandes"],
+      ["/admin/frequentation/", "conversion"],
+    ]) {
+      const response = await get(path, { authorization: adminAuthorization });
+      const html = await response.text();
 
-    expect(response.status).toBe(200);
-    expect(response.headers.get("cache-control")).toContain("no-store");
-    expect(response.headers.get("x-robots-tag")).toBe("noindex, nofollow");
-    expect(html).toContain("Demandes de contact");
+      expect(response.status, path).toBe(200);
+      expect(response.headers.get("cache-control"), path).toContain("no-store");
+      expect(response.headers.get("x-robots-tag"), path).toBe("noindex, nofollow");
+      expect(html, path).toContain(text);
+    }
   });
 });
 
@@ -203,11 +213,14 @@ describe("contact form, from the request to the admin", () => {
 
     const csv = await (await get("/admin/export/", { authorization: adminAuthorization })).text();
     const admin = await (await get("/admin/", { authorization: adminAuthorization })).text();
+    const traffic = await (
+      await get("/admin/frequentation/", { authorization: adminAuthorization })
+    ).text();
 
     expect(csv).toContain(email);
     expect(csv).toContain('"smoke.example"');
     expect(admin).toContain(email);
-    expect(admin).toContain("Formulaire ouvert");
+    expect(traffic).toContain("Formulaire ouvert");
   });
 
   it("refuses an invalid form and answers a bot like a person", async () => {

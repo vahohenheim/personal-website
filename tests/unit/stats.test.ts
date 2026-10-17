@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { computeLeadStats, isFollowUpDue } from "@/lib/admin/stats";
+import {
+  computeLeadStats,
+  isFollowUpDue,
+  isLeadFilter,
+  LEAD_FILTERS,
+  matchesFilter,
+} from "@/lib/admin/stats";
 import { makeLead } from "../helpers/leads";
 
 const now = new Date("2026-10-12T12:00:00.000Z");
@@ -78,5 +84,32 @@ describe("isFollowUpDue", () => {
         false,
       );
     }
+  });
+});
+
+describe("matchesFilter", () => {
+  const today = "2026-10-12";
+  const leads = [
+    makeLead({ id: 1, status: "new" }),
+    makeLead({ id: 2, status: "contacted", followUpOn: "2026-10-10" }),
+    makeLead({ id: 3, status: "quoted", followUpOn: "2026-10-20" }),
+    makeLead({ id: 4, status: "won", followUpOn: "2026-10-01" }),
+    makeLead({ id: 5, status: "closed" }),
+  ];
+  const ids = (filter: (typeof LEAD_FILTERS)[number]) =>
+    leads.filter((lead) => matchesFilter(lead, filter, today)).map((lead) => lead.id);
+
+  it("sorts the leads into the tabs of the list", () => {
+    expect(ids("all")).toEqual([1, 2, 3, 4, 5]);
+    expect(ids("new")).toEqual([1]);
+    expect(ids("due")).toEqual([2]);
+    expect(ids("ongoing")).toEqual([2, 3]);
+    expect(ids("closed")).toEqual([4, 5]);
+  });
+
+  it("accepts the known filters only", () => {
+    expect(LEAD_FILTERS.every(isLeadFilter)).toBe(true);
+    expect(isLeadFilter("everything")).toBe(false);
+    expect(isLeadFilter(undefined)).toBe(false);
   });
 });
