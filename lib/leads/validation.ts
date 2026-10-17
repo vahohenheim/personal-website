@@ -66,8 +66,14 @@ export const isLikelyBot = ({
   return elapsed < minFillTimeMs || elapsed > MAX_FILL_TIME_MS;
 };
 
-/** Validates what the form sent. Unknown fields are ignored. */
-export const parseLead = (body: Record<string, unknown>): ParseResult => {
+/**
+ * Validates what the form sent. Unknown fields are ignored. The admin, which records a
+ * lead taken by phone or by e-mail, accepts a shorter message (`minMessageLength`).
+ */
+export const parseLead = (
+  body: Record<string, unknown>,
+  { minMessageLength = MIN_MESSAGE_LENGTH }: { minMessageLength?: number } = {},
+): ParseResult => {
   const need = oneOf(body.need, LEAD_NEEDS);
 
   if (!need) {
@@ -76,7 +82,7 @@ export const parseLead = (body: Record<string, unknown>): ParseResult => {
 
   const message = text(body.message, MAX_MESSAGE_LENGTH);
 
-  if (message.length < MIN_MESSAGE_LENGTH) {
+  if (message.length < Math.max(minMessageLength, 1)) {
     return { ok: false, error: "message_too_short" };
   }
 

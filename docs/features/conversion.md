@@ -10,8 +10,9 @@ related_code:
   - ../../components/contact/contact-dialog.tsx
   - ../../instrumentation-client.ts
   - ../../app/admin/page.tsx
+  - ../../app/admin/frequentation/page.tsx
   - ../../db/schema.sql
-last_updated: 2026-10-11
+last_updated: 2026-10-17
 ---
 
 # Conversion
@@ -61,9 +62,10 @@ storage, so no consent is needed), sent with the form as `source`, cleaned by th
 
 ## In the admin
 
-The "conversion" section of [/admin](admin.md) follows the period chosen for the audience
-figures. It shows the funnel (count, and share of the previous step) and the origins of
-the leads with how many were won. Built by
+The "conversion" section of the audience page ([/admin/frequentation/](admin.md)) follows
+the period chosen there. It shows the funnel (count, and share of the previous step). The
+origins of the leads, with how many were won, are in the "tendance" section of the leads
+page; its audience recap gives the messages sent over 30 days and their share of visits. Built by
 [lib/funnel/report.ts](../../lib/funnel/report.ts) and `computeLeadStats`.
 
 ## Rules

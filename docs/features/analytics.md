@@ -9,12 +9,13 @@ related_code:
   - ../../app/api/cron/analytics-snapshot/route.ts
   - ../../vercel.json
   - ../../app/admin/page.tsx
+  - ../../app/admin/frequentation/page.tsx
   - ../../app/admin/actions.ts
   - ../../components/admin/analytics-actions.tsx
   - ../../components/admin/bars-chart.tsx
   - ../../db/schema.sql
   - ../../.env.example
-last_updated: 2026-10-12
+last_updated: 2026-10-17
 ---
 
 # Audience figures
@@ -33,7 +34,7 @@ flowchart LR
     A([Valentin, admin buttons]) --> S
     S -->|Web Analytics API<br/>WEB_ANALYTICS_TOKEN| W
     S -->|upsert| N[(Neon<br/>analytics_daily<br/>analytics_breakdown)]
-    N --> D[/admin: traffic section/]
+    N --> D[/admin/frequentation/]
 ```
 
 ## The snapshot
@@ -80,8 +81,9 @@ Without the token the job does nothing and the admin says the daily copy is inac
 
 ## In the admin
 
-The "fréquentation" section reads the stored figures through
-[loadTrafficReport](../../lib/analytics/report.ts):
+The audience page, [/admin/frequentation/](admin.md#audience-and-conversion-adminfrequentation),
+reads the stored figures through [loadTrafficReport](../../lib/analytics/report.ts); the
+leads page shows a recap of the last 30 days with a link to it:
 
 - a period filter (`?periode=30`, `90`, `365` or `all`);
 - page views and visits over the period, and how far back the history goes;

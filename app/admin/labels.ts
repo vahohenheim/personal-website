@@ -1,7 +1,14 @@
+import { type LeadFilter } from "@/lib/admin/stats";
 import { type LotusState } from "@/lib/lotus/config";
 import { getSyncDisplay, type SyncDisplay } from "@/lib/lotus/state";
 import { LOTUS_RETRY_DAYS } from "@/lib/lotus/sync";
-import { type Lead, type LeadNeed, type LeadStatus, type LeadTimeline } from "@/lib/models/lead";
+import {
+  type ContactErrorCode,
+  type Lead,
+  type LeadNeed,
+  type LeadStatus,
+  type LeadTimeline,
+} from "@/lib/models/lead";
 
 // The admin area is for Valentin only, so its texts are in French and live here rather
 // than in the dictionaries of the public site.
@@ -19,6 +26,31 @@ export const TIMELINE_LABELS: Record<LeadTimeline, string> = {
   "one-to-three-months": "Dans 1 à 3 mois",
   later: "Plus tard",
   unsure: "Ne sait pas",
+};
+
+/** Toasts of the lead form, when the server refuses a field. */
+export const LEAD_FORM_ERRORS: Record<
+  "invalid_body" | "invalid_amount" | "invalid_date" | ContactErrorCode,
+  string
+> = {
+  invalid_body: "La demande n’a pas pu être lue. Rechargez la page et réessayez.",
+  invalid_amount: "Le montant doit être un nombre entier d’euros.",
+  invalid_date: "La date de relance n’est pas valide.",
+  need_required: "Choisissez un besoin.",
+  message_too_short: "Écrivez au moins un mot dans le message.",
+  name_required: "Le nom est obligatoire.",
+  invalid_email: "L’adresse e-mail n’est pas valide.",
+  forbidden: "Accès refusé.",
+  unavailable: "La base de données n’est pas configurée.",
+  server_error: "L’opération a échoué. Rechargez la page et réessayez.",
+};
+
+export const FILTER_LABELS: Record<LeadFilter, string> = {
+  all: "toutes",
+  new: "à traiter",
+  due: "à relancer",
+  ongoing: "en cours",
+  closed: "closes",
 };
 
 export const STATUS_LABELS: Record<LeadStatus, string> = {

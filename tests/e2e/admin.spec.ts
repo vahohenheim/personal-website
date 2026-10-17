@@ -33,7 +33,12 @@ test.describe("without credentials", () => {
   test.use({ httpCredentials: undefined });
 
   test("is closed", async ({ request }) => {
-    for (const path of ["/admin/", "/admin/export/", "/admin/design-system/"]) {
+    for (const path of [
+      "/admin/",
+      "/admin/frequentation/",
+      "/admin/export/",
+      "/admin/design-system/",
+    ]) {
       const response = await request.get(path, { maxRedirects: 0 });
 
       expect(response.status(), path).toBe(401);
@@ -41,22 +46,18 @@ test.describe("without credentials", () => {
   });
 });
 
-test("shows the leads, the charts, the audience and the conversion", async ({ page }) => {
+test("shows the leads first, then the audience recap and the trend", async ({ page }) => {
   await page.goto("/admin/");
 
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Demandes de contact");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Demandes");
 
-  for (const name of [
-    "demandes par semaine",
-    "par besoin",
-    "fréquentation",
-    "conversion",
-    "toutes les demandes",
-  ]) {
-    await expect(page.getByRole("heading", { level: 2, name })).toBeVisible();
-  }
+  const titles = page.getByRole("heading", { level: 2 });
 
+  await expect(titles).toHaveText(["toutes les demandes", "fréquentation · 30 jours", "tendance"]);
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+
+  await page.getByRole("link", { name: "voir la fréquentation et la conversion →" }).click();
+  await expect(page).toHaveURL("/admin/frequentation/");
 });
 
 test("lists a new lead with its details", async ({ page, request }) => {
@@ -75,50 +76,144 @@ test("lists a new lead with its details", async ({ page, request }) => {
   await expect(row.getByRole("link", { name: email })).toHaveAttribute("href", `mailto:${email}`);
 });
 
-test("records the follow-up of a lead", async ({ page, request }) => {
+test("creates a lead typed by hand", async ({ page }) => {
+  const email = `camille-${Date.now()}@example.com`;
+
+  await page.goto("/admin/");
+  await page.getByRole("button", { name: "+ Nouvelle demande" }).click();
+
+  const dialog = page.getByRole("dialog", { name: "Nouvelle demande" });
+
+  await dialog.getByLabel("nom").fill("Camille Saisie");
+  await dialog.getByLabel("e-mail").fill(email);
+  await dialog.getByLabel("origine · facultatif").fill("malt");
+  await dialog.getByLabel("besoin").selectOption({ label: "Qualité et audit" });
+  await dialog.getByLabel("message").fill("Appel");
+  await dialog.getByLabel("statut").selectOption({ label: "contacté" });
+  await dialog.getByRole("button", { name: "Enregistrer" }).click();
+
+  await expect(page.getByText("Demande ajoutée.")).toBeVisible();
+  await expect(dialog).toBeHidden();
+
+  const row = rowOf(page, email);
+
+  await expect(row).toContainText("Camille Saisie");
+  await expect(row).toContainText("via malt");
+  await expect(row).toContainText("Qualité et audit");
+  await expect(row).toContainText("contacté");
+});
+
+test("says with a toast what is wrong in the lead form", async ({ page }) => {
+  await page.goto("/admin/");
+  await page.getByRole("button", { name: "+ Nouvelle demande" }).click();
+
+  const dialog = page.getByRole("dialog", { name: "Nouvelle demande" });
+
+  await dialog.getByLabel("nom").fill("Erreur");
+  // Passes the browser check, not the server one.
+  await dialog.getByLabel("e-mail").fill("erreur@exemple");
+  await dialog.getByLabel("besoin").selectOption({ label: "Autre" });
+  await dialog.getByLabel("message").fill("Test");
+  await dialog.getByRole("button", { name: "Enregistrer" }).click();
+
+  await expect(page.getByText("L’adresse e-mail n’est pas valide.")).toBeVisible();
+  await expect(dialog).toBeVisible();
+});
+
+test("edits a lead and its follow-up", async ({ page, request }) => {
   const email = await sendLead(request, "Sam Suivi");
 
   await page.goto("/admin/");
-  await rowOf(page, email).getByRole("button", { name: "Suivi" }).click();
+  await rowOf(page, email)
+    .getByRole("button", { name: "Modifier la demande de Sam Suivi" })
+    .click();
 
   const dialog = page.getByRole("dialog", { name: "Sam Suivi" });
 
+  await expect(dialog.getByLabel("e-mail")).toHaveValue(email);
+  await dialog.getByLabel("entreprise · facultatif").fill("Autre SAS");
   await dialog.getByLabel("statut").selectOption({ label: "devis envoyé" });
   await dialog.getByLabel("montant estimé (€) · facultatif").fill("4800");
   await dialog.getByLabel("relancer le · facultatif").fill("2030-01-15");
   await dialog.getByLabel("notes").fill("Devis envoyé, rappeler en janvier.");
   await dialog.getByRole("button", { name: "Enregistrer" }).click();
 
-  await expect(page.getByText("Suivi enregistré.")).toBeVisible();
+  await expect(page.getByText("Demande enregistrée.")).toBeVisible();
   await expect(dialog).toBeHidden();
 
   await page.reload();
 
   const row = rowOf(page, email);
 
+  await expect(row).toContainText("Autre SAS");
   await expect(row).toContainText("devis envoyé");
   await expect(row).toContainText("4 800");
   await expect(row).toContainText("relance le");
   await expect(row).toContainText("Devis envoyé, rappeler en janvier.");
 });
 
-test("deletes a lead only after confirmation", async ({ page, request }) => {
+test("filters the list by where the leads stand", async ({ page, request }) => {
+  const email = await sendLead(request, "Filtre Nouveau");
+
+  await page.goto("/admin/");
+
+  const filters = page.getByRole("navigation", { name: "Filtrer les demandes" });
+
+  await filters.getByRole("link", { name: /^closes/ }).click();
+  await expect(page).toHaveURL(/\?filtre=closed#liste$/);
+  await expect(rowOf(page, email)).toHaveCount(0);
+
+  await filters.getByRole("link", { name: /^à traiter/ }).click();
+  await expect(filters.getByRole("link", { name: /^à traiter/ })).toHaveAttribute(
+    "aria-current",
+    "true",
+  );
+  await expect(rowOf(page, email)).toHaveCount(1);
+});
+
+test("deletes a lead from its row, only after confirmation", async ({ page, request }) => {
   const email = await sendLead(request, "Dominique Suppression");
 
   await page.goto("/admin/");
-  await rowOf(page, email).getByRole("button", { name: "Suivi" }).click();
+  await rowOf(page, email)
+    .getByRole("button", { name: "Supprimer la demande de Dominique Suppression" })
+    .click();
 
-  const dialog = page.getByRole("dialog", { name: "Dominique Suppression" });
+  const confirm = page.getByRole("dialog", {
+    name: "Supprimer la demande de Dominique Suppression ?",
+  });
 
-  await dialog.getByRole("button", { name: "Supprimer" }).click();
-  await dialog.getByRole("button", { name: "Annuler" }).click();
-  await expect(dialog.getByRole("button", { name: "Confirmer la suppression" })).toHaveCount(0);
+  await confirm.getByRole("button", { name: "Annuler" }).click();
+  await expect(confirm).toBeHidden();
+  await expect(rowOf(page, email)).toHaveCount(1);
 
-  await dialog.getByRole("button", { name: "Supprimer" }).click();
-  await dialog.getByRole("button", { name: "Confirmer la suppression" }).click();
+  await rowOf(page, email)
+    .getByRole("button", { name: "Supprimer la demande de Dominique Suppression" })
+    .click();
+  await confirm.getByRole("button", { name: "Supprimer", exact: true }).click();
 
   await expect(page.getByText("Demande supprimée.")).toBeVisible();
   await page.reload();
+  await expect(rowOf(page, email)).toHaveCount(0);
+});
+
+test("deletes a lead from its sheet", async ({ page, request }) => {
+  const email = await sendLead(request, "Lou Fiche");
+
+  await page.goto("/admin/");
+  await rowOf(page, email)
+    .getByRole("button", { name: "Modifier la demande de Lou Fiche" })
+    .click();
+  await page
+    .getByRole("dialog", { name: "Lou Fiche" })
+    .getByRole("button", { name: "Supprimer la demande de Lou Fiche" })
+    .click();
+  await page
+    .getByRole("dialog", { name: "Supprimer la demande de Lou Fiche ?" })
+    .getByRole("button", { name: "Supprimer", exact: true })
+    .click();
+
+  await expect(page.getByText("Demande supprimée.")).toBeVisible();
   await expect(rowOf(page, email)).toHaveCount(0);
 });
 
@@ -144,13 +239,23 @@ test("exports the leads as a CSV file", async ({ page, request }) => {
   expect(Buffer.concat(chunks).toString("utf8")).toContain(email);
 });
 
+test("shows the audience and the conversion on their own page", async ({ page }) => {
+  await page.goto("/admin/frequentation/");
+
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Fréquentation");
+  await expect(page.getByRole("heading", { level: 2, name: "conversion" })).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "fréquentation" }).and(page.locator("[aria-current=page]")),
+  ).toBeVisible();
+});
+
 test("changes the period of the audience figures", async ({ page }) => {
-  await page.goto("/admin/");
+  await page.goto("/admin/frequentation/");
 
   const period = page.getByRole("navigation", { name: "Période" });
 
   await period.getByRole("link", { name: "90 jours" }).click();
-  await expect(page).toHaveURL(/\?periode=90#frequentation$/);
+  await expect(page).toHaveURL(/\/admin\/frequentation\/\?periode=90$/);
   await expect(period.getByRole("link", { name: "90 jours" })).toHaveAttribute(
     "aria-current",
     "true",
@@ -160,7 +265,7 @@ test("changes the period of the audience figures", async ({ page }) => {
 test("says with a toast that the audience is not configured without the Vercel token", async ({
   page,
 }) => {
-  await page.goto("/admin/");
+  await page.goto("/admin/frequentation/");
   await page.getByRole("button", { name: "Actualiser" }).click();
 
   await expect(

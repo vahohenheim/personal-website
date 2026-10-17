@@ -42,6 +42,37 @@ describe("lead store in memory", () => {
   });
 });
 
+describe("updateDetails", () => {
+  it("replaces what a lead says and keeps its follow-up and its sync state", async () => {
+    const store = getLeadStore();
+    await store.insert(leadInput({ name: "First" }));
+    await store.updateFollowUp(1, {
+      status: "contacted",
+      notes: "Called.",
+      amount: null,
+      followUpOn: null,
+    });
+
+    await store.updateDetails(
+      1,
+      leadInput({ name: "Renamed", email: "new@example.com", need: "quality", timeline: null }),
+    );
+
+    expect(await store.list()).toMatchObject([
+      {
+        id: 1,
+        name: "Renamed",
+        email: "new@example.com",
+        need: "quality",
+        timeline: null,
+        status: "contacted",
+        notes: "Called.",
+        lotusStatus: "pending",
+      },
+    ]);
+  });
+});
+
 describe("getLeadStore", () => {
   it("fails loudly in production without a database", () => {
     vi.stubEnv("LEADS_MEMORY_STORE", "");
