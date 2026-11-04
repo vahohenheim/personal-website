@@ -100,7 +100,8 @@ const en = {
       send: "Send",
       sending: "Sending…",
     },
-    privacy: "Your answers are only used to reply to you.",
+    privacy:
+      "Valentin Bourreau EI, the data controller, uses your answers only to reply to you and follow up on your request. They are kept for at most 3 years after our last exchange; you can access, correct or have them deleted at any time.",
     privacyLink: "Legal notice and privacy",
     success: {
       status: "sent",
@@ -311,6 +312,7 @@ const en = {
     seeAlso: "see also",
     legal: "legal notice",
     cgv: "terms",
+    business: "Valentin Bourreau EI · siren 130\u202f933\u202f922",
   },
 };
 

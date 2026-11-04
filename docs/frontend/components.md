@@ -35,7 +35,7 @@ related_code:
   - ../../components/processing-list/processing-list.tsx
   - ../../components/rich-text/rich-text.tsx
   - ../../components/legal-links/legal-links.tsx
-last_updated: 2026-10-16
+last_updated: 2026-11-04
 ---
 
 # Components
@@ -85,7 +85,7 @@ The blocks of the design (profile sheet, project card, changelog entry…) are b
 | `PostTagsComponent`                         | The tags of a post as mono chips.                                                                                                                                                                                                                                                                                                                           |
 | `PostUnlockFormComponent`                   | The password form of a protected post (client): `fetch`, honeypot, time trap, toasts.                                                                                                                                                                                                                                                                       |
 | `Post*` MDX components                      | `components/post-*/`: the fourteen components a post may use, registered in `mdx-components.tsx`. Props and examples in [posts.md](../features/posts.md#mdx-components). `PostImageComponent` draws a day/night pair without client code; `PostFigureComponent` is the shared `<figure>` and caption; `PostProjectSheetComponent` is a `KeyValueComponent`. |
-| `SiteFooterComponent`                       | Closing line of every page: copyright, legal links, `cd ~/` (left out on the home page).                                                                                                                                                                                                                                                                    |
+| `SiteFooterComponent`                       | Closing line of every page: copyright, business line (EI and SIREN), legal links, `cd ~/` (left out on the home page).                                                                                                                                                                                                                                      |
 | `LegalLinksComponent`                       | "mentions légales · cgv" in the footer; `current` puts the link of the page being read in the accent with `aria-current="page"`.                                                                                                                                                                                                                            |
 | `LegalLayoutComponent` and its parts        | The two legal pages, on the document template: `NumberedSectionComponent`, `LegalBlocksComponent`, `ProcessingListComponent`, `RichTextComponent`. See [legal-pages.md](../features/legal-pages.md#components).                                                                                                                                             |
 | `AdminHeaderComponent`                      | Header of the admin pages: logotype, admin menu (demandes · fréquentation · design system), optional action.                                                                                                                                                                                                                                                |

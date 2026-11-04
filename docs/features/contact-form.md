@@ -13,7 +13,7 @@ related_code:
   - ../../next.config.ts
   - ../../locales/fr.ts
   - ../../locales/en.ts
-last_updated: 2026-10-14
+last_updated: 2026-11-04
 ---
 
 # Contact form
@@ -135,3 +135,7 @@ submission by a person in a normal browser has not been confirmed yet.
 - The values of `LEAD_NEEDS`, `LEAD_TIMELINES` and `LEAD_STATUSES` are stored: add one,
   never rename one.
 - Any change to what is collected updates the [legal page](pages.md) in both languages.
+- The last step carries the GDPR information notice (`contact.privacy` in the dictionaries):
+  controller (Valentin Bourreau EI), purpose, retention (at most 3 years after the last
+  exchange), rights, and a link to the legal notice and privacy page. It must stay in line
+  with the "Formulaire de contact" row of the legal page; the contact e2e test checks it.

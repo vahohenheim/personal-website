@@ -16,7 +16,7 @@ related_code:
   - ../../lib/constants/pages.ts
   - ../../locales/content/fr.ts
   - ../../locales/content/en.ts
-last_updated: 2026-10-16
+last_updated: 2026-11-04
 ---
 
 # Pages
@@ -127,7 +127,8 @@ in the language, `offre` (`services` in English, the services page), the languag
 in the other language (or a protected post), the language link goes to the list of the
 other language, or its home page.
 Every page ends with `SiteFooterComponent`, the home page included (after its contact
-section, without the `cd ~/` link). It carries "mentions légales · cgv"
+section, without the `cd ~/` link). It carries the copyright, the business line
+"Valentin Bourreau EI · siren 130 933 922" (`footer.business`) and "mentions légales · cgv"
 (`LegalLinksComponent`); the legal pages pass `current` so that their own link takes the
 accent and `aria-current="page"`.
 

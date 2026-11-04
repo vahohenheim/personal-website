@@ -180,6 +180,9 @@ test.describe("footer", () => {
         footer.getByRole("link", { name: french ? "mentions légales" : "legal notice" }),
       ).toBeVisible();
       await expect(footer.getByRole("link", { name: french ? "cgv" : "terms" })).toBeVisible();
+      await expect(
+        footer.getByText("Valentin Bourreau EI · siren 130\u202f933\u202f922"),
+      ).toBeVisible();
     }
   });
 
