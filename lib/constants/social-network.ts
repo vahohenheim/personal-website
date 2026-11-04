@@ -2,7 +2,7 @@ import { SocialNetworkType } from "@/lib/models/social-network";
 
 export const SOCIAL_NETWORK_LINKS = {
   [SocialNetworkType.MAIL]: "mailto:contact@valentinbourreau.com",
-  [SocialNetworkType.LINKEDIN]: "https://www.linkedin.com/in/valentin-bourreau/",
+  [SocialNetworkType.LINKEDIN]: "https://www.linkedin.com/company/valentinbourreau/",
   [SocialNetworkType.GITHUB]: "https://github.com/vahohenheim",
   [SocialNetworkType.DRIBBBLE]: "https://dribbble.com/valentinbourreau",
   [SocialNetworkType.BEHANCE]: "https://www.behance.net/valentinbourreau",

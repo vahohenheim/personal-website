@@ -17,7 +17,7 @@ related_code:
   - ../../lib/helpers/og-fonts.ts
   - ../../app/[locale]/posts/[slug]/opengraph-image.tsx
   - ../../tests/unit/json-ld.test.ts
-last_updated: 2026-10-16
+last_updated: 2026-11-03
 ---
 
 # SEO and structured data
@@ -115,7 +115,8 @@ flowchart LR
 The `Person` node carries:
 
 - **Summary (both pages):** name, portrait, job title, description, e-mail, city, `sameAs`
-  (GitHub, Dribbble, Behance, LinkedIn), `knowsAbout` (from `skills.ts`) and
+  (GitHub, Dribbble, Behance, and LinkedIn, which points at the
+  `valentinbourreau` company page rather than a personal profile), `knowsAbout` (from `skills.ts`) and
   `knowsLanguage`. No `worksFor` while freelance: there is no current employer.
 - **Full (resume only):** `alumniOf` with every past role (name, start and end dates,
   organisation) and the schools, and `hasCredential` with the qualifications.
