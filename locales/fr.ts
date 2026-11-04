@@ -100,7 +100,8 @@ const fr: Dictionary = {
       send: "Envoyer",
       sending: "Envoi…",
     },
-    privacy: "Vos réponses servent uniquement à vous répondre.",
+    privacy:
+      "Valentin Bourreau EI, responsable du traitement, utilise vos réponses uniquement pour vous répondre et suivre votre demande. Elles sont conservées au plus 3\u00a0ans après notre dernier échange\u00a0; vous pouvez y accéder, les rectifier ou les faire supprimer à tout moment.",
     privacyLink: "Mentions légales et confidentialité",
     success: {
       status: "envoyé",
@@ -313,6 +314,7 @@ const fr: Dictionary = {
     seeAlso: "voir aussi",
     legal: "mentions légales",
     cgv: "cgv",
+    business: "Valentin Bourreau EI · siren 130\u202f933\u202f922",
   },
 };
 

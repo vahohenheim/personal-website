@@ -12,12 +12,12 @@ type SiteFooterComponentProps = {
 };
 
 /**
- * Closing line of every page: copyright and the legal links on the left, a way back home
+ * Closing line of every page: copyright, the business (EI and SIREN) and the legal links on the left, a way back home
  * on the right.
  */
 const SiteFooterComponent = async ({ current, home = false }: SiteFooterComponentProps) => {
   const locale = await getLocale();
-  const { resume } = await getDictionary();
+  const { resume, footer } = await getDictionary();
 
   return (
     <footer className="container-page">
@@ -27,6 +27,7 @@ const SiteFooterComponent = async ({ current, home = false }: SiteFooterComponen
           <p>
             © {new Date().getFullYear()} {SITE_NAME}
           </p>
+          <p>{footer.business}</p>
           <LegalLinksComponent current={current} />
         </div>
         {!home && (

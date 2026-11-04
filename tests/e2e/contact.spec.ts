@@ -92,6 +92,9 @@ test.describe("a person", () => {
     await expect(
       dialog.getByRole("link", { name: "Mentions légales et confidentialité" }),
     ).toHaveAttribute("href", "/fr/legal/");
+    // The GDPR notice names the controller and the retention period.
+    await expect(dialog.getByText(/Valentin Bourreau EI, responsable du traitement/)).toBeVisible();
+    await expect(dialog.getByText(/conservées au plus 3\u00a0ans/)).toBeVisible();
 
     await dialog.getByRole("button", { name: "Envoyer" }).click();
 
