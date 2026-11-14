@@ -4,7 +4,7 @@ description: Index of the technical documentation of the personal website, with 
 related_code:
   - ../CLAUDE.md
   - ../README.md
-last_updated: 2026-10-16
+last_updated: 2026-11-14
 ---
 
 # Documentation
@@ -45,6 +45,7 @@ file in the `related_code` fields.
 | [development/testing.md](development/testing.md)                                               | The test suite (Vitest): unit, route and smoke layers, what the CI runs, how tests stay away from real data, how to add one.                                              |
 | [operations/runbook.md](operations/runbook.md)                                                 | Local setup, commands, continuous integration, Node version, deployment, dependency upgrades, troubleshooting.                                                            |
 | [audits/2026-10-10-full-audit.md](audits/2026-10-10-full-audit.md)                             | Audit of 2026-10-10: security, performance, accessibility, SEO, technical health and French legal obligations, with measurements, priorities and an action log.           |
+| [audits/2026-11-14-web-regulatory-check.md](audits/2026-11-14-web-regulatory-check.md)         | Six often-forgotten French and EU web obligations: exact rule, real ceiling, state of the site, what is left (phone number in the legal notice).                          |
 | [redesign/charte-graphique-valentinbourreau.md](redesign/charte-graphique-valentinbourreau.md) | Design charter (in French): principles, logo, palette, typography, components. Authoritative for the look of the site.                                                    |
 | [redesign/brief.md](redesign/brief.md)                                                         | Brief of the October 2026 redesign (in French), with the exact French texts and the acceptance criteria.                                                                  |
 
