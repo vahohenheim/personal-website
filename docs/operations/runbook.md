@@ -218,7 +218,6 @@ goes away.
 
 ## Known issues
 
-- The legal notice has no phone number, which LCEN art. 1-1 requires from a natural person publishing as a professional. Valentin chooses the number; then add it to the `identity` rows of `locales/legal/notice.*.ts`. See [the regulatory check](../audits/2026-11-14-web-regulatory-check.md).
 - `npm audit` reports 5 high-severity advisories in `braces`, `micromatch` and `fast-glob`,
   all reached through `eslint-config-next` (lint tooling only, nothing shipped to the
   browser). No fixed release exists yet.

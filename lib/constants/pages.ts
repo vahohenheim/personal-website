@@ -49,7 +49,7 @@ export const PAGES = {
   legal: {
     path: "/legal/",
     createdAt: "2026-10-10",
-    updatedAt: "2026-10-15",
+    updatedAt: "2026-11-14",
     priority: 0.2,
     changeFrequency: "yearly",
   },

@@ -22,6 +22,8 @@ Adresse : 520 route de Voivres, 72210 Fillé, France.
 
 Directeur de la publication : Valentin Bourreau.
 
+Téléphone : +33 6 31 91 43 92.
+
 Contact : contact@valentinbourreau.com.
 
 ## Hébergement
