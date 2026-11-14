@@ -22,6 +22,7 @@ export const sections: LegalSection[] = [
           { key: "vat", value: "not applicable, article 293\u00a0B of the French tax code (CGI)" },
           { key: "address", value: "520 route de Voivres, 72210 Fillé, France" },
           { key: "publication", value: "Valentin Bourreau, publication director" },
+          { key: "phone", value: "[+33\u00a06\u00a031\u00a091\u00a043\u00a092](tel:+33631914392)" },
           {
             key: "contact",
             value: "[contact@valentinbourreau.com](mailto:contact@valentinbourreau.com)",

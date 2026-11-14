@@ -12,7 +12,7 @@ related_code:
   - ../../.env.example
   - ../../AGENTS.md
   - ../../.gitignore
-last_updated: 2026-10-15
+last_updated: 2026-11-14
 ---
 
 # Runbook

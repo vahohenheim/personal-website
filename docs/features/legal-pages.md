@@ -31,7 +31,7 @@ related_code:
   - ../../tests/e2e/legal.spec.ts
   - ../../tests/helpers/legal.ts
   - ../legal-handoff/
-last_updated: 2026-10-16
+last_updated: 2026-11-14
 ---
 
 # Legal pages
@@ -219,7 +219,7 @@ content. Valentin delegated the work and could not be asked; these are the calls
 | Article 5 "Obligations du client" (mockup, PDF)                           | "Obligations du Client" (source text)                                                                                    | The source text is the authority on words, and "Client" is the defined term. Confirmed by Valentin.                      |
 | Legal notice order: "E-mail" after "Destinataires et transferts" (source) | "E-mail" is the last row of the processing list, before "Base légale" (mockup, brief's list)                             | The brief lists it among the processing rows                                                                             |
 | Retention labels ("3 ans après le dernier échange"…)                      | Kept from the mockup, with non-breaking spaces (`3\u00a0ans`)                                                            | They are in the mockup, not in the source text                                                                           |
-| Publisher lines (SIREN…, TVA, address, director, contact)                 | The identity card of the mockup                                                                                          | As specified; the test checks each fact against the source                                                               |
+| Publisher lines (SIREN…, TVA, address, director, phone, contact)          | The identity card of the mockup                                                                                          | As specified; the test checks each fact against the source                                                               |
 | Legal meta line                                                           | "dernière mise à jour le 15 octobre 2026", lowercase mono, from `PAGES.legal.updatedAt`                                  | Mockup                                                                                                                   |
 | `/en/cgv`: the French text under an English notice                        | First done that way; replaced after review by a full English translation with its own PDF, the French version prevailing | Valentin's request on the pull request                                                                                   |
 | `/en/legal`: translate the new passages                                   | Done; approved by Valentin                                                                                               |                                                                                                                          |

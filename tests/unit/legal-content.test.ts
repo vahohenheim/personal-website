@@ -218,6 +218,7 @@ describe("legal notice", () => {
       "tva",
       "adresse",
       "publication",
+      "téléphone",
       "contact",
     ]);
 
@@ -228,6 +229,7 @@ describe("legal notice", () => {
       "non applicable, article 293 B du CGI",
       "520 route de Voivres, 72210 Fillé, France",
       "Directeur de la publication : Valentin Bourreau",
+      "+33 6 31 91 43 92",
       "contact@valentinbourreau.com",
     ]) {
       expect(publisher).toContain(fact);
